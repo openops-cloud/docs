@@ -29,7 +29,12 @@
     {
       "name": "API Reference",
       "url": "api-reference"
+    },
+    {
+      "name": "Superset",
+      "url": "superset"
     }
+
   ],
   "anchors": [
     {
