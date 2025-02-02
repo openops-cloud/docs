@@ -1,0 +1,70 @@
+---
+title: "Create Connections"
+description: ""
+icon: "cards"
+---
+
+<Info>
+**Requirements:**
+* Activepieces version 0.34.5 or higher
+* SDK version 0.3.2 or higher
+</Info>
+
+You can use the embedded SDK to create connections.
+
+<Steps>
+    <Step title="Initialize the SDK">
+        Follow the instructions in the [Embed Builder](./embed-builder).
+    </Step>
+    <Step title="Call Connect Method">
+        After initializing the SDK, you will have access to a property called `activepieces` inside your `window` object. Call its `connect` method to open a new connection dialog as follows.
+
+        ```html
+        <script> 
+        activepieces.connect({pieceName:'@activepieces/piece-google-sheets'});
+        </script>
+        ```
+
+        **Connect Parameters:**
+
+        | Parameter Name | Required | Type   | Description                                 |
+        | -------------- | -------- | ------ | ------------------------------------------- |
+        | pieceName      | ✅      | string | The name of the piece you want to create a connection for.
+        | connectionName | ❌      | string | The name of the connection
+
+        **Connect Result**
+
+        The `connect` method returns a `promise` that resolves to the following:
+
+        ```ts
+        {
+            connection?: {
+                id: string,
+                name: string
+            }
+        }
+        ```
+        <Info>
+        `connection` is undefined if the user closes the dialog and doesn't create a connection.
+        </Info>
+
+        Or if the `connectionName` parameter is defined, it could get rejected with an error message telling you why `connectionName` is invalid:
+        ```ts
+        {
+            error:string
+        }
+        ```
+        
+
+        <Info>
+          If `connectionName` is defined, the connection name input will be disabled and if the connection name is invalid the returned result from the connect method will be an error message describing why it is invalid.
+        
+         </Info>
+
+        <Tip>
+        You can use the `connections` piece in the builder to retrieve the created connection using its name.
+        ![Connections in Builder](/resources/screenshots/connections-piece.png)
+        ![Connections in Builder](/resources/screenshots/connections-piece-usage.png)
+        </Tip>
+    </Step>
+</Steps>
