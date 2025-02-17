@@ -27,11 +27,50 @@
   },
   "navigation": [
     {
-      "group": "Get Started",
+      "group": "Introduction to OpenOps",
       "pages": [
-        "introduction",
-        "quickstart",
-        "development"
+        "introduction/overview",
+        "introduction/features-and-benefits"
+      ]
+    },
+    {
+      "group": "Getting Started with OpenOps",
+      "pages": [
+        "getting-started/system-requirements",
+        "getting-started/quick-start-guide"
+      ]
+    },
+    {
+      "group": "Workflow Management",
+      "pages": [
+        "workflow-management/workflow-templates",
+        "workflow-management/investigate-workflow-run",
+        "workflow-management/customizing-workflows",
+        "workflow-management/building-workflows",
+        "workflow-management/input-output-parameters",
+        "workflow-management/scheduling-conditional-branching",
+        "workflow-management/workflow-version-history-lifecycle",
+        "workflow-management/human-in-the-loop"
+      ]
+    },
+    {
+      "group": "Cloud Access",
+      "pages": [
+        "cloud-access/access-levels-permissions",
+        "cloud-access/multi-cloud"
+      ]
+    },
+    {
+      "group": "Components",
+      "pages": [
+        "components/pieces-integrations"
+      ]
+    },
+    {
+      "group": "Reporting and Analytics",
+      "pages": [
+        "reporting-analytics/tables",
+        "reporting-analytics/data-visualization"
       ]
     }
   ],
