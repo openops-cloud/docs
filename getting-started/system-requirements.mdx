@@ -1,4 +1,51 @@
 ---
 title: 'System Requirements'
-description: 'TODO'
+description: 'Hardware and software requirements for deploying OpenOps on-premises'
 ---
+
+The open source version of OpenOps is meant to be deployed on-premises and is distributed as a Docker Compose specification.
+
+## Hardware
+
+Hardware requirements vary depending on whether you intend to explore and test OpenOps, or deploy it in production.
+
+**For testing**, 1 CPU core, 2GB RAM, and 50GB storage should be sufficient.
+
+**For production**, aim at 4 CPU cores, 8GB RAM, and 100GB storage.
+
+## Operating systems
+
+OpenOps can be deployed on the following operating systems:
+* **Linux**: Ubuntu 20.04 LTS or later, Debian 11 (Bullseye) or later, Fedora 35 or later.
+* **macOS**: macOS Big Sur (11.x) or later.
+* **Windows**: Windows 10 version 2004 (build 19041) or later, or Windows 11.
+
+## Docker
+
+OpenOps is distributed as a Docker Compose file. Here are Docker version requirements by operating system:
+* On Linux: **Docker Engine v20.10+ and Docker Compose v2.x**.
+* On macOS: **Docker Desktop 4.11 or later**. If you're running macOS on an Apple Silicon processor (M1 or M2), make sure that QEMU emulation is use in  Docker Desktop.
+* On Windows: **Docker Desktop 4.11 or later**. Docker Desktop should be configured to use WSL 2 (check Docker Desktop settings under *General > Use the WSL 2 based engine*).
+
+If you're using an alternative Docker client such as OrbStack or Colina, make sure that the version of your Docker client includes Docker Engine v20.10+ and Docker Compose v2.x.
+
+## Ports
+
+By default, OpenOps uses the following ports on the host machine: 80, 3001, 3002, 3005, 5432, and 6379.
+
+If any of these ports are already assigned, update OpenOps' `docker-compose.yaml` file to use different ports.
+
+For example, if you'd like to access OpenOps at `localhost:3333` instead of `localhost`, update the `ports` section of the `openops-app` service definition in `docker-compose.yaml` the following way:
+
+```diff
+services:
+  openops-app:
+    container_name: openops-app
+    image: public.ecr.aws/openops/openops-app:0.1.1
+    env_file: .env
+    environment:
+      OPS_COMPONENT: app
+    ports:
+-      - 80:80
++      - 3333:80
+```
