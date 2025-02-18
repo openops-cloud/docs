@@ -2,3 +2,34 @@
 title: 'Building Workflows From Scratch'
 description: 'TODO'
 ---
+
+> Designing and creating custom workflows
+> Workflow design principles and best practices
+> Workflow testing and validation
+
+In many cases, you can apply optimizations by taking one of the pre-made [workflow templates](workflow-templates), creating a flow off of the template, and [customizing it](customizing-workflows) to your liking.
+
+When there's no template to bootstrap from, you can create a new flow from scratch.
+
+To do this, go to the **Flows** section in your OpenOps instance, and click **New Flow** in the upper right corner. What's you'll see is the flow editor that initially looks like this:
+
+![Empty flow editor](/images/flow-editor-empty.png)
+
+In order to create a minimal working flow, you need to:
+1. Add a trigger.
+2. Add at least one action.
+3. Publish the flow.
+
+Triggers and actions are the two basic building blocks of every flow:
+* A **trigger** is your flow's starting point. It defines how often your flow executes. It may also represent an event that needs to occur for your flow to kick off. A flow always has exactly one trigger.
+* **Actions** define the steps of your flow that start executing once your flow is activated by a trigger.
+
+There are various types of triggers available, such as Schedule Trigger, Webhook Trigger, or Event Trigger based on specific service.
+
+There's a variety of actions, such as running code or communicating with other services.
+
+In real-life scenario:
+TODO a screenshot showing a trigger and multiple actions in a flow
+
+
+Publishing: https://www.activepieces.com/docs/flows/publishing-flows
