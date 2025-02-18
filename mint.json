@@ -44,13 +44,13 @@
       "group": "Workflow Management",
       "pages": [
         "workflow-management/workflow-templates",
-        "workflow-management/investigate-workflow-run",
-        "workflow-management/customizing-workflows",
         "workflow-management/building-workflows",
-        "workflow-management/input-output-parameters",
         "workflow-management/scheduling-conditional-branching",
+        "workflow-management/input-output-parameters",
+        "workflow-management/human-in-the-loop",
         "workflow-management/workflow-version-history-lifecycle",
-        "workflow-management/human-in-the-loop"
+        "workflow-management/customizing-workflows",
+        "workflow-management/investigate-workflow-run"
       ]
     },
     {
