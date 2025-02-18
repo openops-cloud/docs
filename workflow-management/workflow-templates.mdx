@@ -2,3 +2,33 @@
 title: 'Workflow Templates'
 description: 'TODO'
 ---
+
+OpenOps provides a pre-made library of FinOps best-practice workflows, based on research and input from hundreds of FinOps leaders across industries and verticals.
+
+The library currently contains around 30 templates that provide ready-to-use recipes for anomaly management, workload and rate optimization across the following cloud services:
+* Amazon EC2, CloudWatch, EBS, CloudFront, RDS, and S3
+* Azure VM
+
+![OpenOps Templates Catalog](/images/templates-catalog.png)
+
+> TODO how to enable the template catalog in a new installation? Signing up to the cloud
+
+As soon as the template catalog is added to your OpenOps instance, you can access it by going to the **Flows** section and clicking **Explore templates** in the top right menu bar.
+
+![Explore Templates](/images/explore-templates.png)
+
+When you click a template in the catalog, OpenOps shows its full description, a preview diagram that visualizes the flow step defined in the template, as well as integrations that the template uses:
+
+![CloudWatch log retention enforcement template](/images/template-log-retention.png)
+
+If you want to use the workflow that the template defines, click **Use template** in the top right corner.
+
+OpenOps will then ask you to specify existing or create new connections to cloud services that are required for the selected template to work:
+
+![Explore Templates](/images/template-connections.png)
+
+After specifying the required connections, click **Create workflow**.
+
+The workflow will then open in the workflow editor where you can [customize it to your liking](customizing-workflows).
+
+> TODO Best practices for choosing templates
