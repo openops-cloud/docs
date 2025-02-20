@@ -57,16 +57,24 @@ OpenOps provides over 20 triggers divided into a few groups:
 
 Some triggers are used more often than others. For most of your scenarios, you will probably use one of the triggers in the **Schedule** group, setting your workflows to run at a predetermined interval.
 
-Curiously, out of all the workflow templates currently available in the [templates catalog](/workflow-management/workflow-templates), 23 templates use the *Every day* trigger, 3 templates use a different kind of schedule-based trigger, and 2 templates trigger off an update to a Jira Cloud issue.
+Curiously, out of all the workflow templates currently available in the [templates catalog](/workflow-management/workflow-templates), 23 templates use the *Every day* trigger, three templates use a different kind of schedule-based trigger, and two more templates trigger off an update to a Jira Cloud issue.
 
-TODO editing properties of a trigger
+After selecting a trigger, click the trigger node again to display a right-hand pane with the properties of the trigger. For example, here are properties of the *Every day* trigger:
+![Trigger properties](/images/workflow-editor-trigger-properties.png)
+
+You can choose a specific hour in a specific time zone and include weekends, or go with the reasonable defaults.
+
+Properties will vary with each kind of trigger. For example, if the trigger is a new issue in Jira Cloud, you can specify a search query using Jira's JQL query language.
 
 ## Adding an action
 
-There's a variety of actions, such as running code or communicating with other services.
+As soon as you've created a trigger, you can add your first action by clicking the **+** icon under the trigger.
 
-Every workflow should end with the *End Workflow* action.
+OpenOps provides 120+ actions that are roughly There's a variety of actions, such as running code or communicating with other services.
 
+
+
+When you've finished creating and chaining actions in your workflow, remember to add one last action that every workflow should conclude with: the *End Workflow* action.
 
 ## Publishing a workflow
 
@@ -76,4 +84,5 @@ TODO Publishing: https://www.activepieces.com/docs/flows/publishing-flows
 TODO Workflow design principles and best practices
     * Group workflows
     * Name all conditions?
+    * Don't set to run too often
 TODO Workflow testing and validation
