@@ -7,14 +7,11 @@ In many cases, you can apply optimizations by taking one of the pre-made [workfl
 
 When there's no template to bootstrap from, you can create a new workflow from scratch.
 
-To do this, go to the **Flows** section in your OpenOps instance, and click **New Flow** in the upper right corner. What's you'll see is the workflow editor that initially looks like this:
-
-![Empty workflow editor](/images/flow-editor-empty.png)
-
-In order to create a minimal usable workflow, you need to:
-1. Add a trigger.
-2. Add at least one action.
-3. Publish the workflow.
+In order to end up with a minimal usable workflow, you need to:
+1. [Create a new workflow](#creating-a-new-workflow)
+2. [Add a trigger](#adding-a-trigger)
+3. [Add at least one action](#adding-an-action)
+4. [Publish the workflow](#publishing-a-workflow)
 
 Triggers and actions are the two basic building blocks of every workflow:
 * A **trigger** is your workflow's starting point. It defines how often your workflow executes. It may also represent an event that needs to occur for your workflow to kick off. A workflow always has exactly one trigger.
@@ -24,10 +21,22 @@ Below is an example of a workflow that is triggered on a schedule. The first nod
 
 ![Workflow triggered on a schedule](/images/workflow-trigger-schedule.png)
 
-In a different example, here's a workflow that uses an update of a JIRA issue as a trigger:
+In a different example, here's a workflow that uses an update of a Jira Cloud issue as a trigger:
 
-![Workflow triggered by a JIRA issue update](/images/workflow-trigger-jira.png)
+![Workflow triggered by a Jira Cloud issue update](/images/workflow-trigger-jira.png)
 
+## Creating a new workflow
+
+To create a new empty workflow, go to the **Flows** section in your OpenOps instance, and click **New Flow** in the top right corner. What's you'll see is the workflow editor that initially looks like this:
+
+![Empty workflow editor](/images/workflow-editor-empty.png)
+
+Let's look around and see what controls the editor provides you with:
+* In the top left corner, if you click the error next to the folder name, you get access to a menu that lets you **rename** the new workflow, **delete** it, or **move to a folder** for better organization:
+![Workflow editor controls](/images/workflow-editor-controls.png)
+* The icon to the left of the workflow name is a switch that lets you **show or hide the sidebar** containing the main OpenOps navigation menu.
+* To the right of the workflow name, you have several buttons: **Tree view**, **Version history**, **Run logs** and **Notes**. Version history and run logs will be more relevant when you [update](/workflow-management/customizing-workflows) or [troubleshoot](/workflow-management/investigate-workflow-run) your workflows later on. For now, you can use **Notes** to describe the intent of your workflow in detail or leave any other comments. You can also click **Tree view** to display an aside showing the compact structure of your workflow, including its trigger, all actions, as well as [conditions and branches](/workflow-management/scheduling-conditional-branching):
+![Tree view of a workflow](/images/workflow-editor-tree-view.png)
 
 ## Adding a trigger
 
@@ -78,8 +87,15 @@ There are various types of triggers available, such as Schedule Trigger, Webhook
 
 There's a variety of actions, such as running code or communicating with other services.
 
+Every workflow should end with the *End Workflow* action.
+
+
+## Publishing a workflow
 
 TODO Publishing: https://www.activepieces.com/docs/flows/publishing-flows
 
+
 TODO Workflow design principles and best practices
+    * Group workflows
+    * Name all conditions?
 TODO Workflow testing and validation
