@@ -3,33 +3,83 @@ title: 'Building Workflows From Scratch'
 description: 'TODO'
 ---
 
-> Designing and creating custom workflows
-> Workflow design principles and best practices
-> Workflow testing and validation
+In many cases, you can apply optimizations by taking one of the pre-made [workflow templates](workflow-templates), creating a workflow off of the template, and [customizing it](customizing-workflows) to your liking.
 
-In many cases, you can apply optimizations by taking one of the pre-made [workflow templates](workflow-templates), creating a flow off of the template, and [customizing it](customizing-workflows) to your liking.
+When there's no template to bootstrap from, you can create a new workflow from scratch.
 
-When there's no template to bootstrap from, you can create a new flow from scratch.
+To do this, go to the **Flows** section in your OpenOps instance, and click **New Flow** in the upper right corner. What's you'll see is the workflow editor that initially looks like this:
 
-To do this, go to the **Flows** section in your OpenOps instance, and click **New Flow** in the upper right corner. What's you'll see is the flow editor that initially looks like this:
+![Empty workflow editor](/images/flow-editor-empty.png)
 
-![Empty flow editor](/images/flow-editor-empty.png)
-
-In order to create a minimal working flow, you need to:
+In order to create a minimal usable workflow, you need to:
 1. Add a trigger.
 2. Add at least one action.
-3. Publish the flow.
+3. Publish the workflow.
 
-Triggers and actions are the two basic building blocks of every flow:
-* A **trigger** is your flow's starting point. It defines how often your flow executes. It may also represent an event that needs to occur for your flow to kick off. A flow always has exactly one trigger.
-* **Actions** define the steps of your flow that start executing once your flow is activated by a trigger.
+Triggers and actions are the two basic building blocks of every workflow:
+* A **trigger** is your workflow's starting point. It defines how often your workflow executes. It may also represent an event that needs to occur for your workflow to kick off. A workflow always has exactly one trigger.
+* **Actions** define the steps of your workflow that start executing once your workflow is activated by a trigger.
+
+Below is an example of a workflow that is triggered on a schedule. The first node represents the schedule trigger, and all other nodes are actions:
+
+![Workflow triggered on a schedule](/images/workflow-trigger-schedule.png)
+
+In a different example, here's a workflow that uses an update of a JIRA issue as a trigger:
+
+![Workflow triggered by a JIRA issue update](/images/workflow-trigger-jira.png)
+
+
+## Adding a trigger
+
+Core triggers:
+* Schedule
+    * Every X minutes
+    * Every hour
+    * Every day
+    * Every week
+    * Every month
+    * Cron expression
+* SFTP
+    * New file (when a new file is created or modified)
+* Webhook
+    * Catch webhook (receive webhooks using any HTTP methods)
+
+App triggers:
+* Jira Cloud
+    * New issue
+    * Updated issue
+* Monday.com
+    * New item in board
+    * Specific column value updated in board
+* Slack
+    * New message
+    * New reaction
+* Square
+    * New order
+    * Order updated
+    * New customer
+    * Customer updated
+    * New appointment
+    * New payment
+    * New invoice
+
+Triggers used in templates catalog:
+* 2x Jira Cloud: Updated issue
+* Schedule: Every hour
+* Schedule: Every week
+* 21x Schedule: Every day
+* Schedule: Every day, Mon to Fri at 8AM
+* Schedule: Every monday morning
+* Schedule: Every day at 6PM
 
 There are various types of triggers available, such as Schedule Trigger, Webhook Trigger, or Event Trigger based on specific service.
 
+## Adding an action
+
 There's a variety of actions, such as running code or communicating with other services.
 
-In real-life scenario:
-TODO a screenshot showing a trigger and multiple actions in a flow
 
+TODO Publishing: https://www.activepieces.com/docs/flows/publishing-flows
 
-Publishing: https://www.activepieces.com/docs/flows/publishing-flows
+TODO Workflow design principles and best practices
+TODO Workflow testing and validation
