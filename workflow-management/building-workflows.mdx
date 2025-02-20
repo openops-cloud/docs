@@ -40,48 +40,26 @@ Let's look around and see what controls the editor provides you with:
 
 ## Adding a trigger
 
-Core triggers:
-* Schedule
-    * Every X minutes
-    * Every hour
-    * Every day
-    * Every week
-    * Every month
-    * Cron expression
-* SFTP
-    * New file (when a new file is created or modified)
-* Webhook
-    * Catch webhook (receive webhooks using any HTTP methods)
+When you create a new workflow, the editor creates a stub trigger that is empty. Click the trigger node to select a trigger group that works for you:
+![Selecting a trigger group](/images/workflow-editor-select-trigger-group.png)
 
-App triggers:
-* Jira Cloud
-    * New issue
-    * Updated issue
-* Monday.com
-    * New item in board
-    * Specific column value updated in board
-* Slack
-    * New message
-    * New reaction
-* Square
-    * New order
-    * Order updated
-    * New customer
-    * Customer updated
-    * New appointment
-    * New payment
-    * New invoice
+After selecting a group, select a specific trigger within that group:
+![Selecting a trigger](/images/workflow-editor-select-trigger.png)
 
-Triggers used in templates catalog:
-* 2x Jira Cloud: Updated issue
-* Schedule: Every hour
-* Schedule: Every week
-* 21x Schedule: Every day
-* Schedule: Every day, Mon to Fri at 8AM
-* Schedule: Every monday morning
-* Schedule: Every day at 6PM
+OpenOps provides over 20 triggers divided into a few groups:
+* **Schedule**: *Every X minutes*, *Every hour*, *Every day*, *Every week*, *Every month*, *Cron expression*.
+* **SFTP**: *New file*.
+* **Webhook**: *Catch webhook*.
+* **Slack**: *New message*, *New reaction*.
+* **Jira Cloud**: *New issue*, *Updated issue*.
+* **Monday.com**: *New item in board*, *Specific column value updated in board*.
+* **Square**: *New order*, *Order updated*, *New customer*, *Customer updated*, *New appointment*, *New payment*, *New invoice*.
 
-There are various types of triggers available, such as Schedule Trigger, Webhook Trigger, or Event Trigger based on specific service.
+Some triggers are used more often than others. For most of your scenarios, you will probably use one of the triggers in the **Schedule** group, setting your workflows to run at a predetermined interval.
+
+Curiously, out of all the workflow templates currently available in the [templates catalog](/workflow-management/workflow-templates), 23 templates use the *Every day* trigger, 3 templates use a different kind of schedule-based trigger, and 2 templates trigger off an update to a Jira Cloud issue.
+
+TODO editing properties of a trigger
 
 ## Adding an action
 
