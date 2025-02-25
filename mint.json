@@ -45,6 +45,7 @@
       "pages": [
         "workflow-management/workflow-templates",
         "workflow-management/building-workflows",
+        "workflow-management/actions",
         "workflow-management/scheduling-conditional-branching",
         "workflow-management/input-output-parameters",
         "workflow-management/human-in-the-loop",
