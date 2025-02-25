@@ -70,9 +70,47 @@ Properties will vary with each kind of trigger. For example, if the trigger is a
 
 As soon as you've created a trigger, you can add your first action by clicking the **+** icon under the trigger.
 
-OpenOps provides 120+ actions that are roughly There's a variety of actions, such as running code or communicating with other services.
+OpenOps provides 120+ actions that are roughly
+
+* **Code**: write custom code in TypeScript or JavaScript
+* **Loop on items**: iterate over a list of items from a previous step
+* **Data mapper**: map data from one format to another
+* **Date operations**
+* **Delay**
+* **End Workflow**
+* **File operations**: create or read files
+* **List operations**: process a list that is an output of another action by grouping, mapping, or extracting values
+* **Math operations**: arithmetic operations, averaging, returning minimum and maximums, generating random numbers
+* **Text operations**: concatenate, split, find and replace text; convert from HTML to Markdown and vice versa
+* **HTTP**: send a request and get a response
+* **SFTP**: create or read files
+* **OpenOps Tables**: manage records in [tables](TODO link)
+* **Storage**: manage data in your OpenOps installation's own storage (TODO verify)
+* Cloud provider integrations
+    * **AWS**: multiple actions around AWS resources such as EC2, EBS, and RDS
+    * **Azure**: execute Azure CLI commands
+* Recommendation service integrations
+    * **Anodot**: get recommendations from Anadot, manage comments and user status
+    * **AWS Compute Optimizer**: get recommendations
+* IaC integrations
+    * **AWS CloudFormation**: manage templates and resources
+    * **Terraform**: update or delete resources
+* Other integrations
+    * **GitHub**: get file content, create a PR, or trigger a GitHub Actions run
+    * **Jira Cloud**: search, create, or update an issue or an issue comment
+    * **Monday.com**: managing boards, groups, columns, and items
+    * **AWS Athena**: send queries to Athena databases
 
 
+
+
+
+To explore in other articles:
+* **Condition**: split the workflow into exactly two branches based on a condition (conditional branching)
+* **Split**: split the workflow into multiple branches based on a condition (conditional branching)
+* **Approval**: request approval with or without pausing the workflow (human in the loop)
+* **Slack**: send an update messages, request and wait for user actions (human in the loop)
+* **SMTP**: send emails
 
 When you've finished creating and chaining actions in your workflow, remember to add one last action that every workflow should conclude with: the *End Workflow* action.
 
