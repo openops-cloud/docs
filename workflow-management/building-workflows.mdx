@@ -1,6 +1,6 @@
 ---
 title: 'Building Workflows From Scratch'
-description: 'TODO'
+description: 'How to use the OpenOps workflow editor to create new workflows'
 ---
 
 In many cases, you can apply optimizations by taking one of the pre-made [workflow templates](workflow-templates), creating a workflow off of the template, and [customizing it](customizing-workflows) to your liking.
@@ -27,20 +27,20 @@ In a different example, here's a workflow that uses an update of a Jira Cloud is
 
 ## Creating a new workflow
 
-To create a new empty workflow, go to the **Flows** section in your OpenOps instance, and click **New Flow** in the top right corner. What's you'll see is the workflow editor that initially looks like this:
+To create a new empty workflow, go to the **Workflows** section in your OpenOps instance, and click **New Workflow** in the top right corner. What's you'll see is the workflow editor that initially looks like this:
 
 ![Empty workflow editor](/images/workflow-editor-empty.png)
 
 Let's look around and see what controls the editor provides you with:
-* In the top left corner, if you click the error next to the folder name, you get access to a menu that lets you **rename** the new workflow, **delete** it, or **move to a folder** for better organization:
+* In the top left corner, if you click the arrow next to the workflow name, *Untitled*, you get access to a menu that lets you **rename** the new workflow, **delete** it, or **move to a folder** for better organization:
 ![Workflow editor controls](/images/workflow-editor-controls.png)
-* The icon to the left of the workflow name is a switch that lets you **show or hide the sidebar** containing the main OpenOps navigation menu.
-* To the right of the workflow name, you have several buttons: **Tree view**, **Version history**, **Run logs** and **Notes**. Version history and run logs will be more relevant when you [update](/workflow-management/customizing-workflows) or [troubleshoot](/workflow-management/investigate-workflow-run) your workflows later on. For now, you can use **Notes** to describe the intent of your workflow in detail or leave any other comments. You can also click **Tree view** to display an aside showing the compact structure of your workflow, including its trigger, all actions, as well as [conditions and branches](/workflow-management/scheduling-conditional-branching):
+* The icon to the left of the workflow folder and name is a switch that lets you **show or hide the sidebar** containing the main OpenOps navigation menu.
+* To the right of the workflow name, you have several buttons: **Tree view**, **Version history**, **Run logs** and **Notes**. Version history and run logs will be more relevant when you [update](/workflow-management/customizing-workflows) or [troubleshoot](/workflow-management/investigate-workflow-run) your workflows later on. For now, you can use **Notes** to describe the intent of your workflow in detail or leave any other comments for future reference. You can also click **Tree view** to display an aside showing the compact structure of your workflow, including its trigger, all actions, as well as [conditions and branches](/workflow-management/scheduling-conditional-branching):
 ![Tree view of a workflow](/images/workflow-editor-tree-view.png)
 
 ## Adding a trigger
 
-When you create a new workflow, the editor creates a stub trigger that is empty. Click the trigger node to select a trigger group that works for you:
+When you create a new workflow, the editor creates an empty stub trigger. Click the trigger node to select a trigger group that works for you:
 ![Selecting a trigger group](/images/workflow-editor-select-trigger-group.png)
 
 After selecting a group, select a specific trigger within that group:
@@ -68,59 +68,31 @@ Properties will vary with each kind of trigger. For example, if the trigger is a
 
 ## Adding an action
 
-As soon as you've created a trigger, you can add your first action by clicking the **+** icon under the trigger.
+As soon as you've created a trigger, you can add your first action. Click the **+** icon under the trigger, and a pop-up menu will display showing a list of available action categories. Clicking a category lets you select a specific action:
+![Selecting an action](/images/workflow-editor-select-action.png)
 
-OpenOps provides 120+ actions that are roughly
+OpenOps provides a total of [120+ actions](/workflow-management/actions/). One way to make sense of them is to classify them by intent:
+* To **get data** for your workflow to process, look at cloud provider integration actions like **AWS** or **Azure**, recommendation service actions such as **Anodot** and **AWS Compute Optimizer**, or generic **HTTP** actions.
+* To **control the execution of your workflow**, use actions grouped under **Condition** and **Split**, **Loop on items**, **Delay**, and **End Workflow**.
+* To **process data obtained in previous steps**, use **date, list, math, and text operations**, **Data mapper** for advanced transformations, and **Code** for transformations that you can't express with available no-code actions.
+* To **request human intervention**, use **Approval** or **Slack**.
+* To **make changes to cloud resources**, use cloud provider actions, IaC integration actions like **AWS CloudFormation** and **Terraform**, and the **GitHub** action.
+* To **make updates in project management tools**, use **Jira Cloud** or **Monday.com** actions.
+* To **save data and make reports**, use **SMTP**, **SFTP**, **Storage** and **OpenOps Tables** actions.
 
-* **Code**: write custom code in TypeScript or JavaScript
-* **Loop on items**: iterate over a list of items from a previous step
-* **Data mapper**: map data from one format to another
-* **Date operations**
-* **Delay**
-* **End Workflow**
-* **File operations**: create or read files
-* **List operations**: process a list that is an output of another action by grouping, mapping, or extracting values
-* **Math operations**: arithmetic operations, averaging, returning minimum and maximums, generating random numbers
-* **Text operations**: concatenate, split, find and replace text; convert from HTML to Markdown and vice versa
-* **HTTP**: send a request and get a response
-* **SFTP**: create or read files
-* **OpenOps Tables**: manage records in [tables](TODO link)
-* **Storage**: manage data in your OpenOps installation's own storage (TODO verify)
-* Cloud provider integrations
-    * **AWS**: multiple actions around AWS resources such as EC2, EBS, and RDS
-    * **Azure**: execute Azure CLI commands
-* Recommendation service integrations
-    * **Anodot**: get recommendations from Anadot, manage comments and user status
-    * **AWS Compute Optimizer**: get recommendations
-* IaC integrations
-    * **AWS CloudFormation**: manage templates and resources
-    * **Terraform**: update or delete resources
-* Other integrations
-    * **GitHub**: get file content, create a PR, or trigger a GitHub Actions run
-    * **Jira Cloud**: search, create, or update an issue or an issue comment
-    * **Monday.com**: managing boards, groups, columns, and items
-    * **AWS Athena**: send queries to Athena databases
+When you select an action, OpenOps adds it to the workflow graph and displays a right-hand pane with the properties of the action:
+![Properties of an action](/images/workflow-editor-action-properties.png)
 
+The specific set of properties depends on the type of action. Here's a few general rules:
+* Actions that get data from or send data to external resources will need you to define a **connection**. For example, for AWS-related actions, you'd need to specify your access key ID, secret access key, and the default region. For a Slack connection, you'd specify your Slack instance's redirect URL, your client ID and client secret. One connection can be reused across multiple actions, and the OpenOps UI provides a separate view to list all connections that you have defined so far.
+* Actions that process data obtained in previous steps will ask you to specify the input data. For details on passing data between actions, see [Input and Output Parameters](/workflow-management/input-output-parameters).
+* Every action has two toggles: **Continue on Failure**, which lets the current action fail and continues the workflow regardless, and **Retry on Failure**, which retries the current action up to 4 times before giving up.
 
-
-
-
-To explore in other articles:
-* **Condition**: split the workflow into exactly two branches based on a condition (conditional branching)
-* **Split**: split the workflow into multiple branches based on a condition (conditional branching)
-* **Approval**: request approval with or without pausing the workflow (human in the loop)
-* **Slack**: send an update messages, request and wait for user actions (human in the loop)
-* **SMTP**: send emails
-
-When you've finished creating and chaining actions in your workflow, remember to add one last action that every workflow should conclude with: the *End Workflow* action.
+Underneath the properties pane, every action also has a **Generate Sample Data** section, which lets you test or retest the action in isolation and shows the output that it generates:
+![Sample data generated for an Anodot integration action](/images/workflow-editor-action-generate-sample-data.png)
 
 ## Publishing a workflow
 
-TODO Publishing: https://www.activepieces.com/docs/flows/publishing-flows
+When you're happy with your workflow and want to start running it, click **Publish** in the top right corner.
 
-
-TODO Workflow design principles and best practices
-    * Group workflows
-    * Name all conditions?
-    * Don't set to run too often
-TODO Workflow testing and validation
+This also applies when you're editing an existing workflow: to avoid disrupting pending workflow runs, your changes won't come into effect until you publish them.
