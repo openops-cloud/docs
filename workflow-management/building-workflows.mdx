@@ -7,7 +7,7 @@ In many cases, you can apply optimizations by taking one of the pre-made [workfl
 
 When there's no template to bootstrap from, you can create a new workflow from scratch.
 
-In order to end up with a minimal usable workflow, you need to:
+To end up with a minimally usable workflow, you need to:
 1. [Create a new workflow](#creating-a-new-workflow)
 2. [Add a trigger](#adding-a-trigger)
 3. [Add at least one action](#adding-an-action)
@@ -21,21 +21,21 @@ Below is an example of a workflow that is triggered on a schedule. The first nod
 
 ![Workflow triggered on a schedule](/images/workflow-trigger-schedule.png)
 
-In a different example, here's a workflow that uses an update of a Jira Cloud issue as a trigger:
+In another example, here's a workflow that uses an update of a Jira Cloud issue as a trigger:
 
 ![Workflow triggered by a Jira Cloud issue update](/images/workflow-trigger-jira.png)
 
 ## Creating a new workflow
 
-To create a new empty workflow, go to the **Workflows** section in your OpenOps instance, and click **New Workflow** in the top right corner. What's you'll see is the workflow editor that initially looks like this:
+To create a new empty workflow, go to the **Workflows** section in your OpenOps instance, and click **New Workflow** in the top right corner. What you'll see is the workflow editor, which initially looks like this:
 
 ![Empty workflow editor](/images/workflow-editor-empty.png)
 
-Let's look around and see what controls the editor provides you with:
-* In the top left corner, if you click the arrow next to the workflow name, *Untitled*, you get access to a menu that lets you **rename** the new workflow, **delete** it, or **move to a folder** for better organization:
+Let's look around and see what controls the editor provides:
+* In the top left corner, if you click the arrow next to the workflow name, *Untitled*, you get access to a menu that lets you **rename** the new workflow, **delete** it, or **move it to a folder** for better organization:
 ![Workflow editor controls](/images/workflow-editor-controls.png)
-* The icon to the left of the workflow folder and name is a switch that lets you **show or hide the sidebar** containing the main OpenOps navigation menu.
-* To the right of the workflow name, you have several buttons: **Tree view**, **Version history**, **Run logs** and **Notes**. Version history and run logs will be more relevant when you [update](/workflow-management/customizing-workflows) or [troubleshoot](/workflow-management/investigate-workflow-run) your workflows later on. For now, you can use **Notes** to describe the intent of your workflow in detail or leave any other comments for future reference. You can also click **Tree view** to display an aside showing the compact structure of your workflow, including its trigger, all actions, as well as [conditions and branches](/workflow-management/scheduling-conditional-branching):
+* The icon to the left of the workflow folder and name is a switch that lets you **show or hide the sidebar**, which contains the main OpenOps navigation menu.
+* To the right of the workflow name, you have several buttons: **Tree view**, **Version history**, **Run logs**, and **Notes**. Version history and run logs will be more relevant when you [update](/workflow-management/customizing-workflows) or [troubleshoot](/workflow-management/investigate-workflow-run) your workflows later on. For now, you can use **Notes** to describe the intent of your workflow in detail or leave any other comments for future reference. You can also click **Tree view** to display an aside showing the compact structure of your workflow, including its trigger, all actions, as well as [conditions and branches](/workflow-management/scheduling-conditional-branching):
 ![Tree view of a workflow](/images/workflow-editor-tree-view.png)
 
 ## Adding a trigger
@@ -43,10 +43,10 @@ Let's look around and see what controls the editor provides you with:
 When you create a new workflow, the editor creates an empty stub trigger. Click the trigger node to select a trigger group that works for you:
 ![Selecting a trigger group](/images/workflow-editor-select-trigger-group.png)
 
-After selecting a group, select a specific trigger within that group:
+After selecting a group, choose a specific trigger within that group:
 ![Selecting a trigger](/images/workflow-editor-select-trigger.png)
 
-OpenOps provides over 20 triggers divided into a few groups:
+OpenOps provides over 20 triggers divided into several groups:
 * **Schedule**: *Every X minutes*, *Every hour*, *Every day*, *Every week*, *Every month*, *Cron expression*.
 * **SFTP**: *New file*.
 * **Webhook**: *Catch webhook*.
@@ -59,16 +59,16 @@ Some triggers are used more often than others. For most of your scenarios, you w
 
 Curiously, out of all the workflow templates currently available in the [templates catalog](/workflow-management/workflow-templates), 23 templates use the *Every day* trigger, three templates use a different kind of schedule-based trigger, and two more templates trigger off an update to a Jira Cloud issue.
 
-After selecting a trigger, click the trigger node again to display a right-hand pane with the properties of the trigger. For example, here are properties of the *Every day* trigger:
+After selecting a trigger, click the trigger node again to display a right-hand pane with the properties of the trigger. For example, here are the properties of the *Every day* trigger:
 ![Trigger properties](/images/workflow-editor-trigger-properties.png)
 
 You can choose a specific hour in a specific time zone and include weekends, or go with the reasonable defaults.
 
-Properties will vary with each kind of trigger. For example, if the trigger is a new issue in Jira Cloud, you can specify a search query using Jira's JQL query language.
+Properties will vary with each type of trigger. For example, if the trigger is a new issue in Jira Cloud, you can specify a search query using Jira's JQL query language.
 
 ## Adding an action
 
-As soon as you've created a trigger, you can add your first action. Click the **+** icon under the trigger, and a pop-up menu will display showing a list of available action categories. Clicking a category lets you select a specific action:
+As soon as you've created a trigger, you can add your first action. Click the **+** icon under the trigger, and a pop-up menu will display a list of available action categories. Clicking a category lets you select a specific action:
 ![Selecting an action](/images/workflow-editor-select-action.png)
 
 OpenOps provides a total of [120+ actions](/workflow-management/actions/). One way to make sense of them is to classify them by intent:
@@ -78,15 +78,15 @@ OpenOps provides a total of [120+ actions](/workflow-management/actions/). One w
 * To **request human intervention**, use **Approval** or **Slack**.
 * To **make changes to cloud resources**, use cloud provider actions, IaC integration actions like **AWS CloudFormation** and **Terraform**, and the **GitHub** action.
 * To **make updates in project management tools**, use **Jira Cloud** or **Monday.com** actions.
-* To **save data and make reports**, use **SMTP**, **SFTP**, **Storage** and **OpenOps Tables** actions.
+* To **save data and generate reports**, use **SMTP**, **SFTP**, **Storage**, and **OpenOps Tables** actions.
 
 When you select an action, OpenOps adds it to the workflow graph and displays a right-hand pane with the properties of the action:
 ![Properties of an action](/images/workflow-editor-action-properties.png)
 
-The specific set of properties depends on the type of action. Here's a few general rules:
-* Actions that get data from or send data to external resources will need you to define a **connection**. For example, for AWS-related actions, you'd need to specify your access key ID, secret access key, and the default region. For a Slack connection, you'd specify your Slack instance's redirect URL, your client ID and client secret. One connection can be reused across multiple actions, and the OpenOps UI provides a separate view to list all connections that you have defined so far.
+The specific set of properties depends on the type of action. Here are a few general rules:
+* Actions that get data from or send data to external resources will require you to define a **connection**. For example, for AWS-related actions, you'd need to specify your access key ID, secret access key, and the default region. For a Slack connection, you'd specify your Slack instance's redirect URL, your client ID, and your client secret. One connection can be reused across multiple actions, and the OpenOps UI provides a separate view to list all connections you have defined so far.
 * Actions that process data obtained in previous steps will ask you to specify the input data. For details on passing data between actions, see [Input and Output Parameters](/workflow-management/input-output-parameters).
-* Every action has two toggles: **Continue on Failure**, which lets the current action fail and continues the workflow regardless, and **Retry on Failure**, which retries the current action up to 4 times before giving up.
+* Every action has two toggles: **Continue on Failure**, which lets the current action fail and continues the workflow regardless, and **Retry on Failure**, which retries the current action up to four times before giving up.
 
 Underneath the properties pane, every action also has a **Generate Sample Data** section, which lets you test or retest the action in isolation and shows the output that it generates:
 ![Sample data generated for an Anodot integration action](/images/workflow-editor-action-generate-sample-data.png)
@@ -95,4 +95,4 @@ Underneath the properties pane, every action also has a **Generate Sample Data**
 
 When you're happy with your workflow and want to start running it, click **Publish** in the top right corner.
 
-This also applies when you're editing an existing workflow: to avoid disrupting pending workflow runs, your changes won't come into effect until you publish them.
+This also applies when you're editing an existing workflow: to avoid disrupting pending workflow runs, your changes won't take effect until you publish them.
