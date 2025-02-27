@@ -13,9 +13,9 @@ To end up with a minimally usable workflow, you need to:
 3. [Add at least one action](#adding-an-action)
 4. [Publish the workflow](#publishing-a-workflow)
 
-Triggers and actions are the two basic building blocks of every workflow:
-* A **trigger** is your workflow's starting point. It defines how often your workflow executes. It may also represent an event that needs to occur for your workflow to kick off. A workflow always has exactly one trigger.
-* **Actions** define the steps of your workflow that start executing once your workflow is activated by a trigger.
+Every workflow is made of steps. There are **two types of workflow steps**: triggers and actions.
+* A **trigger** is your workflow's first step. It defines how often your workflow executes. It may also represent an event that needs to occur for your workflow to kick off. A workflow always has exactly one trigger.
+* **Actions** are all subsequent steps of your workflow that start executing once your workflow is activated by a trigger.
 
 Below is an example of a workflow that is triggered on a schedule. The first node represents the schedule trigger, and all other nodes are actions:
 
@@ -65,7 +65,7 @@ Properties will vary with each type of trigger. For example, if the trigger is a
 
 ## Adding an action
 
-As soon as you've created a trigger, you can add your first action. Click the **+** icon under the trigger, and a pop-up menu will display a list of available action categories. Clicking a category lets you select a specific action:
+As soon as you've created a trigger, the next and all subsequent steps of your workflow will be actions. Click the **+** icon under the trigger, and a pop-up menu will display a list of available action categories. Clicking a category lets you select a specific action:
 ![Selecting an action](/images/workflow-editor-select-action.png)
 
 OpenOps provides a total of [120+ actions](/workflow-management/actions/). One way to make sense of them is to classify them by intent:
@@ -90,10 +90,10 @@ The specific set of properties depends on the type of action. Here are a few gen
 Underneath the properties pane, every action has a **Generate Sample Data** section, which lets you test or retest the action in isolation and shows the output that it generates:
 ![Sample data generated for an Anodot integration action](/images/workflow-editor-action-generate-sample-data.png)
 
-As soon as you have implemented all actions, you may also want to test your entire workflow. To do this, click the **Test Workflow** button at the top of the workflow editor, right above the trigger node:
+As soon as you have implemented all steps, including a trigger and actions, you may also want to test your entire workflow. To do this, click the **Test Workflow** button at the top of the workflow editor, right above the trigger node:
 ![Testing the entire workflow](/images/workflow-editor-test-workflow.png)
 
-After performing a test run of the workflow, OpenOps will show results of the run in the **Run Details** pane to the left of the editor, indicating the status of each step, as well as inputs and outputs:
+After performing a test run of the workflow, OpenOps will show results of the run in the **Run Details** pane to the left of the editor, indicating the status of each step, as well as its inputs and outputs:
 ![Run details after testing the entire workflow](/images/workflow-editor-run-details.png)
 
 ## Publishing a workflow
