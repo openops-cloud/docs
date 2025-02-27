@@ -3,35 +3,35 @@ title: 'Investigating a Workflow Run'
 description: 'How to address failed workflow runs'
 ---
 
-If a workflow didn't execute the way you expected it to, you can investigate what went wrong by viewing the history of workflow runs. You can do it [from the **Runs** view](#finding-a-run-from-the-runs-view) or directly [from the workflow editor](#finding-a-run-from-the-workflow-editor).
+If a workflow didn't execute the way you expected it to, you can investigate what went wrong by viewing the history of workflow runs. You can do this [from the **Runs** view](#finding-a-run-from-the-runs-view) or directly [from the workflow editor](#finding-a-run-from-the-workflow-editor).
 
 ## Finding a run from the Runs view
 
-Click **Runs** on the OpenOps main menu.
+Click **Runs** in the OpenOps main menu.
 
 This opens the list of all runs across all your workflows, with the most recent runs shown first:
 ![The list of all workflow runs](/images/runs-default.png)
 
-You can filter down the list by workflow name, run status, or a date range:
+You can filter the list by workflow name, run status, or a date range:
 ![Workflow runs with filters applied](/images/runs-filters.png)
 
 When you've found a run you want to investigate, click on it. This will open the workflow editor in a view-only mode.
 
 ## Finding a run from the workflow editor
 
-If the workflow that you want to investigate is already opened in the workflow editor, click **Run logs** in the top menu:
+If the workflow you want to investigate is already open in the workflow editor, click **Run logs** in the top menu:
 ![Run logs button](/images/workflow-editor-run-logs.png)
 
 In the **Recent Runs** pane that opens on the left, click a run that you want to investigate. Failed runs are marked with the ❌ icon:
 ![Recent Runs pane](/images/workflow-editor-recent-runs.png)
 
-This will open a specific run in the **Run Details** pane.
+This will open the selected run in the **Run Details** pane.
 
 ## Investigating in the Run Details view
 
-In the **Run Details** pane, each workflow step will show with a ✅ or a ❌ to indicate its execution status.
+In the **Run Details** pane, each workflow step will display a ✅ or a ❌ to indicate its execution status.
 
-Click on a failed step to see its inputs and outputs. Explore the outputs to see an error message:
+Click on a failed step to see its inputs and outputs. Explore the outputs to view the error message:
 ![Workflow runs with filters applied](/images/run-details-error.png)
 
-To update the workflow to address the error, click **Edit** on the top right of the workflow editor. This switches the workflow editor from the view-only mode, enabling you to select the offending step and make changes to its properties.
+To update the workflow to address the error, click **Edit** in the top-right corner of the workflow editor. This switches the editor from view-only mode, enabling you to select the problematic step and modify its properties.
