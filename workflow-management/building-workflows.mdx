@@ -46,18 +46,15 @@ When you create a new workflow, the editor creates an empty stub trigger. Click 
 After selecting a group, choose a specific trigger within that group:
 ![Selecting a trigger](/images/workflow-editor-select-trigger.png)
 
-OpenOps provides over 20 triggers divided into several groups:
+OpenOps provides over 10 triggers divided into several groups:
 * **Schedule**: *Every X minutes*, *Every hour*, *Every day*, *Every week*, *Every month*, *Cron expression*.
 * **SFTP**: *New file*.
 * **Webhook**: *Catch webhook*.
 * **Slack**: *New message*, *New reaction*.
 * **Jira Cloud**: *New issue*, *Updated issue*.
 * **Monday.com**: *New item in board*, *Specific column value updated in board*.
-* **Square**: *New order*, *Order updated*, *New customer*, *Customer updated*, *New appointment*, *New payment*, *New invoice*.
 
 Some triggers are used more often than others. For most of your scenarios, you will probably use one of the triggers in the **Schedule** group, setting your workflows to run at a predetermined interval.
-
-Curiously, out of all the workflow templates currently available in the [templates catalog](/workflow-management/workflow-templates), 23 templates use the *Every day* trigger, three templates use a different kind of schedule-based trigger, and two more templates trigger off an update to a Jira Cloud issue.
 
 After selecting a trigger, click the trigger node again to display a right-hand pane with the properties of the trigger. For example, here are the properties of the *Every day* trigger:
 ![Trigger properties](/images/workflow-editor-trigger-properties.png)
@@ -72,11 +69,11 @@ As soon as you've created a trigger, you can add your first action. Click the **
 ![Selecting an action](/images/workflow-editor-select-action.png)
 
 OpenOps provides a total of [120+ actions](/workflow-management/actions/). One way to make sense of them is to classify them by intent:
-* To **get data** for your workflow to process, look at cloud provider integration actions like **AWS** or **Azure**, recommendation service actions such as **Anodot** and **AWS Compute Optimizer**, or generic **HTTP** actions.
+* To **get data** for your workflow to process, look at cloud provider integration actions like **AWS** or **Azure**, recommendation provider actions such as **Anodot** and **AWS Compute Optimizer**, or generic **HTTP** actions.
 * To **control the execution of your workflow**, use actions grouped under **Condition** and **Split**, **Loop on items**, **Delay**, and **End Workflow**.
-* To **process data obtained in previous steps**, use **date, list, math, and text operations**, **Data mapper** for advanced transformations, and **Code** for transformations that you can't express with available no-code actions.
+* To **process data obtained in previous steps**, use **Date, List, Math, and Text operations**, **Data mapper** for advanced transformations, and **Code** for transformations that you can't express with available no-code actions.
 * To **request human intervention**, use **Approval** or **Slack**.
-* To **make changes to cloud resources**, use cloud provider actions, IaC integration actions like **AWS CloudFormation** and **Terraform**, and the **GitHub** action.
+* To **make or request changes to cloud resources**, use cloud provider actions, IaC integration actions like **AWS CloudFormation** and **Terraform**, and the **GitHub** action.
 * To **make updates in project management tools**, use **Jira Cloud** or **Monday.com** actions.
 * To **save data and generate reports**, use **SMTP**, **SFTP**, **Storage**, and **OpenOps Tables** actions.
 
@@ -88,8 +85,16 @@ The specific set of properties depends on the type of action. Here are a few gen
 * Actions that process data obtained in previous steps will ask you to specify the input data. For details on passing data between actions, see [Input and Output Parameters](/workflow-management/input-output-parameters).
 * Every action has two toggles: **Continue on Failure**, which lets the current action fail and continues the workflow regardless, and **Retry on Failure**, which retries the current action up to four times before giving up.
 
-Underneath the properties pane, every action also has a **Generate Sample Data** section, which lets you test or retest the action in isolation and shows the output that it generates:
+## Testing a workflow
+
+Underneath the properties pane, every action has a **Generate Sample Data** section, which lets you test or retest the action in isolation and shows the output that it generates:
 ![Sample data generated for an Anodot integration action](/images/workflow-editor-action-generate-sample-data.png)
+
+As soon as you have implemented all actions, you may also want to test your entire workflow. To do this, click the **Test Workflow** button at the top of the workflow editor, right above the trigger node:
+![Testing the entire workflow](/images/workflow-editor-test-workflow.png)
+
+After performing a test run of the workflow, OpenOps will show results of the run in the **Run Details** pane to the left of the editor, indicating the status of each step, as well as inputs and outputs:
+![Run details after testing the entire workflow](/images/workflow-editor-run-details.png)
 
 ## Publishing a workflow
 
