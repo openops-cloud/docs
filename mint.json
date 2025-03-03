@@ -63,12 +63,6 @@
       ]
     },
     {
-      "group": "Components",
-      "pages": [
-        "components/pieces-integrations"
-      ]
-    },
-    {
       "group": "Reporting and Analytics",
       "pages": [
         "reporting-analytics/tables",
