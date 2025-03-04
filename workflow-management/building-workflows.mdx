@@ -82,7 +82,7 @@ When you select an action, OpenOps adds it to the workflow graph and displays a 
 
 The specific set of properties depends on the type of action. Here are a few general rules:
 * Actions that get data from or send data to external resources will require you to define a **connection**. For example, for AWS-related actions, you'd need to specify your access key ID, secret access key, and the default region. For a Slack connection, you'd specify your Slack instance's redirect URL, your client ID, and your client secret. One connection can be reused across multiple actions, and the OpenOps UI provides a separate view to list all connections you have defined so far.
-* Actions that process data obtained in previous steps will ask you to specify the input data. For details on passing data between actions, see [Input and Output Parameters](/workflow-management/input-output-parameters).
+* Actions that process data obtained in previous steps will ask you to specify the input data. For details, see [Passing Data Between Workflow Steps](/workflow-management/passing-data.mdx).
 * Every action has two toggles: **Continue on Failure**, which lets the current action fail and continues the workflow regardless, and **Retry on Failure**, which retries the current action up to four times before giving up.
 
 ## Testing a workflow

@@ -48,7 +48,7 @@
         "workflow-management/actions",
         "workflow-management/scheduling",
         "workflow-management/conditional-branching",
-        "workflow-management/input-output-parameters",
+        "workflow-management/passing-data",
         "workflow-management/human-in-the-loop",
         "workflow-management/workflow-version-history-lifecycle",
         "workflow-management/customizing-workflows",
