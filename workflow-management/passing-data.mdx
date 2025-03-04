@@ -3,11 +3,11 @@ title: 'Passing Data Between Workflow Steps'
 description: 'Using data from previous steps in the current one'
 ---
 
-## General principles
-
 Any OpenOps workflow consists of multiple steps. The first step is a **trigger**, followed by any number of **action** steps. Not all steps produce data, but many do.
 
-Any step can access data that is the output of all of its previous steps.
+## The general principle of data flow
+
+Any [action](/workflow-management/actions/) step can access data that is the output of all of its previous steps.
 
 ![A sequence of steps from a workflow](/images/parameters-example.png)
 
@@ -16,9 +16,23 @@ For example, in the section of a workflow shown above:
 * **Step 4** has access to data produced by step 3 and 2.
 * **Step 3** has access to data produced by step 2.
 
+## Selecting data from prior steps
 
+When you create a new action step, chances are that its properties pane contains one or more data fields accepting data from previous steps. When you click into this data field, it opens the **Data Selector** pane that helps you select a piece of data produced by previous steps as the input parameter for the current step.
 
-## Data selector
+Continuing with the example above, when you click in the **Items** field in the properties pane of the **Loop on items** action step, the **Data Selector** suggests all data that was generated prior:
+![Data Selector](/images/parameters-data-selector.png)
+
+If an item in this panel has a caret (**⌄**) to the right, it means you can click on the item to expand its children. When you've found the piece of data you want to use, click **Insert** next to it to use it in the current action's data field.
+
+Take time to expand the items before inserting to understand the type of data they contain and whether they're the right fit for your needs. For example, the output data from a previous step may be an object with an array inside. If you want to iterate over the array using the **Loop on items** action, you need to select the nested array instead of the entire object:
+![Selecting a nested array as the input parameter](/images/parameters-nested-array.png)
+
+If the type of data that you want to use as input is an array, before selecting it with the **Data Selector**, make sure to swich on the **Dynamic value** on by clicking the toggle above the data field:
+![Dynamic value toggle](/images/parameters-dynamic-value.png)
+
+Also note that although the **Data Selector** shows up on every input field, you don't absolutely have to use it. Sometimes, you can just enter a value by hand. For example, if you're using the **Group By** action to regroup an array, just type in the property key that you want to group on in the **Property Key** field:
+![Grouping an array](/images/parameters-group-by.png)
 
 ## To process
 See https://www.activepieces.com/docs/flows/passing-data
