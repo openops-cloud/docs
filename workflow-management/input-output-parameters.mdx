@@ -1,8 +1,26 @@
 ---
-title: 'Input and Output Parameters'
-description: 'TODO'
+title: 'Passing Data Between Workflow Steps'
+description: 'Using data from previous steps in the current one'
 ---
 
+## General principles
+
+Any OpenOps workflow consists of multiple steps. The first step is a **trigger**, followed by any number of **action** steps. Not all steps produce data, but many do.
+
+Any step can access data that is the output of all of its previous steps.
+
+![A sequence of steps from a workflow](/images/parameters-example.png)
+
+For example, in the section of a workflow shown above:
+* **Step 5** has access to data produced by steps 4, 3, and 2. The only reason it doesn't have access to data from step 1 is that this Schedule trigger step doesn't produce any data.
+* **Step 4** has access to data produced by step 3 and 2.
+* **Step 3** has access to data produced by step 2.
+
+
+
+## Data selector
+
+## To process
 See https://www.activepieces.com/docs/flows/passing-data
 
 > Defining input and output parameters for workflows
