@@ -1,6 +1,40 @@
 ---
 title: 'Conditional Branching'
-description: 'TODO'
+description: 'How to split your workflow based on conditions'
 ---
 
+Depending on data received in previous steps of your workflow, you may want to decide how to proceed further. Two actions will help you split your workflow based on a condition:
+* [**Condition**](#condition) splits the workflow into exactly two branches.
+* [**Split**](#split) splits the workflow into multiple branches.
+
+You can add either of these just like you add any other action, using the **+** button in the workflow editor:
+![Selecting a condition action](/images/conditions-actions.png)
+
+## Condition
+
+The **Condition** action splits the workflow into exactly two branches. One is executed if the condition that you specify is satisfied, and the other is executed otherwise.
+
+Think of this as an equivalent of an `if` statement in programming.
+
+If you choose the **Condition** action, the properties pane on the right will let you define the condition.
+
+By default, the condition is defined as one expression. The expression provides two data fields, and clicking any of them opens up the **Data Selector** view that lets you select output from any of your prior actions:
+
+![Data selector for a condition](/images/conditions-data-selector.png)
+
+Example of a complete condition:
+![Condition action](/images/conditions-condition-list.png)
+
+## Split
+
+The **Split** action splits the workflow into multiple branches. Each branch executes if its specific condition is met. An extra branch called the default branch executes if none of the conditions specified for other branches is satisfied.
+
+Think of this action as an equivalent of a `switch` statement in programming.
+
+## To process
+
 > Conditional logic and branching based on data or events
+
+**End Workflow**: stop executing the workflow. If a workflow doesn't branch, this action doesn't have much value. However, it's useful if one or more of your branches represent conditions that should end your workflow early.
+
+If you're dealing with a large workflow, the **Tree view** is a great way to see its compact representation including conditions and branches.
