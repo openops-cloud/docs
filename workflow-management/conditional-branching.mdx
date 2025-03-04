@@ -12,24 +12,34 @@ You can add either of these just like you add any other action, using the **+** 
 
 ## Condition
 
-The **Condition** action splits the workflow into exactly two branches. One is executed if the condition that you specify is satisfied, and the other is executed otherwise.
+The **Condition** action splits the workflow into exactly two branches. One is executed if one or multiple conditions that you specify are satisfied, and the other is executed otherwise.
 
 Think of this as an equivalent of an `if` statement in programming.
 
-If you choose the **Condition** action, the properties pane on the right will let you define the condition.
+If you choose the **Condition** action, the properties pane on the right will let you define the condition. By default, there's only one condition, but you combine multiple conditions with logical conjunction (click **And**) or disjunction (click **Or**).
 
-By default, the condition is defined as one expression. The expression provides two data fields, and clicking any of them opens up the **Data Selector** view that lets you select output from any of your prior actions:
+Every condition contains one or two data fields. Clicking a data field opens the **Data Selector** view that lets you select output from any of your prior actions:
 
 ![Data selector for a condition](/images/conditions-data-selector.png)
 
-Example of a complete condition:
+Alongside the data fields, there's a combo box that defines the specific operation for your condition. See [Operators](#operators) for details.
+
+Here's an example of a complete condition that takes a list from a previous action and checks if the list contains any actions &mdash; in other words, if its length is more than zero:
 ![Condition action](/images/conditions-condition-list.png)
+
+As you can see in the screenshot above, you can test your condition in the **Generate Sample Data** pane and see if the result is what you expected.
 
 ## Split
 
 The **Split** action splits the workflow into multiple branches. Each branch executes if its specific condition is met. An extra branch called the default branch executes if none of the conditions specified for other branches is satisfied.
 
 Think of this action as an equivalent of a `switch` statement in programming.
+
+## Operators
+
+When you define conditions using the **Condition** or **Split** actions, you need to define what operation to apply to the value(s) that you supply. The combo box alongside the data fields lets you do just that:
+
+![Operators](/images/conditions-operator.png)
 
 ## To process
 
