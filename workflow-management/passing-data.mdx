@@ -25,19 +25,28 @@ Continuing with the example above, when you click in the **Items** field in the 
 
 If an item in this panel has a caret (**⌄**) to the right, it means you can click on the item to expand its children. When you've found the piece of data you want to use, click **Insert** next to it to use it in the current action's data field.
 
-Take time to expand the items before inserting to understand the type of data they contain and whether they're the right fit for your needs. For example, the output data from a previous step may be an object with an array inside. If you want to iterate over the array using the **Loop on items** action, you need to select the nested array instead of the entire object:
-![Selecting a nested array as the input parameter](/images/parameters-nested-array.png)
+Take time to expand the items before inserting to understand the type of data they contain and whether they're the right fit for your needs. For example, the output data from a previous step may be an object with a list (array) inside. If you want to iterate over the list using the **Loop on items** action, you need to select the nested list instead of the entire object:
+![Selecting a nested list as the input parameter](/images/parameters-nested-array.png)
 
-If the type of data that you want to use as input is an array, before selecting it with the **Data Selector**, make sure to swich on the **Dynamic value** on by clicking the toggle above the data field:
+If the type of data that you want to use as input is a list, before selecting it with the **Data Selector**, make sure to swich on the **Dynamic value** on by clicking the toggle above the data field:
 ![Dynamic value toggle](/images/parameters-dynamic-value.png)
 
-Also note that although the **Data Selector** shows up on every input field, you don't absolutely have to use it. Sometimes, you can just enter a value by hand. For example, if you're using the **Group By** action to regroup an array, just type in the property key that you want to group on in the **Property Key** field:
-![Grouping an array](/images/parameters-group-by.png)
+Also note that although the **Data Selector** shows up on every input field, you don't absolutely have to use it. Sometimes, you can just enter a value by hand. For example, if you're using the **Group By** action to regroup a list, just type in the property key that you want to group on in the **Property Key** field:
+![Grouping a list](/images/parameters-group-by.png)
 
-## To process
-See https://www.activepieces.com/docs/flows/passing-data
+## Transforming outputs
 
-> Defining input and output parameters for workflows
-> Data mapping and transformation
-> Parameter validation and error handling
+Sometimes, the output of a previous step may not be immediately suitable for use in your next steps. In this case, you can use several [actions](/workflow-management/actions/) or combinations of actions to transform the output into a different format:
+* Use actions from the **Text Operations** group to concatenate, split, or otherwise transform text values.
+* Use actions from the **Math Operations** group to perform arithmetic operations, averaging, return minimum and maximum values.
+* Use actions from the **Date Operations** group to format dates, extract individual date units (year, month, day, hour, etc.), or calculate date differences.
+
+If the output that you want to transform is a list, first create a loop using the **Loop on Items** action, then use any of the actions listed above to transform individual list entries inside the loop.
+
+There's also a group of actions called **List Operations** that you can apply to a list without creating a loop:
+* **Group By** creates several nested lists, each only containing distinct values of a property that you specify.
+* **Map List Items** does the same as **Group By**, but makes each nested list the value of a separate property.
+* **Extract From List** keeps only one out of many properties in each list item.
+
+Finally, if none of the transformation actions above are a good fit, use the **Custom TypeScript Code** action in the **Code** group, which lets you define a transformation in code written in TypeScript or JavaScript.
 
