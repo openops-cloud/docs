@@ -1,17 +1,17 @@
 ---
 title: 'Human-in-the-Loop Processes'
-description: 'How to intervene automations to get approval from stakeholders'
+description: 'How to interrupt automations to get stakeholder approval'
 ---
 
-Some workflows can be safely performed in an unattended mode. Others, such as large-scale resource deletions, are more impactful and may require review by stakeholders before proceeding. To account for this, OpenOps provides two Human-in-the-Loop mechanisms: [approvals](#requesting-approvals) and [notifications](#sending-notifications).
+Some workflows can run safely in unattended mode. Others, such as large-scale resource deletions, are more impactful and may require review by stakeholders before proceeding. To address this, OpenOps offers two Human-in-the-Loop mechanisms: [approvals](#requesting-approvals) and [notifications](#sending-notifications).
 
 For example, you can create a workflow that flags idle RDS instances for review, prompting human approval before any scaling down or termination actions are taken.
 
 ## Requesting approvals
 
-You can automate sending your stakeholders messages with actionable links or buttons, and make your workflow stop executing until the receiver clicks one of these links or buttons. Depending on the choice they make, you can split the subsequent steps of your workflow into conditional branches.
+You can automate sending your stakeholders messages with actionable links or buttons and make your workflow stop executing until the receiver clicks one of these links or buttons. Depending on their choice, you can split the subsequent steps of your workflow into conditional branches.
 
-OpenOps provides a tailored experience to request approvals via Slack, as well as a more generic approval mechanism that you can use with other communication channels.
+OpenOps offers a dedicated approval request feature for Slack, as well as a more generic approval mechanism that you can use with other communication channels.
 
 ### On Slack
 
@@ -26,7 +26,7 @@ One of Slack-related actions, **Request Action**, is the most straightforward wa
 When this action fires, the Slack user receives a message that you've defined in the action's properties. The message may look like this:
 ![Slack message with an action request](/images/hitl-slack-request-action-message.png)
 
-As soon as the user clicks one of the buttons, your **Request Action** step receives this as the output. You can then create a [conditional branch](/workflow-management/conditional-branching/) with the **Split** action and implement distinct steps depending on which button the user has clicked:
+As soon as the user clicks one of the buttons, your **Request Action** step receives this as the output. You can then create a [conditional branch](/workflow-management/conditional-branching/) with the **Split** action and implement distinct steps depending on which button the user clicked:
 ![Splitting based on a user action](/images/hitl-slack-request-action-split.png)
 
 #### With "Send Message" and "Wait For User Action"
@@ -35,22 +35,22 @@ If you want to build approval requests with more customization options, you can 
 
 The upside of **Send Message** is that it enables you to create approval requests using Slack's rich [Block Kit](https://api.slack.com/block-kit) UI framework.
 
-However, **Send Message** doesn't wait for reply from the recipient. Instead, you need to use another Slack action called **Wait For User Action** and pass the output of **Send Message** to it, which enables the workflow to intercept button clicks in the approval request. Once a button click associated with a decision is captured, you can then use the **Split** action to add workflow steps depending on the decision.
+However, **Send Message** doesn't wait for a reply from the recipient. Instead, use the **Wait For User Action** action and pass the output of **Send Message** to it. This allows the workflow to capture button clicks in the approval request. Once a button click associated with a decision is captured, you can then use the **Split** action to add workflow steps depending on the decision.
 
 ### Elsewhere
 
-If you want to get approvals via a communication channel other than Slack, you can do that using the **Approval** group of actions:
+To request approvals through a communication channel other than Slack, use the **Approval** group of actions:
 ![Approval actions](/images/hitl-approval-actions.png)
 
-In this case, here's how you can go about creating the approval part of your workflow:
+In this case, here's how you can create the approval part of your workflow:
 1. Add the **Create Approval Links** action from the **Approval** group. This action generates two links: one for approval and the other for disapproval.
 2. Add an action to message a stakeholder the two links. You can use **Send Email** under **SMTP** or one of the actions in the **Microsoft Teams** group.
-3. Add the **Wait For Approval** action from the **Approval** group. As soon as the stakeholder clicks one of the two links, this action will output the approval status accordingly.
-4. Add the **Condition** action to take steps in case of approval and disapproval.
+3. Add the **Wait For Approval** action from the **Approval** group. Once the stakeholder clicks a link, this action updates the approval status accordingly.
+4. Add the **Condition** action to take steps in case of approval or disapproval.
 
 ## Sending notifications
 
-Apart from requesting approvals, you can create actions that simply send out notifications about completed workflows or steps. Some of the actions that enable sending notifications include:
+Besides approvals, you can also send notifications about completed workflows or steps. Some of the actions that enable sending notifications include:
 * Actions in the **Slack** group:
     * **Send Message** to send a direct message or a message to a public Slack channel.
     * **Update Message** to update a message previously sent to a public Slack channel.
