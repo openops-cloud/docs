@@ -5,6 +5,8 @@ description: 'How to intervene automations to get approval from stakeholders'
 
 Some workflows can be safely performed in an unattended mode. Others, such as large-scale resource deletions, are more impactful and may require review by stakeholders before proceeding. To account for this, OpenOps provides two Human-in-the-Loop mechanisms: [approvals](#requesting-approvals) and [notifications](#sending-notifications).
 
+For example, you can create a workflow that flags idle RDS instances for review, prompting human approval before any scaling down or termination actions are taken.
+
 ## Requesting approvals
 
 You can automate sending your stakeholders messages with actionable links or buttons, and make your workflow stop executing until the receiver clicks one of these links or buttons. Depending on the choice they make, you can split the subsequent steps of your workflow into conditional branches.
@@ -13,46 +15,33 @@ OpenOps provides a tailored experience to request approvals via Slack, as well a
 
 ### On Slack
 
-Slack actions:
+OpenOps provides several Slack-related actions:
 ![Slack actions](/images/hitl-slack-actions.png)
 
+#### With "Request Action"
 
-There are two ways to request approvals on Slack:
-1. The "Request action" which is a simplified, more user-friendly way to build a message with action buttons and that action does not requires using a "Wait for user action" as its next step
+One of Slack-related actions, **Request Action**, is the most straightforward way to request approval. It lets you build a Slack message with standard action buttons, send it to a chat or a public channel, and wait until the recipient clicks one of these buttons, signifying their decision:
+![Request action via Slack](/images/hitl-slack-request-action-properties.png)
 
-A Slack-based approval workflow:
-1. Slack > Request action
-2. Split
+The Slack user receives a message that looks like this:
+![Slack message with an action request](/images/hitl-slack-request-action-message.png)
 
-Slack actions:
-* Send message: an informational message, no actions. Used as a way to notify of something. Works for sending direct messages and public channel messages (doesn't support private channels).
-* Update message: kinda update a previously sent message. Only works with public channels.
-* Request action: send an action to a user or public channel with action items. Default actions: approve, dismiss, snooze. Timeout is included, you can split directly on the output of this action.
-* Custom API call: use Slack's API in a way that's not represented by other available Slack actions.
-* Wait for user action: ??
+As soon as the user clicks one of the buttons, your **Request Action** step receives this as the output. You can then create a [conditional branch](/workflow-management/conditional-branching/) with the **Split** action and implement distinct actions depending on which button the user has clicked:
+![Splitting based on a user action](/images/hitl-slack-request-action-split.png)
 
+#### With "Send Message" and "Wait For User Action"
 
-For example, you can create a workflow that flags idle RDS instances for review, prompting human approval before any scaling down or termination actions are taken.
+If you want to build approval requests with more customization options, you can use the **Send Message** action in the **Slack** group instead of **Request Action**.
 
-For each cost-saving opportunity, we identify the resource owner using resource tags.
+The upside of **Send Message** is that it enables you to create approval requests using the Slack's rich [Block Kit](https://api.slack.com/block-kit) UI framework.
 
-We now contact the resource owner via Slack and automatically provide a detailed breakdown of the opportunity.
-
-Not only is the message customizable, but OpenOps integrates with countless communication and ticketing tools to fit into your existing tech stack. Whether it's Slack, Microsoft Teams, Jira, or ServiceNow, you can reach relevant team members and present them with all relevant information.
-
-We then prompt the resource owner to take action. The can choose to:
-* delete the instance and realize the savings
-* exclude the opportunity
-* set a reminder to revisit later
-
-
+However, **Send Message** doesn't wait for reply from the recipient. Instead, you need to use another Slack action called **Wait For User Action** and pass the output of **Send Message** to it, which enables the workflow to intercept button clicks in the approval request. Once a button click associated with a decision is captured, you can then use the **Split** action to add workflow steps depending on the decision.
 
 ### Elsewhere
 
-When you develop your workflows, look for the **Approval** group of actions:
-
-Approval actions:
+If you want to get approvals via a communication channel other than Slack, you can do that using the **Approval** group of actions:
 ![Approval actions](/images/hitl-approval-actions.png)
+
 
 A generic approval workflow:
 1. Approval > Create approval links
@@ -61,9 +50,16 @@ A generic approval workflow:
 4. Condition: approval true or false
 
 
-MS Teams actions:
-![Microsoft Teams actions](/images/hitl-teams-actions.png)
-
 
 
 ## Sending notifications
+
+Not only is the message customizable, but OpenOps integrates with countless communication and ticketing tools to fit into your existing tech stack. Whether it's Slack, Microsoft Teams, Jira, or ServiceNow, you can reach relevant team members and present them with all relevant information.
+
+Slack actions:
+* Send message: an informational message, no actions. Used as a way to notify of something. Works for sending direct messages and public channel messages (doesn't support private channels).
+* Update message: kinda update a previously sent message. Only works with public channels.
+
+MS Teams actions:
+![Microsoft Teams actions](/images/hitl-teams-actions.png)
+
