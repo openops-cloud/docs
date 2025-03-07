@@ -31,7 +31,7 @@ As shown in the screenshot above, you can test your condition in the **Generate 
 
 ## Split
 
-The **Split** action splits the workflow into multiple branches. Each branch executes if its specific condition is met. An extra branch, called the default branch, executes if none of the conditions specified for other branches is satisfied.
+The **Split** action splits the workflow into multiple branches. Each branch executes if its specific condition is met. An extra branch, called the default branch, executes if none of the conditions specified for other branches is satisfied. Every condition should be unique: if conditions in multiple branches are satisfied, this results in a workflow failure.
 
 Think of this action as the equivalent of a `switch` statement in programming.
 
@@ -51,32 +51,32 @@ OpenOps provides 20+ operators applicable to several types of data: text (string
 
 Here's the complete list of operators along with their additional settings:
 
-| Data type | Operator               | No. of data fields |
-|-----------|------------------------|--------------------|
-| Text      | Contains               | 2                  |
-| Text      | Does not contain       | 2                  |
-| Text      | Exactly matches        | 2                  |
-| Text      | Does not exactly match | 2                  |
-| Text      | Starts with            | 2                  |
-| Text      | Does not start with    | 2                  |
-| Text      | Ends with              | 2                  |
-| Text      | Does not end with      | 2                  |
-| Number    | Is greater than        | 2                  |
-| Number    | Is less than           | 2                  |
-| Number    | Is equal to            | 2                  |
-| Boolean   | Is true                | 1                  |
-| Boolean   | Is false               | 1                  |
-| (All)     | Exists                 | 1                  |
-| (All)     | Does not exist         | 1                  |
-| List      | Is empty               | 1                  |
-| List      | Is not empty           | 1                  |
-| List      | Length is greater than | 2                  |
-| List      | Length is less than    | 2                  |
-| List      | Length is equal to     | 2                  |
-| List      | Contains               | 2                  |
-| List      | Not contains           | 2                  |
-| Date      | Is before              | 2                  |
-| Date      | Is after               | 2                  |
+| Data type      | Operator               |
+|----------------|------------------------|
+| Text           | Contains               |
+| Text           | Does not contain       |
+| Text           | Exactly matches        |
+| Text           | Does not exactly match |
+| Text           | Starts with            |
+| Text           | Does not start with    |
+| Text           | Ends with              |
+| Text           | Does not end with      |
+| Number         | Is greater than        |
+| Number         | Is less than           |
+| Number         | Is equal to            |
+| Boolean        | Is true                |
+| Boolean        | Is false               |
+| All data types | Exists                 |
+| All data types | Does not exist         |
+| List           | Is empty               |
+| List           | Is not empty           |
+| List           | Length is greater than |
+| List           | Length is less than    |
+| List           | Length is equal to     |
+| List           | Contains               |
+| List           | Not contains           |
+| Date           | Is before              |
+| Date           | Is after               |
 
 All text operators provide a setting to toggle case sensitivity. All other operators come without additional settings.
 
