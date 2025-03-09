@@ -105,9 +105,22 @@ OpenOps provides robust tools for designing, managing, and automating FinOps wor
 OpenOps is available as:
 
 - A **managed cloud service** (paid)
-- A **free on-premises distribution**
-
-For on-prem deployment, see the system requirements.
+    - No infrastructure requirements
+    - Automatic updates and maintenance
+    - Premium support and SLAs
+- A **free on-premises distribution** (Docker Compose-based)
+    - **Hardware**:
+        - For exploration: 2 CPU cores, 8GB RAM, 50GB storage
+        - For production: 4 CPU cores, 16GB RAM, 100GB storage
+    - **Operating Systems**:
+        - Linux: Ubuntu 20.04+ LTS, Debian 11+, Fedora 35+
+        - macOS: Big Sur (11.x) or later
+        - Windows: Windows 10 v2004+ or Windows 11
+    - **Docker**:
+        - Linux: Docker Engine v20.10+ and Docker Compose v2.x
+        - macOS: Docker Desktop 4.11+ (with QEMU for Apple Silicon)
+        - Windows: Docker Desktop 4.11+ (with WSL 2)
+    - **Ports**: Requires ports 80, 3001, 3002, 3005, 5432, and 6379 (configurable)
 
 ## Documentation
 
