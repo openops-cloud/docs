@@ -1,6 +1,6 @@
 ---
 title: 'Quick Start Guide'
-description: 'TODO'
+description: 'Getting started with (and value from) OpenOps'
 ---
 
 Here's how you can go from downloading the open source distribution of OpenOps to starting getting value out of your OpenOps deployment.
@@ -10,20 +10,43 @@ Here's how you can go from downloading the open source distribution of OpenOps t
 You don't need a beefy machine for a test deployment, and any modern OS will do. You'll need Docker though, so see [system requirements](system-requirements) to make sure you have a compatible version of a Docker client.
 
 Once you know your machine meets the system requirements:
-1. Go to the [OpenOps Releases](https://github.com/openops-cloud/workflow-editor/releases) page on GitHub and download `docker-compose-deployment.zip` from the latest release.
-2. Unzip the file.
+1. Go to the [OpenOps Releases](https://github.com/openops-cloud/workflow-editor/releases) page on GitHub and download `docker-compose-release-{version}.zip` from the latest release.
+2. Unzip the file to a new directory. TODO remove {version} from directory name?
+3. Inside the directory, make a copy of the `.env.defaults` file and save it as `.env`.
+4. Open the `.env` file and edit it to set the correct values for the environment variables (which of them?). Make sure to change the default admin credentials: `OPS_OPENOPS_ADMIN_EMAIL` and `OPS_OPENOPS_ADMIN_PASSWORD`.
 3. TODO see https://github.com/openops-cloud/workflow-editor/blob/main/README.md#creating-new-users on how to create the admin user
 4. Make sure your Docker client such as Docker Desktop is running (if you're deploying on Linux, you don't need this).
 5. Run `docker compose up -d`
 
+(TODO integrate this: https://docs.google.com/document/d/160bAY33wpeK9YKezeAQ7JNhkvzQLxywEeAdk4KPU5gg/edit?tab=t.0)
 
+Open at http://localhost/:
 
-> Step-by-step instructions for installation and initial setup
-> User account creation and login
-> First-time user experience and onboarding
+![First start of OpenOps](/images/gsg-first-start.png)
+
+(TODO How to If you want the application running on a different port, update `nginx.gateway.conf` to replace `listen 80` with `listen your_port_of_choice` + port mapping in docker-compose.yml? The combo didn't work for me)
+
+Now, you can enter with the admin account credentials that you've specified in the `.env` file.
+
+## Initial setup
+
+Here's the initial OpenOps screen that you'll see after logging in:
+
+![Initial screen](/images/gsg-initial-screen.png)
+
+### User account creation
+TODO How to create new accounts? How to send invites? Or is this for one user only so far?
+
+### Getting templates
+
 > Connecting to the OpenOps Cloud
-> Run your first automation
-> Connecting Cloud Service Providers
+
+### Setting up connections to cloud service providers
+
 > Supported cloud providers (AWS, Azure, GCP, etc.)
+> Connecting Cloud Service Providers
 > Connection setup and configuration
-> Authentication and authorization
+
+### Using a template to run your first workflow
+
+> Run your first automation
