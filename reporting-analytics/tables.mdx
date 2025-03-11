@@ -3,4 +3,33 @@ title: 'OpenOps Tables'
 description: 'TODO'
 ---
 
-> But in general there is much more that can be achieved with tables. For example, import and process billing data, or map resources to owners, or provide a list of potential resources to delete, provide a spend report by BU/owner/service. I think we should talk about tables as a flexible mechanism halfway between a spreadsheet and a database, fully integrated with OpenOps workflow capabilities
+> Benefits of OpenOps tables
+> How to use OpenOps tables
+> How to make most of the Opportunity table
+
+> Marco: I think we need to talk about how to use the Opportunity table to track realized and unrealized saving amounts and to have visibility on why savings are not yet achieved
+
+OpenOps Tables is a flexible mechanism fully integrated with OpenOps workflow capabilities. You can think of it as standing halfway between a spreadsheet and a database.
+
+Tables allow you to perform multiple tasks, such as:
+* Logging opportunities and anomalies in a central location, with options to approve, dismiss, mark as false positive, or snooze.
+* Mapping cloud resources to owners based on tags and business units. This is an essential stage for workflows that provide human-in-the-loop mechanics as for every resource for which there's opportunity requiring human intervention, the workflow should have a way to know who to send an approval request to.
+* Compiling a list of potential resources to delete.
+* Importing and processing billing data.
+* Generating spend reports broken down by business unit, owner, or cloud service.
+
+Example workflow: idle RDS instances
+
+====
+
+OpenOps helps answer questions like:
+* Which resources are costing the most?
+* What are the top savings opportunities?
+* How are costs being allocated?
+
+
+Anomaly management use case: Log the anomaly and status into one table, with customizable options such as marking as a false positive, acknowledging and snoozing, or acknowledging and taking action.
+
+Use OpenOps tables to log responses and create a continuous feedback loop
+
+Define cost allocation rules. Each company has guidelines on how costs are assigned. Create an OpenOps table to assign resource usage to specific products. Use labels, tags, or metadata to associate costs with specific products, units, or lines of business. Create a centralized source of truth for resource usage, time, and specific services consumption for each product/business unit.
