@@ -21,7 +21,7 @@ These actions help control the sequence of operations in your workflow and make 
 
 * **Condition**: split the workflow into exactly two branches based on a [condition](/workflow-management/conditional-branching/).
 * **Split**: split the workflow into multiple branches based on a [condition](/workflow-management/conditional-branching/).
-* **Loop on items**: iterate over a list of items obtained in a prior step. For better performance, OpenOps enables parallel execution of loop iterations whenever possible.
+* **Loop on Items**: iterate over a list of items obtained in a prior step. For better performance, OpenOps enables parallel execution of loop iterations whenever possible.
 * **Delay**: pause workflow execution for a specified time period or until a specific time.
 * **End Workflow**: stop workflow execution. This is useful in [conditional branching](/workflow-management/conditional-branching/) when a branch represents a condition that ends the workflow early. When used inside a loop, this action skips to the next iteration of the loop.
 
@@ -30,12 +30,12 @@ These actions help control the sequence of operations in your workflow and make 
 These actions help you retrieve data from cloud resources, third-party services, APIs, and other sources.
 
 * Cloud provider integrations:
-    * **AWS**: includes multiple actions related to AWS resources such as EC2, EBS, and RDS.
+    * **AWS**: includes multiple actions related to AWS resources such as EC2, EBS, and RDS, as well as a CLI action to execute commands that are not available as dedicated actions.
     * **Azure**: execute Azure CLI commands.
 * Recommendation service integrations:
     * **Anodot**: get recommendations from [Anodot](https://www.anodot.com/), manage comments, and update user status.
     * **AWS Compute Optimizer**: retrieve a summary of recommendations, as well as EBS- or EC2-specific recommendations.
-* **AWS Athena**: send queries to Athena databases.
+* **AWS Athena**: run Athena queries.
 * **File operations**: create or read files in OpenOps storage.
 * **HTTP**: send HTTP requests to any API or respond to HTTP requests.
 
@@ -55,17 +55,21 @@ These actions implement [Human-in-the-Loop](/workflow-management/human-in-the-lo
 
 * **Approval**: request approval with or without pausing the workflow.
 * **Slack**: send and update messages, request human action, and wait for user responses.
+* **SMTP**: send emails through a custom SMTP server.
+* **Jira Cloud**: update issues and issue status, create and update issue comments.
+* **Microsoft Teams**: send chat and channel messages.
+* **monday.com**: create and update boards and board items.
 
 ## Make changes to cloud resources
 
 These are integration actions that provide various ways to make and request changes to your cloud resources via cloud provider APIs, infrastructure-as-code (IaC) tools, or pull requests.
 
 * Cloud provider integrations:
-    * **AWS**: multiple actions related to AWS resources such as EC2, EBS, and RDS.
+    * **AWS**: multiple actions related to AWS resources such as EC2, EBS, and RDS, as well as an AWS CLI action to execute any command.
     * **Azure**: execute Azure CLI commands.
 * IaC integrations:
-    * **AWS CloudFormation**: manage templates and resources.
-    * **Terraform**: update or delete resources.
+    * **AWS CloudFormation**: update or delete resources in a CloudFormation template.
+    * **Terraform**: update or delete resources in a Terraform template.
 * Other integrations:
     * **GitHub**: retrieve file content, create pull requests, or trigger GitHub Actions runs.
 
@@ -82,5 +86,5 @@ These actions help store and share information collected during workflow runs.
 
 * **OpenOps Tables**: create and update records in [tables](/reporting-analytics/tables/).
 * **SFTP**: create or read files on a remote server via SFTP.
-* **Storage**: manage data in your OpenOps installation's storage.
+* **Storage**: store data in and read it from your OpenOps installation's key-value storage. The storage is accessible at run, workflow, and project levels.
 * **SMTP**: send emails.
