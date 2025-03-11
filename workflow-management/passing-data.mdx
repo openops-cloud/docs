@@ -3,11 +3,11 @@ title: 'Passing Data Between Workflow Steps'
 description: 'Using data from previous steps in the current one'
 ---
 
-Any OpenOps workflow consists of multiple steps. The first step is a **trigger**, followed by any number of **action** steps. Not all steps produce data, but many do.
+Any OpenOps workflow consists of multiple steps. The first step is a **trigger**, followed by any number of **action** steps.
 
 ## The general principle of data flow
 
-Any [action](/workflow-management/actions/) step can access data that is the output of all its previous steps.
+Any [action](/workflow-management/actions/) step can access the output data of any of its previous steps: both the trigger and actions.
 
 ![A sequence of steps from a workflow](/images/parameters-example.png)
 
@@ -15,6 +15,10 @@ For example, in the section of a workflow shown above:
 * **Step 5** has access to data produced by steps 4, 3, and 2. The only reason it doesn't have access to data from step 1 is that the Schedule trigger step doesn't produce any data.
 * **Step 4** has access to data produced by steps 3 and 2.
 * **Step 3** has access to data produced by step 2.
+
+There are certain nuances when it comes to accessing data from loops and conditional statements that were executed before:
+1. If there was a conditional statement, such as **Condition** or **Split**, before your current action, then your current action will not have access to the outputs of any actions inside the branches of the conditional statement. If you need output of actions in these branches to be available after the conditional statement completes, make sure to save it elsewhere, such as into OpenOps’ internal storage with the **Put** action in the **Storage** group. You can then read from the storage using the **Get** action in the same group.
+2. This is also true for loops: the output of actions that occur inside a loop are not available outside the loop. If you need any data from the loop after the loop completes, make sure to save the data to storage while still inside the loop.
 
 ## Selecting data from prior steps
 
