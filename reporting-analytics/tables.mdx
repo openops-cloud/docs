@@ -10,7 +10,7 @@ OpenOps includes tables, a data storage mechanism based on [Baserow](https://bas
 OpenOps tables are fully integrated with OpenOps workflow capabilities: there are [actions](/workflow-management/actions/) that let you create and update records in tables, as well as read data from them.
 
 Tables help you perform multiple tasks, such as:
-* Map **cloud resources to owners** based on tags and business units. This is an essential stage for workflows that include [human-in-the-loop](/workflow-management/human-in-the-loop/) steps. For every resource that provides cost-saving opportunities requiring human intervention, the workflow needs to have a way to know who to send an approval request to.
+* Map **cloud resources to owners** based on tags and business units. This is an essential stage for workflows that include [human-in-the-loop](/workflow-management/human-in-the-loop/) steps. For every resource that provides cost-saving opportunities requiring human intervention, the workflow needs a way to know who to send an approval request to.
 * Log **opportunities and anomalies** in a central location, with options to approve, dismiss, mark as false positive, or snooze.
 * Compile a list of potential **resources to delete**.
 * Import and process **billing data**.
@@ -18,7 +18,7 @@ Tables help you perform multiple tasks, such as:
 
 ## Preconfigured tables
 
-OpenOps comes with multiple [workflow templates](/workflow-management/workflow-templates/), and many of them use tables to perform one of more of the tasks outlined above. All tables that are used in the templates come preconfigured with your workflow installation:
+OpenOps comes with multiple [workflow templates](/workflow-management/workflow-templates/), and many of them use tables to perform one of more of the tasks outlined above. All tables that are used in the templates come preconfigured in your workflow installation:
 
 ![Preconfigured tables](/images/tables-preconfigured.png)
 
@@ -42,11 +42,11 @@ The preconfigured **Tag-owner mapping** table is used in workflow templates to r
 
 This table has three fields: **Owner tag value**, **Owner email** and **BU**. The latter connects it to another preconfigured table, **Business units**, that stores more detail about each business unit.
 
-### Sample usage in a workflow template
+### Example of usage in a workflow template
 
-Here's what the **Idle RDS instances in Staging, Terraform remediation** workflow template does with the two tables described above:
+To get a better feel for how the two tables described above are used in real-life workflows, here's what the **Idle RDS instances in Staging, Terraform remediation** workflow template does with them:
 * For each AWS Compute Optimizer recommendation for idle RDS, it finds the owner based on the `unit` tag and the mapping to email stored in the **Tag-owner mapping** table.
-* Logs opportunity details to the **Opportunity** table with the following fields:
+* It logs opportunity details to the **Opportunity** table with the following fields:
     * **Status** is set to **Created** as this is a new opportunity.
     * **Estimated savings USD per month** is set to the estimate provided by AWS Compute Optimizer.
 * Once the owner receives a Slack message suggesting to delete the resource, the **Status** field in the **Opportunity** table gets updated with one of three values:
