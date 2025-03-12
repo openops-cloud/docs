@@ -1,10 +1,41 @@
 ---
 title: 'Data Visualization'
-description: 'TODO'
+description: 'How to set up data visualization'
 ---
 
-> Charts, graphs, and dashboards for visualizing data
-> Interactive data exploration and analysis
-> Customizable dashboards and widgets
+This guide explains how to configure dashboards in the OpenOps Analytics on top of OpenOps Tables.
 
-Superset: https://superset.apache.org/docs/using-superset/exploring-data/
+## Analytics admin portal
+
+The analytics admin portal is available on the IP address of your installation, under port 3002.
+Navigate to http://your-ip:3002
+
+![Analytics portal login form](/images/analytics-signin.png)
+
+The username is `admin` and the password is in the `.env` file under the installation folder, `OPS_ANALYTICS_ADMIN_PASSWORD` (If you haven’t changed the password, the default is `please-change-this-password-1`).
+
+Once you log in, you can see 2 built-in dashboards: **FinOps** and **Homepage**. Modifying the **FinOps** dashboard will affect the **Analytics** tab in OpenOps.
+
+![Built-in dashboards in the analytics portal](/images/analytics-builtin-dashboards.png)
+
+Behind every OpenOps table there is a Postgres view that can be used to build charts and queries.
+
+When a new table is created in [OpenOps tables](/reporting-analytics/tables/), the system automatically creates a new database view with the naming convention _table name \_ table id \_ userfriendly_. This view can be used to create dashboards in the system, and it can also be connected to from other BI systems.
+
+![OpenOps tables](/images/analytics-tables.png)
+
+## Building new charts
+
+1. Create a new dataset for the OpenOps table by navigating to **Datasets** and clicking **+ Dataset**. This will allow you to create a dataset on top of the OpenOps tables:
+    ![Datasets](/images/analytics-datasets.png)
+    ![New dataset](/images/analytics-new-dataset.png)
+2. After the dataset has been created, you can create new charts by navigating to **Charts** and clicking **+ Chart**.
+    ![Charts](/images/analytics-charts.png)
+    ![New chart](/images/analytics-new-chart.png)
+3. Once you have created the chart, connect it to the **FinOps** dashboard to see it in OpenOps UI:
+    ![Saving a chart](/images/analytics-save-chart.png)
+    ![Chart in OpenOps Analytics](/images/analytics-chart-in-openops.png)
+
+For more information on how to create charts, see [Superset documentation](https://superset.apache.org/docs/intro/).
+
+Feel free to contact support@openops.com if you have any questions or need help with the installation.
