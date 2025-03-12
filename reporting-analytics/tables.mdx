@@ -3,14 +3,14 @@ title: 'OpenOps Tables'
 description: 'How saving data into and getting data from OpenOps tables empowers your workflows'
 ---
 
-OpenOps includes tables, a data storage mechanism based on [Baserow](https://baserow.io/user-docs/intro-to-tables). They are similar to Excel worksheets in that you can sort, filter, aggregate your data and modify many other table features.
+OpenOps includes tables, a data storage mechanism based on [Baserow](https://baserow.io/user-docs/intro-to-tables). They are similar to Excel worksheets in that you can sort, filter, and aggregate your data, as well as modify many other table features.
 
 ![OpenOps tables](/images/tables-overview.png)
 
 OpenOps tables are fully integrated with OpenOps workflow capabilities: there are [actions](/workflow-management/actions/) that let you create and update records in tables, as well as read data from them.
 
 Tables help you perform multiple tasks, such as:
-* Map **cloud resources to owners** based on tags and business units. This is an essential stage for workflows that include [human-in-the-loop](/workflow-management/human-in-the-loop/) steps. For every resource that provides cost-saving opportunities requiring human intervention, the workflow needs a way to know who to send an approval request to.
+* Map **cloud resources to owners** based on tags and business units. This is an essential stage for workflows that include [human-in-the-loop](/workflow-management/human-in-the-loop/) steps. For every resource that provides cost-saving opportunities requiring human intervention, the workflow needs a way to determine who to send an approval request to.
 * Log **opportunities and anomalies** in a central location, with options to approve, dismiss, mark as false positive, or snooze.
 * Compile a list of potential **resources to delete**.
 * Import and process **billing data**.
@@ -18,17 +18,17 @@ Tables help you perform multiple tasks, such as:
 
 ## Preconfigured tables
 
-OpenOps comes with multiple [workflow templates](/workflow-management/workflow-templates/), and many of them use tables to perform one of more of the tasks outlined above. All tables that are used in the templates come preconfigured in your workflow installation:
+OpenOps comes with multiple [workflow templates](/workflow-management/workflow-templates/), and many of them use tables to perform one or more of the tasks outlined above. All tables that are used in the templates come preconfigured in your workflow installation:
 
 ![Preconfigured tables](/images/tables-preconfigured.png)
 
-This means that when you decide to create a workflow based on a template, you don't need to create tables that your workflow uses: they're already available.
+This means that when you decide to create a workflow based on a template, you don't need to create the tables that your workflow uses: they're already available.
 
 Let's take a look at two tables that come preconfigured and are used in many workflow templates: **Opportunities** and **Tag-Owner mapping**.
 
 ### Opportunities
 
-The preconfigured **Opportunities** table is used in multiple workflow templates to track realized and unrealized saving amounts and to have visibility into why savings have not yet been achieved.
+The preconfigured **Opportunities** table is used in multiple workflow templates to track realized and unrealized saving amounts and to provide visibility into why savings have not yet been achieved.
 
 By default, this table has eight fields (columns): **ID**, **Resource ID**, **Workflow name**, **Creation time**, **Last modified time**, **Status**, **Snoozed until**, and **Estimated savings USD per month**.
 
@@ -40,16 +40,16 @@ Here's a sample of the **Opportunities** table in an active OpenOps installation
 
 The preconfigured **Tag-owner mapping** table is used in workflow templates to retrieve emails of resource owners based on values of tags specified in recommendations.
 
-This table has three fields: **Owner tag value**, **Owner email** and **BU**. The latter connects it to another preconfigured table, **Business units**, that stores more detail about each business unit.
+This table has three fields: **Owner tag value**, **Owner email**, and **BU**. The latter connects it to another preconfigured table, **Business units**, which stores more details about each business unit.
 
 ### Example of usage in a workflow template
 
-To get a better feel for how the two tables described above are used in real-life workflows, here's what the **Idle RDS instances in Staging, Terraform remediation** workflow template does with them:
-* For each AWS Compute Optimizer recommendation for idle RDS, it finds the owner based on the `unit` tag and the mapping to email stored in the **Tag-owner mapping** table.
-* It logs opportunity details to the **Opportunity** table with the following fields:
-    * **Status** is set to **Created** as this is a new opportunity.
+To better understand how the two tables described above are used in real-life workflows, here's what the **Idle RDS Instances in Staging, Terraform Remediation** workflow template does with them:
+* For each AWS Compute Optimizer recommendation for idle RDS, it finds the value of the `unit` tag and maps that tag to an email using the **Tag-owner mapping** table.
+* It logs opportunity details to the **Opportunities** table with the following fields:
+    * **Status** is set to **Created**, as this is a new opportunity.
     * **Estimated savings USD per month** is set to the estimate provided by AWS Compute Optimizer.
-* Once the owner receives a Slack message suggesting to delete the resource, the **Status** field in the **Opportunity** table gets updated with one of three values:
+* Once the owner receives a Slack message suggesting deletion of the resource, the **Status** field in the **Opportunities** table is updated with one of three values:
     * **Under review** if the owner approved deletion and the workflow has created a GitHub PR.
     * **Dismissed** if the owner has chosen to dismiss the opportunity.
     * **Snoozed** if the owner has chosen to consider the opportunity later. The number of days to delay is reflected in the **Snoozed until** field.
