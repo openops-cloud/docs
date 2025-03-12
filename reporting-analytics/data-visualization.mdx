@@ -5,9 +5,11 @@ description: 'How to set up charts to display in OpenOps Analytics'
 
 You can visualize data that you collect with [OpenOps tables](/reporting-analytics/tables/) and display the visualizations in the **Analytics** view in OpenOps.
 
+In addition to OpenOps tables, OpenOps Analytics can connect to and visualize your existing data sources, such as CSV files, Google Sheets, Postgres databases, and more.
+
 ## Analytics admin portal
 
-To conigure data visualizations, you need to visit the Analytic admin portal outside of the main OpenOps appllication. The portal is available on the IP address of your OpenOps instance, under port 3002: http://your-ip:3002
+To conigure data visualizations, you need to visit the Analytic admin portal outside of the main OpenOps application. The portal is available on the IP address of your OpenOps instance, under port 3002: http://your-ip:3002
 
 ![Analytics portal login form](/images/analytics-signin.png)
 
@@ -40,5 +42,22 @@ As a result, the chart will display in the **Analytics** view back in OpenOps:
     ![Chart in OpenOps Analytics](/images/analytics-chart-in-openops.png)
 
 For more information on how to create charts, see [Superset documentation](https://superset.apache.org/docs/intro/).
+
+## Connecting to external data sources
+
+Here's you can do to connect OpenOps Analytics to external data sources such as CSV files:
+
+1. In the Analytics admin portal, go to **Settings > Database Connections**.
+    ![Database connections settings](/images/analytics-external-menu.png)
+2. Click on **+ Database** to connect to an external data source, such as your own Postgres instance or Google Sheets.
+3. Once you have created a database connection, if you’d like to upload CSVs to it, click the **Edit** icon for the database connection:
+    ![Editing a database connection](/images/analytics-edit-db-connection.png)
+4. In the popup that displays, go to **Advanced > Security**, scroll down, and enable **Allow file uploads**.
+    ![Edit database popup](/images/analytics-edit-database.png)
+    ![Allowing file uploads](/images/analytics-database-allow-file-uploads.png)
+5. Click **Finish**. As a result, you should now be able to upload CSV files into your database:
+    ![Uploading CSV into a database](/images/analytics-upload-csv-to-db.png)
+
+You can now build charts based on the data from your external data source similarly to how you do it based on OpenOps tables. When you add charts to the **FinOps** dashboard, they become available in the **Analytic** view in OpenOps.
 
 Feel free to contact support@openops.com if you have any questions or need help with your installation.
