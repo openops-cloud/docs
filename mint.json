@@ -67,6 +67,7 @@
       "group": "Cloud Access",
       "pages": [
         "cloud-access/access-levels-permissions",
+        "cloud-access/aws-cf-role-stack",
         "cloud-access/multi-cloud"
       ]
     },
