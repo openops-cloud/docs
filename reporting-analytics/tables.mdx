@@ -3,17 +3,18 @@ title: 'OpenOps Tables'
 description: 'How saving data into and getting data from OpenOps tables empowers your workflows'
 ---
 
-OpenOps includes tables, a data storage mechanism based on [Baserow](https://baserow.io/user-docs/intro-to-tables). They are similar to Excel worksheets in that you can sort, filter, and aggregate your data, as well as modify many other table features.
-
-![OpenOps tables](/images/tables-overview.png)
+OpenOps includes tables, a data storage mechanism based on [Baserow](https://baserow.io/user-docs/intro-to-tables). They are a hybrid of a spreadsheet and a database: think Airtable. Here are some of the things that tables help you do:
+* **Sort and filter** your data: for example, only show opportunities that are not completed or dismissed.
+* **Group** your data: for example, show opportunities by owner.
+* **Import and export** data from/to CSV, JSON, or XML.
+* **Link to other tables**, much like relational databases.
 
 OpenOps tables are fully integrated with OpenOps workflow capabilities: there are [actions](/workflow-management/actions/) that let you create and update records in tables, as well as read data from them.
 
 Tables help you perform multiple tasks, such as:
 * Map **cloud resources to owners** based on tags and business units. This is an essential stage for workflows that include [human-in-the-loop](/workflow-management/human-in-the-loop/) steps. For every resource that provides cost-saving opportunities requiring human intervention, the workflow needs a way to determine who to send an approval request to.
 * Log **opportunities and anomalies** in a central location, with options to approve, dismiss, mark as false positive, or snooze.
-* Compile a list of potential **resources to delete**.
-* Import and process **billing data**.
+* Compile a list of unused or idle **resources to delete**.
 * Generate **spend reports** broken down by business unit, owner, or cloud service.
 
 ## Preconfigured tables
@@ -22,15 +23,15 @@ OpenOps comes with multiple [workflow templates](/workflow-management/workflow-t
 
 ![Preconfigured tables](/images/tables-preconfigured.png)
 
-This means that when you decide to create a workflow based on a template, you don't need to create the tables that your workflow uses: they're already available.
+This means that when you decide to create a workflow based on a template, you don't need to create the tables that your workflow uses: they're already available. If you’re using workflows from templates, make sure not to modify the structure of preconfigured tables to avoid breaking the workflows.
 
-Let's take a look at two tables that come preconfigured and are used in many workflow templates: **Opportunities** and **Tag-Owner mapping**.
+Let's take a look at two tables that come preconfigured and are used in many workflow templates: **Opportunities** and **Tag-owner mapping**.
 
 ### Opportunities
 
 The preconfigured **Opportunities** table is used in multiple workflow templates to track realized and unrealized saving amounts and to provide visibility into why savings have not yet been achieved.
 
-By default, this table has eight fields (columns): **ID**, **Resource ID**, **Workflow name**, **Creation time**, **Last modified time**, **Status**, **Snoozed until**, and **Estimated savings USD per month**.
+By default, this table has 20 fields (columns): **ID**, **Status**, **Owner**, **Estimated savings USD per month**, **Snoozed until**, **Workflow**, **Resource ID**, **Follow-up task**, **Account**, **Region**, **Service**, **Opportunity source**, **External opportunity ID**, **Opportunity type**, **Resolution notes**, **Opportunity details**, **Complexity**, **Risk**, **Creation time**, and **Last modified time**.
 
 Here's a sample of the **Opportunities** table in an active OpenOps installation:
 
@@ -38,7 +39,7 @@ Here's a sample of the **Opportunities** table in an active OpenOps installation
 
 ### Tag-owner mapping
 
-The preconfigured **Tag-owner mapping** table is used in workflow templates to retrieve emails of resource owners based on values of tags specified in recommendations.
+The preconfigured **Tag-owner mapping** table is used in workflow templates to retrieve emails of resource owners based on values of resource tags whose labels are specified in the workflow.
 
 This table has three fields: **Owner tag value**, **Owner email**, and **BU**. The latter connects it to another preconfigured table, **Business units**, which stores more details about each business unit.
 
@@ -53,3 +54,23 @@ To better understand how the two tables described above are used in real-life wo
     * **Under review** if the owner approved deletion and the workflow has created a GitHub PR.
     * **Dismissed** if the owner has chosen to dismiss the opportunity.
     * **Snoozed** if the owner has chosen to consider the opportunity later. The number of days to delay is reflected in the **Snoozed until** field.
+
+## Creating new tables
+
+In addition to preconfigured tables, you can create your own. This is especially useful when you're developing original workflows that are not based on OpenOps templates and you want to set up a visual way to save data generated by the workflows.
+
+To create a new table from scratch:
+
+1. Go to the **Tables** tab. In the tree view on the left, click **+ Create table** under the list of currently available tables in the **OpenOps Table** dataset:
+    ![Creating a table](/images/tables-tree-create.png)
+2. In the **Create new table** popup, keep **Start with a new table** selected and click **Add table**:
+    ![Create new table popup](/images/tables-create-new-table.png)
+
+A new table is created with three default fields:
+![Default table](/images/tables-default.png)
+
+Feel free to remove the default fields and add new ones depending on your use case. When you click **+** in the table header to create a new field, you can choose from multiple field types:
+![Table field types](/images/tables-add-fields.png)
+
+In the tree view on the left, if you click the options icon alongside your table's name, you can choose to rename, duplicate, export, or delete your table:
+![Table options](/images/tables-table-options.png)
