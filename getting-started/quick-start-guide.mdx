@@ -30,22 +30,36 @@ Once you know your machine meets the system requirements:
 
 ## Open OpenOps in your browser
 
-Your OpenOps instance is now available at http://localhost/, so go ahead and open it in your browser.
-
+Your OpenOps instance is now available at http://localhost/, so go ahead and open it in your browser:
 ![First start of OpenOps](/images/qsg-first-start.png)
 
 You can now log in with the admin account credentials that you've updated in the `.env` file.
 
 ## Look around
 
-Here's the initial OpenOps screen that you'll see after logging in:
-
+After logging in, the first thing you'll see is the OpenOps **Overview** view:
 ![Initial screen](/images/qsg-initial-screen.png)
 
-## Connect to your cloud
+The sidebar containing the main OpenOps navigation menu is collapsed by default, but you can show it by clicking the book icon on the top left:
+![Sidebar](/images/qsg-sidebar.png)
+
+The other views are mostly empty at this point, but it helps to know that they're around:
+* **Workflows** will let you keep track of the workflows that you create.
+* **Runs** will keep a history of executing your workflows, indicating start time and status.
+* **Connections** will list all permissions you provide to OpenOps for various cloud providers and services, as well as let you create new ones.
+* **Tables** will store data and collected by workflows, as well as any information you enter or import to guide your workflows.
 
 ## Run a sample workflow
+
+Back in **Overview**, OpenOps suggests two sample beginner-level workflows to help you get a feel of the product. Click **AWS sample workflow**:
+![AWS sample workflow](/images/qsg-aws-sample-workflow.png)
+
+When the workflow preview pop-up displays, click **Use template** in the top right corner:
+![AWS sample workflow - use template](/images/qsg-aws-workflow-preview.png)
+
 Run one of the two sample workflows and see results in the Opportunity table. FYI the new home page has a Get Started panel with links to the samples workflows and some doc pages + Community page
+
+Incl. connecting to your cloud
 
 ## Get templates for your future workflows
 
