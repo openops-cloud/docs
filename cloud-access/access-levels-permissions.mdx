@@ -11,7 +11,7 @@ Access to cloud resources in OpenOps is defined using "connections": sets of res
 
 ![Connections](/images/access-connections.png)
 
-Each workflow can use one or more connections, including multiple connections per resource: for example, one connection for read-only AWS access and a different connection for updates.
+Each workflow can use one or more connections, including multiple connections per resource. For example, you can have one connection for read-only AWS access and a different connection for updates.
 
 You can set up connections in two ways:
 1. Upfront by going to the **Connections** tab and clicking **New Connection**. This opens a pop-up that lets you first select a connection type:
@@ -29,7 +29,7 @@ You can [create an IAM user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id
 
 If your AWS account doesn't already have a default region, you can [set it in the AWS Management Console](https://docs.aws.amazon.com/awsconsolehelpdocs/latest/gsg/change-default-region.html) separately.
 
-If you have multiple AWS accounts, and you want one of them to define all the permissions that may be needed for workflows defined by [OpenOps templates](/workflow-management/workflow-templates/), consider installing the [OpenOpsApp AWS Role Stack](/cloud-access/aws-cf-role-stack/). Even if you don't, you can [download the stack](https://openops.s3.us-east-2.amazonaws.com/OpenOpsAppRoleStack.yml) and use it as reference in configuring permissions for your workflows.
+If you have multiple AWS accounts and want one of them to define all the permissions that may be needed for workflows defined by [OpenOps templates](/workflow-management/workflow-templates/), consider installing the [OpenOpsApp AWS Role Stack](/cloud-access/aws-cf-role-stack/). Even if you don't, you can [download the stack](https://openops.s3.us-east-2.amazonaws.com/OpenOpsAppRoleStack.yml) and use it as a reference when configuring permissions for your workflows.
 
 Connections to **AWS Athena**, **AWS CloudFormation**, and **AWS Compute Optimizer** are configured in the same way as AWS connections.
 
