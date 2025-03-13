@@ -21,18 +21,22 @@ You can set up connections in two ways:
 
 ## AWS connections
 
-Generally the permissions directly correlates to whatever the user wants to do in their workflows. If they want to turn off EC2 instances, they need the EC2 StopInstance permission, etc.
-To create the actual AWS IAM user and access key , we need to point them to the relevant guide in AWS I imagine.
+A connection to AWS requires specifying your access key ID, secret access key, and the default region:
 
 ![AWS connection](/images/access-aws-connection.png)
 
-* AWS: access key ID, secret access key, default region, roles (assume role ARN, assume role external ID, account alias)
-* AWS Athena: see AWS
-* AWS CloudFormation: see AWS
-* AWS Compute Optimizer: see AWS
+You can [create an IAM user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html) in the AWS Management Console. When you do, you'll get an access key ID and a secret access key to enter in the AWS connection configuration form. The specific set of permissions you assign to the user depends on what you want to do in the workflows that will use the AWS connection. For example, if you want your workflow to turn off EC2 instances, assign the `ec2:StopInstances` permission as shown in [this guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_ec2_tag-owner.html).
+
+If your AWS account doesn't already have a default region, you can [set it in the AWS Management Console](https://docs.aws.amazon.com/awsconsolehelpdocs/latest/gsg/change-default-region.html) separately.
+
+If you have multiple AWS accounts, and you want one of them to define all the permissions that may be needed for workflows defined by [OpenOps templates](/workflow-management/workflow-templates/), consider installing the [OpenOpsApp AWS Role Stack](/cloud-access/aws-cf-role-stack/). Even if you don't, you can [download the stack](https://openops.s3.us-east-2.amazonaws.com/OpenOpsAppRoleStack.yml) and use it as reference in configuring permissions for your workflows.
+
+Connections to **AWS Athena**, **AWS CloudFormation**, and **AWS Compute Optimizer** are configured in the same way as AWS connections.
 
 ## Azure connections
 
+A connection to Azure requires specifying your application (client) ID, client secret, and directory (tenant) ID:
+
 ![Azure connection](/images/access-azure-connection.png)
 
-* Azure: Azure AD OAuth 2.0 (application (client) ID, client secret, directory (tenant) ID). The application (client) ID determines the permissions granted in the Azure Portal.
+To acquire these credentials, you need to register an application with Microsoft Entra ID (formerly Azure AD) as shown in [this guide](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app). After considering what tasks your workflows are expected to perform using your Azure connection, [assign permissions](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-configure-app-access-web-apis) accordingly.
