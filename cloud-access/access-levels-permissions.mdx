@@ -1,35 +1,38 @@
 ---
 title: 'Access Levels and Permissions'
-description: 'TODO'
+description: 'How to configure OpenOps access to cloud resources'
 icon: "rectangle-code"
 iconType: "solid"
 ---
 
-> Managing access to cloud resources within OpenOps
-> Granular permissions and access control
+OpenOps needs access to your cloud resources to perform its workflows. The level of access will depend on what exactly your workflow does.
 
-## How to install the OpenOpsApp role stack
+Access to cloud resources in OpenOps is defined using "connections": sets of resource credentials. OpenOps provides a separate tab to list and create connections:
 
-The OpenOpsApp role stack for [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html) is used to create the `OpenOpsApp` role in your AWS account. This will in turn provide the OpenOps platform with the necessary permissions to connect to your AWS resources.
+![Connections](/images/access-connections.png)
 
-When creating the stack, you have the option to enable or disable certain permission sets. While the read-only permission set is mandatory, the rest are completely optional. The sets can also be enabled or disabled later by updating the stack.
+Each workflow can use one or more connections, including multiple connections per resource: for example, one connection for read-only AWS access and a different connection for updates.
 
-### Installation
+You can set up connections in two ways:
+1. Upfront by going to the **Connections** tab and clicking **New Connection**. This opens a pop-up that lets you first select a connection type:
+    ![Connection types](/images/access-connection-types.png)
+2. While editing the workflow, in action properties, by opening the **Connection** dropdown and clicking **Create Connection**:
+    ![Creating a connection from workflow properties](/images/access-connection-from-workflow.png)
 
-1. Navigate to CloudFormation on your AWS account, in the North Virginia (`us-east-1`) region. You can do so [by clicking here](https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1). The stack **must** be created in the `us-east-1` region.
-2. Click **Create stack**, then select **With new resources**:
-    ![Creating a new stack](/images/cloud-cf-roles-create-stack.png)
-3. Under **Amazon S3 URL**, insert the following URL: `https://openops.s3.us-east-2.amazonaws.com/OpenOpsAppRoleStack.yml`, then click **Next**.
-    ![Specifying a template](/images/cloud-cf-roles-template.png)
-4. Give a name to the stack, such as `OpenOpsApp`. Enter the AWS account ID that was provided to you by OpenOps. This is the AWS Account ID that the OpenOps platform will use to access your account. Modify the permission sets if you like, then click **Next**.
-5. Acknowledge the creation of the necessary IAM roles, then click **Next**:
-    ![Capabilities](/images/cloud-cf-roles-capabilities.png)
-6. Click **Submit**. The stack will be created, including the `OpenOpsApp` role and the requested permissions.
+## AWS connections
 
-### Modification
+Generally the permissions directly correlates to whatever the user wants to do in their workflows. If they want to turn off EC2 instances, they need the EC2 StopInstance permission, etc.
+To create the actual AWS IAM user and access key , we need to point them to the relevant guide in AWS I imagine.
 
-You’re welcome to [download the stack](https://openops.s3.us-east-2.amazonaws.com/OpenOpsAppRoleStack.yml) and modify specific permissions according to your needs. Notice that some AWS components in the OpenOps workflows may not function properly as a result.
+![AWS connection](/images/access-aws-connection.png)
 
-### Support
+* AWS: access key ID, secret access key, default region, roles (assume role ARN, assume role external ID, account alias)
+* AWS Athena: see AWS
+* AWS CloudFormation: see AWS
+* AWS Compute Optimizer: see AWS
 
-With any questions or issues, please feel free to contact us via Slack or [email](mailto:support@openops.com).
+## Azure connections
+
+![Azure connection](/images/access-azure-connection.png)
+
+* Azure: Azure AD OAuth 2.0 (application (client) ID, client secret, directory (tenant) ID). The application (client) ID determines the permissions granted in the Azure Portal.
