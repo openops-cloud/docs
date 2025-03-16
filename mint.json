@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
+  "name": "OpenOps Documentation",
   "logo": {
     "dark": "/logo/dark.png",
     "light": "/logo/light.svg"
@@ -23,7 +23,7 @@
   ],
   "topbarCtaButton": {
     "name": "Get OpenOps",
-    "url": "https://openops.com"
+    "url": "https://www.openops.com"
   },
   "navigation": [
     {
@@ -79,7 +79,8 @@
     }
   ],
   "footerSocials": {
-    "github": "https://github.com/openops-cloud",
-    "linkedin": "https://www.linkedin.com/company/openops/"
+    "github": "https://github.openops.com",
+    "linkedin": "https://www.linkedin.com/company/openops/",
+    "slack": "https://slack.openops.com"
   }
 }
