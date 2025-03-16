@@ -1,0 +1,16 @@
+---
+title: 'Multi-Cloud Support'
+description: 'How to work with multiple cloud providers in OpenOps'
+icon: 'cloud'
+---
+
+OpenOps currently supports AWS and Azure, with Google Cloud support on the roadmap.
+
+If you're using multiple cloud providers, you can structure your workflows so that OpenOps provides automations across all of them. You can either combine actions related to multiple cloud providers in one workflow or have separate provider-specific workflows save findings to a central location, such as an OpenOps table.
+
+Using [OpenOps tables](/reporting-analytics/tables/), you can aggregate findings and recommendations across cloud providers into a single table, where you can track approval status or group potential savings by business unit.
+
+You can see how it works by using the two sample workflows for AWS and Azure that your OpenOps instance suggests in the **Overview** view:
+![Sample workflows for AWS and Azure](/images/multicloud-sample-workflows.png)
+
+These workflows collect recommendations from AWS Compute Optimizer and Azure Advisor, respectively, and then log the recommendations to a single preconfigured **Opportunities** table. If you're using multiple clouds, you can structure your workflows in a similar way.

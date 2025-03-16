@@ -1,0 +1,42 @@
+---
+title: 'Access Levels and Permissions'
+description: 'Understanding access to cloud resources in OpenOps'
+icon: 'lock'
+iconType: "solid"
+---
+
+Although some workflows can be performed without direct access to cloud resources, the power of automations that you build in OpenOps depends on the permissions that you assign. That said, you control which level of access to provide, as needed by the workflows that you build. One strategy is to start with providing OpenOps read-only permissions, and when you're ready to automate update operations, provide more permissions.
+
+Access to cloud resources in OpenOps is defined using "connections": sets of resource credentials. OpenOps provides a separate tab to list and create connections:
+
+![Connections](/images/access-connections.png)
+
+Each workflow can use one or more connections, including multiple connections per resource. For example, you can have one connection for read-only AWS access and a different connection for updates.
+
+You can set up connections in two ways:
+1. Upfront by going to the **Connections** tab and clicking **New Connection**. This opens a pop-up that lets you first select a connection type:
+    ![Connection types](/images/access-connection-types.png)
+2. While editing the workflow, in action properties, by opening the **Connection** dropdown and clicking **Create Connection**:
+    ![Creating a connection from workflow properties](/images/access-connection-from-workflow.png)
+
+## AWS connections
+
+A connection to AWS requires specifying your access key ID, secret access key, and the default region:
+
+![AWS connection](/images/access-aws-connection.png)
+
+You can [create an IAM user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html) in the AWS Management Console. When you do, you'll get an access key ID and a secret access key to enter in the AWS connection configuration form. The specific set of permissions you assign to the user depends on what you want to do in the workflows that will use the AWS connection. For example, if you want your workflow to turn off EC2 instances, assign the `ec2:StopInstances` permission as shown in [this guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_ec2_tag-owner.html).
+
+If your AWS account doesn't already have a default region, you can [set it in the AWS Management Console](https://docs.aws.amazon.com/awsconsolehelpdocs/latest/gsg/change-default-region.html) separately.
+
+If you have multiple AWS accounts and want one of them to define all the permissions that may be needed for workflows defined by [OpenOps templates](/workflow-management/workflow-templates/), consider installing the [OpenOpsApp AWS Role Stack](/cloud-access/aws-cf-role-stack/). Even if you don't, you can [download the stack](https://openops.s3.us-east-2.amazonaws.com/OpenOpsAppRoleStack.yml) and use it as a reference when configuring permissions for your workflows.
+
+Connections to **AWS Athena**, **AWS CloudFormation**, and **AWS Compute Optimizer** are configured in the same way as AWS connections.
+
+## Azure connections
+
+A connection to Azure requires specifying your application (client) ID, client secret, and directory (tenant) ID:
+
+![Azure connection](/images/access-azure-connection.png)
+
+To acquire these credentials, you need to register an application with Microsoft Entra ID (formerly Azure AD) as shown in [this guide](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app). After considering what tasks your workflows are expected to perform using your Azure connection, [assign permissions](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-configure-app-access-web-apis) accordingly.

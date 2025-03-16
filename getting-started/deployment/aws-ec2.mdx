@@ -1,0 +1,119 @@
+---
+title: 'AWS EC2 Deployment'
+description: 'How to deploy OpenOps on an AWS EC2 instance'
+icon: 'aws'
+---
+
+This guide explains how to install the OpenOps Docker Compose release on a newly created EC2 instance.
+
+It assumes you have appropriate permissions on an existing AWS account.
+
+## Initial deployment
+
+### Create a new EC2 instance
+
+1. On the EC2 home page, click **Launch Instance**:
+    ![Launch instance](/images/deploy-aws-launch-instance.png)
+2. Choose a name for your instance and configure the following settings:
+    * **Application and OS Images (Amazon Machine Image)**
+        - Choose **Ubuntu** as the instance image, as it simplifies Docker installation. Ubuntu Server 24.04 LTS was the latest available version when this guide was written.
+        - Keep **64-bit (x86)** as the instance architecture.
+    * **Instance Type**. The *t3.large* instance type provides decent performance. You can choose a different type according to your needs, but it's not recommended to select a size smaller than *t3.medium*.
+    * **Key Pair**. Creating a new SSH key pair is recommended but not mandatory.
+    * **Network Settings**. Allow SSH traffic from your own IP address:
+      ![Network settings](/images/deploy-aws-network-settings.png)
+    * **Configure Storage**. Choose **50GB** to ensure you have enough space for Docker images and databases.
+3. Launch the instance and navigate to it once it's created by clicking on the instance ID.
+    ![Instance launched](/images/deploy-aws-instance-launched.png)
+4. Configure the network settings and open the necessary ports. Under **Security**, click on the security group.
+    ![Security tab](/images/deploy-aws-security.png)
+    Click **Edit inbound rules**, then **Add rule**, and add two rules:
+    1. In the first rule, for **Type**, choose **HTTP**, and under **Source**, select **My IP**.
+    2. In the second rule, for **Type**, choose **SSH**. Click the text box next to **Source**, and select the prefix list that contains the words “ec2-instance-connect". The full name should be similar to `com.amazonaws.us-east-1.ec2-instance-connect`, depending on your region. This allows you to connect to the instance via AWS CloudShell.
+        ![Prefix lists](/images/deploy-aws-prefix-lists.png)
+    The final rules should look like this:
+    ![New inbound rules](/images/deploy-aws-inbound-rules.png)
+5. Click **Save rules** to finish the configuration.
+
+### Connect to the instance with CloudShell
+
+1. Navigate to your EC2 instance and click **Connect** to open an in-browser CloudShell session.
+    ![Connect](/images/deploy-aws-connect.png)
+    ![Connect to instance](/images/deploy-aws-connect-to-instance.png)
+2. Click **Connect** and wait for CloudShell to initialize.
+
+### Download OpenOps release files
+
+1. In CloudShell, create a new directory and download the release files:
+    ```shell
+    mkdir -p openops && cd openops && \
+    wget https://openops.s3.amazonaws.com/releases/0.1.5/openops-docker-compose-0.1.5.zip && \
+    python3 -m zipfile -e openops-docker-compose-0.1.5.zip . && cp --update=none .env.defaults .env
+    ```
+2. Update the application URL to use the instance’s public IP address:
+    ```shell
+    sed -i 's/http:\/\/localhost/http:\/\/'$(wget -qO - http://ipv4.myip.wtf/text)'/g' .env
+    ```
+
+Feel free to edit the `.env` file with *vim* or another editor according to your needs. It's highly recommended to change the default passwords.
+
+### Install Docker and start the containers
+
+1. Install Docker using Snap:
+    ```shell
+    sudo snap install docker
+    ```
+2. Pull the images and start the Docker containers:
+    ```shell
+    sudo COMPOSE_PARALLEL_LIMIT=4 docker compose pull -q && sudo docker compose up -d
+    ```
+    If you encounter a rate limit, rerun the pull command. Note that pulling images may take several minutes.
+
+You can now access the OpenOps application by navigating to the public IP address of your EC2 instance (e.g., `http://20.20.20.20`). The login credentials are configured in the `.env` file. If unchanged, the default username is `admin@openops.com`, and the password is `please-change-this-password-1`.
+
+## External databases
+
+To use external PostgreSQL or Redis databases, modify the relevant variables in the `.env` file. You can disable the corresponding containers by adding a profile in the `docker-compose.yml` file:
+![Disabling a profile](/images/deploy-aws-external-db.png)
+
+After making changes, restart the Docker Compose containers:
+```shell
+sudo docker compose down && sudo docker compose up -d
+```
+
+## TLS
+
+For production usage, it’s recommended to enable TLS (HTTPS). You can achieve this by adding an EC2 Load Balancer to serve traffic to your EC2 instance.
+
+Without TLS, cloud templates may not load properly when using the Safari browser.
+
+## Updating OpenOps to a newer version
+
+1. First, stop all running containers:
+    ```shell
+    sudo docker compose down
+    ```
+2. To update your OpenOps Docker Compose installation, unzip the new release into the same location where you initially installed it:
+    ```shell
+    wget https://openops.s3.amazonaws.com/releases/0.1.5/openops-docker-compose-0.1.5.zip && \
+    python3 -m zipfile -e openops-docker-compose-0.1.5.zip .
+    ```
+    (This code sample refers to a specific version. Don't forget to update it to the version you're installing.)
+3. Restart the application and fetch the new images:
+    ```shell
+    sudo COMPOSE_PARALLEL_LIMIT=4 docker compose pull -q && sudo docker compose up -d
+    ```
+
+### Updating from 0.1.4 to 0.1.5
+
+Version 0.1.5 introduces a new gateway container, *nginx*, to handle incoming traffic. This change requires updating several environment variables. You can either override the `.env` file entirely (`cp .env.default .env`) or update specific keys:
+```shell
+sed -i 's/http:\/\/tables/http:\/\/openops-tables/' .env
+sed -i 's/http:\/\/analytics/http:\/\/openops-analytics/' .env
+sed -i 's/:3001//' .env
+sed -i 's/:3002//' .env
+```
+
+## Support
+
+Feel free to contact support@openops.com if you have any questions or need help with the installation.

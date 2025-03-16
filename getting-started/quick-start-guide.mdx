@@ -1,0 +1,166 @@
+---
+title: 'Quick Start Guide'
+description: 'Get started with OpenOps in minutes'
+icon: 'rocket'
+---
+
+Here's how you can go from downloading the open source distribution of OpenOps to starting getting value out of your OpenOps deployment.
+
+## Deploy OpenOps on your local machine
+
+You don't need a beefy machine for a test deployment. A modern OS like Windows 11, macOS Big Sur or later, or Ubuntu 20.04+ will do (see [more on supported operating systems](/getting-started/system-requirements#operating-systems)).
+
+You'll also need Docker, so see [Docker requirements](/getting-started/system-requirements#docker) to make sure you have a compatible version of a Docker client.
+
+Once you know your machine meets the system requirements:
+1. Go to the [OpenOps Releases](https://github.com/openops-cloud/workflow-editor/releases) page on GitHub and download `docker-compose-release-{version}.zip` from the latest release.
+2. Unzip the file to a new directory with a semantic name: for example, `openops-installation`.
+3. Inside the directory, make a copy of the `.env.defaults` file and save it as `.env`.
+4. Open the `.env` file and find two variables that represent admin credentials: `OPS_OPENOPS_ADMIN_EMAIL` and `OPS_OPENOPS_ADMIN_PASSWORD`. Change the values of these variables.
+5. Make sure your Docker client such as Docker Desktop is running (if you're deploying on Linux, you don't need this).
+6. Inside the `openops-installation` directory, open a terminal and perform the following command to download Docker images:
+    ```shell
+    docker compose pull
+    ```
+    Wait until all images are pulled:
+    ![All images are pulled](/images/qsg-pulled.png)
+7. To launch OpenOps, run this in your terminal:
+    ```shell
+    docker compose up -d
+    ```
+    Wait until all volumes are created, and all containers are either `Healthy` or `Started`:
+    ![Containers and volumes are ready](/images/qsg-containers-volumes.png)
+
+## Open OpenOps in your browser
+
+Your OpenOps instance is now available at http://localhost/, so go ahead and open it in your browser:
+![First start of OpenOps](/images/qsg-first-start.png)
+
+You can now log in with the admin account credentials that you've updated in the `.env` file.
+
+## Look around
+
+After logging in, the first thing you'll see is the OpenOps **Overview** view:
+![Initial screen](/images/qsg-initial-screen.png)
+
+On the left, you can see a sidebar containing the main OpenOps navigation menu. In a fresh installation, the following views contain little content, but knowing they exist can be helpful:
+* **Workflows** will let you keep track of the workflows that you create.
+* **Runs** will keep a history of executing your workflows, indicating start time and status.
+* **Connections** will list all permissions you provide to OpenOps for various cloud providers and services, as well as let you create new ones.
+* **Tables** will store data collected by workflows, as well as any information you enter or import to use in your workflows.
+
+## Run a sample workflow
+
+Back in **Overview**, OpenOps suggests two sample beginner-level workflows to help you get a feel of the product. Let's use one of them to collect all available AWS Compute Optimizer recommendations for a variety of AWS resource types, and save the recommendations to an [OpenOps table](/reporting-analytics/tables/).
+
+Click **AWS sample workflow**:
+![AWS sample workflow](/images/qsg-aws-sample-workflow.png)
+
+When the workflow preview pop-up displays, click **Use template** in the top right corner:
+![AWS sample workflow - use template](/images/qsg-aws-workflow-preview.png)
+
+You will then see a workflow summary popup that tells you that the workflow requires a connection to AWS:
+![AWS sample workflow summary](/images/qsg-aws-workflow-connections.png)
+
+### Configure an AWS connection
+
+You could add the connection later, but let's do it now. Click **+ Add** alongside the required connection.
+![Create AWS connection](/images/qsg-aws-create-connection.png)
+
+In the AWS connection form, you need to enter three required parameters: **Access Key ID**, **Secret Access Key** and **Default Region**.
+
+To get an access key ID and a secret access key, [create an IAM user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html) in the AWS Management Console or use one of your existing IAM users. Make sure that your IAM user has the following permissions to run this workflow:
+
+```text
+ec2:Describe*
+sts:GetCallerIdentity
+organizations:Describe*
+organizations:List*
+compute-optimizer:Get*
+compute-optimizer:Describe*
+lambda:List*
+autoscaling:Describe*
+```
+
+If your AWS account doesn't already have a default region, you can [set it in the AWS Management Console](https://docs.aws.amazon.com/awsconsolehelpdocs/latest/gsg/change-default-region.html), and then enter it in the connection form.
+
+Once you're done, click **Save**.
+
+### Look around the workflow editor
+
+When the workflow summary popup displays again, this time with a connection defined, click **Create workflow**.
+
+The new workflow now displays in the workflow editor:
+![Workflow editor](/images/qsg-aws-workflow-editor.png)
+
+The steps of the workflow are visualized as a block diagram.
+
+The first step is a trigger: a schedule or event that initiates the workflow execution. In this sample workflow, the trigger schedules running the workflow every working day at 7AM UTC.
+
+All other steps are actions, and each action represents some kind of automation that the workflow performs.
+
+Feel free to click **Tree view** and **Notes** in the top menu bar to display a compact view of the workflow and a detailed description of what it does:
+![Tree view and notes](/images/qgs-aws-tree-view-and-notes.png)
+
+Explore the workflow by clicking on blocks that represent its steps. This will display properties of each step in the right pane of the workflow editor:
+![Step properties in the workflow editor](/images/qsg-aws-step-properties.png)
+
+### Test the workflow
+
+Before your workflow goes live, you need to test it. Testing the workflow runs it in full, so you can treat it as an on-demand run in addition to its scheduled runs.
+
+At the top of the workflow editor, above the trigger, there's a **Test workflow** button. However, right now it's grayed out, and if you hover over it, OpenOps will ask you to test your trigger first:
+![Test the trigger first](/images/qgs-aws-test-the-trigger-first.png)
+
+To test the trigger, click on its block, and when the trigger's properties pane opens, click **Load sample data** in the **Generate sample data** section. As soon as you do, OpenOps will display test results. It looks like it's all good so far:
+![Trigger test success](/images/qsg-aws-trigger-tested.png)
+
+Now, if you look back at the **Test workflow** button at the top of the workflow editor, you can see that it's now active, so go ahead and click it!
+
+OpenOps will take a few seconds to run the workflow, and when it finishes, you'll see the **Run Details** pane on the left of the workflow editor:
+![Run Details pane](/images/qsg-aws-run-details.png)
+
+This pane displays the status of each workflow step. If you click a step, you can see its inputs and outputs as JSON in the bottom part of the pane. As long as the status of each step is green, your workflow is ready to go, and you can publish it.
+
+### Publish the workflow
+
+To start running the workflow on schedule, you need to publish it.
+
+When testing, the workflow editor switches to read-only mode. To get back to editing mode, click **Edit** on the top right.
+
+Once back in the editing mode, the top-right button is now called **Publish**. Click it, and as soon as you do, your workflow is live! It will now run periodically on the schedule defined by its trigger.
+
+### See the results of your test run
+
+When you tested the workflow, it was a full on-demand run. Some of the workflow steps fetched AWS Compute Optimizer recommendations for various AWS resource types, and other steps recorded these recommendations to an OpenOps table. Let's see what's been recorded to the table.
+
+Click the book icon on the top left to show the sidebar. In the sidebar, click **Tables**:
+![Tables in the sidebar](/images/qsg-sidebar-tables.png)
+
+You'll see a list of all predefined tables under the heading **OpenOps dataset**. Click the **Opportunities** table.
+
+You're going to see a table that lists the saving opportunities that the workflow run revealed, including USD estimates:
+![Opportunities](/images/qsg-opportunities.png)
+
+## Get templates for your future workflows
+
+The sample AWS workflow that you've just tested and published provides just a quick glance of what OpenOps can do.
+
+In real FinOps scenarios, you would want your workflows to do more: for example, find owners of unused resources, request their decision on whether to delete or keep resources, and if they decide to delete, then execute IaC automations and create GitHub pull requests.
+
+Fortunately, OpenOps provides dozens of real-world FinOps templates that you can base your workflows on. To get hold of them, in the sidebar, click **Overview**. Then click **Explore templates** in the top-right menu bar to see the **Templates catalog**:
+![Templates catalog](/images/qsg-templates-catalog.png)
+
+By default, the catalog contains six templates. To view more, click **Explore more** and sign up for a free OpenOps Cloud account. As a result, the **Templates catalog** in your OpenOps installation will be extended to show all available templates:
+![OpenOps Templates Catalog after signing up with OpenOps Cloud](/images/templates-catalog-all-templates.png)
+
+You can click any template in the catalog to see its full description, a preview diagram visualizing the workflow steps defined in the template, and the integrations that the template uses:
+![CloudWatch log retention enforcement template](/images/template-log-retention.png)
+
+If you find a template useful, you can click **Use template** and create a workflow based on the template, just like you did earlier with the sample AWS workflow.
+
+## Join the OpenOps community
+
+We hope that you've appreciated what OpenOps can do for you to help automate your FinOps practices.
+
+As you continue to build new workflows, consider joining the [OpenOps community Slack](https://slack.openops.com/). By doing so, you'll get direct support from the OpenOps team, collaborate with other FinOps professionals, and receive help in building your workflows. You're also welcome to share your feedback to help shape the future of OpenOps.

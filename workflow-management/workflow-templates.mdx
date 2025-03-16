@@ -1,0 +1,36 @@
+---
+title: 'Workflow Templates'
+description: 'How to create automations from a library of pre-configured workflow templates'
+icon: 'puzzle-piece'
+---
+
+OpenOps provides a pre-made library of FinOps best-practice workflows, based on research and input from FinOps leaders across industries and verticals.
+
+The library, referred to as the **Templates catalog**, contains dozens of templates that provide ready-to-use recipes for anomaly management, workload and rate optimization across the following cloud services:
+* Amazon EC2, CloudWatch, EBS, CloudFront, RDS, and S3
+* Azure VM
+
+## Exploring templates
+
+To view the catalog, click **Explore templates** in the top-right menu bar in the **Overview** or **Workflows** section:
+![Explore Templates](/images/explore-templates.png)
+
+The catalog will open in an overlay:
+![OpenOps Templates Catalog before signing up with OpenOps Cloud](/images/templates-catalog.png)
+
+By default, the catalog contains six templates. To view more, click **Explore more** and sign up for a free OpenOps Cloud account. As a result, the **Templates catalog** in your OpenOps installation will be extended to show all available templates:
+![OpenOps Templates Catalog after signing up with OpenOps Cloud](/images/templates-catalog-all-templates.png)
+
+## Creating workflows based on templates
+
+When you click a template in the catalog, OpenOps displays its full description, a preview diagram visualizing the workflow steps defined in the template, and the integrations that the template uses:
+
+![CloudWatch log retention enforcement template](/images/template-log-retention.png)
+
+If you want to use the workflow defined in the template, click **Use template** in the top-right corner.
+
+OpenOps will then ask you to specify existing or create new connections to cloud services that are required for the selected template to work:
+
+![Explore Templates](/images/template-connections.png)
+
+You can set up the required connections now or later. When you click **Create workflow**, your workflow will open in the workflow editor, where you can [customize it to your liking](building-workflows).

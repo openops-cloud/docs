@@ -1,0 +1,29 @@
+---
+title: 'System Requirements'
+description: 'Hardware and software requirements for deploying OpenOps on-premises'
+icon: 'server'
+---
+
+The open source version of OpenOps is meant to be deployed on-premises and is distributed as a Docker Compose specification.
+
+## Hardware
+
+Hardware requirements vary depending on your use case. There are two primary groups of use cases:
+* **Exploring OpenOps and building automations**. For these purposes, 2 CPU cores, 8GB RAM, and 50GB storage should be sufficient.
+* **Production use and running your automations**. For this scenario, aim at 4 CPU cores, 16GB RAM, and 100GB storage.
+
+## Operating systems
+
+OpenOps can be deployed on the following operating systems:
+* **Linux**: Ubuntu 20.04 LTS or later, Debian 11 (Bullseye) or later, Fedora 35 or later.
+* **macOS**: macOS Big Sur (11.x) or later.
+* **Windows**: Windows 10 version 2004 (build 19041) or later, or Windows 11.
+
+## Docker
+
+OpenOps is distributed as a Docker Compose file. Here are Docker version requirements by operating system:
+* On Linux: **Docker Engine v20.10+ and Docker Compose v2.x**.
+* On macOS: **Docker Desktop 4.11 or later**. If you're running macOS on an Apple Silicon processor (M1 or M2), make sure that QEMU emulation is used in Docker Desktop.
+* On Windows: **Docker Desktop 4.11 or later**. Docker Desktop should be configured to use WSL 2 (check Docker Desktop settings under *General > Use the WSL 2 based engine*).
+
+If you're using an alternative Docker client such as OrbStack or Colima, make sure that the version of your Docker client includes Docker Engine v20.10+ and Docker Compose v2.x.

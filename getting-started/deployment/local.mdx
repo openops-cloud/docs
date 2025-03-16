@@ -1,0 +1,65 @@
+---
+title: 'Local Deployment'
+description: 'Deploy OpenOps on your local machine'
+icon: 'laptop-code'
+---
+
+This guide explains how to install the OpenOps docker-compose release on a local machine. Note that these settings are for testing purposes only and not for a production environment.
+
+## On macOS
+
+### Install Docker Desktop
+
+Follow [these instructions](https://docs.docker.com/desktop/setup/install/mac-install/) to install Docker Desktop.
+
+### Run docker compose
+
+1. Open a new Terminal window and run the following command to create a folder and download the OpenOps release files:
+    ```shell
+    mkdir -p openops && cd openops && \
+    curl -O https://openops.s3.amazonaws.com/releases/0.1.5/openops-docker-compose-0.1.5.zip && \
+    unzip openops-docker-compose-0.1.5.zip && cp -n .env.defaults .env
+   ```
+2. Pull the images and run docker compose. If you face a rate limit while downloading, run the command again.
+    ```shell
+    COMPOSE_PARALLEL_LIMIT=4 docker compose pull
+    docker compose up -d
+   ```
+
+You can now access the application by navigating to http://localhost. The login credentials are configured in the `.env` file, the default username is "admin@openops.com" and the default password is "please-change-this-password-1".
+
+
+## Using Azure CLI in workflows: running with local credentials
+
+It is possible to share your local session with the platform for local applications.
+To do this, you need to set two environment variables in the `.env` file under the installation folder:
+* `OPS_ENABLE_HOST_SESSION=true`: enables sharing of the host session with the platform container.
+* `HOST_AZURE_CONFIG_DIR="~/.azure"`: defines the path to the host machine's Azure configuration folder that will be shared with the platform container.
+
+## Updating your version
+
+First, stop the running containers:
+```shell
+sudo docker compose down
+```
+
+To update your OpenOps docker compose installation, unzip the new release into the same location where you initially installed it:
+```shell
+curl -O https://openops.s3.amazonaws.com/releases/0.1.5/openops-docker-compose-0.1.5.zip && \
+unzip -o openops-docker-compose-0.1.5.zip
+```
+
+You can then restart the application and fetch the new images:
+```shell
+COMPOSE_PARALLEL_LIMIT=4 docker compose pull -q && docker compose up -d
+```
+
+## Cloud Templates
+
+On localhost, cloud templates may not be able to load when using the Safari browser.
+
+## Support
+
+Feel free to contact support@openops.com if you have any questions or need help with the installation.
+
+
