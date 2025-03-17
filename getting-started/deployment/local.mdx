@@ -29,13 +29,6 @@ Follow [these instructions](https://docs.docker.com/desktop/setup/install/mac-in
 You can now access the application by navigating to http://localhost. The login credentials are configured in the `.env` file, the default username is "admin@openops.com" and the default password is "please-change-this-password-1".
 
 
-## Using Azure CLI in workflows: running with local credentials
-
-It is possible to share your local session with the platform for local applications.
-To do this, you need to set two environment variables in the `.env` file under the installation folder:
-* `OPS_ENABLE_HOST_SESSION=true`: enables sharing of the host session with the platform container.
-* `HOST_AZURE_CONFIG_DIR="~/.azure"`: defines the path to the host machine's Azure configuration folder that will be shared with the platform container.
-
 ## Updating your version
 
 First, stop the running containers:
@@ -58,7 +51,7 @@ COMPOSE_PARALLEL_LIMIT=4 docker compose pull -q && docker compose up -d
 
 On localhost, cloud templates may not be able to load when using the Safari browser.
 
-## Slack Approvals
+## Configuring Slack Approvals
 
 If you would like to run a workflow that uses Slack approvals, please follow the steps:
 1. Register and install [ngrok](https://ngrok.com/)
@@ -70,12 +63,22 @@ ngrok http http://localhost
 ![Copy the Forwarding address](/images/ngrok-public-address.png)
 4. Go to the OpenOps installation directory
 5. Inside the directory, make a copy of the `.env.defaults` file and save it as `.env`
-6. Open the file and set OPS_PUBLIC_URL to the Forwarding address
-![Set OPS_PUBLIC_URL](/images/ngrok-set-public-address.png)
+6. Open the file and set OPS_PUBLIC_URL to the Forwarding address you copied in step 3
+```shell
+OPS_PUBLIC_URL=https://2f91-62-77-75-198.ngrok-free.app
+```
 7. Restart the containers
 ```shell
 sudo docker compose restart
 ```
+
+## Using Azure CLI in workflows: running with local credentials
+
+It is possible to share your local session with the platform for local applications.
+To do this, you need to set two environment variables in the `.env` file under the installation folder:
+* `OPS_ENABLE_HOST_SESSION=true`: enables sharing of the host session with the platform container.
+* `HOST_AZURE_CONFIG_DIR="~/.azure"`: defines the path to the host machine's Azure configuration folder that will be shared with the platform container.
+
 
 ## Support
 
