@@ -16,7 +16,7 @@
 
 * If you're looking for the main open source repo that hosts the OpenOps project, visit [this link](https://github.openops.com) instead.
 
-* If you're looking to contribute, we welcome contributions to OpenOps\! See our [contributing guide](./CONTRIBUTING.md) for details.
+* If you're looking to contribute, we welcome contributions to OpenOps\! See our [contributing guide](https://github.com/openops-cloud/openops/blob/main/CONTRIBUTING.md) for details.
 
 ## **📄 License**
 
