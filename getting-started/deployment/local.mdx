@@ -58,6 +58,25 @@ COMPOSE_PARALLEL_LIMIT=4 docker compose pull -q && docker compose up -d
 
 On localhost, cloud templates may not be able to load when using the Safari browser.
 
+## Slack Approvals
+
+If you would like to run a workflow that uses Slack approvals, please follow the steps:
+1. Register and install [ngrok](https://ngrok.com/)
+2. Start ngrok 
+```shell
+ngrok http http://localhost
+```
+3. Copy the Forwarding address
+![Copy the Forwarding address](/images/ngrok-public-address.png)
+4. Go to the OpenOps installation directory
+5. Inside the directory, make a copy of the `.env.defaults` file and save it as `.env`
+6. Open the file and set OPS_PUBLIC_URL to the Forwarding address
+![Set OPS_PUBLIC_URL](/images/ngrok-set-public-address.png)
+7. Restart the containers
+```shell
+sudo docker compose restart
+```
+
 ## Support
 
 Feel free to contact support@openops.com if you have any questions or need help with the installation.
