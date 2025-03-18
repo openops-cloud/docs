@@ -23,7 +23,11 @@ Once you know your machine meets the system requirements:
     docker compose pull
     ```
     Wait until all images are pulled:
+    
     ![All images are pulled](/images/qsg-pulled.png)
+    > ℹ️ **Note**
+    >
+    > If you previously worked with AWS ECR, you might encounter an error of `pull access denied`. If that happens, please run `docker logout public.ecr.aws` to fix the faulty authentication.
 7. To launch OpenOps, run this in your terminal:
     ```shell
     docker compose up -d
