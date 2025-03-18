@@ -67,12 +67,12 @@ During the Ubuntu server installation, select docker to be added to the installa
     ```shell
     # edit .env file. You can use any other console text editor such as vim.
     nano .env
-    ```shell
+    ```
     Use Ctrl+W or the cursor buttons to navigate to the entry OPS_PUBLIC_URL
     Replace http://localhost with your domain or IP address, in this case http://192.168.1.50
     Ctrl+x, Y, and Enter to save the modified file.
 
-3. Pull the images and run docker compose. If you face a rate limit while downloading, run the command again.
+4. Pull the images and run docker compose. If you face a rate limit while downloading, run the command again.
     ```shell
     # download the docker volumes and images
     COMPOSE_PARALLEL_LIMIT=4 sudo docker compose pull
