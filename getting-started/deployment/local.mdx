@@ -28,6 +28,58 @@ Follow [these instructions](https://docs.docker.com/desktop/setup/install/mac-in
 
 You can now access the application by navigating to http://localhost. The login credentials are configured in the `.env` file, the default username is "admin@openops.com" and the default password is "please-change-this-password-1".
 
+## On Ubuntu Server 24.04
+
+### Install docker
+
+During the Ubuntu server installation, select docker to be added to the installation. Otherwise, follow the instructions [here](https://docs.docker.com/engine/install/ubuntu/).
+
+### Run docker compose
+
+1. Log in to your server and run the following commands to create a folder and download the OpenOps release files:
+    ```shell
+    # create and change directory
+    mkdir -p openops && cd openops
+    # download the release file
+    curl -O https://openops.s3.amazonaws.com/releases/0.2.0/openops-docker-compose-0.2.0.zip
+    # install unzip
+    sudo apt install unzip    
+    # decompress release file
+    unzip openops-docker-compose-0.2.0.zip
+    # copy the defaults to env without overwriting existing files
+    cp --update=none .env.defaults .env
+    ```
+2. Identify your own IP address
+    ```shell
+    # find IP address
+    ip -o -4 addr show | awk '{print $2, $4}'
+    ```
+    Identify your IP address. The output should look something like this
+    ```shell
+    lo 127.0.0.1/8 # loopback network interface - not here
+    enp1s0 192.168.1.50/24 # this looks more like it. We want this inet IP address without the subnet mask: 192.168.1.50
+    docker0 172.17.0.1/16 # docker network interface - not here
+    ```
+    In this case, the IP address is 192.168.1.50
+
+3. Update the local OPS_PUBLIC_URL
+    Important: change the .env **before** launching the application
+    ```shell
+    # edit .env file. You can use any other console text editor such as vim.
+    nano .env
+    ```
+    Use Ctrl+W or the cursor buttons to navigate to the entry OPS_PUBLIC_URL
+    Replace http://localhost with your domain or IP address, in this case http://192.168.1.50
+    Ctrl+x, Y, and Enter to save the modified file.
+
+4. Pull the images and run docker compose. If you face a rate limit while downloading, run the command again.
+    ```shell
+    # download the docker volumes and images
+    COMPOSE_PARALLEL_LIMIT=4 sudo docker compose pull
+    
+    # launch the application
+    sudo docker compose up -d
+   ```
 
 ## Updating your version
 
@@ -83,5 +135,3 @@ To do this, you need to set two environment variables in the `.env` file under t
 ## Support
 
 Feel free to contact support@openops.com if you have any questions or need help with the installation.
-
-
