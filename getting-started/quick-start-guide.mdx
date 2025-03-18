@@ -18,16 +18,13 @@ Once you know your machine meets the system requirements:
 3. Inside the directory, make a copy of the `.env.defaults` file and save it as `.env`.
 4. Open the `.env` file and find two variables that represent admin credentials: `OPS_OPENOPS_ADMIN_EMAIL` and `OPS_OPENOPS_ADMIN_PASSWORD`. Change the values of these variables.
 5. Make sure your Docker client such as Docker Desktop is running (if you're deploying on Linux, you don't need this).
-6. Log in to ECR:
-    ```shell
-    aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
-    ```
-7. Inside the `openops-installation` directory, open a terminal and perform the following command to download Docker images:
+6. Inside the `openops-installation` directory, open a terminal and perform the following command to download Docker images:
     ```shell
     docker compose pull
     ```
     Wait until all images are pulled:
     ![All images are pulled](/images/qsg-pulled.png)
+    NOTE: If you get an error `Error response from daemon: pull access denied`, please run `docker logout public.ecr.aws`.
 8. To launch OpenOps, run this in your terminal:
     ```shell
     docker compose up -d
