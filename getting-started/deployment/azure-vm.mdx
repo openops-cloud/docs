@@ -40,7 +40,7 @@ You’ll need relevant permissions to create a new VM, edit its networking setti
     ```shell
     mkdir -p openops && cd openops && \
     wget https://github.com/openops-cloud/openops/releases/download/0.2.0/docker-compose-release-0.2.0.zip && \
-    python3 -m zipfile -e openops-docker-compose-0.2.0.zip . && cp -n .env.defaults .env
+    python3 -m zipfile -e docker-compose-release-0.2.0.zip . && cp -n .env.defaults .env
     ```
 2. Edit the application URL to use the machine’s public IP address:
     ```shell
@@ -94,7 +94,7 @@ Without TLS, cloud templates may not load properly when using the Safari browser
 2. To update your OpenOps Docker Compose installation, unzip the new release into the same location where you initially installed it:
     ```shell
     cd openops && wget https://github.com/openops-cloud/openops/releases/download/0.2.0/docker-compose-release-0.2.0.zip && \
-    python3 -m zipfile -e openops-docker-compose-0.2.0.zip .
+    python3 -m zipfile -e docker-compose-release-0.2.0.zip .
     ```
     (This code sample refers to a specific version. Don't forget to update it to the version you're installing.)
 3. Restart the application and fetch the new images:
