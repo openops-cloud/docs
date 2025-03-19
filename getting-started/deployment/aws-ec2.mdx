@@ -47,8 +47,8 @@ It assumes you have appropriate permissions on an existing AWS account.
 1. In CloudShell, create a new directory and download the release files:
     ```shell
     mkdir -p openops && cd openops && \
-    wget https://github.com/openops-cloud/openops/releases/download/0.2.0/docker-compose-release-0.2.0.zip && \
-    python3 -m zipfile -e docker-compose-release-0.2.0.zip . && cp --update=none .env.defaults .env
+    wget https://github.com/openops-cloud/openops/releases/download/0.2.0/openops-dc-0.2.0.zip && \
+    python3 -m zipfile -e openops-dc-0.2.0.zip . && cp --update=none .env.defaults .env
     ```
 2. Update the application URL to use the instance’s public IP address:
     ```shell
@@ -95,8 +95,8 @@ Without TLS, cloud templates may not load properly when using the Safari browser
     ```
 2. To update your OpenOps Docker Compose installation, unzip the new release into the same location where you initially installed it:
     ```shell
-    wget https://github.com/openops-cloud/openops/releases/download/0.2.0/docker-compose-release-0.2.0.zip && \
-    python3 -m zipfile -e docker-compose-release-0.2.0.zip .
+    wget https://github.com/openops-cloud/openops/releases/download/0.2.0/openops-dc-0.2.0.zip && \
+    python3 -m zipfile -e openops-dc-0.2.0.zip .
     ```
     (This code sample refers to a specific version. Don't forget to update it to the version you're installing.)
 3. Restart the application and fetch the new images:

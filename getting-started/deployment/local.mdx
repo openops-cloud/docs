@@ -17,8 +17,8 @@ Follow [these instructions](https://docs.docker.com/desktop/setup/install/mac-in
 1. Open a new Terminal window and run the following command to create a folder and download the OpenOps release files:
     ```shell
     mkdir -p openops && cd openops && \
-    curl -O https://github.com/openops-cloud/openops/releases/download/0.2.0/docker-compose-release-0.2.0.zip && \
-    unzip docker-compose-release-0.2.0.zip && cp -n .env.defaults .env
+    curl -O https://github.com/openops-cloud/openops/releases/download/0.2.0/openops-dc-0.2.0.zip && \
+    unzip openops-dc-0.2.0.zip && cp -n .env.defaults .env
    ```
 2. Pull the images and run docker compose. If you face a rate limit while downloading, run the command again.
     ```shell
@@ -41,11 +41,11 @@ During the Ubuntu server installation, select docker to be added to the installa
     # create and change directory
     mkdir -p openops && cd openops
     # download the release file
-    curl -O https://github.com/openops-cloud/openops/releases/download/0.2.0/docker-compose-release-0.2.0.zip
+    curl -O https://github.com/openops-cloud/openops/releases/download/0.2.0/openops-dc-0.2.0.zip
     # install unzip
     sudo apt install unzip    
     # decompress release file
-    unzip docker-compose-release-0.2.0.zip
+    unzip openops-dc-0.2.0.zip
     # copy the defaults to env without overwriting existing files
     cp --update=none .env.defaults .env
     ```
@@ -90,8 +90,8 @@ sudo docker compose down
 
 To update your OpenOps docker compose installation, unzip the new release into the same location where you initially installed it:
 ```shell
-curl -O https://github.com/openops-cloud/openops/releases/download/0.2.0/docker-compose-release-0.2.0.zip && \
-unzip -o docker-compose-release-0.2.0.zip
+curl -O https://github.com/openops-cloud/openops/releases/download/0.2.0/openops-dc-0.2.0.zip && \
+unzip -o openops-dc-0.2.0.zip
 ```
 
 You can then restart the application and fetch the new images:
