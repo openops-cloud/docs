@@ -44,7 +44,7 @@ You’ll need relevant permissions to create a new VM, edit its networking setti
     ```
 2. Edit the application URL to use the machine’s public IP address:
     ```shell
-    sed -i 's/http:\/\/localhost/http:\/\/'$(wget -qO - https://ipv4.myip.wtf/text)'/g' .env
+    sed -i 's/http:\/\/localhost/http:\/\/'$(wget -4qO - https://ifconfig.io/ip)'/g' .env
     ```
 
 Feel free to edit the `.env` file with *vim* or another text editor according to your needs.

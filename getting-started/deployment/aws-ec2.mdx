@@ -52,7 +52,7 @@ It assumes you have appropriate permissions on an existing AWS account.
     ```
 2. Update the application URL to use the instance’s public IP address:
     ```shell
-    sed -i 's/http:\/\/localhost/http:\/\/'$(wget -qO - http://ipv4.myip.wtf/text)'/g' .env
+    sed -i 's/http:\/\/localhost/http:\/\/'$(wget -4qO - https://ifconfig.io/ip)'/g' .env
     ```
 
 Feel free to edit the `.env` file with *vim* or another editor according to your needs. It's highly recommended to change the default passwords.
