@@ -36,6 +36,7 @@
     {
       "group": "Getting Started with OpenOps",
       "pages": [
+        "getting-started/quick-start-guide",
         "getting-started/system-requirements",
         {
           "group": "Deploying OpenOps",
@@ -44,8 +45,7 @@
             "getting-started/deployment/aws-ec2",
             "getting-started/deployment/azure-vm"
           ]
-        },
-        "getting-started/quick-start-guide"
+        }
       ]
     },
     {
