@@ -31,4 +31,5 @@ OpenOps has a Slack community - feel free to join [here](https://slack.openops.c
 ## **📬 Contact**
 
 * Website: [https://openops.com](https://openops.com)
+* Slack: [https://slack.openops.com](https://slack.openops.com)
 * Email: [support@openops.com](mailto:support@openops.com)
