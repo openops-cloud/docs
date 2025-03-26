@@ -42,6 +42,8 @@ During the Ubuntu server installation, select docker to be added to the installa
     mkdir -p openops && cd openops
     # download the release file
     curl -OL https://github.com/openops-cloud/openops/releases/download/0.2.1/openops-dc-0.2.1.zip
+    # refresh package lists
+    sudo apt update
     # install unzip
     sudo apt install unzip    
     # decompress release file
