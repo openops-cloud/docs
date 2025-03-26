@@ -20,7 +20,7 @@ Once you know your machine meets the system requirements:
 5. Make sure your Docker client such as Docker Desktop is running (if you're deploying on Linux, you don't need this).
 6. Inside the `openops-installation` directory, open a terminal and perform the following command to download Docker images:
     ```shell
-    docker compose pull
+    COMPOSE_PARALLEL_LIMIT=4 docker compose pull
     ```
     Wait until all images are pulled:
     
