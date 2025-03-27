@@ -1,0 +1,124 @@
+---
+title: 'GCP Compute Engine Deployment'
+description: 'How to deploy OpenOps on a GCP Compute Engine instance'
+icon: 'gcp'
+---
+
+This guide explains how to install the OpenOps Docker Compose release on a newly created GCP Compute Engine VM instance.
+
+It assumes you have appropriate permissions on an existing Google Cloud Platform (GCP) project.
+
+## Initial deployment
+
+### Create a new VM instance
+
+1. In the Google Cloud Console, navigate to **Compute Engine** → **VM instances**.
+2. Click **Create Instance**.
+3. Enter a name for your virtual machine.
+4. Under **Machine configuration**, configure the following:
+    - **Region and zone**: Choose a region and zone close to your users (e.g., `us-east1-b`).
+    - **Series**: Choose any recommended series (e.g., **E2**) or another family you prefer.
+    - **Machine type**: Choose a machine size similar to **e2-standard-2** or larger. Avoid very small machines, as OpenOps may need additional CPU/RAM for running Docker containers smoothly.
+5. Under **Boot disk**:
+    - Click **Change**.
+    - Select **Ubuntu** as the operating system (Ubuntu 24.04 LTS if available, or a close alternative).
+    - Increase the **Size** to at least 50GB to accommodate Docker images and databases.
+    - Click **Select**.
+6. Under **Firewall**, check **Allow HTTP traffic**. This will automatically create a firewall rule to open port 80.
+7. Leave other settings as defaults (or adjust according to your preferences), then click **Create** to launch the VM.
+
+### Configure firewall for SSH and HTTP
+
+Depending on your project settings, a default firewall rule might already allow SSH access. By checking **Allow HTTP traffic** while creating the instance, HTTP (port 80) is also open. If you need to adjust or review these rules:
+
+1. In the **VPC network** menu, go to **Firewall**.
+2. Locate or create firewall rules for:
+    - **SSH** (TCP/22) from your IP or a limited source range.
+    - **HTTP** (TCP/80) for public access or your desired source range.
+
+### Connect to the instance
+
+1. Once your VM is running, go to the **VM instances** list.
+2. Click **SSH** next to your instance to open an in-browser terminal.
+
+### Download OpenOps release files
+
+1. In your SSH session, create a new directory and download the release files:
+    ```shell
+    mkdir -p openops && cd openops
+    wget https://github.com/openops-cloud/openops/releases/download/0.2.2/openops-dc-0.2.2.zip
+    python3 -m zipfile -e openops-dc-0.2.2.zip .
+    cp --update=none .env.defaults .env
+    ```
+2. Update the application URL to use the instance’s external IP address:
+    ```shell
+    EXTERNAL_IP=$(curl -4 -s ifconfig.co)
+    sed -i "s|http://localhost|http://$EXTERNAL_IP|g" .env
+    ```
+
+Feel free to edit the `.env` file with **vim** or another editor. It’s highly recommended to change the default passwords.
+
+### Install Docker and start the containers
+
+1. Install Docker (for Ubuntu):
+    ```shell
+    sudo apt-get update
+    sudo apt-get install -y docker.io
+    sudo systemctl enable docker
+    sudo systemctl start docker
+    ```
+2. Install Docker Compose (using `docker compose` plugin):
+    ```shell
+    sudo apt-get install -y docker-compose-plugin
+    ```
+3. Pull the images and start the Docker containers:
+    ```shell
+    sudo COMPOSE_PARALLEL_LIMIT=4 docker compose pull -q && sudo docker compose up -d
+    ```
+    If you encounter rate limits, rerun the pull command. Pulling images may take several minutes.
+
+You can now access the OpenOps application by navigating to the external IP address of your VM (e.g., `http://<YOUR_EXTERNAL_IP>`). The login credentials are configured in the `.env` file. If unchanged, the default username is `admin@openops.com`, and the password is `please-change-this-password-1`.
+
+## External databases
+
+To use external PostgreSQL or Redis databases, modify the relevant variables in the `.env` file. You can disable the corresponding containers by adding a profile in the `docker-compose.yml` file, for example:
+
+```yaml
+services:
+  postgres:
+    profiles: ["db"]
+```
+
+If you remove or disable the `db` profile in `.env` or in Docker Compose, that container won’t start. After making any changes, restart Docker Compose:
+
+```shell
+sudo docker compose down
+sudo docker compose up -d
+```
+
+## TLS
+
+For production usage, it’s recommended to serve the application over HTTPS. One way to achieve this on GCP is by using a HTTPS Load Balancer to terminate SSL/TLS and forward traffic to your VM. Alternatively, you can configure a TLS proxy or run a reverse proxy like Nginx with Certbot on your VM.
+
+Without TLS, some features (such as certain cloud templates) may not load properly in Safari.
+
+## Updating OpenOps to a newer version
+
+1. First, stop all running containers:
+    ```shell
+    sudo docker compose down
+    ```
+2. Download and unzip the newer release into the same location where you initially installed it:
+    ```shell
+    wget https://github.com/openops-cloud/openops/releases/download/0.2.2/openops-dc-0.2.2.zip
+    python3 -m zipfile -e openops-dc-0.2.2.zip .
+    ```
+    > Replace the version in the URL with the actual version you want to install.
+3. Restart the application and fetch the new images:
+    ```shell
+    sudo COMPOSE_PARALLEL_LIMIT=4 docker compose pull -q && sudo docker compose up -d
+    ```
+
+## Support
+
+Feel free to join our [Slack community](https://slack.openops.com) if you have any questions or need help with the installation.
