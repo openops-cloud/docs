@@ -11,7 +11,6 @@ It assumes you have appropriate permissions on an existing Google Cloud Platform
 ## Initial deployment
 
 ### Create a new VM instance
-![Create new instance](/images/deploy-gcp-configure-machine.png)
 1. In the Google Cloud Console, navigate to **Compute Engine** → **VM instances**.
 2. Click **Create Instance**.
 3. Enter a name for your virtual machine.
@@ -19,6 +18,7 @@ It assumes you have appropriate permissions on an existing Google Cloud Platform
     - **Region and zone**: Choose a region and zone close to your users (e.g., `us-east1-b`).
     - **Series**: Choose any recommended series (e.g., **E2**) or another family you prefer.
     - **Machine type**: Choose a machine size similar to **e2-standard-2** or larger. Avoid very small machines, as OpenOps may need additional CPU/RAM for running Docker containers smoothly.
+![Create new instance](/images/deploy-gcp-configure-machine.png)
 5. Under **OS and storage**:
     - Click **Change**.
     - Select **Ubuntu** as the operating system (Ubuntu 24.04 LTS if available, or a close alternative).
