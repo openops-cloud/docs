@@ -19,12 +19,12 @@ It assumes you have appropriate permissions on an existing Google Cloud Platform
     - **Region and zone**: Choose a region and zone close to your users (e.g., `us-east1-b`).
     - **Series**: Choose any recommended series (e.g., **E2**) or another family you prefer.
     - **Machine type**: Choose a machine size similar to **e2-standard-2** or larger. Avoid very small machines, as OpenOps may need additional CPU/RAM for running Docker containers smoothly.
-5. Under **Boot disk**:
+5. Under **OS and storage**:
     - Click **Change**.
     - Select **Ubuntu** as the operating system (Ubuntu 24.04 LTS if available, or a close alternative).
     - Increase the **Size** to at least 50GB to accommodate Docker images and databases.
     - Click **Select**.
-6. Under **Firewall**, check **Allow HTTP traffic**. This will automatically create a firewall rule to open port 80.
+6. Under **Networking**, check **Allow HTTP traffic**. This will automatically create a firewall rule to open port 80.
 7. Leave other settings as defaults (or adjust according to your preferences), then click **Create** to launch the VM.
 
 ### Configure firewall for SSH and HTTP
@@ -69,7 +69,9 @@ Feel free to edit the `.env` file with **vim** or another editor. It’s highly 
     ```
 2. Install Docker Compose (using `docker compose` plugin):
     ```shell
-    sudo apt-get install -y docker-compose-plugin
+    sudo mkdir -p /usr/local/lib/docker/cli-plugins/
+    sudo curl -SL https://github.com/docker/compose/releases/download/v2.24.6/docker-compose-linux-x86_64 -o /usr/local/lib/docker/cli-plugins/docker-compose
+    sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
     ```
 3. Pull the images and start the Docker containers:
     ```shell
