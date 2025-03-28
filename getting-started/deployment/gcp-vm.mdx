@@ -11,7 +11,7 @@ It assumes you have appropriate permissions on an existing Google Cloud Platform
 ## Initial deployment
 
 ### Create a new VM instance
-
+![Create new instance](/images/deploy-gcp-configure-machine.png)
 1. In the Google Cloud Console, navigate to **Compute Engine** → **VM instances**.
 2. Click **Create Instance**.
 3. Enter a name for your virtual machine.
@@ -24,7 +24,9 @@ It assumes you have appropriate permissions on an existing Google Cloud Platform
     - Select **Ubuntu** as the operating system (Ubuntu 24.04 LTS if available, or a close alternative).
     - Increase the **Size** to at least 50GB to accommodate Docker images and databases.
     - Click **Select**.
+![Change boot disk](/images/deploy-gcp-change-boot-disk.png)
 6. Under **Networking**, check **Allow HTTP traffic**. This will automatically create a firewall rule to open port 80.
+![Allow http traffic](/images/deploy-gcp-allow-http-traffic.png)
 7. Leave other settings as defaults (or adjust according to your preferences), then click **Create** to launch the VM.
 
 ### Configure firewall for SSH and HTTP
@@ -40,7 +42,7 @@ Depending on your project settings, a default firewall rule might already allow 
 
 1. Once your VM is running, go to the **VM instances** list.
 2. Click **SSH** next to your instance to open an in-browser terminal.
-
+![Connect to instance](/images/deploy-gcp-connect-to-instance.png)
 ### Download OpenOps release files
 
 1. In your SSH session, create a new directory and download the release files:
