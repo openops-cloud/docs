@@ -40,3 +40,11 @@ A connection to Azure requires specifying your application (client) ID, client s
 ![Azure connection](/images/access-azure-connection.png)
 
 To acquire these credentials, you need to register an application with Microsoft Entra ID (formerly Azure AD) as shown in [this guide](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app). After considering what tasks your workflows are expected to perform using your Azure connection, [assign permissions](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-configure-app-access-web-apis) accordingly.
+
+## Google Cloud connections
+
+A connection to Google Cloud Platform (GCP) requires creating a [GCP service account](https://cloud.google.com/iam/docs/service-account-overview) with permissions to use GCP services that you want OpenOps to interact with.
+
+![Google Cloud Platform connection](/images/access-gcp-connection.png)
+
+Once you have created a service account and exported a JSON service account key file, paste the contents of the file into the **Key file content** field, save the connection, and you're good to go.
