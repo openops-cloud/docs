@@ -1,6 +1,6 @@
 ---
 title: 'User Management'
-description: 'About user accounts to OpenOps'
+description: 'About user accounts in OpenOps'
 icon: 'users-gear'
 ---
 
@@ -12,7 +12,7 @@ The admin user account created this way has exactly one distinction: it can be u
 
 ## Creating new user accounts
 
-OpenOps doesn't currently provide UI for creating user accounts; instead, you can do it with two API calls.
+OpenOps doesn't currently provide a UI for creating user accounts; instead, you can do it with two API calls.
 
 The first API call is to sign in the admin user:
 
@@ -44,4 +44,4 @@ Content-Type: application/json
 
 ```
 
-The user account that you create this way will enable all operations in OpenOps except for creating new user accounts. Every time you do that, you'll still need an admin token.
+The user account that you create this way will be able to perform all operations in OpenOps except for creating new user accounts. Every time you do that, you'll still need an admin token.
