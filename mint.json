@@ -47,6 +47,7 @@
             "getting-started/deployment/gcp-vm"
           ]
         },
+        "getting-started/updating-openops",
         "getting-started/user-management"
       ]
     },

@@ -4,6 +4,8 @@ description: 'How to deploy OpenOps on Azure Virtual Machines'
 icon: 'microsoft'
 ---
 
+import UpdateLink from '/snippets/update-link.mdx';
+
 This guide explains how to install the OpenOps Docker Compose release on a newly created Azure VM.
 
 You’ll need relevant permissions to create a new VM, edit its networking settings, and set up required permissions for Cloud Shell.
@@ -85,22 +87,7 @@ For production usage, it’s recommended to enable TLS (HTTPS). You can achieve 
 
 Without TLS, cloud templates may not load properly when using the Safari browser.
 
-## Updating OpenOps to a newer version
-
-1. First, stop the running containers:
-    ```shell
-    sudo docker compose down
-    ```
-2. To update your OpenOps Docker Compose installation, unzip the new release into the same location where you initially installed it:
-    ```shell
-    cd openops && wget https://github.com/openops-cloud/openops/releases/download/0.2.2/openops-dc-0.2.2.zip && \
-    python3 -m zipfile -e openops-dc-0.2.2.zip .
-    ```
-    (This code sample refers to a specific version. Don't forget to update it to the version you're installing.)
-3. Restart the application and fetch the new images:
-    ```shell
-    sudo COMPOSE_PARALLEL_LIMIT=4 docker compose pull -q && sudo docker compose up -d
-    ```
+<UpdateLink/>
 
 ## Support
 
