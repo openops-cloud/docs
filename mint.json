@@ -45,7 +45,8 @@
             "getting-started/deployment/aws-ec2",
             "getting-started/deployment/azure-vm"
           ]
-        }
+        },
+        "getting-started/user-management"
       ]
     },
     {
