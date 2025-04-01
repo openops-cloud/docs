@@ -4,6 +4,8 @@ description: 'How to deploy OpenOps on a GCP Compute Engine instance'
 icon: 'google'
 ---
 
+import UpdateLink from '/snippets/update-link.mdx';
+
 This guide explains how to install the OpenOps Docker Compose release on a newly created GCP Compute Engine VM instance.
 
 It assumes you have appropriate permissions on an existing Google Cloud Platform (GCP) project.
@@ -106,22 +108,7 @@ For production usage, it’s recommended to serve the application over HTTPS. On
 
 Without TLS, some features (such as certain cloud templates) may not load properly in Safari.
 
-## Updating OpenOps to a newer version
-
-1. First, stop all running containers:
-    ```shell
-    sudo docker compose down
-    ```
-2. Download and unzip the newer release into the same location where you initially installed it:
-    ```shell
-    wget https://github.com/openops-cloud/openops/releases/download/0.2.2/openops-dc-0.2.2.zip
-    python3 -m zipfile -e openops-dc-0.2.2.zip .
-    ```
-    > Replace the version in the URL with the actual version you want to install.
-3. Restart the application and fetch the new images:
-    ```shell
-    sudo COMPOSE_PARALLEL_LIMIT=4 docker compose pull -q && sudo docker compose up -d
-    ```
+<UpdateLink/>
 
 ## Support
 

@@ -4,6 +4,8 @@ description: 'Deploy OpenOps on your local machine'
 icon: 'laptop-code'
 ---
 
+import UpdateLink from '/snippets/update-link.mdx';
+
 This guide explains how to install the OpenOps docker-compose release on a local machine. Note that these settings are for testing purposes only and not for a production environment.
 
 ## On macOS
@@ -45,7 +47,7 @@ During the Ubuntu server installation, select docker to be added to the installa
     # refresh package lists
     sudo apt update
     # install unzip
-    sudo apt install unzip    
+    sudo apt install unzip
     # decompress release file
     unzip openops-dc-0.2.2.zip
     # copy the defaults to env without overwriting existing files
@@ -78,28 +80,12 @@ During the Ubuntu server installation, select docker to be added to the installa
     ```shell
     # download the docker volumes and images
     COMPOSE_PARALLEL_LIMIT=4 sudo docker compose pull
-    
+
     # launch the application
     sudo docker compose up -d
    ```
 
-## Updating your version
-
-First, stop the running containers:
-```shell
-sudo docker compose down
-```
-
-To update your OpenOps docker compose installation, unzip the new release into the same location where you initially installed it:
-```shell
-curl -OL https://github.com/openops-cloud/openops/releases/download/0.2.2/openops-dc-0.2.2.zip && \
-unzip -o openops-dc-0.2.2.zip
-```
-
-You can then restart the application and fetch the new images:
-```shell
-COMPOSE_PARALLEL_LIMIT=4 docker compose pull -q && docker compose up -d
-```
+<UpdateLink/>
 
 ## Cloud Templates
 
@@ -109,7 +95,7 @@ On localhost, cloud templates may not be able to load when using the Safari brow
 
 If you would like to run a workflow that uses Slack approvals, please follow the steps:
 1. Download and create a free account in [ngrok](https://ngrok.com/)
-2. Start ngrok 
+2. Start ngrok
 ```shell
 ngrok http http://localhost
 ```
