@@ -52,7 +52,7 @@ Depending on your project settings, a default firewall rule might already allow 
     mkdir -p openops && cd openops
     wget https://github.com/openops-cloud/openops/releases/download/0.2.2/openops-dc-0.2.2.zip
     python3 -m zipfile -e openops-dc-0.2.2.zip .
-    cp --update=none .env.defaults .env
+    cp -u .env.defaults .env
     ```
 2. Update the application URL to use the instance’s external IP address:
     ```shell
