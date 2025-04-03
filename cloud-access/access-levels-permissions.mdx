@@ -39,7 +39,53 @@ A connection to Azure requires specifying your application (client) ID, client s
 
 ![Azure connection](/images/access-azure-connection.png)
 
-To acquire these credentials, you need to register an application with Microsoft Entra ID (formerly Azure AD) as shown in [this guide](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app). After considering what tasks your workflows are expected to perform using your Azure connection, [assign permissions](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-configure-app-access-web-apis) accordingly.
+If you don't already have these credentials, you can acquire them by creating an Azure service principal. There are two ways to do this: with the Azure CLI or the Azure Portal.
+
+### Creating an Azure service principal using the Azure CLI
+
+Run the following Azure CLI command to create an Azure application and a service principal with the "Contributor" role at the subscription level:
+
+```shell
+az ad sp create-for-rbac --name "SomeAppName"
+```
+
+If you'd rather assign a different role to the service principal, specify the role using the `--role` flag instead. For example, this command assigns the "Reader" role to the service principal:
+
+```shell
+az ad sp create-for-rbac --name "SomeAppName" --role "Reader"
+```
+
+Whichever role you choose, the command returns JSON output similar to the following:
+
+```json
+{
+  "appId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "displayName": "<SomeAppName>",
+  "password": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "tenant": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+}
+```
+
+Copy the values from the output into the respective fields in OpenOps connection properties:
+* `appId` to **Application (client) ID**
+* `password` to **Client Secret**
+* `tenant` to **Directory (tenant) ID**
+
+### Creating an Azure service principal using the Azure Portal
+
+1. From the Azure Portal home screen, go to **App registrations** and click **New registration** to create a new application:
+    ![Creating a new registration](/images/access-azure-portal-registrations.png)
+2. In the **Overview** section of the new application, you should now see the client ID and tenant ID. Copy these values into OpenOps.
+3. Go to the **Certificates & Secrets** submenu and create a new secret. Copy the secret to OpenOps now, as it will only be shown once.
+4. Go to the **Subscriptions** page and select a subscription for your new application's service principal.
+5. Under the selected subscription, click **Access control (IAM)** on the left-side menu bar. In the view that opens, click **Add**, then select **Add role assignment**:
+    ![Adding a role assignment](/images/access-azure-portal-sponsorships.png)
+6. In the **Role** step, select the role that you want your Azure connection to have. For a safe testing experience, use "Reader" or another read-only role. If you want to enable OpenOps to make changes to your Azure assets, choose "Contributor" or a more privileged role.
+7. In the **Members** step, click **Select members** and specify the name of your application. If your application does not appear in the dropdown immediately, search for it by name.
+    ![Assigning members to the selected role](/images/access-azure-portal-role-access.png)
+8. Click **Review + assign**.
+
+Your service principal is now ready to be used with your Azure connection in OpenOps.
 
 ## Google Cloud connections
 
