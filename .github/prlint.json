@@ -1,0 +1,17 @@
+{
+  "title": [
+    {
+      "pattern": "^[A-Z][a-z]+?\\s",
+      "message": "Your title must start with a capital letter, and a real word, e.g. \"Add GO support\""
+    },
+    {
+      "pattern": "^\\S+\\s+\\S+\\s+\\S+",
+      "message": "Your title must have at least three words"
+    },
+    {
+      "pattern": "^(?!\\S+ing )(?!\\S+ed )|Embed ",
+      "message": "Use imperative mood (i.e write \"Fix\", not \"Fixed\" or \"Fixing\")"
+    }
+  ]
+}
+
