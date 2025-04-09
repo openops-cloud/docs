@@ -85,6 +85,33 @@ During the Ubuntu server installation, select docker to be added to the installa
     sudo docker compose up -d
    ```
 
+## On Windows (with PowerShell)
+### Install Docker Desktop
+
+Follow [these instructions](https://docs.docker.com/desktop/setup/install/windows-install/) to install Docker Desktop.
+
+### Add a new folder for OpenOps
+
+`New-Item -ItemType Directory -Force -Path openops`
+
+`Set-Location openops`
+
+### Download the OpenOps release files
+```powershell
+Invoke-WebRequest -Uri "https://github.com/openops-cloud/openops/releases/download/0.2.4/openops-dc-0.2.4.zip" -OutFile "openops-dc-0.2.4.zip"
+Expand-Archive -Path "openops-dc-0.2.4.zip" -DestinationPath .
+if (-Not (Test-Path ".env")) {
+    Copy-Item ".env.defaults" ".env"
+}
+```
+
+### Run docker compose
+```powershell
+$env:COMPOSE_PARALLEL_LIMIT = "4"
+docker compose pull
+docker compose up -d
+```
+
 <UpdateLink/>
 
 ## Cloud Templates
