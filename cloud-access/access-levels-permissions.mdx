@@ -33,6 +33,23 @@ If you have multiple AWS accounts and want one of them to define all the permiss
 
 Connections to **AWS Athena**, **AWS CloudFormation**, and **AWS Compute Optimizer** are configured in the same way as AWS connections.
 
+### Connecting to multiple AWS accounts
+
+OpenOps supports two approaches for working with multiple AWS accounts.
+
+**If each AWS account is fully independent**, or you are not using IAM roles with cross-account trust, you can create a separate AWS connection for each account. In this case, each connection should include that account's access key ID, secret access key, and default region. You can then assign different connections to different workflow actions.
+
+**If you have a central AWS account that is allowed to assume IAM roles into other accounts** (e.g., a "payer" account managing access across linked "sub-accounts"), you can connect to all of them from a single OpenOps connection. To do this:
+
+1. In the AWS connection UI, enter the access key ID, secret access key, and default region for a user in the central account. This user must have permission to assume roles in the other accounts.
+2. In the **Roles** section, click **Add Item**.
+3. For each additional AWS account you want to connect to, specify:
+   * **Assume role ARN**: the Amazon resource name (ARN) of the IAM role to assume in this account (e.g., `arn:aws:iam::123456789012:role/OpenOpsExecutionRole`).
+   * **Assume role external ID**: a shared secret defined in the IAM role's trust policy. Leave this field blank if the role does not require an external ID.
+   * **Account alias**: a convenience label used to identify this account in your workflows (e.g., `dev`, `prod`, `billing`).
+
+You can add multiple entries in the **Roles** section to manage many accounts. When configuring a workflow, you'll be able to choose which account to use with each action.
+
 ## Azure connections
 
 A connection to Azure requires specifying your application (client) ID, client secret, and directory (tenant) ID:
