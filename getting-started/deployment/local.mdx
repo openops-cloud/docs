@@ -19,8 +19,8 @@ Follow [these instructions](https://docs.docker.com/desktop/setup/install/mac-in
 1. Open a new Terminal window and run the following command to create a folder and download the OpenOps release files:
     ```shell
     mkdir -p openops && cd openops && \
-    curl -OL https://github.com/openops-cloud/openops/releases/download/0.2.5/openops-dc-0.2.5.zip && \
-    unzip openops-dc-0.2.5.zip && cp -n .env.defaults .env
+    curl -OL https://github.com/openops-cloud/openops/releases/download/0.2.6/openops-dc-0.2.6.zip && \
+    unzip openops-dc-0.2.6.zip && cp -n .env.defaults .env
    ```
 2. Pull the images and run docker compose. If you face a rate limit while downloading, run the command again.
     ```shell
@@ -43,13 +43,13 @@ During the Ubuntu server installation, select docker to be added to the installa
     # create and change directory
     mkdir -p openops && cd openops
     # download the release file
-    curl -OL https://github.com/openops-cloud/openops/releases/download/0.2.5/openops-dc-0.2.5.zip
+    curl -OL https://github.com/openops-cloud/openops/releases/download/0.2.6/openops-dc-0.2.6.zip
     # refresh package lists
     sudo apt update
     # install unzip
     sudo apt install unzip
     # decompress release file
-    unzip openops-dc-0.2.5.zip
+    unzip openops-dc-0.2.6.zip
     # copy the defaults to env without overwriting existing files
     cp --update=none .env.defaults .env
     ```
@@ -98,8 +98,8 @@ Follow [these instructions](https://docs.docker.com/desktop/setup/install/window
 
 ### Download the OpenOps release files
 ```powershell
-Invoke-WebRequest -Uri "https://github.com/openops-cloud/openops/releases/download/0.2.5/openops-dc-0.2.5.zip" -OutFile "openops-dc-0.2.5.zip"
-Expand-Archive -Path "openops-dc-0.2.5.zip" -DestinationPath .
+Invoke-WebRequest -Uri "https://github.com/openops-cloud/openops/releases/download/0.2.6/openops-dc-0.2.6.zip" -OutFile "openops-dc-0.2.6.zip"
+Expand-Archive -Path "openops-dc-0.2.6.zip" -DestinationPath .
 if (-Not (Test-Path ".env")) {
     Copy-Item ".env.defaults" ".env"
 }
