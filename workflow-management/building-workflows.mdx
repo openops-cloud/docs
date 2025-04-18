@@ -62,9 +62,13 @@ You can choose a specific hour in a specific time zone and include weekends, or 
 
 Properties will vary with each type of trigger. For example, if the trigger is a new issue in Jira Cloud, you can specify a search query using Jira's JQL query language.
 
-## Adding an action
+## Adding actions
 
-As soon as you've created a trigger, the next and all subsequent steps of your workflow will be actions. Click the **+** icon under the trigger, and a pop-up menu will display a list of available action categories. Clicking a category lets you select a specific action:
+As soon as you've created a trigger, the next and all subsequent steps of your workflow will be actions.
+
+### Adding the first action
+
+Click the **+** icon under the trigger, and a pop-up menu will display a list of available action categories. Clicking a category lets you select a specific action:
 ![Selecting an action](/images/workflow-editor-select-action.png)
 
 OpenOps provides a total of [120+ actions](/workflow-management/actions/). One way to make sense of them is to classify them by intent:
@@ -83,6 +87,28 @@ The specific set of properties depends on the type of action. Here are a few gen
 * Actions that get data from or send data to external resources will require you to define a **connection**. For example, for AWS-related actions, you'd need to specify your access key ID, secret access key, and the default region. For a Slack connection, you'd specify your Slack instance's redirect URL, your client ID, and your client secret. One connection can be reused across multiple actions, and the OpenOps UI provides a separate view to list all connections you have defined so far.
 * Actions that process data obtained in previous steps will ask you to specify the input data. For details, see [Passing Data Between Workflow Steps](/workflow-management/passing-data).
 * Every action has two toggles: **Continue on Failure**, which lets the current action fail and continues the workflow regardless, and **Retry on Failure**, which retries the current action up to four times before giving up.
+
+### Adding more actions
+
+You can add more actions by clicking the **+** icon in the workflow graph. You don't need to add actions sequentially: the **+** button is available between existing actions, allowing you to add new actions in the middle of your workflow.
+
+If you need to reuse an action in multiple places, you can **copy/paste** it. This copies an action along with all its property values, saving you the trouble of reconfiguring it. For example, you can copy/paste actions between [conditional branches](/workflow-management/conditional-branching/) that often end up sharing a part of their containing actions.
+
+You can use the regular copy/paste keyboard shortcuts (**Ctrl+C/V** or **Cmd+C/V** on Mac). When you paste this way, the copied action is inserted after the action that is currently selected in the workflow graph.
+
+You can also use the right-click context menu of any action to copy it:
+![Copying an action](/images/workflow-editor-action-context-menu-copy.png)
+
+There are several ways to paste the copied action:
+* Select an action after which you want to insert the copied action, then right-click and choose **Paste after**.
+* Right-click the **+** icon between two existing actions and click **Paste here**:
+    ![Pasting an action between existing actions](/images/workflow-editor-action-context-menu-paste-here.png)
+* Right-click a loop action and select **Paste inside loop**. This inserts as the first action inside the loop:
+    ![Pasting an action inside a loop](/images/workflow-editor-action-context-menu-paste-inside-loop.png)
+* To paste as the first action after a loop or condition, right-click anywhere inside the loop or condition and click **Paste after selection**.
+* To paste as the last action in the workflow, right-click anywhere outside the workflow graph and click **Paste after selection**.
+
+Note that copy/paste only works within a single workflow — you can't copy an action from one workflow to another. Another limitation is that copy/paste is only available in OpenOps installations served via HTTPS.
 
 ## Testing a workflow
 
