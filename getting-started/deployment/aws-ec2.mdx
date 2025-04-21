@@ -56,7 +56,7 @@ It assumes you have appropriate permissions on an existing AWS account.
     wget https://github.com/openops-cloud/openops/releases/download/0.2.5/openops-dc-0.2.5.zip && \
     unzip -o openops-dc-0.2.5.zip && cp --update=none .env.defaults .env
     ```
-3. Update the application URL to use the instance’s public IP address:
+3. Update the application URL to use the instance's public IP address:
     ```shell
     sed -i 's/http:\/\/localhost/http:\/\/'$(wget -4qO - https://ifconfig.io/ip)'/g' .env
     ```
@@ -91,9 +91,9 @@ sudo docker compose down && sudo docker compose up -d
 
 For production usage, it’s recommended to enable TLS (HTTPS). You can achieve this by adding an EC2 Load Balancer to serve traffic to your EC2 instance, as shown in the next section on custom domains.
 
-Without TLS, cloud templates may not load properly when using the Safari browser.
+In addition to the security aspect, enabling TLS also ensures that [workflow templates](/workflow-management/workflow-templates/) load properly in all browsers.
 
-## Accessing OpenOps via a custom domain
+## Accessing OpenOps via a custom domain over TLS (HTTPS)
 
 If you want to access your OpenOps instance via a custom domain (e.g., `https://openops.your-company.com`) instead of its public IP address, you need to set up an AWS Application Load Balancer (ALB) with a valid TLS certificate from AWS Certificate Manager (ACM), then create a new DNS record and update your OpenOps configuration.
 
@@ -105,6 +105,8 @@ If you want to access your OpenOps instance via a custom domain (e.g., `https://
 4. Wait until the certificate status changes to **Issued**.
 
 ### Create an Application Load Balancer
+
+<Warning>Once the ALB is in place, all access should go through it — you can no longer use the EC2 public IP directly.</Warning>
 
 1. In the **EC2 > Load Balancers** section, click **Create Load Balancer**.
 2. Choose **Application Load Balancer**, and configure the following:
