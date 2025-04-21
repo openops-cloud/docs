@@ -56,7 +56,7 @@ It assumes you have appropriate permissions on an existing AWS account.
     wget https://github.com/openops-cloud/openops/releases/download/0.2.5/openops-dc-0.2.5.zip && \
     unzip -o openops-dc-0.2.5.zip && cp --update=none .env.defaults .env
     ```
-3. Update the application URL to use the instance's public IP address:
+3. Update the application URL to use the instance’s public IP address:
     ```shell
     sed -i 's/http:\/\/localhost/http:\/\/'$(wget -4qO - https://ifconfig.io/ip)'/g' .env
     ```
@@ -87,21 +87,22 @@ After making changes, restart the Docker Compose containers:
 sudo docker compose down && sudo docker compose up -d
 ```
 
-## Enabling TLS (HTTPS) access with a load balancer
+## TLS
 
-For production usage, it's recommended to enable TLS (HTTPS). Without TLS, cloud templates may not load properly when using the Safari browser.
+For production usage, it’s recommended to enable TLS (HTTPS). You can achieve this by adding an EC2 Load Balancer to serve traffic to your EC2 instance, as shown in the next section on custom domains.
 
-To secure OpenOps with TLS, it's recommended to place your EC2 instance behind an AWS Application Load Balancer (ALB). This setup uses AWS Certificate Manager (ACM) to handle TLS, and allows secure access via a DNS name, even without a [custom domain](#accessing-openops-via-a-custom-domain-over-tls).
+Without TLS, cloud templates may not load properly when using the Safari browser.
 
-<Warning>Once the ALB is in place, all access should go through it — you can no longer use the EC2 public IP directly.</Warning>
+## Accessing OpenOps via a custom domain
 
-### Request a TLS certificate in ACM
+If you want to access your OpenOps instance via a custom domain (e.g., `https://openops.your-company.com`) instead of its public IP address, you need to set up an AWS Application Load Balancer (ALB) with a valid TLS certificate from AWS Certificate Manager (ACM), then create a new DNS record and update your OpenOps configuration.
 
-1. Go to the [AWS Certificate Manager](https://console.aws.amazon.com/acm/home) (ACM).
-2. Request a public certificate for your EC2's public DNS name (e.g., `ec2-1-2-3-4.compute-1.amazonaws.com`).
-3. Choose **DNS validation** and wait for the certificate to be **Issued**.
+### Request an ACM certificate
 
-<Tip>Assign an elastic IP to your EC2 instance to prevent its IP from changing over time.</Tip>
+1. Open the [ACM console](https://console.aws.amazon.com/acm/home).
+2. Request a public certificate for your domain (e.g., `openops.your-company.com`).
+3. Validate the domain using DNS. If you're using Route 53, ACM can create the necessary records automatically.
+4. Wait until the certificate status changes to **Issued**.
 
 ### Create an Application Load Balancer
 
@@ -120,53 +121,13 @@ To secure OpenOps with TLS, it's recommended to place your EC2 instance behind a
 5. Register your EC2 instance as a target.
 6. Finish creating the ALB and wait for its status to become **Active**.
 
-Once setup is complete, you'll be able to access OpenOps securely at `https://your-alb-dns-name.elb.amazonaws.com`.
-
-### Update environment and restart
-
-1. SSH into your EC2 instance or use CloudShell.
-2. Update the public OpenOps URL in the `.env` file:
-    ```env
-    OPS_PUBLIC_URL=https://your-alb-dns-name.elb.amazonaws.com
-    ```
-3. Restart the containers:
-    ```bash
-    sudo docker compose down && sudo docker compose up -d
-    ```
-
-### Troubleshooting
-
-If you encounter a 503 error:
-* Ensure you restarted Docker containers after updating `.env`.
-* Confirm that the ALB's health check is configured with the correct path (`/api/v1/health`).
-* Make sure the EC2 instance's security group allows traffic from the ALB.
-* Look for more cues in the Nginx container logs:
-    ```bash
-    sudo docker compose logs nginx
-    ```
-
-For more troubleshooting guidance, see [this AWS troubleshooting guide](https://repost.aws/knowledge-center/alb-troubleshoot-503-errors).
-
-## Accessing OpenOps via a custom domain over TLS
-
-If you want to access your OpenOps instance via a custom domain (e.g., `https://openops.your-company.com`), you'll need to configure DNS and update your TLS certificate to cover that domain.
-
-Before you start, make sure to [enable HTTPS with a load balancer](#enabling-tls-https-access-with-a-load-balancer) as described above.
-
 ### Create a DNS record
 
 1. In **Route 53** (or your DNS provider), create a DNS record:
-    * **Name**: `openops.your-company.com`
-    * **Type**: `A` (Alias) or `CNAME`
-    * **Value**: The DNS name of your ALB (such as `https://your-alb-dns-name.elb.amazonaws.com`)
+    - **Name**: `openops.your-company.com`
+    - **Type**: `A` (Alias) or `CNAME`
+    - **Value**: The DNS name of your ALB (for example, `openops-alb-123456789.us-east-1.elb.amazonaws.com`)
 2. Save and wait for DNS changes to propagate.
-
-### Request an ACM certificate for your domain
-
-1. Go to the [AWS Certificate Manager](https://console.aws.amazon.com/acm/home) (ACM).
-2. Request a new certificate for `openops.your-company.com`.
-3. Validate the domain using DNS. If you're using Route 53, ACM can create the necessary records automatically.
-4. After validation, attach the certificate to your ALB via its HTTPS listener.
 
 ### Update OpenOps configuration
 
@@ -180,7 +141,18 @@ Before you start, make sure to [enable HTTPS with a load balancer](#enabling-tls
     sudo docker compose down && sudo docker compose up -d
     ```
 
-You can now access OpenOps at your custom domain using HTTPS.
+### Troubleshooting
+
+If you encounter a 503 error:
+- Ensure you restarted Docker containers after updating `.env`.
+- Confirm that the ALB's health check is configured with the correct path (`/api/v1/health`).
+- Make sure the EC2 instance's security group allows traffic from the ALB.
+- Look for more cues in the Nginx container logs:
+    ```bash
+    sudo docker compose logs nginx
+    ```
+
+For more troubleshooting guidance, see [this AWS troubleshooting guide](https://repost.aws/knowledge-center/alb-troubleshoot-503-errors).
 
 <UpdateLink/>
 
