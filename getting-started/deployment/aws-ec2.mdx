@@ -44,7 +44,17 @@ It assumes you have appropriate permissions on an existing AWS account.
     ![Connect to instance](/images/deploy-aws-connect-to-instance.png)
 2. Click **Connect** and wait for CloudShell to initialize.
 
-### Download OpenOps release files
+### Automatically install OpenOps
+
+Run the following command to install, configure and run OpenOps:
+
+```shell
+    curl -fsSL https://openops.sh/install | sh
+```
+
+### Manually install OpenOps
+
+Alternatively, you can follow the manual installation steps:
 
 1. Install the `unzip` utility:
     ```shell
@@ -60,16 +70,12 @@ It assumes you have appropriate permissions on an existing AWS account.
     ```shell
     sed -i 's/http:\/\/localhost/http:\/\/'$(wget -4qO - https://ifconfig.io/ip)'/g' .env
     ```
-
-Feel free to edit the `.env` file with *vim* or another editor according to your needs. It's highly recommended to change the default passwords.
-
-### Install Docker and start the containers
-
-1. Install Docker using Snap:
+4. Edit the `.env` file with *vim* or another editor according to your needs. It's highly recommended to change the default passwords.
+5. Install Docker using Snap:
     ```shell
     sudo snap install docker
     ```
-2. Pull the images and start the Docker containers:
+6. Pull the images and start the Docker containers:
     ```shell
     sudo COMPOSE_PARALLEL_LIMIT=4 docker compose pull -q && sudo docker compose up -d
     ```
