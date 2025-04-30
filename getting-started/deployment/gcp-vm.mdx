@@ -45,7 +45,19 @@ Depending on your project settings, a default firewall rule might already allow 
 1. Once your VM is running, go to the **VM instances** list.
 2. Click **SSH** next to your instance to open an in-browser terminal.
 ![Connect to instance](/images/deploy-gcp-connect-to-instance.png)
-### Download OpenOps release files
+
+
+### Automatically install OpenOps
+
+Run the following command to install, configure and run OpenOps:
+
+```shell
+    curl -fsSL https://openops.sh/install | sh
+```
+
+### Manually install OpenOps
+
+Alternatively, you can follow the manual installation steps:
 
 1. Install the `unzip` utility:
     ```shell
@@ -63,25 +75,21 @@ Depending on your project settings, a default firewall rule might already allow 
     EXTERNAL_IP=$(curl -4 -s ifconfig.co)
     sed -i "s|http://localhost|http://$EXTERNAL_IP|g" .env
     ```
-
-Feel free to edit the `.env` file with **vim** or another editor. It’s highly recommended to change the default passwords.
-
-### Install Docker and start the containers
-
-1. Install Docker (for Ubuntu):
+4. Edit the `.env` file with **vim** or another editor. It’s highly recommended to change the default passwords.
+5. Install Docker (for Ubuntu):
     ```shell
     sudo apt-get update
     sudo apt-get install -y docker.io
     sudo systemctl enable docker
     sudo systemctl start docker
     ```
-2. Install Docker Compose (using `docker compose` plugin):
+6. Install Docker Compose (using `docker compose` plugin):
     ```shell
     sudo mkdir -p /usr/local/lib/docker/cli-plugins/
     sudo curl -SL https://github.com/docker/compose/releases/download/v2.24.6/docker-compose-linux-x86_64 -o /usr/local/lib/docker/cli-plugins/docker-compose
     sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
     ```
-3. Pull the images and start the Docker containers:
+7. Pull the images and start the Docker containers:
     ```shell
     sudo COMPOSE_PARALLEL_LIMIT=4 docker compose pull -q && sudo docker compose up -d
     ```

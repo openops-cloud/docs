@@ -36,7 +36,17 @@ You’ll need relevant permissions to create a new VM, edit its networking setti
     [ -z "$BASH_VERSION" ] && exec bash
     ```
 
-### Download OpenOps release files
+### Automatically install OpenOps
+
+Run the following command to install, configure and run OpenOps:
+
+```shell
+    curl -fsSL https://openops.sh/install | sh
+```
+
+### Manually install OpenOps
+
+Alternatively, you can follow the manual installation steps:
 
 1. Install the `unzip` utility:
     ```shell
@@ -52,16 +62,12 @@ You’ll need relevant permissions to create a new VM, edit its networking setti
     ```shell
     sed -i 's/http:\/\/localhost/http:\/\/'$(wget -4qO - https://ifconfig.io/ip)'/g' .env
     ```
-
-Feel free to edit the `.env` file with *vim* or another text editor according to your needs.
-
-### Install Docker and start the containers
-
-1. Install Docker using Snap:
+4. Edit the `.env` file with *vim* or another editor according to your needs. It's highly recommended to change the default passwords.
+5. Install Docker using Snap:
     ```shell
     sudo snap install docker
     ```
-2. Pull the images and run the Docker containers (rerun the pull command if you encounter a rate limit):
+6. Pull the images and run the Docker containers (rerun the pull command if you encounter a rate limit):
     ```shell
     sudo COMPOSE_PARALLEL_LIMIT=4 docker compose pull && sudo docker compose up -d
     ```
