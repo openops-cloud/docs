@@ -87,15 +87,13 @@ After making changes, restart the Docker Compose containers:
 sudo docker compose down && sudo docker compose up -d
 ```
 
-## TLS
+## Configuring TLS (HTTPS) and a custom domain
 
-For production usage, it’s recommended to enable TLS (HTTPS). You can achieve this by adding an EC2 Load Balancer to serve traffic to your EC2 instance, as shown in the next section on custom domains.
+For production usage, it’s recommended to enable TLS (HTTPS). In addition to the security aspect, this also ensures that [workflow templates](/workflow-management/workflow-templates/) load properly in all browsers.
 
-In addition to the security aspect, enabling TLS also ensures that [workflow templates](/workflow-management/workflow-templates/) load properly in all browsers.
+TLS requires configuring a custom domain (e.g., `https://openops.your-company.com`) to serve your OpenOps installation instead of its public IP address.
 
-## Accessing OpenOps via a custom domain over TLS (HTTPS)
-
-If you want to access your OpenOps instance via a custom domain (e.g., `https://openops.your-company.com`) instead of its public IP address, you need to set up an AWS Application Load Balancer (ALB) with a valid TLS certificate from AWS Certificate Manager (ACM), then create a new DNS record and update your OpenOps configuration.
+To get a custom domain with TLS up and running, you need to set up an AWS Application Load Balancer (ALB) with a valid TLS certificate from AWS Certificate Manager (ACM), then create a new DNS record and update your OpenOps configuration.
 
 ### Request an ACM certificate
 
