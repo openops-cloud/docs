@@ -37,7 +37,7 @@ Connections to **AWS Athena**, **AWS CloudFormation**, and **AWS Compute Optimiz
 
 OpenOps supports two approaches for working with multiple AWS accounts.
 
-**If each AWS account is fully independent**, or you are not using IAM roles with cross-account trust, you can create a separate AWS connection for each account. In this case, each connection should include that account's access key ID, secret access key, and default region. You can then assign different connections to different workflow actions.
+If you prefer to work with each account separately, you can create an AWS connection for each account. In this case, each connection should include that account's access key ID, secret access key, and default region. You can then assign different connections to different workflow actions.
 
 If you want to access multiple accounts together (for example, create a workflow that finds EC2 instances in multiple accounts), you can connect to the accounts from a single OpenOps connection. One account would have to have an assume-role trust with the other accounts. It is common to use the "payer" account in an organization for that purpose. To configure the connection in OpenOps:
 
