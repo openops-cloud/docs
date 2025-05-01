@@ -39,7 +39,7 @@ OpenOps supports two approaches for working with multiple AWS accounts.
 
 **If each AWS account is fully independent**, or you are not using IAM roles with cross-account trust, you can create a separate AWS connection for each account. In this case, each connection should include that account's access key ID, secret access key, and default region. You can then assign different connections to different workflow actions.
 
-**If you have a central AWS account that is allowed to assume IAM roles into other accounts** (e.g., a "payer" account managing access across linked "sub-accounts"), you can connect to all of them from a single OpenOps connection. To do this:
+If you want to access multiple accounts together (for example, create a workflow that finds EC2 instances in multiple accounts), you can connect to the accounts from a single OpenOps connection. One account would have to have an assume-role trust with the other accounts. It is common to use the "payer" account in an organization for that purpose. To configure the connection in OpenOps:
 
 1. In the AWS connection UI, enter the access key ID, secret access key, and default region for a user in the central account. This user must have permission to assume roles in the other accounts.
 2. In the **Roles** section, click **Add Item**.
