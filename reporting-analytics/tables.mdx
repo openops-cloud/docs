@@ -73,7 +73,7 @@ A new table is created with three default fields:
 Feel free to remove the default fields and add new ones depending on your use case. When you click **+** in the table header to create a new field, you can choose from multiple field types:
 ![Table field types](/images/tables-add-fields.png)
 
-The first table field serves as the **row identifier**. If you intend to update rows after creating them, choose a specific type for the row identifier field - see [Creating vs updating rows in tables](#creating-vs-updating-rows-in-tables) below for more details.
+The first table field serves as the **row identifier**. If you intend to update rows after creating them, choose a specific type for the row identifier field — see [Creating vs updating rows in tables](#creating-vs-updating-rows-in-tables) below for more details.
 
 In the tree view on the left, if you click the options icon alongside your table's name, you can choose to rename, duplicate, export, or delete your table:
 ![Table options](/images/tables-table-options.png)
@@ -82,7 +82,7 @@ In the tree view on the left, if you click the options icon alongside your table
 
 When you create a row once and only read it later, your table can have fields with any type and in any order. However, if you want to update or delete table rows after initially creating them, you need to carefully choose the type of the **row identifier** field.
 
-The row identifier field is the first field in the table, it is used to find the specific row to update, and therefore needs to contain unique values. For example, in the built-in **Opportunities** table, the row identifier field is **ID** and has a UUID type, which guarantees that the values in this field are unique.
+The row identifier field is the first field in the table. It is used to find the specific row to update and therefore needs to contain unique values. For example, in the built-in **Opportunities** table, the row identifier field is **ID** and has a UUID type, which guarantees that the values in this field are unique.
 
 ### Setting up the row identifier field in a new table
 
@@ -108,7 +108,7 @@ When you use the **Add or Update Record** action, its properties pane contains a
 
 If you want to update an existing row, you need to provide a value for the **Primary Key Value** field. Often, a workflow contains a step that creates a new row in a table and then another step that updates the same row. In this case, you can use the output of the first step as the input for the second step.
 
-To do this, click **Primary Key Value** in action properties of the second step to show the **Data Selector** view, then expand the output of the first step that created the row, and select the row identifier field:
+To do this, click **Primary Key Value** in the action properties of the second step to show the **Data Selector** view, then expand the output of the first step that created the row, and select the row identifier field:
 ![Specifying the ID from a previous step](/images/tables-actions-id-from-previous-action.png)
 
 As a result, your second step will know to update the same row that was created in the first step.
