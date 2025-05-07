@@ -73,5 +73,46 @@ A new table is created with three default fields:
 Feel free to remove the default fields and add new ones depending on your use case. When you click **+** in the table header to create a new field, you can choose from multiple field types:
 ![Table field types](/images/tables-add-fields.png)
 
+The first table field serves as the **row identifier**. If you intend to update rows after creating them, choose a specific type for the row identifier field — see [Creating and updating rows in tables](#creating-vs-updating-rows-in-tables) below for more details.
+
 In the tree view on the left, if you click the options icon alongside your table's name, you can choose to rename, duplicate, export, or delete your table:
 ![Table options](/images/tables-table-options.png)
+
+## Creating and updating rows in tables
+
+In some scenarios, you create rows in OpenOps tables but never need to update or delete them. In these cases, the order and type of fields in your table don't really matter.
+
+More often, however, you want to update table rows at some point after initially creating them. In this case, you need to carefully choose the type of the **row identifier** field.
+
+The row identifier field is the first field in the table. It is used to find the specific row to update and therefore must contain unique values. For example, in the built-in **Opportunities** table, the row identifier field is **ID** and has a UUID type, which guarantees that the values in this field are unique.
+
+### Setting up the row identifier field in a new table
+
+When you create a new table, the default row identifier field, **Name**, has the type **Single line text**, which does not guarantee uniqueness of values. Here's how you can modify the row identifier field to ensure unique values:
+
+1. Click the arrow to the right of the field name in the table header and select **Edit field**:
+![Row identifier field](/images/tables-row-identifier-edit-field.png)
+2. In the **Edit field** popup, change the field type to **UUID**:
+![Changing the row identifier field type](/images/tables-row-identifier-uuid.png)
+3. Change the name of the field to **ID** or **Identifier** to reflect the field's new function.
+4. Click **Save**.
+
+As a result, OpenOps will generate a unique identifier for each row in the table, which you can use to update the row later.
+
+### Using the row identifier field in workflows
+
+When [building your workflows](/workflow-management/building-workflows/), you can use four table actions in your workflow steps:
+![Table actions](/images/tables-actions.png)
+
+Two of these actions may require a unique row identifier: **Add or Update Record** and **Delete Record**.
+
+When you use the **Add or Update Record** action, its properties pane contains a field called **Primary Key Value**, which is the row identifier. If you leave it empty, the action will create a new row in your table.
+
+If you want to update an existing row, you need to provide a value for the **Primary Key Value** field. Often, a workflow contains a step that creates a new row in a table and then another step that updates the same row. In this case, you can use the output of the first step as the input for the second step.
+
+To do this, click **Primary Key Value** in the action properties of the second step to show the **Data Selector** view, then expand the output of the first step that created the row, and select the row identifier field:
+![Specifying the ID from a previous step](/images/tables-actions-id-from-previous-action.png)
+
+As a result, your second step will know to update the same row that was created in the first step.
+
+When you use the **Delete Record** action, use the same approach to specify the row identifier value. This will ensure that the action deletes the correct row in your table.
