@@ -5,11 +5,11 @@ icon: 'laptop-code'
 ---
 
 import UpdateLink from '/snippets/update-link.mdx';
+import UpdateCredentials from '/snippets/env-update-credentials.mdx';
 
 This guide explains how to install the OpenOps docker-compose release on a local machine. Note that these settings are for testing purposes only and not for a production environment.
 
-
-## Installation script
+## Installing OpenOps automatically
 
 Run the following command to install, configure and run OpenOps:
 
@@ -17,40 +17,37 @@ Run the following command to install, configure and run OpenOps:
     curl -fsSL https://openops.sh/install | sh
 ```
 
-This script supports MacOS, Ubuntu and Windows (via WSL2 Ubuntu).
+This script supports macOS, Ubuntu and Windows (via WSL2 Ubuntu).
 
+## Installing OpenOps manually
 
-## On macOS
+Alternatively, you can follow the manual installation steps provided below for your operating system.
 
-### Install Docker Desktop
+### On macOS
 
-Follow [these instructions](https://docs.docker.com/desktop/setup/install/mac-install/) to install Docker Desktop.
-
-### Run docker compose
-
-1. Open a new Terminal window and run the following command to create a folder and download the OpenOps release files:
+1. Install Docker Desktop by following [these instructions](https://docs.docker.com/desktop/setup/install/mac-install/).
+2. Open a new terminal window and run the following command to create a folder and download the OpenOps release files:
     ```shell
     mkdir -p openops && cd openops && \
     curl -OL https://github.com/openops-cloud/openops/releases/download/0.2.7/openops-dc-0.2.7.zip && \
     unzip openops-dc-0.2.7.zip && cp -n .env.defaults .env
    ```
-2. Pull the images and run docker compose. If you face a rate limit while downloading, run the command again.
+3. <UpdateCredentials/>
+4. Pull the images and run `docker compose`:
     ```shell
     COMPOSE_PARALLEL_LIMIT=4 docker compose pull
     docker compose up -d
    ```
+    If you face a rate limit while downloading, run the command again.
 
-You can now access the application by navigating to http://localhost. The login credentials are configured in the `.env` file, the default username is "admin@openops.com" and the default password is "please-change-this-password-1".
+You can now access the application by navigating to http://localhost.
 
-## On Ubuntu Server 24.04
+### On Ubuntu Server
 
-### Install docker
+<Note>This procedure has been tested on Ubuntu Server 24.04.</Note>
 
-During the Ubuntu server installation, select docker to be added to the installation. Otherwise, follow the instructions [here](https://docs.docker.com/engine/install/ubuntu/).
-
-### Run docker compose
-
-1. Log in to your server and run the following commands to create a folder and download the OpenOps release files:
+1. During the Ubuntu Server installation, select Docker to be added to the installation. If you need to install Docker later, follow the instructions [here](https://docs.docker.com/engine/install/ubuntu/).
+2. Log in to your server and run the following commands to create a folder and download the OpenOps release files:
     ```shell
     # create and change directory
     mkdir -p openops && cd openops
@@ -65,72 +62,61 @@ During the Ubuntu server installation, select docker to be added to the installa
     # copy the defaults to env without overwriting existing files
     cp --update=none .env.defaults .env
     ```
-2. Identify your own IP address
+3. Identify your own IP address:
     ```shell
     # find IP address
     ip -o -4 addr show | awk '{print $2, $4}'
     ```
-    Identify your IP address. The output should look something like this
+    The output should look something like this:
     ```shell
     lo 127.0.0.1/8 # loopback network interface - not here
     enp1s0 192.168.1.50/24 # this looks more like it. We want this inet IP address without the subnet mask: 192.168.1.50
     docker0 172.17.0.1/16 # docker network interface - not here
     ```
-    In this case, the IP address is 192.168.1.50
-
-3. Update the local OPS_PUBLIC_URL
-    Important: change the .env **before** launching the application
-    ```shell
-    # edit .env file. You can use any other console text editor such as vim.
-    nano .env
-    ```
-    Use Ctrl+W or the cursor buttons to navigate to the entry OPS_PUBLIC_URL
-    Replace http://localhost with your domain or IP address, in this case http://192.168.1.50
-    Ctrl+x, Y, and Enter to save the modified file.
-
-4. Pull the images and run docker compose. If you face a rate limit while downloading, run the command again.
+    In this case, the IP address is `192.168.1.50`.
+4. <UpdateCredentials/>
+5. In the `.env` file, find the `OPS_PUBLIC_URL` variable and replace its value, `http://localhost`, with the IP address that you've previously identified. In our example, the IP address would be `http://192.168.1.50`.
+6. Pull the images and run `docker compose`:
     ```shell
     # download the docker volumes and images
     COMPOSE_PARALLEL_LIMIT=4 sudo docker compose pull
-
     # launch the application
     sudo docker compose up -d
    ```
+    If you face a rate limit while downloading, run the command again.
 
-## On Windows (with PowerShell)
-### Install Docker Desktop
+### On Windows (with PowerShell)
 
-Follow [these instructions](https://docs.docker.com/desktop/setup/install/windows-install/) to install Docker Desktop.
-
-### Add a new folder for OpenOps
-
-`New-Item -ItemType Directory -Force -Path openops`
-
-`Set-Location openops`
-
-### Download the OpenOps release files
-```powershell
-Invoke-WebRequest -Uri "https://github.com/openops-cloud/openops/releases/download/0.2.7/openops-dc-0.2.7.zip" -OutFile "openops-dc-0.2.7.zip"
-Expand-Archive -Path "openops-dc-0.2.7.zip" -DestinationPath .
-if (-Not (Test-Path ".env")) {
-    Copy-Item ".env.defaults" ".env"
-}
-```
-
-### Run docker compose
-```powershell
-$env:COMPOSE_PARALLEL_LIMIT = "4"
-docker compose pull
-docker compose up -d
-```
+1. Install Docker Desktop by following [these instructions](https://docs.docker.com/desktop/setup/install/windows-install/).
+2. Add a new folder for OpenOps in your PowerShell console:
+    ```powershell
+   New-Item -ItemType Directory -Force -Path openops
+   Set-Location openops
+    ```
+3. Download the OpenOps release files:
+    ```powershell
+    Invoke-WebRequest -Uri "https://github.com/openops-cloud/openops/releases/download/0.2.7/openops-dc-0.2.7.zip" -OutFile "openops-dc-0.2.7.zip"
+    Expand-Archive -Path "openops-dc-0.2.7.zip" -DestinationPath .
+    if (-Not (Test-Path ".env")) {
+        Copy-Item ".env.defaults" ".env"
+    }
+    ```
+4. <UpdateCredentials/>
+5. Run `docker compose`:
+    ```powershell
+    $env:COMPOSE_PARALLEL_LIMIT = "4"
+    docker compose pull
+    docker compose up -d
+    ```
+    If you face a rate limit while downloading, run the command again.
 
 <UpdateLink/>
 
-## Cloud Templates
+## Cloud templates
 
 On localhost, cloud templates may not be able to load when using the Safari browser.
 
-## Configuring Slack Approvals
+## Configuring Slack approvals
 
 If you would like to run a workflow that uses Slack approvals, please follow the steps:
 1. Download and create a free account in [ngrok](https://ngrok.com/)

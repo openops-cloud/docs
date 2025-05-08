@@ -6,6 +6,7 @@ icon: 'aws'
 
 import UpdateLink from '/snippets/update-link.mdx';
 import Disclaimer from '/snippets/non-production-disclaimer.mdx';
+import UpdateCredentials from '/snippets/env-update-credentials.mdx';
 
 <Disclaimer/>
 
@@ -73,7 +74,7 @@ Alternatively, you can follow the manual installation steps:
     ```shell
     sed -i 's/http:\/\/localhost/http:\/\/'$(wget -4qO - https://ifconfig.io/ip)'/g' .env
     ```
-4. Edit the `.env` file with *vim* or another editor according to your needs. It's highly recommended to change the default passwords.
+4. <UpdateCredentials/>
 5. Install Docker using Snap:
     ```shell
     sudo snap install docker
@@ -84,7 +85,7 @@ Alternatively, you can follow the manual installation steps:
     ```
     If you encounter a rate limit, rerun the pull command. Note that pulling images may take several minutes.
 
-You can now access the OpenOps application by navigating to the public IP address of your EC2 instance (e.g., `http://20.20.20.20`). The login credentials are configured in the `.env` file. If unchanged, the default username is `admin@openops.com`, and the password is `please-change-this-password-1`.
+You can now access the OpenOps application by navigating to the public IP address of your EC2 instance (e.g., `http://20.20.20.20`). If you did not update credentials in the `.env` file, the default username is `admin@openops.com` and the password is `please-change-this-password-1`.
 
 ## External databases
 

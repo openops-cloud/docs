@@ -6,6 +6,8 @@ icon: 'google'
 
 import UpdateLink from '/snippets/update-link.mdx';
 import Disclaimer from '/snippets/non-production-disclaimer.mdx';
+import UpdateCredentials from '/snippets/env-update-credentials.mdx';
+import RestartContainers from '/snippets/restart-containers.mdx';
 
 <Disclaimer/>
 
@@ -78,7 +80,7 @@ Alternatively, you can follow the manual installation steps:
     EXTERNAL_IP=$(curl -4 -s ifconfig.co)
     sed -i "s|http://localhost|http://$EXTERNAL_IP|g" .env
     ```
-4. Edit the `.env` file with **vim** or another editor. It’s highly recommended to change the default passwords.
+4. <UpdateCredentials/>
 5. Install Docker (for Ubuntu):
     ```shell
     sudo apt-get update
@@ -98,7 +100,7 @@ Alternatively, you can follow the manual installation steps:
     ```
     If you encounter rate limits, rerun the pull command. Pulling images may take several minutes.
 
-You can now access the OpenOps application by navigating to the external IP address of your VM (e.g., `http://<YOUR_EXTERNAL_IP>`). The login credentials are configured in the `.env` file. If unchanged, the default username is `admin@openops.com`, and the password is `please-change-this-password-1`.
+You can now access the OpenOps application by navigating to the external IP address of your VM (e.g., `http://<YOUR_EXTERNAL_IP>`). If you did not update credentials in the `.env` file, the default username is `admin@openops.com` and the password is `please-change-this-password-1`.
 
 ## External databases
 
@@ -110,12 +112,9 @@ services:
     profiles: ["db"]
 ```
 
-If you remove or disable the `db` profile in `.env` or in Docker Compose, that container won’t start. After making any changes, restart Docker Compose:
+If you remove or disable the `db` profile in `.env` or in Docker Compose, that container won’t start.
 
-```shell
-sudo docker compose down
-sudo docker compose up -d
-```
+<RestartContainers/>
 
 ## TLS
 

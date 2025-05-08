@@ -6,6 +6,8 @@ icon: 'microsoft'
 
 import UpdateLink from '/snippets/update-link.mdx';
 import Disclaimer from '/snippets/non-production-disclaimer.mdx';
+import UpdateCredentials from '/snippets/env-update-credentials.mdx';
+import RestartContainers from '/snippets/restart-containers.mdx';
 
 <Disclaimer/>
 
@@ -65,7 +67,7 @@ Alternatively, you can follow the manual installation steps:
     ```shell
     sed -i 's/http:\/\/localhost/http:\/\/'$(wget -4qO - https://ifconfig.io/ip)'/g' .env
     ```
-4. Edit the `.env` file with *vim* or another editor according to your needs. It's highly recommended to change the default passwords.
+4. <UpdateCredentials/>
 5. Install Docker using Snap:
     ```shell
     sudo snap install docker
@@ -75,7 +77,7 @@ Alternatively, you can follow the manual installation steps:
     sudo COMPOSE_PARALLEL_LIMIT=4 docker compose pull && sudo docker compose up -d
     ```
 
-You can now access the application by navigating to the public IP address of your virtual machine, for example, `http://20.20.20.20`. The login credentials are configured in the `.env` file. If you haven't changed them, the default username is `admin@openops.com`, and the password is `please-change-this-password-1`.
+You can now access the application by navigating to the public IP address of your virtual machine, for example, `http://20.20.20.20`. If you did not update credentials in the `.env` file, the default username is `admin@openops.com` and the password is `please-change-this-password-1`.
 
 ## Getting credentials for Azure connections
 
@@ -93,6 +95,8 @@ Before running OpenOps, log in to Azure from your VM:
 ```shell
 sudo az login
 ```
+
+<RestartContainers/>
 
 ## TLS
 
