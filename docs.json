@@ -1,0 +1,93 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "OpenOps Documentation",
+  "colors": {
+    "primary": "#0D9373",
+    "light": "#07C983",
+    "dark": "#0D9373"
+  },
+  "favicon": "/favicon.png",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Introduction to OpenOps",
+        "pages": [
+          "introduction/overview",
+          "introduction/features-and-benefits"
+        ]
+      },
+      {
+        "group": "Getting Started with OpenOps",
+        "pages": [
+          "getting-started/quick-start-guide",
+          "getting-started/system-requirements",
+          {
+            "group": "Deploying OpenOps",
+            "pages": [
+              "getting-started/deployment/local",
+              "getting-started/deployment/aws-ec2",
+              "getting-started/deployment/azure-vm",
+              "getting-started/deployment/gcp-vm"
+            ]
+          },
+          "getting-started/updating-openops",
+          "getting-started/user-management"
+        ]
+      },
+      {
+        "group": "Workflow Management",
+        "pages": [
+          "workflow-management/workflow-templates",
+          "workflow-management/building-workflows",
+          "workflow-management/actions",
+          "workflow-management/scheduling",
+          "workflow-management/passing-data",
+          "workflow-management/conditional-branching",
+          "workflow-management/human-in-the-loop",
+          "workflow-management/workflow-version-history-lifecycle",
+          "workflow-management/investigate-workflow-run"
+        ]
+      },
+      {
+        "group": "Cloud Access",
+        "pages": [
+          "cloud-access/access-levels-permissions",
+          "cloud-access/aws-cf-role-stack",
+          "cloud-access/multi-cloud"
+        ]
+      },
+      {
+        "group": "Reporting and Analytics",
+        "pages": [
+          "reporting-analytics/tables",
+          "reporting-analytics/data-visualization"
+        ]
+      }
+    ]
+  },
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.png"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Community",
+        "href": "https://slack.openops.com"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Get OpenOps",
+      "href": "https://www.openops.com"
+    }
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.openops.com",
+      "linkedin": "https://www.linkedin.com/company/openops/",
+      "slack": "https://slack.openops.com"
+    }
+  }
+}
