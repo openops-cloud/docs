@@ -8,6 +8,11 @@
     "dark": "#0D9373"
   },
   "favicon": "/favicon.png",
+  "seo": {
+    "metatags": {
+      "og:image": "/images/openops-opengraph.svg"
+  }
+},
   "navigation": {
     "groups": [
       {
