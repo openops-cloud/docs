@@ -1,0 +1,52 @@
+---
+title: 'LLM Connections'
+description: 'How to integrate OpenOps with an LLM provider of your choice'
+icon: 'robot'
+---
+
+OpenOps provides AI assistance by generating CLI commands and SQL queries using a large language model (LLM) of your choice.
+
+Whenever you work with an [action](/workflow-management/action) that requires writing a CLI command or SQL query, you'll see the **Generate with AI** command next to the relevant property in the action's properties pane:
+![Generate with AI](/images/access-llm-generate-with-ai.png)
+
+Every OpenOps instance can use one LLM connection at a time. It can be configured by any user and is shared among all users of the instance.
+
+To configure an LLM connection for your instance:
+1. In the OpenOps left sidebar, click the **Settings** icon at the bottom:
+![Settings icon](/images/access-llm-settings-icon.png)
+2. In the **Settings** view, click **AI**. The **AI providers** section will open:
+![AI providers](/images/access-llm-ai-providers.png)
+3. In the **AI providers** section, switch on the **Enable AI** toggle.
+4. Under **Choose your AI provider**, select one the supported LLM providers. Anthropic, Azure OpenAI, Cerebras, Cohere, Deep Infra, Deep Seek, Google Generative AI, Groq, Mistral, OpenAI, Perplexity, Together.ai, and xAI Grok are currently supported.
+5. Under **Model**, select one of the models that your LLM provider supports. The list of models is populated based on the LLM provider you selected in the previous step:
+![Selecting a model](/images/access-llm-models.png)
+
+
+
+> What's "OpenAI Compatible" on the list of providers?
+
+You can use the OpenAI Compatible provider to connect language models that implement the OpenAI API. (More details: https://ai-sdk.dev/providers/openai-compatible-providers)
+
+> Why is the list of models empty for some providers (examples: Azure OpenAI, OpenAI Compatible)?
+
+Those with an empty list are because the model can be customized and in that case we do not have a list to provide.
+
+> In what circumstances would the "Base URL" field be useful?
+
+For example, for  OpenAI Compatible the baseUrl is mandatory, the baseUrl is the prefix for the api calls. Also if the user wants to use some proxy, or if it's not using the default baseUrl from the model.
+
+> How can "Provider settings" and "Model settings" fields be used?
+
+Provider settings are settings that we use to create the AI provider
+Model settings are settings that we provide to the model when the user interacts with the LLM
+Taking OpenAi as example: https://ai-sdk.dev/providers/ai-sdk-providers/openai
+providerSettings -> createOpenAI
+modelSettings -> streamText
+
+
+
+
+Outcomes:
+1. Chat pane that can generate commands and queries for you
+2. AI assistant
+
