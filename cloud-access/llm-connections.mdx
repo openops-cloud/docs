@@ -1,0 +1,34 @@
+---
+title: 'LLM Connections'
+description: 'How to integrate OpenOps with an LLM provider of your choice'
+icon: 'robot'
+---
+
+OpenOps provides AI assistance by generating CLI commands and SQL queries using a large language model (LLM) of your choice.
+
+Whenever you work with an [action](/workflow-management/action) that requires writing a CLI command or SQL query, you'll see the **Generate with AI** command next to the relevant property in the action's properties pane:
+![Generate with AI](/images/access-llm-generate-with-ai.png)
+
+Every OpenOps instance can use one LLM connection at a time. It can be configured by any user and is shared among all users of the instance.
+
+To configure an LLM connection for your instance:
+1. In the OpenOps left sidebar, click the **Settings** icon at the bottom:
+![Settings icon](/images/access-llm-settings-icon.png)
+2. In the **Settings** view, click **AI**. The **AI providers** section will open:
+![AI providers](/images/access-llm-ai-providers.png)
+3. In the **AI providers** section, switch on the **Enable AI** toggle.
+4. Under **Choose your AI provider**, select one of the supported LLM providers. Anthropic, Azure OpenAI, Cerebras, Cohere, Deep Infra, Deep Seek, Google Generative AI, Groq, Mistral, OpenAI, OpenAI Compatible, Perplexity, Together.ai, and xAI Grok are currently supported.
+5. Under **Model**, select or enter one of the models that your LLM provider supports. The list of models is populated based on the LLM provider you selected in the previous step:
+![Selecting a model](/images/access-llm-models.png)
+6. Enter your API key for the selected LLM provider in the **API Key** field.
+7. (Optional) Enter a **Base URL** for the selected model. This is useful if you want to use a proxy or if your LLM provider does not use the default base URL. If you have selected _OpenAI Compatible_ as the provider, then you are required to enter the base URL.
+8. (Optional) Expand the **Advanced settings** section and use the **Provider settings** and **Model settings** fields to specify custom parameters as JSON. The JSON schema will vary depending on the chosen provider and model. For example, if you've selected OpenAI, you can use **Provider settings** for JSON that you'd normally pass to the `createOpenAI` function, and **Model settings** for JSON that you'd normally pass to the `streamText` function. For more details, see the [OpenAI documentation](https://platform.openai.com/docs/api-reference).
+9. Click **Save** to apply your changes.
+
+After you've configured the LLM connection, you can use it in any action that requires writing a CLI command or SQL query. For example, when you click **Generate with AI** in the properties pane of an action, use the AI chat window to prompt for the outcome of the target command or query, and your LLM will generate it for you:
+![AI chat window](/images/access-llm-chat.png)
+
+In addition, the AI assistant chat becomes available at the bottom of the left sidebar in every OpenOps view:
+![AI assistant](/images/access-llm-assistant.png)
+
+You can use it to ask questions about what you can do with OpenOps.
