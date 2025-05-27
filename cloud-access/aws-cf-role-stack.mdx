@@ -15,7 +15,7 @@ When creating the stack, you have the option to enable or disable certain permis
     ![Creating a new stack](/images/cloud-cf-roles-create-stack.png)
 3. Under **Amazon S3 URL**, insert the following URL: `https://openops.s3.us-east-2.amazonaws.com/OpenOpsAppRoleStack.yml`, then click **Next**.
     ![Specifying a template](/images/cloud-cf-roles-template.png)
-4. Give a name to the stack, such as `OpenOpsApp`. Enter the AWS account ID that was provided to you by OpenOps. This is the AWS Account ID that the OpenOps platform will use to access your account. Modify the permission sets if you like, then click **Next**.
+4. Give a name to the stack, such as `OpenOpsApp`. Enter an AWS account ID that you want OpenOps to use. Modify the permission sets if you like, then click **Next**.
 5. Acknowledge the creation of the necessary IAM roles, then click **Next**:
     ![Capabilities](/images/cloud-cf-roles-capabilities.png)
 6. Click **Submit**. The stack will be created, including the `OpenOpsApp` role and the requested permissions.
