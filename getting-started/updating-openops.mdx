@@ -14,7 +14,7 @@ To update OpenOps to a newer version:
     ```shell
     sudo docker compose down
     ```
-4. Download and unzip the newer release:
+4. Download and extract the new version:
     ```shell
     curl -OL https://github.com/openops-cloud/openops/releases/download/0.2.10/openops-dc-0.2.10.zip && \
     unzip -o openops-dc-0.2.10.zip
@@ -24,4 +24,7 @@ To update OpenOps to a newer version:
     ```shell
     sudo COMPOSE_PARALLEL_LIMIT=4 docker compose pull -q && sudo docker compose up -d
     ```
-
+6. (Optional) After confirming that the updated version is running correctly, you can safely clean up older Docker images, including OpenOps images:
+    ```shell
+    docker image prune -af
+    ```
