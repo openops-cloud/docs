@@ -5,6 +5,8 @@ icon: 'lock'
 iconType: "solid"
 ---
 
+import RestartContainers from '/snippets/restart-containers.mdx';
+
 Although some workflows can be performed without direct access to cloud resources, the power of automations that you build in OpenOps depends on the permissions that you assign. That said, you control which level of access to provide, as needed by the workflows that you build. One strategy is to start with providing OpenOps read-only permissions, and when you're ready to automate update operations, provide more permissions.
 
 Access to cloud resources in OpenOps is defined using "connections": sets of resource credentials. OpenOps provides a separate tab to list and create connections:
@@ -56,7 +58,9 @@ A connection to Azure requires specifying your application (client) ID, client s
 
 ![Azure connection](/images/access-azure-connection.png)
 
-If you don't already have these credentials, you can acquire them by creating an Azure service principal. There are two ways to do this: with the Azure CLI or the Azure Portal.
+If you don't already have these credentials, you can acquire them by creating an Azure service principal. There are two ways to do this: with the [Azure CLI](#creating-an-azure-service-principal-using-the-azure-cli) or the [Azure Portal](#creating-an-azure-service-principal-using-the-azure-portal).
+
+Alternatively, instead of creating a connection, you can use your [local Azure CLI credentials](#using-local-azure-cli-credentials).
 
 ### Creating an Azure service principal using the Azure CLI
 
@@ -104,10 +108,43 @@ Copy the values from the output into the respective fields in OpenOps connection
 
 Your service principal is now ready to be used with your Azure connection in OpenOps.
 
+### Using local Azure CLI credentials
+
+If you're running the Azure CLI on the same machine as your OpenOps installation, you can share your local Azure CLI session with OpenOps instead of creating a connection. To do this, open the `.env` file in your OpenOps installation directory and set the following environment variables:
+
+* `OPS_ENABLE_HOST_SESSION=true` to enable sharing of the host session with the OpenOps container.
+* `HOST_AZURE_CONFIG_DIR=/root/.azure` to define the path to the host machine's Azure configuration folder that will be shared with the OpenOps container.
+
+Before running OpenOps, log in to Azure using the CLI:
+```shell
+sudo az login
+```
+
+<RestartContainers/>
+
 ## Google Cloud connections
+
+There are two ways to connect to Google Cloud Platform (GCP) from OpenOps:
+* [Using a service account](#connecting-with-a-gcp-service-account)
+* [Using local GCP CLI credentials](#using-local-google-cloud-cli-credentials)
+
+### Connecting with a GCP service account
 
 A connection to Google Cloud Platform (GCP) requires creating a [GCP service account](https://cloud.google.com/iam/docs/service-account-overview) with permissions to use GCP services that you want OpenOps to interact with.
 
 ![Google Cloud Platform connection](/images/access-gcp-connection.png)
 
 Once you have created a service account and exported a JSON service account key file, paste the contents of the file into the **Key file content** field, save the connection, and you're good to go.
+
+### Using local Google Cloud CLI credentials
+
+If you're running the Google Cloud CLI on the same machine as your OpenOps installation, you can share your local CLI session with OpenOps instead of creating a connection. To do this, open the `.env` file in your OpenOps installation directory and set the following environment variables:
+* `OPS_ENABLE_HOST_SESSION=true` to enable sharing of the host session with the OpenOps container.
+* `HOST_CLOUDSDK_CONFIG=/root/.config/gcloud` to define the path to the host machine's Google Cloud configuration folder that will be shared with the OpenOps container.
+
+Before running OpenOps, log in to Google Cloud using the CLI:
+```shell
+sudo gcloud auth login
+```
+
+<RestartContainers/>
