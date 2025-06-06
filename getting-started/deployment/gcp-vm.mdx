@@ -4,10 +4,11 @@ description: 'How to deploy OpenOps on a GCP Compute Engine instance'
 icon: 'google'
 ---
 
-import UpdateLink from '/snippets/update-link.mdx';
+import AutoInstall from '/snippets/auto-install.mdx'
 import Disclaimer from '/snippets/non-production-disclaimer.mdx';
-import UpdateCredentials from '/snippets/env-update-credentials.mdx';
 import RestartContainers from '/snippets/restart-containers.mdx';
+import UpdateCredentials from '/snippets/env-update-credentials.mdx';
+import UpdateLink from '/snippets/update-link.mdx';
 
 <Disclaimer/>
 
@@ -54,11 +55,7 @@ Depending on your project settings, a default firewall rule might already allow 
 
 ### Automatically install OpenOps
 
-Run the following command to install, configure and run OpenOps:
-
-```shell
-    curl -fsSL https://openops.sh/install | sh
-```
+<AutoInstall/>
 
 ### Manually install OpenOps
 
