@@ -4,9 +4,10 @@ description: 'How to deploy OpenOps on an AWS EC2 instance'
 icon: 'aws'
 ---
 
-import UpdateLink from '/snippets/update-link.mdx';
+import AutoInstall from '/snippets/auto-install.mdx'
 import Disclaimer from '/snippets/non-production-disclaimer.mdx';
 import UpdateCredentials from '/snippets/env-update-credentials.mdx';
+import UpdateLink from '/snippets/update-link.mdx';
 
 <Disclaimer/>
 
@@ -50,11 +51,7 @@ It assumes you have appropriate permissions on an existing AWS account.
 
 ### Automatically install OpenOps
 
-Run the following command to install, configure and run OpenOps:
-
-```shell
-    curl -fsSL https://openops.sh/install | sh
-```
+<AutoInstall/>
 
 ### Manually install OpenOps
 
