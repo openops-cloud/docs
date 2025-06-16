@@ -4,8 +4,9 @@ description: 'Deploy OpenOps on your local machine'
 icon: 'laptop-code'
 ---
 
-import UpdateLink from '/snippets/update-link.mdx';
+import AutoInstall from '/snippets/auto-install.mdx'
 import UpdateCredentials from '/snippets/env-update-credentials.mdx';
+import UpdateLink from '/snippets/update-link.mdx';
 
 This guide explains how to install the OpenOps docker-compose release on a local machine. Note that these settings are for testing purposes only and not for a production environment.
 
@@ -13,11 +14,7 @@ Before following the instructions, make sure that your machine meets the [system
 
 ## Installing OpenOps automatically
 
-Run the following command to install, configure and run OpenOps:
-
-```shell
-    curl -fsSL https://openops.sh/install | sh
-```
+<AutoInstall/>
 
 This script supports macOS, Ubuntu and Windows (via WSL2 Ubuntu).
 

@@ -4,7 +4,19 @@ description: 'How to update OpenOps to a newer release'
 icon: 'rotate'
 ---
 
-To update OpenOps to a newer version:
+To update OpenOps to a newer version, you can either use an automatic update script, or perform a manual update.
+
+## Automatic update
+
+1. In the terminal, navigate to your OpenOps installation directory.
+2. Run the following command to install the latest available version of OpenOps in the same directory:
+    ```shell
+    curl -fsS https://openops.sh/install | OPENOPS_INSTALLATION_PATH="$PWD" ${SHELL:-/bin/sh}
+    ```
+The script will stop all running containers, pull the latest images, and restart OpenOps.
+
+## Manual update
+
 1. Install the `unzip` utility (if not already installed):
     ```shell
     sudo apt install unzip

@@ -4,9 +4,10 @@ description: 'How to deploy OpenOps on Azure Virtual Machines'
 icon: 'microsoft'
 ---
 
-import UpdateLink from '/snippets/update-link.mdx';
+import AutoInstall from '/snippets/auto-install.mdx'
 import Disclaimer from '/snippets/non-production-disclaimer.mdx';
 import UpdateCredentials from '/snippets/env-update-credentials.mdx';
+import UpdateLink from '/snippets/update-link.mdx';
 
 <Disclaimer/>
 
@@ -42,11 +43,7 @@ You’ll need relevant permissions to create a new VM, edit its networking setti
 
 ### Automatically install OpenOps
 
-Run the following command to install, configure and run OpenOps:
-
-```shell
-    curl -fsSL https://openops.sh/install | sh
-```
+<AutoInstall/>
 
 ### Manually install OpenOps
 
