@@ -25,15 +25,15 @@ You can set up connections in two ways:
 
 In OpenOps, AWS connections are used for actions that access **AWS** resources, as well as for **AWS Athena**, **AWS CloudFormation**, and **AWS Compute Optimizer** actions.
 
-You can use one of the two approaches to configure connections to your AWS resources:
+You can choose one of two approaches to configure connections to your AWS resources:
 1. [**Using access keys**](#connecting-using-access-keys): a pair consisting of an access key ID and a secret access key.
-2. [**Using an IAM role attached to the EC2 instance**](#connecting-using-an-iam-role-attached-to-your-ec2-instance) where OpenOps is hosted. This is a more secure approach that is recommended for production use. However, it requires that OpenOps is [hosted on an AWS EC2 instance](/getting-started/deployment/aws-ec2/).
+2. [**Using an IAM role attached to the EC2 instance**](#connecting-using-an-iam-role-attached-to-your-ec2-instance) where OpenOps is hosted. This is a more secure approach and is recommended for production use. However, it requires that OpenOps is [hosted on an AWS EC2 instance](/getting-started/deployment/aws-ec2/).
 
 Whichever approach you choose, you'll need to specify the default AWS region for the connection. If your AWS account doesn't already have a default region, you can [set it in the AWS Management Console](https://docs.aws.amazon.com/awsconsolehelpdocs/latest/gsg/change-default-region.html) separately.
 
 ### Connecting using access keys
 
-This approach requires specifying your access key ID, secret access key, and the default region in AWS connection properties:
+This approach requires specifying your access key ID, secret access key, and the default region in the AWS connection properties:
 
 ![AWS connection](/images/access-aws-connection.png)
 
@@ -43,7 +43,7 @@ If you have multiple AWS accounts and want one of them to define all the permiss
 
 ### Connecting using an IAM role attached to your EC2 instance
 
-If you host OpenOps [on an AWS EC2 instance](/getting-started/deployment/aws-ec2/), you can use an IAM role attached to the instance instead of access keys. This is a more secure approach that is recommended for production use of OpenOps.
+If you host OpenOps [on an AWS EC2 instance](/getting-started/deployment/aws-ec2/), you can use an IAM role attached to the instance instead of access keys. This is a more secure approach and is recommended for production use of OpenOps.
 
 Here's what you need to do:
 
