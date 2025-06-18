@@ -23,27 +23,44 @@ You can set up connections in two ways:
 
 ## AWS connections
 
-A connection to AWS requires specifying your access key ID, secret access key, and the default region:
+In OpenOps, AWS connections are used for actions that access **AWS** resources, as well as for **AWS Athena**, **AWS CloudFormation**, and **AWS Compute Optimizer** actions.
+
+You can use one of the two approaches to configure connections to your AWS resources:
+1. [**Using access keys**](#connecting-using-access-keys): a pair consisting of an access key ID and a secret access key.
+2. [**Using an IAM role attached to the EC2 instance**](#connecting-using-an-iam-role-attached-to-your-ec2-instance) where OpenOps is hosted. This is a more secure approach that is recommended for production use. However, it requires that OpenOps is [hosted on an AWS EC2 instance](/getting-started/deployment/aws-ec2/).
+
+Whichever approach you choose, you'll need to specify the default AWS region for the connection. If your AWS account doesn't already have a default region, you can [set it in the AWS Management Console](https://docs.aws.amazon.com/awsconsolehelpdocs/latest/gsg/change-default-region.html) separately.
+
+### Connecting using access keys
+
+This approach requires specifying your access key ID, secret access key, and the default region in AWS connection properties:
 
 ![AWS connection](/images/access-aws-connection.png)
 
 You can [create an IAM user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html) in the AWS Management Console. When you do, you'll get an access key ID and a secret access key to enter in the AWS connection configuration form. The specific set of permissions you assign to the user depends on what you want to do in the workflows that will use the AWS connection. For example, if you want your workflow to turn off EC2 instances, assign the `ec2:StopInstances` permission as shown in [this guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_ec2_tag-owner.html).
 
-If your AWS account doesn't already have a default region, you can [set it in the AWS Management Console](https://docs.aws.amazon.com/awsconsolehelpdocs/latest/gsg/change-default-region.html) separately.
-
 If you have multiple AWS accounts and want one of them to define all the permissions that may be needed for workflows defined by [OpenOps templates](/workflow-management/workflow-templates/), consider installing the [OpenOpsApp AWS Role Stack](/cloud-access/aws-cf-role-stack/). Even if you don't, you can [download the stack](https://openops.s3.us-east-2.amazonaws.com/OpenOpsAppRoleStack.yml) and use it as a reference when configuring permissions for your workflows.
 
-Connections to **AWS Athena**, **AWS CloudFormation**, and **AWS Compute Optimizer** are configured in the same way as AWS connections.
+### Connecting using an IAM role attached to your EC2 instance
+
+If you host OpenOps [on an AWS EC2 instance](/getting-started/deployment/aws-ec2/), you can use an IAM role attached to the instance instead of access keys. This is a more secure approach that is recommended for production use of OpenOps.
+
+Here's what you need to do:
+
+1. If your EC2 instance doesn't already have an IAM role attached, attach one by following [this guide](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/attach-iam-role.html).
+2. Open the `.env` file in your OpenOps installation directory. Inside the file, set the `OPS_AWS_ENABLE_IMPLICIT_ROLE` variable to `true`.
+3. <RestartContainers/>
+4. Create an AWS connection in OpenOps. In the connection properties, leave the **Access key ID** and **Secret access key** fields empty, and specify the default region. The connection will now automatically use the IAM role attached to your EC2 instance.
 
 ### Connecting to multiple AWS accounts
 
 OpenOps supports two approaches for working with multiple AWS accounts.
 
-If you prefer to work with each account separately, you can create an AWS connection for each account. In this case, each connection should include that account's access key ID, secret access key, and default region. You can then assign different connections to different workflow actions.
+If you prefer to work with each account separately, you can create an AWS connection for each account [using AWS access keys](#connecting-using-access-keys). In this case, each connection should include that account's access key ID, secret access key, and default region. You can then assign different connections to different workflow actions.
 
 If you want to access multiple accounts together (for example, create a workflow that finds EC2 instances in multiple accounts), you can connect to the accounts from a single OpenOps connection. One account would have to have an assume-role trust with the other accounts. It is common to use the "payer" account in an organization for that purpose. To configure the connection in OpenOps:
 
-1. In the AWS connection UI, enter the access key ID, secret access key, and default region for a user in the central account. This user must have permission to assume roles in the other accounts.
+1. In the AWS connection UI, configure a connection to your central account using [access keys](#connecting-using-access-keys) or [an IAM role attached to your EC2 instance](#connecting-using-an-iam-role-attached-to-your-ec2-instance). This account must have permission to assume roles in the other accounts.
 2. In the **Roles** section, click **Add Item**.
 3. For each additional AWS account you want to connect to, specify:
    * **Assume role ARN**: the Amazon resource name (ARN) of the IAM role to assume in this account (e.g., `arn:aws:iam::123456789012:role/OpenOpsExecutionRole`).
