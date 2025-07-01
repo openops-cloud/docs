@@ -1,0 +1,34 @@
+---
+title: 'AI Assistance'
+description: 'How to use AI assistance in OpenOps'
+icon: 'robot'
+---
+
+OpenOps can use a large language model (LLM) of your choice to help you with:
+* Generating CLI commands for AWS, Azure, and GCP
+* Writing SQL queries for AWS Athena, BigQuery, Snowflake, and Databricks
+
+You can do all this right inside the workflow editor, without switching context.
+
+## Enabling AI assistance
+
+OpenOps doesn't lock you into a specific AI model: instead, you **bring your own AI keys** and [connect them to OpenOps](/ai-assistance/llm-connections).
+
+Supported LLMs include OpenAI, Anthropic, Google Generative AI, Groq, Mistral, Perplexity, xAI Grok, and more.
+
+## Using AI assistance
+
+### Generating commands and queries
+
+Whenever you work with an [action](/workflow-management/actions) that requires writing a CLI command or SQL query, you'll see the **Generate with AI** command next to the relevant property in the action's properties pane:
+![Generate with AI](/images/access-llm-generate-with-ai.png)
+
+When you click **Generate with AI**, use the AI chat window to prompt for the outcome of the target command or query, and your LLM will generate it for you:
+![AI chat window](/images/access-llm-chat.png)
+
+### AI chatbot
+
+The AI assistant chat becomes available at the bottom of the left sidebar in every OpenOps view:
+![AI assistant](/images/access-llm-assistant.png)
+
+You can use it to ask questions about what you can do with OpenOps.
