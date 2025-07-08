@@ -8,6 +8,6 @@ on:
         required: true
       branch:
         type: string
-        description: Branch to update (default: main)
+        description: Branch to update
         default: "main"
         required: false
