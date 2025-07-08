@@ -1,0 +1,13 @@
+name: Update Release Version
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        type: string
+        description: Version to update to
+        required: true
+      branch:
+        type: string
+        description: Branch to update (default: main)
+        default: "main"
+        required: false
