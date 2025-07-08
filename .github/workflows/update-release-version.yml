@@ -11,3 +11,10 @@ on:
         description: Branch to update
         default: "main"
         required: false
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Placeholder step
+        run: echo "Workflow placeholder - no actual logic implemented yet" 
