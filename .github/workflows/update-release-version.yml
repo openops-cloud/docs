@@ -8,7 +8,7 @@ on:
         required: true
       branch:
         type: string
-        description: Branch to update
+        description: Base branch for the PR
         default: "main"
         required: false
 
