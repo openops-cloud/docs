@@ -24,10 +24,9 @@ jobs:
         with:
           ref: ${{ inputs.branch }}
 
-      - name: Update version references
+      - name: Update version in download URLs and filenames
         run: |
           VERSION=${{ inputs.version }}
-          # Update version in download URLs and filenames
           find . -name "*.md" -o -name "*.mdx" -type f -exec sed -i "s|https://github.com/openops-cloud/openops/releases/download/[^/]*/openops-dc-[^/]*\.zip|https://github.com/openops-cloud/openops/releases/download/$VERSION/openops-dc-$VERSION.zip|g" {} \;
 
       - name: Create branch and commit changes
@@ -41,7 +40,7 @@ jobs:
             echo "No changes detected. Skipping commit and PR creation."
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
-            echo "Version references updated successfully."
+            echo "Successfully updated version in download URLs and filenames."
             git commit -m "Update version to ${{ inputs.version }}"
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
