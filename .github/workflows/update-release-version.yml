@@ -63,5 +63,5 @@ jobs:
           **Changes:**
           - Updated version references in documentation files
           This PR was automatically created by the release workflow." \
-            --base main \
+            --base ${{ inputs.branch }} \
             --head "update-version-${{ inputs.version }}"
