@@ -59,8 +59,14 @@
         "pages": [
           "cloud-access/access-levels-permissions",
           "cloud-access/aws-cf-role-stack",
-          "cloud-access/multi-cloud",
-          "cloud-access/llm-connections"
+          "cloud-access/multi-cloud"
+        ]
+      },
+      {
+        "group": "AI Assistance",
+        "pages": [
+          "ai-assistance/overview",
+          "ai-assistance/llm-connections"
         ]
       },
       {
@@ -95,5 +101,11 @@
       "linkedin": "https://www.linkedin.com/company/openops/",
       "slack": "https://slack.openops.com"
     }
+  },
+  "redirects": [
+  {
+    "source": "cloud-access/llm-connections",
+    "destination": "ai-assistance/llm-connections"
   }
+]
 }
