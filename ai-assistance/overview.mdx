@@ -14,13 +14,13 @@ You can do all this right inside the workflow editor, without switching context.
 
 ## Enabling AI assistance
 
-OpenOps doesn't lock you into a specific AI model: instead, you **bring your own AI keys** and [connect them to OpenOps](/ai-assistance/llm-connections).
+OpenOps doesn't lock you into a specific AI model. Instead, you **bring your own AI keys** and [connect them to OpenOps](/ai-assistance/llm-connections).
 
 Supported LLMs include OpenAI, Anthropic, Google Generative AI, Groq, Mistral, Perplexity, xAI Grok, and more.
 
 ## Using AI assistance
 
-AI assistance in OpenOps is available in two main forms: the AI assistant chat where you ask free-form questions, and the **Generate with AI** command that helps you generate commands, queries, and code snippets.
+AI assistance in OpenOps is available in two main forms: the AI assistant chat, where you ask free-form questions, and the **Generate with AI** command, which helps you generate commands, queries, and code snippets.
 
 ### AI assistant chat
 
@@ -28,15 +28,15 @@ Once enabled, the AI assistant chat becomes available in sidebars in every OpenO
 ![AI assistant](/images/access-llm-assistant.png)
 
 You can use it to ask a variety of questions about OpenOps, your cloud resources, and FinOps in general, such as:
-* "What can I do in OpenOps and how to use its [features](/introduction/features-and-benefits/)?"
-* "How to [create a workflow](/workflow-management/building-workflows/) that does what I want to achieve?"
+* "What can I do in OpenOps and how do I use its [features](/introduction/features-and-benefits/)?"
+* "How do I [create a workflow](/workflow-management/building-workflows/) that does what I want to achieve?"
 * "What [actions](/workflow-management/actions/) and [connections](/cloud-access/access-levels-permissions/) are used in workflows in my installation?"
-* "What are the recent trends in OpenOps [workflow runs](/workflow-management/investigate-workflow-run/) and are there any anomalies?"
-* "Why has a specific workflow started to fail and why hasn't it failed before?"
-* "What kind of data does a specific [OpenOps table](/reporting-analytics/tables/) do and what workflows use it?"
+* "What are the recent trends in OpenOps [workflow runs](/workflow-management/investigate-workflow-run/), and are there any anomalies?"
+* "Why has a specific workflow started to fail, and why hadn't it failed before?"
+* "What kind of data does a specific [OpenOps table](/reporting-analytics/tables/) contain, and what workflows use it?"
 * "What are the recent trends in the FinOps community?"
 
-To provide in-depth answers about your OpenOps installation, the AI assistant takes advantage of OpenOps' MCP server that is enabled by default.
+To provide in-depth answers about your OpenOps installation, the AI assistant takes advantage of the OpenOps MCP server, which is enabled by default.
 
 It can also work with the Amazon Cost MCP server, enabling you to ask questions about your AWS expenses like "How much did I spend on EC2 last month?". However, you need to explicitly enable OpenOps to access the Amazon Cost MCP server. See [LLM Connections](/ai-assistance/llm-connections) for how to connect.
 
@@ -45,16 +45,14 @@ It can also work with the Amazon Cost MCP server, enabling you to ask questions 
 Whenever you work with an [action](/workflow-management/actions) that requires writing a CLI command or SQL query, you'll see the **Generate with AI** command next to the relevant property in the action's properties pane:
 ![Generate with AI](/images/access-llm-generate-with-ai.png)
 
-When you click **Generate with AI**, use the AI chat window to prompt for the outcome of the target command or query, and your LLM will generate it for you:
+When you click **Generate with AI**, use the AI chat window to describe the outcome you want the command or query to achieve, and your LLM will generate it for you:
 ![AI chat window](/images/access-llm-chat.png)
 
 ### Generating code steps
 
-When existing no-code actions are not a good fit for your workflow, you can use AI assistance to generate JavaScript code for custom code steps.
+When existing no-code actions aren't a good fit for your workflow, you can use AI assistance to generate JavaScript code for custom code steps.
 
-In the properties pane of your **Code** step, click **Generate with AI**. When the AI chat window opens, enter a prompt, providing details about the task you want to accomplish. The AI will generate a code snippet that respects the format that the code step expects. Click **Use code** to insert the generated code into the step's **Source Code** field:
-
+In the properties pane of your **Code** step, click **Generate with AI**. When the AI chat window opens, enter a prompt with details about the task you want to accomplish. The AI will generate a code snippet that respects the format expected by the code step. Click **Use code** to insert the generated code into the step's **Source Code** field:
 ![Generate code steps with AI](/images/access-llm-code-step-with-ai.png)
 
-Test the step to ensure that the generated code works as expected. If it doesn't on the first try, you can refine your prompt, explicitly provide the output of the previous step, and generate a new code snippet.
-
+Test the step to ensure the generated code works as expected. If it doesn't on the first try, you can refine your prompt, explicitly provide the output of the previous step, and generate a new code snippet.
