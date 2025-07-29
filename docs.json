@@ -55,18 +55,18 @@
         ]
       },
       {
-        "group": "AI Assistance",
-        "pages": [
-          "ai-assistance/overview",
-          "ai-assistance/llm-connections"
-        ]
-      },
-      {
         "group": "Cloud Access",
         "pages": [
           "cloud-access/access-levels-permissions",
           "cloud-access/aws-cf-role-stack",
           "cloud-access/multi-cloud"
+        ]
+      },
+      {
+        "group": "AI Assistance",
+        "pages": [
+          "ai-assistance/overview",
+          "ai-assistance/llm-connections"
         ]
       },
       {
