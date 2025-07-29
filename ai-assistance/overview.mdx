@@ -5,8 +5,10 @@ icon: 'robot'
 ---
 
 OpenOps can use a large language model (LLM) of your choice to help you with:
+* Answering questions about OpenOps and FinOps using the AI chatbot
 * Generating CLI commands for AWS, Azure, and GCP
 * Writing SQL queries for AWS Athena, BigQuery, Snowflake, and Databricks
+* Generating JavaScript code for custom code steps in your workflows
 
 You can do all this right inside the workflow editor, without switching context.
 
@@ -17,6 +19,26 @@ OpenOps doesn't lock you into a specific AI model: instead, you **bring your own
 Supported LLMs include OpenAI, Anthropic, Google Generative AI, Groq, Mistral, Perplexity, xAI Grok, and more.
 
 ## Using AI assistance
+
+AI assistance in OpenOps is available in two main forms: the AI assistant chat where you ask free-form questions, and the **Generate with AI** command that helps you generate commands, queries, and code snippets.
+
+### AI assistant chat
+
+Once enabled, the AI assistant chat becomes available in sidebars in every OpenOps view:
+![AI assistant](/images/access-llm-assistant.png)
+
+You can use it to ask a variety of questions about OpenOps, your cloud resources, and FinOps in general, such as:
+* "What can I do in OpenOps and how to use its [features](/introduction/features-and-benefits/)?"
+* "How to [create a workflow](/workflow-management/building-workflows/) that does what I want to achieve?"
+* "What [actions](/workflow-management/actions/) and [connections](/cloud-access/access-levels-permissions/) are used in workflows in my installation?"
+* "What are the recent trends in OpenOps [workflow runs](/workflow-management/investigate-workflow-run/) and are there any anomalies?"
+* "Why has a specific workflow started to fail and why hasn't it failed before?"
+* "What kind of data does a specific [OpenOps table](/reporting-analytics/tables/) do and what workflows use it?"
+* "What are the recent trends in the FinOps community?"
+
+To provide in-depth answers about your OpenOps installation, the AI assistant takes advantage of OpenOps' MCP server that is enabled by default.
+
+It can also work with the Amazon Cost MCP server, enabling you to ask questions about your AWS expenses like "How much did I spend on EC2 last month?". However, you need to explicitly enable OpenOps to access the Amazon Cost MCP server. See [LLM Connections](/ai-assistance/llm-connections) for how to connect.
 
 ### Generating commands and queries
 
@@ -36,9 +58,3 @@ In the properties pane of your **Code** step, click **Generate with AI**. When t
 
 Test the step to ensure that the generated code works as expected. If it doesn't on the first try, you can refine your prompt, explicitly provide the output of the previous step, and generate a new code snippet.
 
-### AI chatbot
-
-The AI assistant chat becomes available at the bottom of the left sidebar in every OpenOps view:
-![AI assistant](/images/access-llm-assistant.png)
-
-You can use it to ask questions about what you can do with OpenOps.

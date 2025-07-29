@@ -20,7 +20,9 @@ To configure an LLM connection for your instance:
 6. Enter your API key for the selected LLM provider in the **API Key** field.
 7. (Optional) Enter a **Base URL** for the selected model. This is useful if you want to use a proxy or if your LLM provider does not use the default base URL. If you have selected _OpenAI Compatible_ as the provider, then you are required to enter the base URL.
 8. (Optional) Expand the **Advanced settings** section and use the **Provider settings** and **Model settings** fields to specify custom parameters as JSON. The JSON schema will vary depending on the chosen provider and model. For example, if you've selected OpenAI, you can use **Provider settings** for JSON that you'd normally pass to the `createOpenAI` function, and **Model settings** for JSON that you'd normally pass to the `streamText` function. For more details, see the [OpenAI documentation](https://platform.openai.com/docs/api-reference).
-9. Click **Save** to apply your changes.
+9. (Optional) If you're working with AWS and you want the OpenOps AI chatbot to have access to the AWS Cost MCP server, click **AWS Cost** in the **MCP** section, and select an AWS connection to use for the MCP server.
+![AWS Cost MCP connection](/images/access-llm-mcp.png)
+10. Click **Save** to apply your changes.
 
 Configuring an LLM connection enables all [AI assistance features](/ai-assistance/overview) in OpenOps.
 
