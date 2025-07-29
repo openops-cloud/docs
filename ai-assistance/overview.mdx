@@ -26,6 +26,16 @@ Whenever you work with an [action](/workflow-management/actions) that requires w
 When you click **Generate with AI**, use the AI chat window to prompt for the outcome of the target command or query, and your LLM will generate it for you:
 ![AI chat window](/images/access-llm-chat.png)
 
+### Generating code steps
+
+When existing no-code actions are not a good fit for your workflow, you can use AI assistance to generate JavaScript code for custom code steps.
+
+In the properties pane of your **Code** step, click **Generate with AI**. When the AI chat window opens, enter a prompt, providing details about the task you want to accomplish. The AI will generate a code snippet that respects the format that the code step expects. Click **Use code** to insert the generated code into the step's **Source Code** field:
+
+![Generate code steps with AI](/images/access-llm-code-step-with-ai.png)
+
+Test the step to ensure that the generated code works as expected. If it doesn't on the first try, you can refine your prompt, explicitly provide the output of the previous step, and generate a new code snippet.
+
 ### AI chatbot
 
 The AI assistant chat becomes available at the bottom of the left sidebar in every OpenOps view:
