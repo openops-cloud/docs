@@ -1,0 +1,67 @@
+name: Update Release Version
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        type: string
+        description: Version to update to
+        required: true
+      branch:
+        type: string
+        description: Base branch for the PR
+        default: "main"
+        required: false
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.2.2
+        with:
+          ref: ${{ inputs.branch }}
+
+      - name: Update version in download URLs and filenames
+        run: |
+          VERSION=${{ inputs.version }}
+          find . -name "*.md" -o -name "*.mdx" -type f -exec sed -i \
+            -e "s|https://github.com/openops-cloud/openops/releases/download/[^/]*/openops-dc-[^/]*\.zip|https://github.com/openops-cloud/openops/releases/download/$VERSION/openops-dc-$VERSION.zip|g" \
+            -e "s/openops-dc-\([^{][^}]*\)\.zip/openops-dc-$VERSION.zip/g" {} \;
+
+      - name: Create branch and commit changes
+        id: create-branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git switch -C "update-version-${{ inputs.version }}"
+          git add .
+          if git diff --quiet --cached; then
+            echo "No changes detected. Skipping commit and PR creation."
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Successfully updated version in download URLs and filenames."
+            git commit -m "Update version to ${{ inputs.version }}"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+      - name: Fail workflow - no changes detected
+        if: steps.create-branch.outputs.has_changes != 'true'
+        run: |
+          echo "No changes detected. Failing workflow as no version updates were found."
+          exit 1
+      - name: Push changes and create PR
+        if: steps.create-branch.outputs.has_changes == 'true'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          git push origin "update-version-${{ inputs.version }}"
+          gh pr create \
+            --title "Update version to ${{ inputs.version }}" \
+            --body "This PR updates the version number to ${{ inputs.version }} as part of the release process.
+          **Changes:**
+          - Updated version references in documentation files
+          This PR was automatically created by the release workflow." \
+            --base ${{ inputs.branch }} \
+            --head "update-version-${{ inputs.version }}"
