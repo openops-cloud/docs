@@ -95,9 +95,11 @@ Alternatively, you can follow the manual installation steps:
     sudo COMPOSE_PARALLEL_LIMIT=4 docker compose pull -q && sudo docker compose up -d
     ```
     If you encounter rate limits, rerun the pull command. Pulling images may take several minutes.
+
+If you did not update credentials in the `.env` file, the default username is `admin@openops.com` and the password is `please-change-this-password-1`.
 </Expandable>
 
-You can now access the OpenOps application by navigating to the external IP address of your VM (e.g., `http://<YOUR_EXTERNAL_IP>`). If you did not update credentials in the `.env` file, the default username is `admin@openops.com` and the password is `please-change-this-password-1`.
+You can now access the OpenOps application by navigating to the external IP address of your VM (e.g., `http://<YOUR_EXTERNAL_IP>`).
 
 ## External databases
 

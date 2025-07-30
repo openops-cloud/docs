@@ -80,9 +80,11 @@ Alternatively, you can follow the manual installation steps:
     sudo COMPOSE_PARALLEL_LIMIT=4 docker compose pull -q && sudo docker compose up -d
     ```
     If you encounter a rate limit, rerun the pull command. Note that pulling images may take several minutes.
+
+If you did not update credentials in the `.env` file, the default username is `admin@openops.com` and the password is `please-change-this-password-1`.
 </Expandable>
 
-You can now access the OpenOps application by navigating to the public IP address of your EC2 instance (e.g., `http://20.20.20.20`). If you did not update credentials in the `.env` file, the default username is `admin@openops.com` and the password is `please-change-this-password-1`.
+You can now access the OpenOps application by navigating to the public IP address of your EC2 instance (e.g., `http://20.20.20.20`).
 
 ## External databases
 
