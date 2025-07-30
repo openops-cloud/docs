@@ -41,14 +41,13 @@ You’ll need relevant permissions to create a new VM, edit its networking setti
     [ -z "$BASH_VERSION" ] && exec bash
     ```
 
-### Automatically install OpenOps
+### Install OpenOps
 
 <AutoInstall/>
 
-### Manually install OpenOps
-
 Alternatively, you can follow the manual installation steps:
 
+<Expandable title="Installing OpenOps manually">
 1. Install the `unzip` utility:
     ```shell
     sudo apt install unzip
@@ -72,6 +71,7 @@ Alternatively, you can follow the manual installation steps:
     ```shell
     sudo COMPOSE_PARALLEL_LIMIT=4 docker compose pull && sudo docker compose up -d
     ```
+</Expandable>
 
 You can now access the application by navigating to the public IP address of your virtual machine, for example, `http://20.20.20.20`. If you did not update credentials in the `.env` file, the default username is `admin@openops.com` and the password is `please-change-this-password-1`.
 
