@@ -12,16 +12,15 @@ This guide explains how to install the OpenOps docker-compose release on a local
 
 Before following the instructions, make sure that your machine meets the [system requirements](/getting-started/system-requirements) for OpenOps.
 
-## Installing OpenOps automatically
+## Installing OpenOps
 
 <AutoInstall/>
 
 This script supports macOS, Ubuntu and Windows (via WSL2 Ubuntu).
 
-## Installing OpenOps manually
+If you can't use the autoinstall script, follow the manual installation steps for your operating system below.
 
-Alternatively, you can follow the manual installation steps provided below for your operating system.
-
+<Expandable title="Installing manually on macOS">
 ### On macOS
 
 1. Install Docker Desktop by following [these instructions](https://docs.docker.com/desktop/setup/install/mac-install/).
@@ -40,7 +39,9 @@ Alternatively, you can follow the manual installation steps provided below for y
     If you face a rate limit while downloading, run the command again.
 
 You can now access the application by navigating to http://localhost.
+</Expandable>
 
+<Expandable title="Installing manually on Ubuntu Server">
 ### On Ubuntu Server
 
 <Note>This procedure has been tested on Ubuntu Server 24.04.</Note>
@@ -83,7 +84,9 @@ You can now access the application by navigating to http://localhost.
     sudo docker compose up -d
    ```
     If you face a rate limit while downloading, run the command again.
+</Expandable>
 
+<Expandable title="Installing manually on Windows">
 ### On Windows (with PowerShell)
 
 1. Install Docker Desktop by following [these instructions](https://docs.docker.com/desktop/setup/install/windows-install/).
@@ -108,6 +111,7 @@ You can now access the application by navigating to http://localhost.
     docker compose up -d
     ```
     If you face a rate limit while downloading, run the command again.
+</Expandable>
 
 <UpdateLink/>
 

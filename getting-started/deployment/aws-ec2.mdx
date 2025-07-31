@@ -49,14 +49,13 @@ It assumes you have appropriate permissions on an existing AWS account.
     ![Connect to instance](/images/deploy-aws-connect-to-instance.png)
 2. Click **Connect** and wait for CloudShell to initialize.
 
-### Automatically install OpenOps
+### Install OpenOps
 
 <AutoInstall/>
 
-### Manually install OpenOps
-
 Alternatively, you can follow the manual installation steps:
 
+<Expandable title="Installing OpenOps manually">
 1. Install the `unzip` utility:
     ```shell
     sudo apt install unzip
@@ -82,7 +81,10 @@ Alternatively, you can follow the manual installation steps:
     ```
     If you encounter a rate limit, rerun the pull command. Note that pulling images may take several minutes.
 
-You can now access the OpenOps application by navigating to the public IP address of your EC2 instance (e.g., `http://20.20.20.20`). If you did not update credentials in the `.env` file, the default username is `admin@openops.com` and the password is `please-change-this-password-1`.
+If you did not update credentials in the `.env` file, the default username is `admin@openops.com` and the password is `please-change-this-password-1`.
+</Expandable>
+
+You can now access the OpenOps application by navigating to the public IP address of your EC2 instance (e.g., `http://20.20.20.20`).
 
 ## External databases
 
