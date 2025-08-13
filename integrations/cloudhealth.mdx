@@ -20,8 +20,7 @@ Limit number of recommendations to 1 (why?)
 
 ## What this tutorial will cover
 
-* What kind of workflow we're going to author
-* What are the benefits of this workflow
+This tutorial guides you step-by-step to create the "CloudHealth Rightsizing Recommendations" workflow in OpenOps. This workflow automates fetching AWS EC2 rightsizing recommendations from CloudHealth, notifies owners via Slack, and optionally creates JIRA tickets or manages snooze/exempt actions.
 
 The workflow is going to be:
 
@@ -46,34 +45,36 @@ The workflow is going to be:
 
 ## Prerequisites
 
-A CloudHealth account configured to provide recommendations for AWS EC2 instances.
+You will need a CloudHealth account configured to provide recommendations for AWS EC2 instances.
 
-## Steps
-
-# Tutorial: Authoring the "CloudHealth Rightsizing Recommendations" Workflow in OpenOps
-
-This tutorial guides you step-by-step to create the "CloudHealth Rightsizing Recommendations" workflow in OpenOps. This workflow automates fetching AWS EC2 rightsizing recommendations from CloudHealth, notifies owners via Slack, and optionally creates JIRA tickets or manages snooze/exempt actions.
-
----
-
-## Prerequisites
-
-Before starting, ensure you have the following OpenOps connections configured:
-
+On several steps of the tutorial, you'll also need to create OpenOps connections to several services:
 - **CloudHealth**: API credentials to access CloudHealth data.
 - **Slack**: Bot token with permissions to send messages and request actions.
 - **Jira**: API credentials with permissions to create issues.
-- **OpenOps Tables**: Access to tables named `Project perspective owners` and `Opportunities`.
 
----
+## Steps
 
-## Step 1: Create a Scheduled Trigger
+### Create a new workflow
 
-- Add a **Trigger** block using the official `@openops/block-schedule` block.
-- Configure it to run **every day at 00:00 UTC**, excluding weekends.
-- This ensures the workflow runs daily to check for new rightsizing opportunities.
+In your OpenOps instance, click the **+ New Workflow** button on the top right.
 
----
+OpenOps will open its workflow editor with a new untitled workflow that initially only contains an empty trigger step:
+
+![A new workflow in OpenOps](/images/cloudhealth/empty-workflow.png)
+
+On the top left, click the down arrow next to the workflow name, then click **Rename**, and rename the workflow to _CloudHealth Rightsizing Recommendations_.
+
+### Configure the trigger to run every working day
+
+In the workflow editor, click the trigger step. When a drop-down with types of triggers opens, select **Schedule**, then **Every Day**.
+
+After selecting the trigger type and frequency, you will see the trigger step's properties pane on the right. In many cases, you will want to modify the trigger's settings, but for this tutorial, keep the defaults. With the default trigger settings, your workflow will run every day, excluding weekends, at midnight UTC.
+
+In the bottom right pane, under **Step Output**, click **Load Data**. This way, you're testing your step, and going forward, you'll need to test all steps before you can test the entire workflow. While in the case of a trigger this looks more like a formality, in many cases testing individual steps will help you spot and fix configuration errors quickly.
+
+Here's what your workflow should look like at this point:
+
+![A configured and tested trigger](/images/cloudhealth/trigger-added.png)
 
 ## Step 2: Fetch Rightsizing Recommendations from CloudHealth
 
@@ -86,15 +87,11 @@ Before starting, ensure you have the following OpenOps connections configured:
   - `recommendationType`: Set to `AWS_EC2`.
 - This block fetches recent EC2 rightsizing recommendations.
 
----
-
 ## Step 3: Loop Over Recommendations
 
 - Add a **Loop on Items** block.
 - Set the items to loop over as `{{step_17['rightsizingRecommendations']['edges']}}` (replace `step_17` with your fetch block name).
 - This allows processing each recommendation individually.
-
----
 
 ## Step 4: Get Asset Perspectives from CloudHealth
 
@@ -106,8 +103,6 @@ Before starting, ensure you have the following OpenOps connections configured:
   - `fields`: Pass the instance ID from the current item: `{{step_2['item']['node']['targetAsset']['awsInstanceId']}}`.
 - This enriches the recommendation with asset metadata and perspectives.
 
----
-
 ## Step 5: Query Project Owner from OpenOps Table
 
 - Add a **Block** with `@openops/block-openops-tables`.
@@ -117,8 +112,6 @@ Before starting, ensure you have the following OpenOps connections configured:
   - `filters`: Filter by project name equal to `{{step_13[0]['perspectives']['Project']}}`.
 - This fetches the owner email and other details for the project.
 
----
-
 ## Step 6: Format Projected Monthly Savings
 
 - Add a **Block** with `@openops/block-math-helper`.
@@ -127,8 +120,6 @@ Before starting, ensure you have the following OpenOps connections configured:
   - `number`: `{{step_2['item']['node']['projectedMonthlySavings']}}`.
   - `numberOfDecimalPlaces`: `2`.
 - This formats the savings value for display.
-
----
 
 ## Step 7: Extract AWS Region from DNS (Custom Code)
 
@@ -167,8 +158,6 @@ export const code = async (inputs) => {
   - Provide a Slack conversation ID for responses.
 - This notifies the owner and collects their response.
 
----
-
 ## Step 9: Handle Slack Action with Split Block
 
 - Add a **Split** block to branch based on Slack action:
@@ -185,4 +174,3 @@ export const code = async (inputs) => {
     - Add a **Block** with `@openops/block-cloudhealth`.
     - Use `cloudhealth_tag_asset` to tag the asset as exempt with `ExemptByOpenOps=true`.
 
----
