@@ -4,4 +4,42 @@ description: 'Using CloudHealth data in an OpenOps workflow'
 icon: 'heart-pulse'
 ---
 
-blabla
+## Webinar notes
+
+Rita starts at 13:50
+Action: get recommendations from CloudHealth
+Recommendation type: EC2 rightsizing
+Evaluation duration: last 7 days
+Limit number of recommendations to 1 (why?)
+
+## What is CloudHealth?
+
+## Why use CloudHealth?
+
+## How does CloudHealth integrate with OpenOps?
+
+## What this tutorial will cover
+
+* What kind of workflow we're going to author
+* What are the benefits of this workflow
+
+The workflow is going to be:
+
+1. Trigger: Scheduled to run every day at midnight UTC, excluding weekends.
+2. Call CloudHealth block to get rightsizing recommendations for AWS EC2 instances from the last 7 days, limited to one recommendation.
+3. Loop over the list of rightsizing recommendations returned. For each recommendation:
+    1. Fetch asset perspectives from CloudHealth for the target AWS instance.
+    2. Query the "Project perspective owners" table to get owner information based on the project perspective.
+    3. Format the projected monthly savings value to 2 decimal places.
+    4. Run custom code to extract the AWS region from the instance DNS.
+    5. Send a Slack message with the rightsizing opportunity details and three action buttons: Open JIRA ticket, Snooze, Exempt.
+    6. Split the flow based on the Slack action selected:
+        1. If "Open Jira ticket":
+            1. Create a JIRA issue for the opportunity
+            2. Sends a Slack confirmation message.
+        2. If "Snooze":
+            1. Calculate the next Monday date
+            2. Update the opportunity status to "Snoozed" with the snooze date.
+        3. If "Exempt":
+             1. Tag the asset as exempt in CloudHealth.
+
