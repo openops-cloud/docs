@@ -72,7 +72,7 @@ In the workflow editor, click the trigger step. When a drop-down with types of t
 
 After selecting the trigger type and frequency, you will see the trigger step's properties pane on the right. In many cases, you will want to modify the trigger's settings, but for this tutorial, keep the defaults. With the default trigger settings, your workflow will run every day, excluding weekends, at midnight UTC.
 
-In the bottom right pane, under **Step Output**, click **Load Data**. This way, you're testing your step, and going forward, you'll need to test all steps before you can test the entire workflow. While in the case of a trigger this looks more like a formality, in many cases testing individual steps will help you spot and fix configuration errors quickly.
+In the bottom right pane, under **Step output**, click **Load Data**. This way, you're testing your step, and going forward, you'll need to test all steps before you can test the entire workflow. While in the case of a trigger this looks more like a formality, in many cases testing individual steps will help you spot and fix configuration errors quickly.
 
 Here's what your workflow should look like at this point:
 
@@ -101,19 +101,31 @@ After the dialog closes, back in the properties pane, configure the remaining ac
 * Under **Evaluation Duration**, select **Last 7 Days**.
 * Under **Limit**, set the value to `3` to retrieve the top 3 recommendations.
 
-Under **Step Output**, click **Test Step**. This will test the action and display the results in the bottom right pane.
+Under **Step output**, click **Test Step**. This will test the action and display the results in the bottom right pane.
 
 Your workflow should now look like this:
 
 ![A configured CloudHealth action](/images/cloudhealth/cloudhealth-action-added.png)
 
-### Step 3: Loop Over Recommendations
+### Loop over recommendations
 
-- Add a **Loop on Items** block.
-- Set the items to loop over as `{{step_17['rightsizingRecommendations']['edges']}}` (replace `step_17` with your fetch block name).
-- This allows processing each recommendation individually.
+CloudHealth returns a list of recommendations, but we only want to process one at a time. To do this, let's use a **Loop on Items** block.
 
-### Step 4: Get Asset Perspectives from CloudHealth
+In the workflow graph, click the **+** button to add a new step.
+
+In the pop-up menu, select **Loop on Items** in the left pane, then click **Loop on Items** in the right pane. This adds a new step to the workflow graph and displays the loop's properties pane on the right.
+
+In the properties pane, click the **Items** field. In the **Data Selector** view that opens, expand the **2. Get Recommendations** entry, then expand **rightsizingRecommendations**, and click **Insert** alongside the **edges** entry:
+
+![Selecting items to loop over](/images/cloudhealth/data-selector-edges.png)
+
+This will add the **edges** entry to the **Items** field in the properties pane, ensuring that OpenOps loops over this particular array in the list of CloudHealth recommendations.
+
+In the properties pane, under **Step output**, click **Test Step**. After testing, your workflow should look like this:
+
+![A configured Loop on Items block](/images/cloudhealth/loop-added.png)
+
+#### Get asset perspectives from CloudHealth
 
 - Inside the loop, add a **Block** with `@openops/block-cloudhealth`.
 - Use the action `cloudhealth_get_asset_perspectives`.
@@ -123,7 +135,7 @@ Your workflow should now look like this:
   - `fields`: Pass the instance ID from the current item: `{{step_2['item']['node']['targetAsset']['awsInstanceId']}}`.
 - This enriches the recommendation with asset metadata and perspectives.
 
-### Step 5: Query Project Owner from OpenOps Table
+#### Query project owner from an OpenOps table
 
 - Add a **Block** with `@openops/block-openops-tables`.
 - Use the action `get_records`.
@@ -132,7 +144,7 @@ Your workflow should now look like this:
   - `filters`: Filter by project name equal to `{{step_13[0]['perspectives']['Project']}}`.
 - This fetches the owner email and other details for the project.
 
-### Step 6: Format Projected Monthly Savings
+#### Format projected monthly savings
 
 - Add a **Block** with `@openops/block-math-helper`.
 - Use the action `truncate_math`.
@@ -141,7 +153,7 @@ Your workflow should now look like this:
   - `numberOfDecimalPlaces`: `2`.
 - This formats the savings value for display.
 
-### Step 7: Extract AWS Region from DNS (Custom Code)
+#### Extract AWS region from DNS
 
 - Add a **Code** block.
 - Input:
@@ -157,7 +169,7 @@ export const code = async (inputs) => {
 };
 ```
 
-### Step 8: Send Slack Notification with Actions
+#### Send a Slack notification
 
 - Add a **Block** with `@openops/block-slack`.
 - Use the action `request_action_message`.
@@ -178,7 +190,7 @@ export const code = async (inputs) => {
   - Provide a Slack conversation ID for responses.
 - This notifies the owner and collects their response.
 
-### Step 9: Handle Slack Action with Split Block
+#### Handle Slack action with a split block
 
 - Add a **Split** block to branch based on Slack action:
   - **JIRA branch**:
@@ -193,4 +205,3 @@ export const code = async (inputs) => {
   - **Exempt branch**:
     - Add a **Block** with `@openops/block-cloudhealth`.
     - Use `cloudhealth_tag_asset` to tag the asset as exempt with `ExemptByOpenOps=true`.
-
