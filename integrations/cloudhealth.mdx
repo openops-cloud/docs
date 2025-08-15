@@ -1,47 +1,37 @@
 ---
 title: 'Integrating CloudHealth with OpenOps'
-description: 'Using CloudHealth data in an OpenOps workflow'
+description: "Acting on CloudHealth's rightsizing recommendations in an OpenOps workflow"
 icon: 'heart-pulse'
 ---
 
-## Webinar notes
+CloudHealth is a cloud cost management and optimization platform that helps companies manage their multi-cloud environments consisting of AWS, Azure, Google Cloud, private and hybrid cloud setups.
 
-Rita starts at 13:50
-Action: get recommendations from CloudHealth
-Recommendation type: EC2 rightsizing
-Evaluation duration: last 7 days
-Limit number of recommendations to 1 (why?)
+CloudHealth provides cost visibility, allocation, and optimization, suggesting actions like rightsizing, reserved instance purchases, and idle resource cleanup.
 
-## What is CloudHealth?
-
-## Why use CloudHealth?
-
-## How does CloudHealth integrate with OpenOps?
+While CloudHealth is great at analysis and reporting, it’s not really built to orchestrate automation across teams. That's what OpenOps does best, and integrating the two is a great way to get the best of both worlds. Let CloudHealth find issues, and OpenOps act on them, triggering workflows, automations, and notifications.
 
 ## What this tutorial will cover
 
-This tutorial guides you step-by-step to create the "CloudHealth Rightsizing Recommendations" workflow in OpenOps. This workflow automates fetching AWS EC2 rightsizing recommendations from CloudHealth, notifies owners via Slack, and optionally creates JIRA tickets or manages snooze/exempt actions.
+This tutorial guides you step-by-step to create the "CloudHealth Rightsizing Recommendations" workflow in OpenOps. This workflow automates fetching AWS EC2 rightsizing recommendations from CloudHealth, notifies owners via Slack, and implements resolutions from owners by creating Jira tickets, snoozing, or exempting recommendations.
 
-The workflow is going to be:
+Here's the outline of the OpenOps workflow that you're going to build:
 
-1. Trigger: Scheduled to run every day at midnight UTC, excluding weekends.
-2. Call CloudHealth block to get rightsizing recommendations for AWS EC2 instances from the last 7 days, limited to one recommendation.
+1. Trigger: run every day at midnight UTC, excluding weekends.
+2. Get rightsizing recommendations from CloudHealth for AWS EC2 instances from the last 7 days, limited to three recommendations.
 3. Loop over the list of rightsizing recommendations returned. For each recommendation:
     1. Fetch asset perspectives from CloudHealth for the target AWS instance.
-    2. Query the "Project perspective owners" table to get owner information based on the project perspective.
+    2. Query the "Project perspective owners" OpenOps table to get owner information based on the project perspective.
     3. Format the projected monthly savings value to 2 decimal places.
     4. Run custom code to extract the AWS region from the instance DNS.
-    5. Send a Slack message with the rightsizing opportunity details and three action buttons: "Open Jira ticket", "Snooze", "Exempt".
-    6. Split the flow based on the Slack action selected:
+    5. Send a Slack message to the owner with the rightsizing opportunity details and three action buttons: "Open Jira ticket", "Snooze", "Exempt".
+    6. Act depending on which Slack action the owner selected:
         1. If "Open Jira ticket":
-            1. Create a JIRA issue for the opportunity
-            2. Sends a Slack confirmation message.
+            1. Create a Jira issue for the opportunity.
+            2. Send a Slack confirmation message.
         2. If "Snooze":
-            1. Calculate the next Monday date
-            2. Update the opportunity status to "Snoozed" with the snooze date.
-        3. If "Exempt":
-             1. Tag the asset as exempt in CloudHealth.
-
+            1. Get the date of the next Monday.
+            2. Update the opportunity status to "Snoozed" with the snooze date set to next Monday.
+        3. If "Exempt": tag the asset as exempt in CloudHealth.
 
 ## Prerequisites
 
@@ -52,9 +42,7 @@ On several steps of the tutorial, you'll also need to create OpenOps connections
 - **Slack**: Bot token with permissions to send messages and request actions.
 - **Jira**: API credentials with permissions to create issues.
 
-## Steps
-
-### Create a new workflow
+## Create a new workflow
 
 In your OpenOps instance, click the **+ New Workflow** button on the top right.
 
@@ -64,7 +52,7 @@ OpenOps will open its workflow editor with a new untitled workflow that initiall
 
 On the top left, click the down arrow next to the workflow name, then click **Rename**, and rename the workflow to _CloudHealth Rightsizing Recommendations_.
 
-### Configure the trigger to run every working day
+## Configure the trigger to run every working day
 
 The first thing that needs to be done is to configure your workflow to run on a schedule.
 
@@ -78,7 +66,7 @@ Here's what your workflow should look like at this point:
 
 ![A configured and tested trigger](/images/cloudhealth/trigger-added.png)
 
-### Fetch rightsizing recommendations from CloudHealth
+## Fetch rightsizing recommendations from CloudHealth
 
 Now is the time to add the first action step. Since the workflow is centered around processing recommendations from CloudHealth, let's start with that.
 
@@ -107,7 +95,7 @@ Your workflow should now look like this:
 
 ![A configured CloudHealth action](/images/cloudhealth/cloudhealth-action-added.png)
 
-### Loop over recommendations
+## Loop over recommendations
 
 CloudHealth returns a list of recommendations, but we only want to process one at a time. To do this, let's use a **Loop on Items** block.
 
@@ -125,7 +113,9 @@ In the properties pane, under **Step output**, click **Test Step**. After testin
 
 ![A configured Loop on Items block](/images/cloudhealth/loop-added.png)
 
-#### Get asset perspectives from CloudHealth
+All further steps in this workflow will be added inside this loop.
+
+### Get asset perspectives from CloudHealth
 
 - Inside the loop, add a **Block** with `@openops/block-cloudhealth`.
 - Use the action `cloudhealth_get_asset_perspectives`.
@@ -135,7 +125,7 @@ In the properties pane, under **Step output**, click **Test Step**. After testin
   - `fields`: Pass the instance ID from the current item: `{{step_2['item']['node']['targetAsset']['awsInstanceId']}}`.
 - This enriches the recommendation with asset metadata and perspectives.
 
-#### Query project owner from an OpenOps table
+### Query project owner from an OpenOps table
 
 - Add a **Block** with `@openops/block-openops-tables`.
 - Use the action `get_records`.
@@ -144,7 +134,7 @@ In the properties pane, under **Step output**, click **Test Step**. After testin
   - `filters`: Filter by project name equal to `{{step_13[0]['perspectives']['Project']}}`.
 - This fetches the owner email and other details for the project.
 
-#### Format projected monthly savings
+### Format projected monthly savings
 
 - Add a **Block** with `@openops/block-math-helper`.
 - Use the action `truncate_math`.
@@ -153,7 +143,7 @@ In the properties pane, under **Step output**, click **Test Step**. After testin
   - `numberOfDecimalPlaces`: `2`.
 - This formats the savings value for display.
 
-#### Extract AWS region from DNS
+### Extract AWS region from DNS
 
 - Add a **Code** block.
 - Input:
@@ -169,7 +159,7 @@ export const code = async (inputs) => {
 };
 ```
 
-#### Send a Slack notification
+### Send a Slack notification
 
 - Add a **Block** with `@openops/block-slack`.
 - Use the action `request_action_message`.
@@ -190,7 +180,7 @@ export const code = async (inputs) => {
   - Provide a Slack conversation ID for responses.
 - This notifies the owner and collects their response.
 
-#### Handle Slack action with a split block
+### Handle Slack action with a split block
 
 - Add a **Split** block to branch based on Slack action:
   - **JIRA branch**:
@@ -205,3 +195,9 @@ export const code = async (inputs) => {
   - **Exempt branch**:
     - Add a **Block** with `@openops/block-cloudhealth`.
     - Use `cloudhealth_tag_asset` to tag the asset as exempt with `ExemptByOpenOps=true`.
+
+#### Jira
+
+#### Snooze
+
+#### Exempt
