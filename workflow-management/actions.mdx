@@ -22,7 +22,7 @@ These actions help control the sequence of operations in your workflow and make 
 
 * **Condition**: split the workflow into exactly two branches based on a [condition](/workflow-management/conditional-branching/).
 * **Split**: split the workflow into multiple branches based on a [condition](/workflow-management/conditional-branching/).
-* **Loop on Items**: Iterate over a list of items obtained in a prior step, executing each iteration sequentially. All iterations run to completion regardless of failures or pauses in individual iterations. After all iterations finish, the loop’s final state reflects the outcomes of all iterations: if any iteration fails, the loop step fails; if any iteration pauses, the loop step pauses.
+* **Loop on Items**: iterate over a list of items obtained in a prior step, executing each iteration sequentially. All iterations run to completion regardless of failures or pauses in individual iterations. After all iterations finish, the loop’s final state reflects the outcomes of all iterations: if any iteration fails, the loop step fails; if any iteration pauses, the loop step pauses.
 * **Delay**: pause workflow execution for a specified time period or until a specific time.
 * **End Workflow**: stop workflow execution. This is useful in [conditional branching](/workflow-management/conditional-branching/) when a branch represents a condition that ends the workflow early. When used inside a loop, this action skips to the next iteration of the loop.
 
