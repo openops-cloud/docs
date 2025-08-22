@@ -7,6 +7,7 @@ icon: 'google'
 import AutoInstall from '/snippets/auto-install.mdx'
 import Disclaimer from '/snippets/non-production-disclaimer.mdx';
 import RestartContainers from '/snippets/restart-containers.mdx';
+import TLS from '/snippets/tls.mdx';
 import UpdateCredentials from '/snippets/env-update-credentials.mdx';
 import UpdateLink from '/snippets/update-link.mdx';
 
@@ -115,22 +116,7 @@ If you remove or disable the `db` profile in `.env` or in Docker Compose, that c
 
 <RestartContainers/>
 
-## TLS
-
-For production usage, it’s recommended to serve OpenOps over HTTPS. Otherwise, some features, such as certain cloud templates, may not load properly in Safari.
-
-The easiest way to enable TLS is to use an OpenOps script that requests and sets up a TLS certificate from Let's Encrypt. Before running the script, make sure you have a domain name that points to your VM's external IP address. If you're configuring DNS right before running the script, you may need to wait for the DNS change to propagate.
-
-1. Run the following command in your terminal:
-    ```shell
-    curl -fsS https://openops.sh/tls | sh
-    ```
-2. When prompted, enter a domain name that points to the external IP address of your VM.
-3. When prompted, enter an email address to receive certificate-related notifications from Let's Encrypt.
-
-The script will use the Certbot library to request a certificate for your domain from Let's Encrypt. It receives and saves the certificate, updates the OpenOps configuration file accordingly, and restarts OpenOps.
-
-By default, the certificate expires in 3 months. See https://certbot.org/renewal-setup if you want to configure auto-renewal.
+<TLS target="VM"/>
 
 <UpdateLink/>
 
