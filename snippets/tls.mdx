@@ -1,0 +1,16 @@
+## Enabling TLS
+
+For production usage, it’s recommended to enable TLS (HTTPS). In addition to the security aspect, this also ensures that [workflow templates](/workflow-management/workflow-templates/) load properly in all browsers.
+
+The easiest way to enable TLS is to use an OpenOps script that requests and sets up a TLS certificate from Let's Encrypt. Before running the script, make sure you have a domain name that points to your {target}'s external IP address. If you're configuring DNS right before running the script, you may need to wait for the DNS change to propagate.
+
+1. Run the following command in your terminal:
+    ```shell
+    curl -fsS https://openops.sh/tls | sh
+    ```
+2. When prompted, enter a domain name that points to the external IP address of your {target}.
+3. When prompted, enter an email address to receive certificate-related notifications from Let's Encrypt.
+
+The script will use the Certbot library to request a certificate for your domain from Let's Encrypt. It receives and saves the certificate, updates the OpenOps configuration file accordingly, and restarts OpenOps.
+
+By default, the certificate expires in 3 months. See https://certbot.org/renewal-setup if you want to configure auto-renewal.
