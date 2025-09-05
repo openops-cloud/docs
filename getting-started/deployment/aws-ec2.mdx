@@ -6,6 +6,7 @@ icon: 'aws'
 
 import AutoInstall from '/snippets/auto-install.mdx'
 import Disclaimer from '/snippets/non-production-disclaimer.mdx';
+import TLS from '/snippets/tls.mdx';
 import UpdateCredentials from '/snippets/env-update-credentials.mdx';
 import UpdateLink from '/snippets/update-link.mdx';
 
@@ -63,8 +64,8 @@ Alternatively, you can follow the manual installation steps:
 2. In CloudShell, create a new directory and download the release files:
     ```shell
     mkdir -p openops && cd openops && \
-    wget https://github.com/openops-cloud/openops/releases/download/0.4.1/openops-dc-0.4.1.zip && \
-    unzip -o openops-dc-0.4.1.zip && cp --update=none .env.defaults .env
+    wget https://github.com/openops-cloud/openops/releases/download/0.4.6/openops-dc-0.4.6.zip && \
+    unzip -o openops-dc-0.4.6.zip && cp --update=none .env.defaults .env
     ```
 3. Update the application URL to use the instance's public IP address:
     ```shell
@@ -96,72 +97,7 @@ After making changes, restart the Docker Compose containers:
 sudo docker compose down && sudo docker compose up -d
 ```
 
-## Configuring TLS (HTTPS) and a custom domain
-
-For production usage, it’s recommended to enable TLS (HTTPS). In addition to the security aspect, this also ensures that [workflow templates](/workflow-management/workflow-templates/) load properly in all browsers.
-
-TLS requires configuring a custom domain (e.g., `https://openops.your-company.com`) to serve your OpenOps installation instead of its public IP address.
-
-To get a custom domain with TLS up and running, you need to set up an AWS Application Load Balancer (ALB) with a valid TLS certificate from AWS Certificate Manager (ACM), then create a new DNS record and update your OpenOps configuration.
-
-### Request an ACM certificate
-
-1. Open the [ACM console](https://console.aws.amazon.com/acm/home).
-2. Request a public certificate for your domain (e.g., `openops.your-company.com`).
-3. Validate the domain using DNS. If you're using Route 53, ACM can create the necessary records automatically.
-4. Wait until the certificate status changes to **Issued**.
-
-### Create an Application Load Balancer
-
-<Warning>Once the ALB is in place, all access should go through it — you can no longer use the EC2 public IP directly.</Warning>
-
-1. In the **EC2 > Load Balancers** section, click **Create Load Balancer**.
-2. Choose **Application Load Balancer**, and configure the following:
-    * **Scheme**: Internet-facing
-    * **Listeners**:
-        * Add a listener for **HTTPS (443)** using the ACM certificate.
-        * Optionally, add a listener on port **80** with a rule to redirect HTTP traffic to HTTPS.
-3. Under **Security Groups**, create a security group that allows inbound traffic on **port 443**.
-4. Create a target group:
-    * **Target type**: Instance
-    * **Protocol**: HTTP
-    * **Port**: 80
-    * **Health check path**: `/api/v1/health`
-5. Register your EC2 instance as a target.
-6. Finish creating the ALB and wait for its status to become **Active**.
-
-### Create a DNS record
-
-1. In **Route 53** (or your DNS provider), create a DNS record:
-    - **Name**: `openops.your-company.com`
-    - **Type**: `A` (Alias) or `CNAME`
-    - **Value**: The DNS name of your ALB (for example, `openops-alb-123456789.us-east-1.elb.amazonaws.com`)
-2. Save and wait for DNS changes to propagate.
-
-### Update OpenOps configuration
-
-1. SSH into your EC2 instance or use CloudShell.
-2. Update the `.env` file to reflect your new domain:
-    ```env
-    OPS_PUBLIC_URL=https://openops.your-company.com
-    ```
-3. Restart the containers:
-    ```bash
-    sudo docker compose down && sudo docker compose up -d
-    ```
-
-### Troubleshooting
-
-If you encounter a 503 error:
-- Ensure you restarted Docker containers after updating `.env`.
-- Confirm that the ALB's health check is configured with the correct path (`/api/v1/health`).
-- Make sure the EC2 instance's security group allows traffic from the ALB.
-- Look for more cues in the Nginx container logs:
-    ```bash
-    sudo docker compose logs nginx
-    ```
-
-For more troubleshooting guidance, see [this AWS troubleshooting guide](https://repost.aws/knowledge-center/alb-troubleshoot-503-errors).
+<TLS target="EC2 instance"/>
 
 <UpdateLink/>
 

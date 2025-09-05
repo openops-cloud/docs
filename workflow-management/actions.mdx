@@ -22,9 +22,9 @@ These actions help control the sequence of operations in your workflow and make 
 
 * **Condition**: split the workflow into exactly two branches based on a [condition](/workflow-management/conditional-branching/).
 * **Split**: split the workflow into multiple branches based on a [condition](/workflow-management/conditional-branching/).
-* **Loop on Items**: iterate over a list of items obtained in a prior step. For better performance, OpenOps enables parallel execution of loop iterations whenever possible.
+* **Loop on Items**: iterates sequentially over a list. Each iteration runs independently and may finish, fail, or pause, but the loop continues with the next item. After all iterations, the loop's final state reflects the outcomes: if any iterations fail, the loop fails; if any pause, the loop pauses until they resume. Workflow-wide limits (timeouts or size limits) can also halt execution.
 * **Delay**: pause workflow execution for a specified time period or until a specific time.
-* **End Workflow**: stop workflow execution. This is useful in [conditional branching](/workflow-management/conditional-branching/) when a branch represents a condition that ends the workflow early. When used inside a loop, this action skips to the next iteration of the loop.
+**Stop Execution**: stops the execution of the current scope. When used inside a loop, this action skips to the next iteration; otherwise, it ends the entire workflow. This is useful in [conditional branching](/workflow-management/conditional-branching/) when a branch represents a condition that ends the workflow early.
 
 ## Get data
 
@@ -42,7 +42,7 @@ These actions help you retrieve data from cloud resources, third-party services,
     * **[CloudHealth](https://www.vmware.com/products/app-platform/tanzu-cloudhealth)**: get recommendations, search assets and retrieve asset perspectives, or manage asset tags.
     * **[CloudZero](https://www.cloudzero.com/)**: make API calls to fetch telemetry, billing data, budgets, insights, and more.
     * **[Cloudability](https://www.apptio.com/products/cloudability/)**: retrieve, snooze and unsnooze recommendations.
-    * **[Finout](https://www.finout.io/)**: get view data and manage virtual tags.
+    * **[Finout](https://www.finout.io/)**: get view data and recommendations, manage virtual tags.
     * **[Flexera](https://www.flexera.com/)**: retrieve active recommendations and incidents.
     * **[Flexera Spot](https://spot.io/solutions/finops/)**: fetch clusters and make custom API calls.
     * **Google Cloud**: get recommendations from selected Google Cloud recommenders.
@@ -50,7 +50,8 @@ These actions help you retrieve data from cloud resources, third-party services,
     * **[Pelanor](https://www.pelanor.io/)**: perform API calls to fetch reports, apply dimensions, monitor anomalies, and more.
     * **[Ternary](https://ternary.app/)**: fetch usage recommendations, retrieve budgets and anomalies, get and create cases and users.
     * **[Umbrella](https://umbrellacost.com/)** (formerly Anodot): get recommendations, manage comments, get user accounts, update user status.
-    * **[Vega Cloud](https://www.vegacloud.io/)**: perform API calls to fetch recommendations, forecasts or anomalies.
+    * **[Vantage](https://www.vantage.sh/)**: perform custom API calls.
+    * **[Vega Cloud](https://www.vegacloud.io/)**: get anomalies, perform API calls to fetch recommendations or forecasts.
 * **AWS Athena**: run Athena queries.
 * **Snowflake**: run individual or batch Snowflake queries.
 * **Databricks**: run SQL queries in Databricks workspaces and trigger existing jobs.
@@ -106,6 +107,7 @@ These actions allow you to retrieve and update data in issues and boards in proj
 * **Jira Cloud**: search, create, or update issues and issue comments.
 * **Monday.com**: manage boards, groups, columns, and items.
 * **Linear**: create and update projects, issues, and comments.
+* **ServiceNow**: perform calls to service or operations management APIs.
 * **Zendesk**: make API calls to Zendesk to create or update tickets, create chat messages, and more.
 
 ## Save data and report
