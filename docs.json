@@ -75,6 +75,12 @@
           "reporting-analytics/tables",
           "reporting-analytics/data-visualization"
         ]
+      },
+      {
+        "group": "Contributing to OpenOps",
+        "pages": [
+          "contributing/contributing-a-new-block"
+        ]
       }
     ]
   },
