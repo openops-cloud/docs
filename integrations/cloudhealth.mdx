@@ -47,9 +47,36 @@ On several steps of the tutorial, you'll also need to create OpenOps connections
 
 ## Creating a workflow to fill the project-owner mapping table
 
-...
+The first workflow that you're going to build will help track resource ownership by project. For this workflow to operate, it needs an OpenOps table to store project information. Let's create the table first.
 
-## Creating a workflow to process CloudHealth rightsizing recommendations
+### Create a project-owner mapping table
+
+To create the table that will store project names and their owners, follow these steps:
+
+1. On the left-side OpenOps menu bar, click **Tables**.
+2. Under the **Tables** heading, click **OpenOps Dataset** to expand the list of tables.
+3. At the bottom of the list, click **New table**.
+4. In the **Name** textbox, enter _CloudHealth project-owner mapping_.
+5. Click **Add table**.
+6. When the new table is created, it has a few default fields (a _field_ in OpenOps tables is what we typically call a column). You won't need them; instead, create two new fields. Start with a field for the project name:
+    1. Click **+** in the table header to create a new field.
+    2. In the list of field data types, click **Single line text**.
+    3. Replace the default name of the field with _CloudHealth project_.
+    4. Click **Create**.
+7. Create a second field for the owner email:
+     1. Click **+** in the table header to create a new field.
+     2. In the list of field data types, click **Email**.
+     3. Replace the default name of the field with _Owner email_.
+8. Now, make _CloudHealth project_ the primary field:
+    1. Click the down arrow in the header of the **Name** field that was created by default.
+    2. Click **Change primary field**.
+    3. In the **Primary field** dropdown, select _CloudHealth project_.
+    4. Click **Change**.
+9. Delete the three default fields: **Name**, **Notes**, and **Active**. For each of these fields, click the down arrow in the header, then click **Delete field**.
+
+The resulting project-owner mapping table should look like this:
+
+![A ready to use project-owner mapping table](/images/cloudhealth/mapping-table.png)
 
 ### Create a new workflow
 
@@ -59,7 +86,16 @@ OpenOps will open its workflow editor with a new untitled workflow that initiall
 
 ![A new workflow in OpenOps](/images/cloudhealth/empty-workflow.png)
 
-On the top left, click the down arrow next to the workflow name, then click **Rename**, and rename the workflow to _CloudHealth Rightsizing Recommendations_.
+On the top left, click the down arrow next to the workflow name, then click **Rename**, and rename the workflow to _Fill the Project-Owner mapping table_.
+
+
+## Creating a workflow to process CloudHealth rightsizing recommendations
+
+### Create a new workflow
+
+In your OpenOps instance, click the **+ New Workflow** button on the top right.
+
+When the OpenOps workflow editor opens with a new workflow, click the down arrow next to the workflow name on the top left, then click **Rename**, and rename the workflow to _CloudHealth Rightsizing Recommendations_.
 
 ### Configure the trigger to run every working day
 
