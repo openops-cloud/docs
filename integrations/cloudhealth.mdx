@@ -134,9 +134,42 @@ Your workflow should now look like this:
 
 ![A configured CloudHealth action](/images/cloudhealth/project-owner-mapping/cloudhealth-action-added.png)
 
-
 ### Extract distinct project names
 
+Now that you have a list of all AWS instances, you need to know all projects they belong to. For this, let's create a JavaScript code block that goes through metadata of all instances, extracts project names, and returns a list of distinct project names.
+
+In the workflow graph, click **+** to add a new step.
+
+In the pop-up menu, select **Code** in the left pane, then click **Custom TypeScript Code** in the right pane. This adds a new step to the workflow graph and displays the code block's properties pane on the right.
+
+At the top of the properties pane, click **Edit Step Name** and rename the step to _Extract distinct project names_.
+
+Next, you need to let the custom code action know exactly what data it needs to process. Under **Inputs** in the properties pane, click **Add Item**, which will display two new fields. Enter _instances_ in the left field. When you click in the right field, the **Data Selector** view opens. Inside that view, click **Insert** alongside the **Get all AWS instances** entry:
+
+![Selecting an input for a code action](/images/cloudhealth/project-owner-mapping/code-block-data-selector.png)
+
+This will make sure that the code action gets the list of instances as an input.
+
+Next, inside the **Code** editor field, replace the placeholder with the following JavaScript code snippet:
+
+```javascript
+export const code = async (inputs) => {
+    const projectsOnly = inputs.instances.map(item => {
+        const match = item.groups.match(/Project:\s*([^,]+)/);
+        const project = match ? match[1].trim() : null;
+        return project;
+    })
+    return [...new Set(projectsOnly)];
+};
+```
+
+This is what the **Configure** tab in the properties pane should now look like:
+
+![A configured custom code step](/images/cloudhealth/project-owner-mapping/code-block-configure.png)
+
+Click the **Test** tab in the properties pane. Under **Step output**, click **Test Step**. After testing, you should see an array containing all project names in the **Output** area:
+
+![Testing the custom code step](/images/cloudhealth/project-owner-mapping/code-block-testing.png)
 
 ### Add all project names to the OpenOps table
 
