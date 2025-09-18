@@ -229,7 +229,25 @@ Click the **Test** tab in the properties pane. Under **Step output**, click **Te
 }
 ```
 
-### Test the workflow
+### Test and publish the workflow
+
+These are all the steps you need to fill the project-owner mapping table. All you need to do now is to test and publish the workflow.
+
+To test the workflow, scroll the workflow graph all the way up and click the **Test Workflow** button above the trigger:
+
+![Test workflow](/images/cloudhealth/project-owner-mapping/test-workflow.png)
+
+Even though this is called "testing", OpenOps will actually run the entire workflow, doing everything it would do if it was run on a schedule. Once the run completes, you should see green checkmarks next to each step in the **Run Details** pane on the right, as well as a **Run Succeeded** status message at the bottom:
+
+![Workflow tested successfully](/images/cloudhealth/project-owner-mapping/workflow-tested.png)
+
+Click **Edit** in the top right to get back to the workflow editor. Then, click **Publish** in the same top right corner to get the workflow live.
+
+Once you do, the workflow will run on a schedule you've defined, which is every Monday at noon UTC.
+
+If you click **Workflows** in the left-side menu, you should see the workflow you just published. All its runs will be listed in the view that you can open by clicking **Runs** in the left-side menu.
+
+### Update the table with real owner emails
 
 
 
