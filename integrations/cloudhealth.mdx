@@ -173,6 +173,64 @@ Click the **Test** tab in the properties pane. Under **Step output**, click **Te
 
 ### Add all project names to the OpenOps table
 
+Now that you have a list of all project names, you need to add them to the OpenOps table. This can be done with two actions: one to loop over the list of project names, and another to add each project name to the table.
+
+First, click **+** in the workflow editor to add a new step.
+
+In the pop-up menu, select **Loop on Items** in the left pane, then click **Loop on Items** in the right pane.
+
+In the new loop step's properties pane, rename the step to _For each project name_.
+
+Click in the **Items** field. In the **Data Selector** view that opens, click **Insert** alongside the **3. Extract distinct project names** entry. This passes the list of project names obtained in the previous step as the input for the loop to iterate over.
+
+This is what the **Configure** tab in the properties pane should now look like:
+
+![A configured loop step](/images/cloudhealth/project-owner-mapping/loop-added.png)
+
+Click the **Test** tab in the properties pane. Under **Step output**, click **Test Step**. The test output should be an object representing the first item in the list of project names:
+
+```json
+{
+  "item": "Other",
+  "index": 1
+}
+```
+
+Now, in the workflow editor, click the **+** button _inside_ the loop:
+
+![Creating a step inside a loop](/images/cloudhealth/project-owner-mapping/new-step-inside-loop.png)
+
+In the pop-up menu, select **OpenOps Tables** in the left pane, then click **Add or Update Record** in the right pane.
+
+In the properties pane of the new step, rename the step to _Add project to mapping table_.
+
+For the **Table** field, select **CloudHealth project-owner mapping** — that's the table you created manually earlier.
+
+Click the **Primary Key Value** field to display the **Data Selector** view. Inside that view, expand the **4. For each project name** entry, then click **Insert** alongside the **item** entry:
+
+![Selecting the project name to add to the table](/images/cloudhealth/project-owner-mapping/table-pkv-data-selector.png)
+
+Under **Fields to update**, click **Add Item**. This will open a new area that lets you specify what to add in the **Owner email** field of your OpenOps table. Inside the area:
+* In the **Field name** dropdown, select **Owner email**.
+* In the **Owner email** field, enter an email placeholder like `replace@this.email` or your own email. Once this workflow has been run, you will need to replace this placeholder with actual emails of each project's owner.
+
+Here's what the **Configure** tab in the properties pane should now look like:
+
+![A configured table step](/images/cloudhealth/project-owner-mapping/table-step-added.png)
+
+Click the **Test** tab in the properties pane. Under **Step output**, click **Test Step**. After testing, the output is a JSON object that represents the new row added to the table:
+
+```json
+{
+  "id": 3,
+  "order": "3.00000000000000000000",
+  "CloudHealth project": "Other",
+  "Owner email": "replace@this.email"
+}
+```
+
+### Test the workflow
+
 
 
 ## Creating a workflow to process CloudHealth rightsizing recommendations
