@@ -13,7 +13,7 @@ While CloudHealth is great at analysis and reporting, it’s not really built to
 ## What this tutorial will cover
 
 This tutorial guides you step-by-step to create two workflows in OpenOps:
-1. The first workflow, "Fill the Project-Owner mapping table", fetches all project names from AWS instance metadata stored in CloudHealth, and writes them to an OpenOps table. Once this is done, you should go through the table and enter real emails of project owners. This assumes that in your organization, cloud resource ownership is allocated on a per-project basis.
+1. The first workflow, "Fill the Project-Owner mapping table", fetches all project names from AWS instance metadata stored in CloudHealth, and writes them to an OpenOps table. This assumes that in your organization, cloud resource ownership is allocated on a per-project basis.
 2. The second workflow, "CloudHealth Rightsizing Recommendations", fetches AWS EC2 rightsizing recommendations from CloudHealth, looks up owners of projects they fall into, notifies owners via Slack, and implements resolutions from owners by creating Jira tickets, snoozing, or dismissing recommendations.
 
 Here's the outline of the two OpenOps workflows that you're going to build:
@@ -212,7 +212,7 @@ Click the **Primary Key Value** field to display the **Data Selector** view. Ins
 
 Under **Fields to update**, click **Add Item**. This will open a new area that lets you specify what to add in the **Owner email** field of your OpenOps table. Inside the area:
 * In the **Field name** dropdown, select **Owner email**.
-* In the **Owner email** field, enter an email placeholder like `replace@this.email` or your own email. Once this workflow has been run, you will need to replace this placeholder with actual emails of each project's owner.
+* In the **Owner email** field, enter your own email as you'll be using it to test the EC2 rightsizing workflow described next. Your account in your organization's Slack workspace should be registered to this email. Once both workflows described in this tutorial are ready, you will replace your email with emails of the actual project owners.
 
 Here's what the **Configure** tab in the properties pane should now look like:
 
@@ -222,10 +222,10 @@ Click the **Test** tab in the properties pane. Under **Step output**, click **Te
 
 ```json
 {
-  "id": 3,
-  "order": "3.00000000000000000000",
+  "id": 1,
+  "order": "1.00000000000000000000",
   "CloudHealth project": "Other",
-  "Owner email": "replace@this.email"
+  "Owner email": "your@email.here"
 }
 ```
 
@@ -247,9 +247,13 @@ Once you do, the workflow will run on a schedule you've defined, which is every 
 
 If you click **Workflows** in the left-side menu, you should see the workflow you just published. All its runs will be listed in the view that you can open by clicking **Runs** in the left-side menu.
 
-### Update the table with real owner emails
+### Review the project-owner mapping table
 
+Click **Tables** in the left-side menu. In the list of tables under **OpenOps Dataset**, click **CloudHealth project-owner mapping**. After running the workflow, the table should look something like this:
 
+![Project-owner mapping table](/images/cloudhealth/project-owner-mapping/table-filled.png)
+
+You now have all you need to start creating the second workflow.
 
 ## Creating a workflow to process CloudHealth rightsizing recommendations
 
@@ -402,3 +406,10 @@ export const code = async (inputs) => {
 ##### Snooze
 
 ##### Dismiss
+
+
+## Update the project-owner mapping table with real owner emails
+
+Click **Tables** in the left-side menu to open the table editor. In the list of tables under **OpenOps Dataset**, click **CloudHealth project-owner mapping**.
+
+Since both the project-owner mapping and rightsizing workflows are now ready, you can now update the table with real project owner emails (make sure that these emails are also used in your Slack installation). Once you do, the rightsizing workflow will send Slack notifications to the project owners.
