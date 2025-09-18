@@ -104,6 +104,42 @@ Here's what your workflow should look like at this point:
 
 ![A configured and tested trigger](/images/cloudhealth/project-owner-mapping/trigger-added.png)
 
+### Get all AWS instances from CloudHealth
+
+The goal of this workflow is to get all project names from AWS instance metadata stored in CloudHealth, and write them to an OpenOps table. This way, the EC2 rightsizing workflow can look up project owners based on project names.
+
+Therefore, the first action of this workflow is to fetch information about all AWS instances from CloudHealth.
+
+In the workflow graph, under the trigger, click **+** to add a new step.
+
+In the pop-up menu, scroll down to and click **CloudHealth**. In the list of CloudHealth-related actions, select **Search Assets**:
+
+![Selecting a CloudHealth action](/images/cloudhealth/selecting-cloudhealth-action.png)
+
+This adds a new step to the workflow graph and displays the action's properties pane on the right. You'll now need to configure the action.
+
+First, at the very top of the properties pane, click **Edit Step Name** next to the default name, and rename the step to _Get all AWS instances_.
+
+Then, under **API Key**, click **Select a connection**, then **Create Connection**. This will open a new dialog that looks like this:
+
+![Creating a CloudHealth connection](/images/cloudhealth/create-cloudhealth-connection.png)
+
+In the dialog, you need to enter your CloudHealth API key. If you don't have it at hand, follow the instructions in the dialog to generate an API key. Once you have the key, paste it into the **API Key** field and click **Save**.
+
+After the dialog closes, back in the properties pane, set **Asset Type** to **AWSInstance**.
+
+Click the **Test** tab in the properties pane. Under **Step output**, click **Test Step**. This will test the action and display its output.
+
+Your workflow should now look like this:
+
+![A configured CloudHealth action](/images/cloudhealth/project-owner-mapping/cloudhealth-action-added.png)
+
+
+### Extract distinct project names
+
+
+### Add all project names to the OpenOps table
+
 
 
 ## Creating a workflow to process CloudHealth rightsizing recommendations
@@ -138,18 +174,14 @@ In the pop-up menu, scroll down to and click **CloudHealth**. In the list of Clo
 
 This adds a new step to the workflow graph and displays the action's properties pane on the right. You'll now need to configure the action.
 
-First, in the properties pane, under **API Key**, click **Select a connection**, then **Create Connection**. This will open a new dialog that looks like this:
+First, in the properties pane, under **API Key**, select your existing CloudHealth connection that you set up when working on the project-mapping workflow.
 
-![Creating a CloudHealth connection](/images/cloudhealth/create-cloudhealth-connection.png)
-
-In the dialog, you need to enter your CloudHealth API key. If you don't have it at hand, follow the instructions in the dialog to generate an API key. Once you have the key, paste it into the **API Key** field and click **Save**.
-
-After the dialog closes, back in the properties pane, configure the remaining action properties:
+Then, configure the remaining action properties like this:
 * Under **Recommendation Type**, select **EC2 Rightsizing**.
 * Under **Evaluation Duration**, select **Last 7 Days**.
 * Under **Limit**, set the value to `3` to retrieve the top 3 recommendations.
 
-Under **Step output**, click **Test Step**. This will test the action and display the results in the bottom right pane.
+Click the **Test** tab in the properties pane. Under **Step output**, click **Test Step**. This will test the action and display the results in the bottom right pane.
 
 Your workflow should now look like this:
 
