@@ -408,9 +408,35 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
 6322302345294i-0fbc4dbf9ca0b46c0
 ```
 
+### Look up the opportunity in the OpenOps table
 
+Now that you have an opportunity ID, let's add a step that checks if the recommendation that has it already exists in the *Opportunities* table in OpenOps.
 
+Inside the loop in the workflow graph, click **+** to add a new step.
 
+In the pop-up menu, select **OpenOps Tables** in the left pane, then click **Get Records** in the right pane.
+
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Find table entry for opportunity_.
+
+In the **Configure** tab in the properties pane, under **Table**, select **Opportunities**.
+
+Under **Fields to filter by**, click **Add Item**. In the new filter section:
+* Under **Field name**, select **External Opportunity Id**.
+* Under **Filter type**, select **Is equal**.
+* In the **External Opportunity Id** field, open the **Data Selector** view and click **Insert** alongside the **4. Opportunity ID** entry.
+
+The new step in the workflow graph and the **Configure** tab in its properties pane should now look like this:
+
+![A configured table lookup step](/images/cloudhealth/find-table-entry-added.png)
+
+Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output will be an object representing the number of found table entries and the content of these entries. Since there are no existing entries for a new recommendation, here's the expected output:
+
+```json
+{
+  "count": 0,
+  "items": []
+}
+```
 
 
 
