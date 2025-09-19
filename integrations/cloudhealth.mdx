@@ -331,24 +331,50 @@ Click the **Test** tab in the properties pane. Under **Step output**, click **Te
 }
 ```
 
-
 ### Loop over recommendations
 
-CloudHealth returns a list of recommendations, but we only want to process one at a time. To do this, let's use a **Loop on Items** block.
+CloudHealth returns a list of recommendations, but we only want to process one at a time. To do this, let's use a **Loop on Items** action.
 
 In the workflow graph, click the **+** button to add a new step.
 
-In the pop-up menu, select **Loop on Items** in the left pane, then click **Loop on Items** in the right pane. This adds a new step to the workflow graph and displays the loop's properties pane on the right.
+In the pop-up menu, select **Loop on Items** in the left pane, then click **Loop on Items** in the right pane.
 
-In the properties pane, click the **Items** field. In the **Data Selector** view that opens, expand the **2. Get Recommendations** entry, then expand **rightsizingRecommendations**, and click **Insert** alongside the **edges** entry:
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _For each recommendation_.
+
+In the properties pane, click the **Items** field. In the **Data Selector** view that opens, expand the **2. Get EC2 rightsizing recommendations** entry, then expand **rightsizingRecommendations**, and click **Insert** alongside the **edges** entry:
 
 ![Selecting items to loop over](/images/cloudhealth/data-selector-edges.png)
 
 This will add the **edges** entry to the **Items** field in the properties pane, ensuring that OpenOps loops over this particular array in the list of CloudHealth recommendations.
 
-In the properties pane, under **Step output**, click **Test Step**. After testing, your workflow should look like this:
+The new step in the workflow graph and the **Configure** tab in its properties pane should now look like this:
 
 ![A configured Loop on Items block](/images/cloudhealth/loop-added.png)
+
+Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output should be a JSON object representing the first rightsizing recommendation:
+
+```json
+{
+  "item": {
+    "node": {
+      "targetAsset": { ... },
+      "currentMetrics": [ ... ],
+      "currentUtilizationStatus": "UNDER_TARGET",
+      "options": [ ... ],
+      "currentMonthlyPrice": 112.96,
+      "projectedMonthlyPrice": 66.48167,
+      "projectedMonthlySavings": 46.478333,
+      "currentCost": 67.77599,
+      "projectedCost": 66.48167,
+      "projectedSavingsByCost": 1.2943289,
+      "terminateRecommendation": false,
+      "__typename": "RightsizingRecommendation"
+    },
+    "__typename": "RightsizingRecommendationEdge"
+  },
+  "index": 1
+}
+```
 
 All further steps in this workflow will be added inside this loop.
 
