@@ -376,9 +376,46 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
 }
 ```
 
-All further steps in this workflow will be added inside this loop.
+<Warning>All further steps in this workflow will be added inside this loop.</Warning>
 
-#### Get asset perspectives from CloudHealth
+### Generate opportunity ID
+
+The first new step you'll need to add inside the loop will generate an ID for the current recommendation. CloudHealth doesn't provide this ID, so you'll need to generate it yourself. The ID will be used to save the recommendation in the OpenOps' preconfigured *Opportunities* table, track the status of the recommendation, and, most crucially, decide whether to send a Slack notification to the project owner.
+
+While you could simplify the workflow greatly without tracking recommendations in an OpenOps table, you then wouldn't be able to select which notifications to send and which to ignore. As a result, project owners would potentially receive multiple notifications for the same recommendation, which would get annoying very soon.
+
+Inside the loop in the workflow graph, click **+** to add a new step.
+
+In the pop-up menu, select **Text Operations** in the left pane, then click **Concatenate** in the right pane.
+
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Opportunity ID_.
+
+In the properties pane, under **Texts**, click **Add Item**. Click the new field to open the **Data Selector** view. Inside that view, expand **3. For each recommendation**, then **item**, then **node**, then **targetAsset**. Click **Insert** alongside the **id** entry:
+
+![Selecting a targetAsset ID](/images/cloudhealth/opportunity-id-targetAsset-id.png)
+
+Under **Texts**, click **Add Item** again to add a new field. Click the new field to open the **Data Selector** view again. Expand **3. For each recommendation**, then **item**, then **node**, then **targetAsset**. Click **Insert** alongside the **awsInstanceId** entry:
+
+![Selecting a targetAsset AWS instance ID](/images/cloudhealth/opportunity-id-awsInstanceId.png)
+
+The new step in the workflow graph and the **Configure** tab in its properties pane should now look like this:
+
+![A configured text concatenation block](/images/cloudhealth/opportunity-id-added.png)
+
+Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output should be a string that combines the two IDs that you've just added to the step's properties:
+
+```text
+6322302345294i-0fbc4dbf9ca0b46c0
+```
+
+
+
+
+
+
+
+
+### Get asset perspectives from CloudHealth
 
 - Inside the loop, add a **Block** with `@openops/block-cloudhealth`.
 - Use the action `cloudhealth_get_asset_perspectives`.
@@ -388,7 +425,7 @@ All further steps in this workflow will be added inside this loop.
   - `fields`: Pass the instance ID from the current item: `{{step_2['item']['node']['targetAsset']['awsInstanceId']}}`.
 - This enriches the recommendation with asset metadata and perspectives.
 
-#### Query project owner from an OpenOps table
+### Query project owner from an OpenOps table
 
 - Add a **Block** with `@openops/block-openops-tables`.
 - Use the action `get_records`.
@@ -397,7 +434,7 @@ All further steps in this workflow will be added inside this loop.
   - `filters`: Filter by project name equal to `{{step_13[0]['perspectives']['Project']}}`.
 - This fetches the owner email and other details for the project.
 
-#### Format projected monthly savings
+### Format projected monthly savings
 
 - Add a **Block** with `@openops/block-math-helper`.
 - Use the action `truncate_math`.
@@ -406,7 +443,7 @@ All further steps in this workflow will be added inside this loop.
   - `numberOfDecimalPlaces`: `2`.
 - This formats the savings value for display.
 
-#### Extract AWS region from DNS
+### Extract AWS region from DNS
 
 - Add a **Code** block.
 - Input:
@@ -422,7 +459,7 @@ export const code = async (inputs) => {
 };
 ```
 
-#### Send a Slack notification
+### Send a Slack notification
 
 - Add a **Block** with `@openops/block-slack`.
 - Use the action `request_action_message`.
@@ -443,7 +480,7 @@ export const code = async (inputs) => {
   - Provide a Slack conversation ID for responses.
 - This notifies the owner and collects their response.
 
-#### Handle Slack action with a split block
+### Handle Slack action with a split block
 
 - Add a **Split** block to branch based on Slack action:
   - **JIRA branch**:
@@ -459,11 +496,11 @@ export const code = async (inputs) => {
     - Add a **Block** with `@openops/block-cloudhealth`.
     - Update the `Opportunities` table record to set status to "Dismissed".
 
-##### Jira
+#### Jira
 
-##### Snooze
+#### Snooze
 
-##### Dismiss
+#### Dismiss
 
 
 ## Update the project-owner mapping table with real owner emails
