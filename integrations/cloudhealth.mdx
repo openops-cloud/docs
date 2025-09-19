@@ -257,9 +257,11 @@ You now have all you need to start creating the second workflow.
 
 ## Creating a workflow to process CloudHealth rightsizing recommendations
 
+Let's now create another workflow that will actually process CloudHealth EC2 rightsizing recommendations.
+
 ### Create a new workflow
 
-In your OpenOps instance, click the **+ New Workflow** button on the top right.
+In the **Overview** or **Workflows** view in OpenOps, click the **+ New Workflow** button on the top right.
 
 When the OpenOps workflow editor opens with a new workflow, click the down arrow next to the workflow name on the top left, then click **Rename**, and rename the workflow to _CloudHealth Rightsizing Recommendations_.
 
@@ -267,13 +269,11 @@ When the OpenOps workflow editor opens with a new workflow, click the down arrow
 
 In the workflow editor, click the trigger step. When a drop-down with types of triggers opens, select **Schedule**, then **Every Day**.
 
-In the trigger step's properties pane on the right, in the **Configure** tab, keep the defaults. With the default trigger settings, your workflow will run every day, excluding weekends, at midnight UTC.
-
-Now, open the **Test** tab, and under **Step output**, click **Load Data**.
-
-Here's what your workflow should look like at this point:
+In the trigger step's properties pane on the right, in the **Configure** tab, keep the defaults. With the default trigger settings, your workflow will run every day, excluding weekends, at midnight UTC:
 
 ![A configured and tested trigger](/images/cloudhealth/trigger-added.png)
+
+Now, open the **Test** tab in the properties pane, and under **Step output**, click **Load Data**. Remember that it's important to test every step of your workflow: testing all previous steps enables you to test every subsequent step and, later, the entire workflow.
 
 ### Fetch rightsizing recommendations from CloudHealth
 
@@ -285,20 +285,52 @@ In the pop-up menu, scroll down to and click **CloudHealth**. In the list of Clo
 
 ![Selecting a CloudHealth action](/images/cloudhealth/selecting-cloudhealth-action.png)
 
-This adds a new step to the workflow graph and displays the action's properties pane on the right. You'll now need to configure the action.
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Get EC2 rightsizing recommendations_.
 
-First, in the properties pane, under **API Key**, select your existing CloudHealth connection that you set up when working on the project-mapping workflow.
+Under **API Key** in the properties pane, select your existing CloudHealth connection that you set up earlier when working on the project-mapping workflow.
 
 Then, configure the remaining action properties like this:
 * Under **Recommendation Type**, select **EC2 Rightsizing**.
 * Under **Evaluation Duration**, select **Last 7 Days**.
-* Under **Limit**, set the value to `3` to retrieve the top 3 recommendations.
-
-Click the **Test** tab in the properties pane. Under **Step output**, click **Test Step**. This will test the action and display the results in the bottom right pane.
+* Under **Limit**, set the value to `3` to retrieve the top 3 recommendations. This should be enough for testing purposes. Later on, when you've completed this tutorial, feel free to increase this value or set this field empty to fetch all available recommendations.
 
 Your workflow should now look like this:
 
 ![A configured CloudHealth action](/images/cloudhealth/cloudhealth-action-added.png)
+
+Click the **Test** tab in the properties pane. Under **Step output**, click **Test Step**. This will test the action and display its output in the bottom right pane. Since the action returns a list of recommendations, expect to see JSON output like this:
+
+```json
+{
+  "rightsizingRecommendations": {
+    "edges": [
+      {
+        "node": {
+          "targetAsset": { ... },
+          "currentMetrics": [ ... ],
+          "currentUtilizationStatus": "UNDER_TARGET",
+          "options": [ ... ],
+          "currentMonthlyPrice": 112.96,
+          "projectedMonthlyPrice": 66.48167,
+          "projectedMonthlySavings": 46.478333,
+          "currentCost": 67.77599,
+          "projectedCost": 66.48167,
+          "projectedSavingsByCost": 1.2943289,
+          "terminateRecommendation": false,
+          "__typename": "RightsizingRecommendation"
+        },
+        "__typename": "RightsizingRecommendationEdge"
+      },
+      ... more nodes
+    ],
+    "utilizationStatusSummary": { ... },
+    "pageInfo": { ... },
+    "totalCount": 18,
+    "__typename": "RightsizingRecommendationConnection"
+  }
+}
+```
+
 
 ### Loop over recommendations
 
