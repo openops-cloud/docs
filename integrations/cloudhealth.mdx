@@ -621,8 +621,71 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
 43bd78d2-18d9-4908-b035-c854364a19bd
 ```
 
+### If a table entry exists, check the status
 
+You've just handled a case where a new table entry needs to be created, adding steps to the **True** branch of the condition step that we called _If no table entry for opportunity_.
 
+If a table entry already exists, there's also something that needs to be done. Let's now add actions to the **False** branch of the condition.
+
+#### Check if an existing table entry is in the "Created" state
+
+Inside the **False** branch of the condition, click **+** to add a new step.
+
+In the pop-up menu, select **Condition** in the left pane, then click **Condition** in the right pane.
+
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Table entry exists but opportunity is marked as new_.
+
+Under **Continue If**, click the left field. In the **Data Selector** view, expand **5. Find table entry for opportunity**, then **items**, then **items[1]**, then **Status**. Click **Insert** alongside the **value** entry:
+
+![Selecting a status value](/images/cloudhealth/data-selector-status-value.png)
+
+In the combobox between the two fields, select **(Text) Is**.
+
+In the right field, enter `Created`.
+
+The new step in the workflow graph and the **Configure** tab in its properties pane should now look like this:
+
+![A configured condition](/images/cloudhealth/table-entry-status-check-added.png)
+
+Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**.
+
+#### If the current status is "Created", update it
+
+If a table entry for a recommendation already exists, but it's in the "Created" state, this means a project owner has been notified about this recommendation the last time the workflow was run but has not taken any action yet. In this case, you should change the status to avoid notifying the project owner again.
+
+In the **True** branch of the _Table entry exists but opportunity is marked as new_ condition, click **+** to add a new step.
+
+In the pop-up menu, select **OpenOps Tables** in the left pane, then click **Add or Update Record** in the right pane.
+
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Change status of existing opportunity_.
+
+For the **Table** field, select **Opportunities**.
+
+In the **Primary Key Value** field, use **Data Selector** to expand **5. Find table entry for opportunity**, then **items**, then **items[1]**. Click **Insert** alongside the uppercase **ID** entry.
+
+Under **Fields to update**, click **Add Item**. In the new area:
+* In the **Field name** dropdown, select **Status**.
+* In the **Status** dropdown, select **Under review**.
+
+Here's what the **Configure** tab in the properties pane should now look like, along with the workflow graph:
+
+![A configured step to update record status](/images/cloudhealth/nested-condition-ready.png)
+
+Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output should represent the updated status of the existing table entry:
+
+```json
+{
+  "id": 48,
+  "order": "1.00000000000000000000",
+  "ID": "6cc0f15a-f3eb-4d77-b6b3-2f51eebbe8cf",
+  "Status": {
+    "id": 9,
+    "value": "Under review",
+    "color": "pink"
+  },
+...
+}
+```
 
 
 ## Update the project-owner mapping table with real owner emails
