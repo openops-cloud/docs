@@ -438,6 +438,75 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
 }
 ```
 
+However, the structure of the output is different if the recommendation already exists in the table. Since the next step of the workflow will need to use a part of the output for an existing table record, let's add a sample output for the step.
+
+Click **Sample output data** in the **Test** tab. In the **Output** area, paste the following JSON, then click **Apply**:
+
+```json
+{
+  "count": 1,
+  "items": [
+    {
+      "id": 48,
+      "order": "1.00000000000000000000",
+      "ID": "6cc0f15a-f3eb-4d77-b6b3-2f51eebbe8cf",
+      "Status": {
+        "id": 5,
+        "value": "Created",
+        "color": "grey"
+      },
+      "Opportunity Type": null,
+      "Estimated savings USD per month": null,
+      "Resource Id": null,
+      "Workflow": null,
+      "Service": null,
+      "Region": null,
+      "Account": null,
+      "Owner": null,
+      "Follow-up task": null,
+      "Opportunity generator": null,
+      "External Opportunity Id": "6322302345294i-0fbc4dbf9ca0b46c0",
+      "Complexity": null,
+      "Risk": null,
+      "Opportunity details": null,
+      "Snoozed until": null,
+      "Resolution notes": null,
+      "Creation time": "2025-09-22T13:44:52.980710Z",
+      "Last modified time": "2025-09-22T13:44:52.980710Z"
+    }
+  ]
+}
+```
+
+### Save table entry ID to OpenOps storage
+
+You should now map the ID of the current recommendation to the ID of its entry in the *Opportunities* table, and save this mapping to OpenOps' built-in key-value storage. You'll need this later on in the workflow when you decide whether to send a notification to the project owner.
+
+Inside the loop in the workflow graph, click **+** to add a new step.
+
+In the pop-up menu, select **Storage** in the left pane, then click **Put** in the right pane.
+
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Save table record ID to storage_.
+
+In the **Key** field, use **Data Selector** to select **4. Opportunity ID**.
+
+In the **Value** field, open **Data Selector**, expand **5. Find table entry for opportunity**, then **items**, then **items[1]**. Click **Insert** alongside the uppercase **ID** entry:
+
+![Selecting a table entry ID](/images/cloudhealth/find-table-entry-id.png)
+
+The new step in the workflow graph and the **Configure** tab in its properties pane should now look like this:
+
+![A configured storge step](/images/cloudhealth/save-table-entry-id-added.png)
+
+Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output will be the value of the ID field in the Opportunities table entry that represents the current recommendation:
+
+```text
+6cc0f15a-f3eb-4d77-b6b3-2f51eebbe8cf
+```
+
+
+
+
 
 
 ## Update the project-owner mapping table with real owner emails
