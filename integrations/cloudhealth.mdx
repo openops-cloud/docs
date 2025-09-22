@@ -524,6 +524,8 @@ The new step in the workflow graph and the **Configure** tab in its properties p
 
 ![A configured condition](/images/cloudhealth/table-entry-condition-added.png)
 
+This condition should evaluate to `true` if there is no table entry for the current recommendation, and `false` if there is one.
+
 Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. Since you've added a sample output data for step five that contains a table entry, the test output will be `false`:
 
 ```json
@@ -532,8 +534,66 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
 }
 ```
 
+### If no table entry, create one
 
+If the condition above evaluates to `true`, this means the *Opportunities* doesn't have a record for it. In this case, you need to create a new table entry and save its ID to storage for later use.
 
+#### Create a new table entry
+
+Inside the **True** branch of the condition, click **+** to add a new step.
+
+In the pop-up menu, select **OpenOps Tables** in the left pane, then click **Add or Update Record** in the right pane.
+
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Add table entry for opportunity_.
+
+For the **Table** field, select **Opportunities**.
+
+Leave the **Primary Key Value** field empty, letting OpenOps generate a unique ID for the new record.
+
+Under **Fields to update**, click **Add Item**. In the new area:
+* In the **Field name** dropdown, select **External Opportunity Id**.
+* In the **External Opportunity Id** field, open the **Data Selector** view and click **Insert** alongside the **4. Opportunity ID** entry.
+
+Click **Add Item** again to add a new field. In the new area:
+* In the **Field name** dropdown, select **Status**.
+* In the **Status** dropdown, select **Created**.
+
+Here's what the **Configure** tab in the properties pane should now look like:
+
+![A configured step to add a table entry](/images/cloudhealth/add-table-entry-added.png)
+
+Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output represents a new entry in the *Opportunities* table:
+
+```json
+{
+  "id": 49,
+  "order": "2.00000000000000000000",
+  "ID": "43bd78d2-18d9-4908-b035-c854364a19bd",
+  "Status": {
+    "id": 5,
+    "value": "Created",
+    "color": "grey"
+  },
+  "Opportunity Type": null,
+  "Estimated savings USD per month": null,
+  "Resource Id": null,
+  "Workflow": null,
+  "Service": null,
+  "Region": null,
+  "Account": null,
+  "Owner": null,
+  "Follow-up task": null,
+  "Opportunity generator": null,
+  "External Opportunity Id": "6322302345294i-0fbc4dbf9ca0b46c0",
+  "Complexity": null,
+  "Risk": null,
+  "Opportunity details": null,
+  "Snoozed until": null,
+  "Resolution notes": null,
+  "Creation time": "2025-09-22T15:05:23.232427Z",
+  "Last modified time": "2025-09-22T15:05:23.232427Z"
+}
+```
 
 
 
