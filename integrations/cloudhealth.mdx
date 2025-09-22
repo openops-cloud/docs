@@ -504,6 +504,34 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
 6cc0f15a-f3eb-4d77-b6b3-2f51eebbe8cf
 ```
 
+### Check if a table entry exists
+
+When you run a published workflow, an entry for a CloudHealth recommendation may or may not already exist in the *Opportunities* table. What this workflow does next depends on whether the entry exists or not. To check this, you need to introduce a condition step next.
+
+Inside the loop in the workflow graph, click **+** to add a new step.
+
+In the pop-up menu, select **Condition** in the left pane, then click **Condition** in the right pane.
+
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _If no table entry for opportunity_.
+
+Under **Continue If**, click the left field with a placeholder that reads _First value_. In the **Data Selector** view, expand **5. Find table entry for opportunity** and click **Insert** alongside the **count** entry.
+
+In the combobox between the two fields, select **(Number) Is less than**.
+
+In the right field, enter `1`.
+
+The new step in the workflow graph and the **Configure** tab in its properties pane should now look like this:
+
+![A configured condition](/images/cloudhealth/table-entry-condition-added.png)
+
+Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. Since you've added a sample output data for step five that contains a table entry, the test output will be `false`:
+
+```json
+{
+  "condition": false
+}
+```
+
 
 
 
