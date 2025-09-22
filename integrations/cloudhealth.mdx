@@ -498,7 +498,7 @@ The new step in the workflow graph and the **Configure** tab in its properties p
 
 ![A configured storge step](/images/cloudhealth/save-table-entry-id-added.png)
 
-Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output will be the value of the ID field in the Opportunities table entry that represents the current recommendation:
+Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output will be the value of the ID field in the *Opportunities* table entry that represents the current recommendation:
 
 ```text
 6cc0f15a-f3eb-4d77-b6b3-2f51eebbe8cf
@@ -594,6 +594,34 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
   "Last modified time": "2025-09-22T15:05:23.232427Z"
 }
 ```
+
+#### Save table entry ID to storage
+
+Now that you have a new table entry, you need to save its ID to OpenOps' built-in key-value storage.
+
+Inside the **True** branch of the condition, click **+** to add a new step.
+
+In the pop-up menu, select **Storage** in the left pane, then click **Put** in the right pane.
+
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Update table record ID in storage_. You're using the word "update" because in a prior step, you've already created a key-value pair, but since no table record existed yet, its value was empty.
+
+In the **Key** field, use **Data Selector** to select **4. Opportunity ID**.
+
+In the **Value** field, open **Data Selector**, expand **8. Add table entry for opportunity**, then click **Insert** alongside the uppercase **ID** entry:
+
+![Selecting the uppercase ID](/images/cloudhealth/selecting-uppercase-id.png)
+
+Here's what the **Configure** tab in the properties pane should now look like:
+
+![A configured step to update storage with table entry ID](/images/cloudhealth/update-storage-added.png)
+
+Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output will be the value of the ID field in the *Opportunities* table entry that represents the current recommendation:
+
+```text
+43bd78d2-18d9-4908-b035-c854364a19bd
+```
+
+
 
 
 
