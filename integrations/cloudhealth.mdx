@@ -907,6 +907,39 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
 46.48
 ```
 
+### Describe the recommendation
+
+Let's now use formatted monthly savings and other recommendation details to construct a message that will be sent to the project owner.
+
+Click **+** to add a new step.
+
+In the pop-up menu, select **Storage** in the left pane, then click **Put** in the right pane.
+
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Opportunity description_.
+
+In the **Key** field, use **Data Selector** to expand **3. For each recommendation**, then **item**, then **node**, then **targetAsset**. Click **Insert** alongside the **id** entry.
+
+The **Value** field represents the opportunity description, and it needs to be multi-line:
+1. In the first line, type in "Account: ", then use **Data Selector** to expand **3. For each recommendation**, then **item**, then **node**, then **targetAsset**, then **account**. Click **Insert** alongside the **name** entry.
+2. In the second line, type in "Instance ID: ", then use **Data Selector** to expand **3. For each recommendation**, then **item**, then **node**, then **targetAsset**, Click **Insert** alongside the **awsInstanceId** entry.
+3. In the third line, type in "Instance name: ", then use **Data Selector** to expand **3. For each recommendation**, then **item**, then **node**, then **targetAsset**, Click **Insert** alongside the **name** entry.
+4. In the fourth line, type in "Projected monthly savings: $", then in the **Data Selector**, insert **18. Format monthly savings**.
+
+Here's what the new step in the workflow graph and the **Configure** tab in its properties pane should now look like:
+
+![A configured opportunity description step](/images/cloudhealth/opportunity-description-added.png)
+
+Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output is a part of the message that the project owner will receive:
+
+```text
+Account: CloudHealth Redshirt
+Instance ID: i-0fbc4dbf9ca0b46c0
+Instance name: jeff-test-2-ng-2-Node
+Projected monthly savings: $46.48
+```
+
+
+
 ## Update the project-owner mapping table with real owner emails
 
 Click **Tables** in the left-side menu to open the table editor. In the list of tables under **OpenOps Dataset**, click **CloudHealth project-owner mapping**.
