@@ -767,6 +767,40 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
 }
 ```
 
+### Decide to skip or notify the project owner
+
+You now have all the information you need to decide whether to notify the project owner about the current recommendation over Slack. To make this decision, you'll need to introduce a condition step.
+
+In the workflow graph, click **+** to add a new step.
+
+In the pop-up menu, select **Condition** in the left pane, then click **Condition** in the right pane.
+
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Skip or notify?_.
+
+You want to notify the project owner in two cases:
+* If this is a new recommendation, as evidenced by the "Created" state.
+* If the project owner has been notified of the current recommendation in the past, chose to snooze it, and the snooze date has passed.
+
+Let's define these two cases. Under **Continue If**, click the left field. In **Data Selector**, expand **14. Get table entry for opportunity**, then **items**, then **items[1]**, then **Status**. Click **Insert** alongside the **value** entry:
+
+![Selecting a status value](/images/cloudhealth/skip-or-notify-selecting-status-value.png)
+
+In the combobox between the two fields, select **(Text) Is**.
+
+In the right field, enter `Created`.
+
+Click **+ Or**. In the new area, click the left field.  In **Data Selector**, expand **14. Get table entry for opportunity**, then **items**, then **items[1]**. Scroll down and click **Insert** alongside the **Snoozed until** entry.
+
+In the combobox between the two fields, select **(Date) Is before**.
+
+In the right field, use **Data Selector** to insert **12. Get Current Date**.
+
+The new step in the workflow graph and the **Configure** tab in its properties pane should now look like this:
+
+![A configured condition step](/images/cloudhealth/skip-or-notify-added.png)
+
+Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**.
+
 
 ## Update the project-owner mapping table with real owner emails
 
