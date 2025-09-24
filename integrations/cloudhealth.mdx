@@ -883,6 +883,30 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
 }
 ```
 
+### Format monthly savings
+
+You now know who to notify about the recommendation. What to include in the notification, though? This and several other steps will construct the notification message. First, let's take the monthly savings that CloudHealth predicts and format the number in a human-readable way.
+
+Click **+** to add a new step.
+
+In the pop-up menu, select **Math Operations** in the left pane, then click **Truncate** in the right pane.
+
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Format monthly savings_.
+
+In the **Number to truncate** field, use **Data Selector** to expand **3. For each recommendation**, then **item**, then **node**. Scroll down and click **Insert** alongside the **projectedMonthlySavings** entry.
+
+In **Number of decimal places**, enter `2`.
+
+Here's what the new step in the workflow graph and the **Configure** tab in its properties pane should now look like:
+
+![A configured step to format monthly savings](/images/cloudhealth/format-monthly-savings-added.png)
+
+Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output is the projected monthly savings value with two decimal places:
+
+```json
+46.48
+```
+
 ## Update the project-owner mapping table with real owner emails
 
 Click **Tables** in the left-side menu to open the table editor. In the list of tables under **OpenOps Dataset**, click **CloudHealth project-owner mapping**.
