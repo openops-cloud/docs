@@ -703,6 +703,34 @@ Keep the default settings in the **Configure** tab of the properties pane. Switc
 
 You will use this date in a later step when you decide whether to send a Slack notification for a previously snoozed recommendation.
 
+### Get table ID for recommendation
+
+Soon you'll need to decide if the project owner should be notified about the current CloudHealth recommendation. To prepare for this, you first need to fetch the ID of the table record for this recommendation.
+
+Click **+** to add a new step.
+
+In the pop-up menu, select **Storage** in the left pane, then click **Get** in the right pane.
+
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Get table ID for opportunity_.
+
+In the **Key** field, use **Data Selector** to select **4. Opportunity ID**. Keep **Default Value** blank and **Store Scope** at the default value.
+
+The new step in the workflow graph and the **Configure** tab in its properties pane should now look like this:
+
+![A configured step to get a table ID](/images/cloudhealth/get-table-id-added.png)
+
+Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The expected output is the ID of the current CloudHealth recommendation in the *Opportunities* table:
+
+```text
+43bd78d2-18d9-4908-b035-c854364a19bd
+```
+
+
+
+
+
+
+
 ## Update the project-owner mapping table with real owner emails
 
 Click **Tables** in the left-side menu to open the table editor. In the list of tables under **OpenOps Dataset**, click **CloudHealth project-owner mapping**.
