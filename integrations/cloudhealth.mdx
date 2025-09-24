@@ -687,6 +687,21 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
 }
 ```
 
+### Get the current date
+
+You've now written all steps inside the outer **If no table entry for opportunity** condition. To create the next step, click **+** in the location on the workflow graph right after both branches of the condition merge:
+
+![Creating a step after a completed condition](/images/cloudhealth/new-step-after-condition.png)
+
+In the pop-up menu, select **Date Operations** in the left pane, then click **Get Current Date** in the right pane.
+
+Keep the default settings in the **Configure** tab of the properties pane. Switch to the **Test** tab, then under **Step output**, click **Test Step**. The output should be the current date:
+
+```text
+2025-09-24
+```
+
+You will use this date in a later step when you decide whether to send a Slack notification for a previously snoozed recommendation.
 
 ## Update the project-owner mapping table with real owner emails
 
