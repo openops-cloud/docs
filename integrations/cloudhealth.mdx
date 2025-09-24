@@ -801,6 +801,49 @@ The new step in the workflow graph and the **Configure** tab in its properties p
 
 Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**.
 
+<Warning>All further steps in this workflow will be added inside the **True** branch of this condition.</Warning>
+
+### Get asset perspectives from CloudHealth
+
+In case the project owner should be notified, you need to add several preparatory steps in the **True** branch of the condition, followed by steps to send a Slack notification and handle the project owner's response. Let's start with making a call to the CloudHealth API to determine which project the AWS instance related to the current recommendation belongs to.
+
+In the **True** branch of the *Skip or notify?* condition, click **+** to add a new step.
+
+In the pop-up menu, select **CloudHealth** in the left pane, then click **Get Asset Perspectives** in the right pane.
+
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Get project and more perspectives_.
+
+Under **API Key** in the properties pane, select your existing CloudHealth connection.
+
+Under **Asset Type**, select **AwsInstance**.
+
+Under **Fields to filter by**, click **Add Item**. In the new area:
+* Under **Field name**, select **instance_id**.
+* In the **Value to search for** field, use **Data Selector** to expand **3. For each recommendation**, then **item**, then **node**, then **targetAsset**. Click **Insert** alongside the **awsInstanceId** entry:
+    ![Selecting AWS instance ID](/images/cloudhealth/selecting-awsinstanceid.png)
+
+Here's what the new step in the workflow graph and the **Configure** tab in its properties pane should now look like:
+
+![A configured step to get asset perspectives from CloudHealth](/images/cloudhealth/asset-perspectives-added.png)
+
+Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output is a list of asset perspectives for the given AWS instance ID, including the project it belongs to:
+
+```json
+[
+  {
+    "asset": {
+      "instance_id": "i-0fbc4dbf9ca0b46c0",
+      "name": "jeff-test-2-ng-2-Node",
+      "state": "running",
+      ...
+    },
+    "perspectives": {
+      "Project": "Opencart",
+      ...
+    }
+  }
+]
+```
 
 ## Update the project-owner mapping table with real owner emails
 
