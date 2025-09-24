@@ -845,6 +845,44 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
 ]
 ```
 
+### Get owner by project
+
+Now that you know which project the recommendation belongs to, you can find out who owns the project.
+
+Click **+** to add a new step.
+
+In the pop-up menu, select **OpenOps Tables** in the left pane, then click **Get Records** in the right pane.
+
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Get owner by project_.
+
+In the **Table** field, select **CloudHealth project-owner mapping**.
+
+Under **Fields to filter by**, click **Add Item**. In the new area:
+* For **Field name**, select **CloudHealth project**.
+* For **Filter type**, select **Is equal**.
+* In the **CloudHealth project** field, use **Data Selector** to expand **16. Get project and more perspectives**, then **16. Get project and more perspectives[1]**, then **perspectives**. Click **Insert** alongside the **Project** entry:
+    ![Selecting a project](/images/cloudhealth/selecting-project.png)
+
+Here's what the new step in the workflow graph and the **Configure** tab in its properties pane should now look like:
+
+![A configured step to get owner by project](/images/cloudhealth/owner-by-project-added.png)
+
+Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output is a project-owner mapping table entry for the given project:
+
+```json
+{
+  "count": 1,
+  "items": [
+    {
+      "id": 7,
+      "order": "2.00000000000000000000",
+      "CloudHealth project": "Opencart",
+      "Owner email": "your@email.here"
+    }
+  ]
+}
+```
+
 ## Update the project-owner mapping table with real owner emails
 
 Click **Tables** in the left-side menu to open the table editor. In the list of tables under **OpenOps Dataset**, click **CloudHealth project-owner mapping**.
