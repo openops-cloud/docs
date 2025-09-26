@@ -45,7 +45,7 @@ To request approvals through a communication channel other than Slack, use the *
 
 In this case, here's how you can create the approval part of your workflow:
 1. Add the **Create Approval Links** action from the **Approval** group. This action generates two links: one for approval and the other for disapproval.
-2. Add an action to message a stakeholder the two links. You can use **Send Email** under **SMTP** or one of the actions in the **Microsoft Teams** group.
+2. Add an action to message a stakeholder the two links. You can use **Send Email** from the **SMTP** group, **Send Email** from the **Microsoft Outlook** group, or one of the actions in the **Microsoft Teams** group.
 3. Add the **Wait For Approval** action from the **Approval** group. Once the stakeholder clicks a link, this action updates the approval status accordingly.
 4. Add the **Condition** action to take steps in case of approval or disapproval.
 
@@ -58,3 +58,4 @@ Besides approvals, you can also send notifications about completed workflows or 
 * **Send Channel Message** and **Send Chat Message** under **Microsoft Teams**:
 ![Microsoft Teams actions](/images/hitl-teams-actions.png)
 * Actions in the **Jira Cloud** group, such as **Change Issue Status** and **Add Issue Comment**.
+* Actions to send emails under **SMTP** and **Microsoft Outlook**.
