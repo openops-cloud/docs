@@ -55,7 +55,23 @@ Back in the **Create Slack Connection** dialog, click **Save**.
 
 ### Set up a Jira connection
 
-API credentials with permissions to create issues.
+Click **New Connection** in the top right, then select **Jira Cloud** from the list of services. This will open the **Create Jira Connection** dialog that looks like this:
+
+![Creating a Jira connection](/images/cloudhealth/create-jira-connection.png)
+
+In **Instance URL**, enter the URL of your Jira Cloud instance, such as `https://your-company.atlassian.net`.
+
+In **Email**, enter your Jira Cloud account email.
+
+In **API Token**, enter a Jira Cloud API token with permissions to create issues. If you don't have a token at hand, follow the instructions in the dialog to generate one.
+
+Click **Save**.
+
+After you've set up all the connections, you should see them listed in the **Connections** view in OpenOps:
+
+![A list of connections in OpenOps](/images/cloudhealth/connections-ready.png)
+
+You can now proceed to creating the actual workflows.
 
 ## Creating a workflow to fill the project-owner mapping table
 
