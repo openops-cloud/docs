@@ -1158,6 +1158,29 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
 
 ![A Slack notification with a link to the Jira issue](/images/cloudhealth/slack-notification-jira-issue.png)
 
+### Snooze the recommendation
+
+Let's now handle the project owner's choice to snooze the recommendation for 7 days. To do this, you need two steps:
+1. One that determines the date until which the recommendation should be snoozed.
+2. One that updates the status of the recommendation in the *Opportunities* table.
+
+#### Determine the snooze date
+
+In the **Snooze** branch, click **+** to add a new step.
+
+In the pop-up menu, select **Date Operations** in the left pane, then click **Add/Subtract Time** in the right pane.
+
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Date a week from now_.
+
+In the **Input Date** field, use **Data Selector** to select **12. Get Current Date**.
+
+In the **Expression** field, type in `+ 7 day`.
+
+Here's what the new step in the workflow graph and the **Configure** tab in its properties pane should now look like:
+![A configured step to determine the snooze date](/images/cloudhealth/date-in-a-week-added.png)
+
+Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output is the date until which the recommendation should be snoozed.
+
 ## Update the project-owner mapping table with real owner emails
 
 Click **Tables** in the left-side menu to open the table editor. In the list of tables under **OpenOps Dataset**, click **CloudHealth project-owner mapping**.
