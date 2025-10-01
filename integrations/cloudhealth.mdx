@@ -1098,6 +1098,42 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
 Navigate to the `htmlUrl` to see the issue in your Jira Cloud instance:
 ![Jira issue in Jira Cloud](/images/cloudhealth/jira-issue-in-jira-cloud.png)
 
+#### Update recommendation status
+
+Since the project owner has selected to raise a Jira issue for the CloudHealth recommendation, it means further work on addressing the recommendation will be performed in Jira, and there's no need for your workflow to notify the project owner about it in subsequent runs. To make this happen, you'll need to update the status of the current recommendation in the *Opportunities* table.
+
+In the **Jira** branch, click **+** to add a new step.
+
+In the pop-up menu, select **OpenOps Tables** in the left pane, then click **Add or Update Record** in the right pane.
+
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Set to Approved_.
+
+In the **Table** field, select **Opportunities**.
+
+In the **Primary Key Value** field, use **Data Selector** to select **20. Get table record ID from storage**.
+
+In the **Fields to update** section, click **Add Item**. In the new area:
+* For **Field name**, select **Status**.
+* For **Status**, select **Approved**.
+
+Here's what the new step in the workflow graph and the **Configure** tab in its properties pane should now look like:
+![A configured step to set the recommendation status to Approved](/images/cloudhealth/set-to-approved-added.png)
+
+Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output is a JSON object with details of the updated record in the *Opportunities* table:
+
+```json
+{
+  "id": 49,
+  "order": "2.00000000000000000000",
+  "ID": "43bd78d2-18d9-4908-b035-c854364a19bd",
+  "Status": {
+    "id": 8,
+    "value": "Approved",
+    "color": "dark-green"
+  },
+  ...
+}
+```
 
 ## Update the project-owner mapping table with real owner emails
 
