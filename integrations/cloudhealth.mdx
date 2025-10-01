@@ -1224,6 +1224,42 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
 
 The project owner will not be notified about this CloudHealth recommendation until the snooze date passes.
 
+### Dismiss the recommendation
+
+Finally, if the project owner chooses to dismiss the CloudHealth recommendation, you need to update the status of the current recommendation in the *Opportunities* table to make sure that OpenOps does not send any further notifications about it.
+
+In the **Dismiss** branch, click **+** to add a new step.
+
+In the pop-up menu, select **OpenOps Tables** in the left pane, then click **Add or Update Record** in the right pane.
+
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Set to Dismissed_.
+
+In the **Table** field, select **Opportunities**.
+
+In the **Primary Key Value** field, use **Data Selector** to select **20. Get table record ID from storage**.
+
+In the **Fields to update** section, click **Add Item**. In the new area:
+* For **Field name**, select **Status**.
+* For **Status**, select **Dismissed**.
+
+Here's what the new step in the workflow graph and the **Configure** tab in its properties pane should now look like:
+![A configured step to set the recommendation status to Dismissed](/images/cloudhealth/set-to-dismissed-added.png)
+
+Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output is a JSON object with details of the updated record in the *Opportunities* table:
+
+```json
+{
+  "id": 49,
+  "order": "2.00000000000000000000",
+  "ID": "43bd78d2-18d9-4908-b035-c854364a19bd",
+  "Status": {
+    "id": 6,
+    "value": "Dismissed",
+    "color": "darker-red"
+  },
+  ...
+}
+```
 
 ## Update the project-owner mapping table with real owner emails
 
