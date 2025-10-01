@@ -1027,6 +1027,33 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
 
 ![Slack notification](/images/cloudhealth/slack-notification.png)
 
+According to the configuration that you've just set up, the notification contains three action buttons. If you click any of them now, nothing will happen. To change this, you'll need a step that handles the project owner's response.
+
+### Handle project owner's response with a split
+
+Click **+** to add a new step.
+
+In the pop-up menu, select **Split** in the left pane, then click **Split** in the right pane.
+
+Rename the default branch (**Branch 1**) to **Jira**.
+
+Rename the second branch (**Branch 2**) to **Snooze**. In the **Where** section of this branch:
+1. In the left field, use **Data Selector** to expand **21. Request Action**, then click **Insert** alongside the **action** entry.
+2. In the drop-down, select **(Text) Contains**.
+3. In the right field, enter `Snooze`.
+
+Rename the third branch (**Branch 3**) to **Dismiss**. In the **Where** section of this branch:
+1. In the left field, use **Data Selector** to expand **21. Request Action**, then click **Insert** alongside the **action** entry.
+2. In the drop-down, select **(Text) Contains**.
+3. In the right field, enter `Dismiss`.
+
+Here's what the new step in the workflow graph and the **Configure** tab in its properties pane should now look like:
+
+![A configured split step to handle the project owner's action](/images/cloudhealth/slack-split-added.png)
+
+Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**.
+
+
 
 ## Update the project-owner mapping table with real owner emails
 
