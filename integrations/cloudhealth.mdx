@@ -16,26 +16,6 @@ This tutorial guides you step-by-step to create two workflows in OpenOps:
 1. The first workflow, "Fill the Project-Owner mapping table", fetches all project names from AWS instance metadata stored in CloudHealth, and writes them to an OpenOps table. This assumes that in your organization, cloud resource ownership is allocated on a per-project basis.
 2. The second workflow, "CloudHealth Rightsizing Recommendations", fetches AWS EC2 rightsizing recommendations from CloudHealth, looks up owners of projects they fall into, notifies owners via Slack, and implements resolutions from owners by creating Jira tickets, snoozing, or dismissing recommendations.
 
-Here's the outline of the two OpenOps workflows that you're going to build:
-
-> TODO update the below, outline the second workflow
-1. Trigger: run every day at midnight UTC, excluding weekends.
-2. Get rightsizing recommendations from CloudHealth for AWS EC2 instances from the last 7 days, limited to three recommendations.
-3. Loop over the list of rightsizing recommendations returned. For each recommendation:
-    1. Fetch asset perspectives from CloudHealth for the target AWS instance.
-    2. Query the "Project perspective owners" OpenOps table to get owner information based on the project perspective.
-    3. Format the projected monthly savings value to 2 decimal places.
-    4. Run custom code to extract the AWS region from the instance DNS.
-    5. Send a Slack message to the owner with the rightsizing opportunity details and three action buttons: "Open Jira ticket", "Snooze", "Exempt".
-    6. Act depending on which Slack action the owner selected:
-        1. If "Open Jira ticket":
-            1. Create a Jira issue for the opportunity.
-            2. Send a Slack confirmation message.
-        2. If "Snooze":
-            1. Get the date of the next Monday.
-            2. Update the opportunity status to "Snoozed" with the snooze date set to next Monday.
-        3. If "Exempt": tag the asset as exempt in CloudHealth.
-
 ## Prerequisites
 
 You will need a CloudHealth account configured to provide recommendations for AWS EC2 instances.
