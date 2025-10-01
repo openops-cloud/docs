@@ -1053,6 +1053,50 @@ Here's what the new step in the workflow graph and the **Configure** tab in its 
 
 Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**.
 
+### Create a Jira issue
+
+Let's now add the steps that the workflow should take if the project owner clicks the **Open a Jira ticket** button. There will be three of them:
+1. Actually creating a Jira issue.
+2. Updating the recommendation in the *Opportunities* table by setting it to *Approved* status.
+3. Sending a confirmation on Slack.
+
+#### Create a new issue in Jira Cloud
+
+In the **Jira** branch, click **+** to add a new step.
+
+In the pop-up menu, select **Jira Cloud** in the left pane, then click **Create Issue** in the right pane.
+
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Create Jira issue to investigate opportunity_.
+
+In the **Connection** drop-down, select **Create Connection**.
+
+TODO Jira connection setup
+
+In the **Project** drop-down, select a project in your Jira Cloud instance that you want to create issues in.
+
+In the **Issue Type** drop-down, select **Task**.
+
+The **Summary** field, type in "\[Investigate EC2 Rightsizing Opportunity\]". Add a space, and use **Data Selector** to expand **3. For each recommendation**, then **item**, then **node**, then **targetAsset**. Click **Insert** alongside the **awsInstanceId** entry:
+    ![Selecting AWS instance ID](/images/cloudhealth/selecting-awsinstanceid.png)
+
+In the **Description** field, use **Data Selector** to insert **19. Opportunity description**.
+
+Here's what the new step in the workflow graph and the **Configure** tab in its properties pane should now look like:
+![A configured step to create a Jira issue](/images/cloudhealth/jira-issue-added.png)
+
+Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output will contain the ID, key, and URLs of the newly created Jira issue:
+
+```json
+{
+  "id": "13706",
+  "key": "EO-95",
+  "self": "https://openops.atlassian.net/rest/api/3/issue/13706",
+  "htmlUrl": "https://openops.atlassian.net//browse/EO-95"
+}
+```
+
+Navigate to the `htmlUrl` to see the issue in your Jira Cloud instance:
+![Jira issue in Jira Cloud](/images/cloudhealth/jira-issue-in-jira-cloud.png)
 
 
 ## Update the project-owner mapping table with real owner emails
