@@ -1135,6 +1135,29 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
 }
 ```
 
+#### Send a Slack confirmation
+
+Lastly, after creating a Jira issue, it makes sense to notify the project owner about it and provide a link to the issue.
+
+In the **Jira** branch, click **+** to add a new step.
+
+In the pop-up menu, select **Slack** in the left pane, then click **Send Message** in the right pane.
+
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Send confirmation on Slack_.
+
+In the **Connection** drop-down, select the Slack connection that you created earlier.
+
+Alongside the **Recipient Channel or User** field, click **Dynamic**. Then use **Data Selector** to expand **17. Get owner by project**, then **items**, then **items[1]**. Click **Insert** alongside the **Owner email** entry.
+
+Scroll down to the **Message** field. There, type in "✅ Issue created successfully: ", then use **Data Selector** to expand **23. Create Jira issue to investigate opportunity**, and click **Insert** alongside the **htmlUrl** entry.
+
+Here's what the **Configure** tab in this step's properties pane should look like so far:
+![Slack notification step](/images/cloudhealth/slack-confirmation-added.png)
+
+Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output will be a lengthy JSON representing a Slack request. More importantly, you should receive a Slack notification with a link to the new Jira issue:
+
+![A Slack notification with a link to the Jira issue](/images/cloudhealth/slack-notification-jira-issue.png)
+
 ## Update the project-owner mapping table with real owner emails
 
 Click **Tables** in the left-side menu to open the table editor. In the list of tables under **OpenOps Dataset**, click **CloudHealth project-owner mapping**.
