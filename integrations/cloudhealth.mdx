@@ -37,11 +37,21 @@ Click **New Connection** in the top right, then select **CloudHealth** from the 
 
 ![Creating a CloudHealth connection](/images/cloudhealth/create-cloudhealth-connection.png)
 
-In **API Key** field in the dialog, you need to enter your CloudHealth API key. If you don't have it at hand, follow the instructions in the dialog to generate an API key. Once you have the key, paste it into the **API Key** field and click **Save**.
+In the **API Key** field in the dialog, you need to enter your CloudHealth API key. If you don't have it at hand, follow the instructions in the dialog to generate an API key. Once you have the key, paste it into the **API Key** field and click **Save**.
 
 ### Set up a Slack connection
 
-Bot token with permissions to send messages and request actions.
+Click **New Connection** in the top right, then select **Slack** from the list of services. This will open the **Create Slack Connection** dialog that looks like this:
+
+![Creating a Slack connection](/images/cloudhealth/create-slack-connection.png)
+
+Click **Connect**. This will open a pop-up window that asks you to authorize OpenOps to connect to your Slack workspace:
+
+![Authorizing OpenOps to connect to Slack](/images/cloudhealth/slack-connection-authorize.png)
+
+Review the permissions that OpenOps is requesting, then click **Allow**.
+
+Back in the **Create Slack Connection** dialog, click **Save**.
 
 ### Set up a Jira connection
 
@@ -958,9 +968,7 @@ Click **+** to add a new step.
 
 In the pop-up menu, select **Slack** in the left pane, then click **Request Action** in the right pane.
 
-In the **Connection** drop-down, select **Create Connection**. When the connection setup pop-up opens, click **I would like to use my own App Credentials**.
-
-TODO Slack connection setup
+In the **Connection** drop-down, select the Slack connection you created earlier.
 
 Alongside the **Recipient Channel or User** field, click **Dynamic** to enable specifying the output of a previous step instead of selecting from a drop-down. Then, in **Recipient Channel or User**, use **Data Selector** to expand **17. Get owner by project**, then **items**, then **items[1]**. Click **Insert** alongside the **Owner email** entry.
 
@@ -1066,9 +1074,7 @@ In the pop-up menu, select **Jira Cloud** in the left pane, then click **Create 
 
 At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Create Jira issue to investigate opportunity_.
 
-In the **Connection** drop-down, select **Create Connection**.
-
-TODO Jira connection setup
+In the **Connection** drop-down, select the Jira connection you created earlier.
 
 In the **Project** drop-down, select a project in your Jira Cloud instance that you want to create issues in.
 
