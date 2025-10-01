@@ -18,12 +18,34 @@ This tutorial guides you step-by-step to create two workflows in OpenOps:
 
 ## Prerequisites
 
-You will need a CloudHealth account configured to provide recommendations for AWS EC2 instances.
+To follow this tutorial, you will need:
+1. A CloudHealth account configured to provide recommendations for AWS EC2 instances.
+2. A Slack workspace to send notifications to.
+3. A Jira Cloud instance to file issues to.
 
-On several steps of the tutorial, you'll also need to create OpenOps connections to several services:
-- **CloudHealth**: API credentials to access CloudHealth data.
-- **Slack**: Bot token with permissions to send messages and request actions.
-- **Jira**: API credentials with permissions to create issues.
+## Setting up connections to services
+
+On several steps of the tutorial, OpenOps will need to interact with CloudHealth, Slack, and Jira. To enable this interaction, you need to configure what OpenOps calls "connections" to these services.
+
+While you could do this as you go, it's easier to set up connections in advance and use them throughout the tutorial.
+
+In the left pane in your OpenOps instance, click **Connections**.
+
+### Set up a CloudHealth connection
+
+Click **New Connection** in the top right, then select **CloudHealth** from the list of services. This will open a new dialog that looks like this:
+
+![Creating a CloudHealth connection](/images/cloudhealth/create-cloudhealth-connection.png)
+
+In **API Key** field in the dialog, you need to enter your CloudHealth API key. If you don't have it at hand, follow the instructions in the dialog to generate an API key. Once you have the key, paste it into the **API Key** field and click **Save**.
+
+### Set up a Slack connection
+
+Bot token with permissions to send messages and request actions.
+
+### Set up a Jira connection
+
+API credentials with permissions to create issues.
 
 ## Creating a workflow to fill the project-owner mapping table
 
@@ -100,13 +122,9 @@ This adds a new step to the workflow graph and displays the action's properties 
 
 First, at the very top of the properties pane, click **Edit Step Name** next to the default name, and rename the step to _Get all AWS instances_.
 
-Then, under **API Key**, click **Select a connection**, then **Create Connection**. This will open a new dialog that looks like this:
+For **API Key**, select your existing CloudHealth connection that you set up earlier.
 
-![Creating a CloudHealth connection](/images/cloudhealth/create-cloudhealth-connection.png)
-
-In the dialog, you need to enter your CloudHealth API key. If you don't have it at hand, follow the instructions in the dialog to generate an API key. Once you have the key, paste it into the **API Key** field and click **Save**.
-
-After the dialog closes, back in the properties pane, set **Asset Type** to **AWSInstance**.
+Set **Asset Type** to **AWSInstance**.
 
 Click the **Test** tab in the properties pane. Under **Step output**, click **Test Step**. This will test the action and display its output.
 
