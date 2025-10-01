@@ -1181,6 +1181,50 @@ Here's what the new step in the workflow graph and the **Configure** tab in its 
 
 Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output is the date until which the recommendation should be snoozed.
 
+#### Update the recommendation status
+
+In the **Snooze** branch, click **+** to add a new step.
+
+In the pop-up menu, select **OpenOps Tables** in the left pane, then click **Add or Update Record** in the right pane.
+
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Snooze for a week_.
+
+In the **Table** field, select **Opportunities**.
+
+In the **Primary Key Value** field, use **Data Selector** to select **20. Get table record ID from storage**.
+
+In the **Fields to update** section, click **Add Item**. In the new area:
+* For **Field name**, select **Status**.
+* For **Status**, select **Snoozed**.
+
+Click **Add Item** once more. In the new area:
+* For **Field name**, select **Snooze until**.
+* For **Snooze Until**, use **Data Selector** to select **26. Date a week from now**.
+
+Here's what the new step in the workflow graph and the **Configure** tab in its properties pane should now look like:
+![A configured step to set the recommendation status to Snoozed](/images/cloudhealth/snooze-for-a-week-added.png)
+
+Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output is a JSON object with details of the updated record in the *Opportunities* table, including the snooze date:
+
+```json
+{
+  "id": 49,
+  "order": "2.00000000000000000000",
+  "ID": "43bd78d2-18d9-4908-b035-c854364a19bd",
+  "Status": {
+    "id": 7,
+    "value": "Snoozed",
+    "color": "yellow"
+  },
+  ...
+  "Snoozed until": "2025-10-01T00:00:00Z",
+  ...
+}
+```
+
+The project owner will not be notified about this CloudHealth recommendation until the snooze date passes.
+
+
 ## Update the project-owner mapping table with real owner emails
 
 Click **Tables** in the left-side menu to open the table editor. In the list of tables under **OpenOps Dataset**, click **CloudHealth project-owner mapping**.
