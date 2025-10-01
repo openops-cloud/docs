@@ -1241,8 +1241,29 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
 }
 ```
 
-## Update the project-owner mapping table with real owner emails
+## Finishing touches
 
-Click **Tables** in the left-side menu to open the table editor. In the list of tables under **OpenOps Dataset**, click **CloudHealth project-owner mapping**.
+The rightsizing workflow now contains all the steps that you need for OpenOps to get current CloudHealth recommendations, determine if each of them needs to be addressed, and notify the relevant project owners about them.
 
-Since both the project-owner mapping and rightsizing workflows are now ready, you can now update the table with real project owner emails (make sure that these emails are also used in your Slack installation). Once you do, the rightsizing workflow will send Slack notifications to the project owners.
+### Increase the limit on recommendations
+
+Remember that when configuring the step to fetch CloudHealth recommendations, you set the limit to 3?
+
+This was just fine for testing purposes, but now that you're ready to start running the workflow in real-world conditions, you may want to increase the limit.
+
+To do this, scroll the workflow graph up to step **2. Get EC2 rightsizing recommendations**, and in the **Configure** tab, either set the **Limit** field to a higher value, such as `10`, or remove the value altogether to fetch all available recommendations.
+
+### Publish the workflow
+
+To get the workflow live, click **Publish** in the top-right corner of the workflow editor.
+
+Now, if you click **Workflows** in the left pane, you should see the workflow you just created, along with the project-owner mapping workflow, both in the _On_ status:
+![Your workflows in the Workflows list](/images/cloudhealth/workflows-listed.png)
+
+Whenever the two workflows execute, the runs will be logged in the **Runs** view that you can access from the left pane.
+
+### Update the project-owner mapping table with real owner emails
+
+Click **Tables** in the left-side menu. In the list of tables under **OpenOps Dataset**, click **CloudHealth project-owner mapping**.
+
+Since both the project-owner mapping and rightsizing workflows are now ready, you can now update the table with real project owner emails. Make sure to enter the emails that the project owners use in your Slack installation.
