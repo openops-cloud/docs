@@ -5,6 +5,7 @@ icon: 'code'
 ---
 
 ## OpenOps vs Activepieces
+
 OpenOps is based on [Activepieces](https://www.activepieces.com/), and contributing to OpenOps is very similar to [contributing to Activepieces](https://www.activepieces.com/docs/developers/building-pieces/overview). What Activepieces calls "pieces" is called "blocks" in OpenOps.
 
 The main differences are as follows:
@@ -14,7 +15,8 @@ The main differences are as follows:
 * Contributing to OpenOps does not involve publishing your block as an npm package.
 
 ## Examples of contributions
-Examples of past pull requests that contributed new block to OpenOps:
+
+Here are examples of past pull requests that contributed new block to OpenOps:
 * [Ternary integration](https://github.com/openops-cloud/openops/pull/326)
 * [Databricks integration](https://github.com/openops-cloud/openops/pull/434)
 
@@ -30,5 +32,22 @@ Follow these steps to fork the OpenOps repository:
 
 Your fork is now at https://github.com/your_github_username/openops
 
-### Set up a local development environment
+### Set up Codespaces
 
+In your OpenOps fork, click **\<\> Code**, open the **Codespaces** tab, and click **Create codespace on main**:
+
+![Create a codespace](/images/contributing/create-codespace.png)
+
+GitHub will open a new browser tab with a codespace. Wait for the codespace to be ready.
+
+Review extensions that Codespaces recommends for you. Consider installing **Prettier - Code formatter** and **Jest Runner** extensions.
+
+Codespaces will automatically run `npm start` in the terminal.
+
+In the **Ports** tool window, click **Open in browser** in the **App Frontend** row to open the OpenOps frontend in a new browser tab:
+
+![Ports tool window](/images/contributing/ports.png)
+
+When the OpenOps frontend opens, log in with the following credentials:
+
+TODO
