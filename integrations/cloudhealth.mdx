@@ -4,7 +4,7 @@ description: "Acting on CloudHealth's rightsizing recommendations in an OpenOps 
 icon: 'heart-pulse'
 ---
 
-CloudHealth is a cloud cost management and optimization platform that helps companies manage their multi-cloud environments consisting of AWS, Azure, Google Cloud, private and hybrid cloud setups.
+[CloudHealth](https://www.vmware.com/products/app-platform/tanzu-cloudhealth) is a cloud cost management and optimization platform that helps companies manage their multi-cloud environments consisting of AWS, Azure, Google Cloud, private and hybrid cloud setups.
 
 CloudHealth provides cost visibility, allocation, and optimization, suggesting actions like rightsizing, reserved instance purchases, and idle resource cleanup.
 
@@ -134,7 +134,7 @@ Here's what your workflow should look like at this point:
 
 ### Get all AWS instances from CloudHealth
 
-The goal of this workflow is to get all project names from AWS instance metadata stored in CloudHealth, and write them to an OpenOps table. This way, the EC2 rightsizing workflow can look up project owners based on project names.
+The goal of this workflow is to get all project names from AWS instance metadata stored in CloudHealth, and write them to an OpenOps table. This way, the EC2 rightsizing workflow that you're going to write next can look up project owners based on project names.
 
 Therefore, the first action of this workflow is to fetch information about all AWS instances from CloudHealth.
 
@@ -168,7 +168,7 @@ In the pop-up menu, select **Code** in the left pane, then click **Custom TypeSc
 
 At the top of the properties pane, click **Edit Step Name** and rename the step to _Extract distinct project names_.
 
-Next, you need to let the custom code action know exactly what data it needs to process. Under **Inputs** in the properties pane, click **Add Item**, which will display two new fields. Enter _instances_ in the left field. When you click in the right field, the **Data Selector** view opens. Inside that view, click **Insert** alongside the **Get all AWS instances** entry:
+Next, you need to let the custom code action know exactly what data it needs to process. Under **Inputs** in the properties pane, click **Add Item**, which will display two new fields. Enter `instances` in the left field. When you click in the right field, the **Data Selector** view opens. Inside that view, click **Insert** alongside the **Get all AWS instances** entry:
 
 ![Selecting an input for a code action](/images/cloudhealth/project-owner-mapping/code-block-data-selector.png)
 
@@ -988,7 +988,7 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
 
 ### Format monthly savings
 
-You now know who to notify about the recommendation. What to include in the notification, though? This and several other steps will construct the notification message. First, let's take the monthly savings that CloudHealth predicts and format the number in a human-readable way.
+You now know who to notify about the recommendation. What to include in the notification, though? This step and the next one will construct the notification message. First, let's take the monthly savings that CloudHealth predicts and format the number in a human-readable way.
 
 Click **+** to add a new step.
 
@@ -1012,7 +1012,7 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
 
 ### Describe the recommendation
 
-Let's now use formatted monthly savings and other recommendation details to construct a message that will be sent to the project owner.
+Let's now use formatted monthly savings and other recommendation details to construct a message that will be sent to the project owner. Later, if the project owner decides to create a Jira issue, this description will also be included in the issue.
 
 Click **+** to add a new step.
 
@@ -1280,7 +1280,7 @@ Here's what the new step in the workflow graph and the **Configure** tab in its 
 
 Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output is the date until which the recommendation should be snoozed.
 
-#### Update the recommendation status
+#### Update recommendation status
 
 In the **Snooze** branch, click **+** to add a new step.
 
