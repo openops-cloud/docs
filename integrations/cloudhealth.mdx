@@ -195,15 +195,15 @@ Click the **Test** tab in the properties pane. Under **Step output**, click **Te
 
 ![Testing the custom code step](/images/cloudhealth/project-owner-mapping/code-block-testing.png)
 
-### Add all project names to the OpenOps table
+### Iterate over project names
 
-Now that you have a list of all project names, you need to add them to the OpenOps table. This can be done with two actions: one to loop over the list of project names, and another to add each project name to the table.
+Now that you have a list of all project names, create a loop to go over each of them and decide what to do with them.
 
 First, click **+** in the workflow editor to add a new step.
 
 In the pop-up menu, select **Loop on Items** in the left pane, then click **Loop on Items** in the right pane.
 
-In the new loop step's properties pane, rename the step to _For each project name_.
+At the top of the properties pane, click **Edit Step Name** and rename the step to _For each project name_.
 
 Click in the **Items** field. In the **Data Selector** view that opens, click **Insert** alongside the **3. Extract distinct project names** entry. This passes the list of project names obtained in the previous step as the input for the loop to iterate over.
 
@@ -220,19 +220,98 @@ Click the **Test** tab in the properties pane. Under **Step output**, click **Te
 }
 ```
 
-Now, in the workflow editor, click the **+** button _inside_ the loop:
+### Check if the project name is already in the table
+
+If a project is already listed in the table and a project owner email is already defined for it, you don't need to update the existing record to avoid overwriting project emails that were added before.
+
+First, let's see if the project name is already in the table.
+
+In the workflow editor, click the **+** button _inside_ the loop:
 
 ![Creating a step inside a loop](/images/cloudhealth/project-owner-mapping/new-step-inside-loop.png)
+
+In the pop-up menu, select **OpenOps Tables** in the left pane, then click **Get Records** in the right pane.
+
+At the top of the properties pane, click **Edit Step Name** and rename the step to _Get project record_.
+
+For the **Table** field, select **CloudHealth project-owner mapping** — that's the table you created manually earlier.
+
+Under **Fields to filter by**, click **Add Item**. This will open a new area to define a search filter. Inside the area:
+* In the **Field name** dropdown, select **CloudHealth project**.
+* In the **Filter type** dropdown, select **Is equal**.
+* In the **CloudHealth project** field, use **Data Selector** to expand the **4. For each project name** entry from the previous step, then click **Insert** alongside the **item** entry:
+    ![Selecting a project name](/images/cloudhealth/project-owner-mapping/table-pkv-data-selector.png)
+
+Here's what the new step in the workflow graph and the **Configure** tab in its properties pane should now look like:
+
+![A configured step to search the table for a project name](/images/cloudhealth/project-owner-mapping/get-project-record-added.png)
+
+Click the **Test** tab in the properties pane. Under **Step output**, click **Test Step**. After testing, the output is a JSON object that represents the search results in the OpenOps table. Since the table is empty so far, the output looks like this:
+
+```json
+{
+  "count": 0,
+  "items": []
+}
+```
+
+This is a problem because the configuration of the next step assumes a found record. In cases like this, OpenOps allows you to override the actual testing output. To do this, click **Sample output** in the **Test** tab. In the **Output** area, paste the following JSON, then click **Apply**:
+
+```json
+{
+  "count": 1,
+  "items": [
+    {
+      "id": 9,
+      "order": "4.00000000000000000000",
+      "CloudHealth project": "Other",
+      "Owner email": "your@email.here"
+    }
+  ]
+}
+```
+
+### Check if a project owner email is already defined
+
+Now, if the project name is already in the table, you need to check if a project owner email is defined for it. If it is, you don't need to update the existing record.
+
+In the workflow editor, click **+** to add a new step.
+
+In the pop-up menu, select **Condition** in the left pane, then click **Condition** in the right pane.
+
+At the top of the properties pane, click **Edit Step Name** and rename the step to _Is email already defined?_.
+
+Under **Continue If**, click the left field with a placeholder that reads _First value_. In **Data Selector**, expand **5. Get project record**, then **items**, then **items[1]**. Click **Insert** alongside the **Owner email** entry:
+
+![Selecting the owner email](/images/cloudhealth/project-owner-mapping/select-owner-email.png)
+
+In the dropdown between the two fields, select **Exists**.
+
+Here's what the new step in the workflow graph and the **Configure** tab in its properties pane should now look like:
+
+![A configured step to determine if an email is already defined](/images/cloudhealth/project-owner-mapping/is-email-defined-added.png)
+
+Click the **Test** tab in the properties pane. Under **Step output**, click **Test Step**. After testing, the output is a JSON object that represents the condition evaluation:
+
+```json
+{
+  "condition": true
+}
+```
+
+### Add project name to the OpenOps table
+
+Now, you need to add a record with the project name to the OpenOps table, unless it's already there and the owner email is already defined.
+
+To do this, click **+** in the workflow editor under the **False** branch of the **Is email already defined?** condition.
 
 In the pop-up menu, select **OpenOps Tables** in the left pane, then click **Add or Update Record** in the right pane.
 
 In the properties pane of the new step, rename the step to _Add project to mapping table_.
 
-For the **Table** field, select **CloudHealth project-owner mapping** — that's the table you created manually earlier.
+For the **Table** field, select **CloudHealth project-owner mapping**.
 
-Click the **Primary Key Value** field to display the **Data Selector** view. Inside that view, expand the **4. For each project name** entry, then click **Insert** alongside the **item** entry:
-
-![Selecting the project name to add to the table](/images/cloudhealth/project-owner-mapping/table-pkv-data-selector.png)
+Click the **Primary Key Value** field to display the **Data Selector** view. Inside that view, expand the **4. For each project name** entry, then click **Insert** alongside the **item** entry.
 
 Under **Fields to update**, click **Add Item**. This will open a new area that lets you specify what to add in the **Owner email** field of your OpenOps table. Inside the area:
 * In the **Field name** dropdown, select **Owner email**.
@@ -240,7 +319,7 @@ Under **Fields to update**, click **Add Item**. This will open a new area that l
 
 Here's what the **Configure** tab in the properties pane should now look like:
 
-![A configured table step](/images/cloudhealth/project-owner-mapping/table-step-added.png)
+![A configured table step](/images/cloudhealth/project-owner-mapping/add-to-table-added.png)
 
 Click the **Test** tab in the properties pane. Under **Step output**, click **Test Step**. After testing, the output is a JSON object that represents the new row added to the table:
 
@@ -464,7 +543,7 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
 
 However, the structure of the output is different if the recommendation already exists in the table. Since the next step of the workflow will need to use a part of the output for an existing table record, let's add a sample output for the step.
 
-Click **Sample output data** in the **Test** tab. In the **Output** area, paste the following JSON, then click **Apply**:
+Click **Sample output** in the **Test** tab. In the **Output** area, paste the following JSON, then click **Apply**:
 
 ```json
 {
