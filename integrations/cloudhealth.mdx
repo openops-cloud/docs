@@ -4,32 +4,32 @@ description: "Acting on CloudHealth's rightsizing recommendations in an OpenOps 
 icon: 'heart-pulse'
 ---
 
-[CloudHealth](https://www.vmware.com/products/app-platform/tanzu-cloudhealth) is a cloud cost management and optimization platform that helps companies manage their multi-cloud environments consisting of AWS, Azure, Google Cloud, private and hybrid cloud setups.
+[CloudHealth](https://www.vmware.com/products/app-platform/tanzu-cloudhealth) is a cloud cost management and optimization platform that helps companies manage their multi-cloud environments, including AWS, Azure, Google Cloud, private, and hybrid cloud setups.
 
-CloudHealth provides cost visibility, allocation, and optimization, suggesting actions like rightsizing, reserved instance purchases, and idle resource cleanup.
+CloudHealth provides cost visibility, allocation, and optimization, suggesting actions such as rightsizing, reserved instance purchases, and idle resource cleanup.
 
-While CloudHealth is great at analysis and reporting, it’s not really built to orchestrate automation across teams. That's what OpenOps does best, and integrating the two is a great way to get the best of both worlds. Let CloudHealth find issues, and OpenOps act on them, triggering workflows, automations, and notifications.
+While CloudHealth is great for analysis and reporting, it's not really built to orchestrate automation across teams. That's what OpenOps does best, and integrating the two is a great way to get the best of both worlds. Let CloudHealth find issues, and let OpenOps act on them, triggering workflows, automations, and notifications.
 
 ## What this tutorial will cover
 
-This tutorial guides you step-by-step to create two workflows in OpenOps:
-1. The first workflow, "Fill the Project-Owner mapping table", fetches all project names from AWS instance metadata stored in CloudHealth, and writes them to an OpenOps table. This assumes that in your organization, cloud resource ownership is allocated on a per-project basis.
-2. The second workflow, "CloudHealth Rightsizing Recommendations", fetches AWS EC2 rightsizing recommendations from CloudHealth, looks up owners of projects they fall into, notifies owners via Slack, and implements resolutions from owners by creating Jira tickets, snoozing, or dismissing recommendations.
+This tutorial guides you step by step to create two workflows in OpenOps:
+1. The first workflow, *Fill the Project-Owner mapping table*, fetches all project names from AWS instance metadata stored in CloudHealth and writes them to an OpenOps table. This assumes that, in your organization, cloud resource ownership is allocated on a per-project basis.
+2. The second workflow, *CloudHealth Rightsizing Recommendations*, fetches AWS EC2 rightsizing recommendations from CloudHealth, looks up owners of the projects they fall into, notifies owners via Slack, and implements resolutions from owners by creating Jira tickets, snoozing, or dismissing recommendations.
 
 ## Prerequisites
 
 To follow this tutorial, you will need:
 1. A CloudHealth account configured to provide recommendations for AWS EC2 instances.
 2. A Slack workspace to send notifications to.
-3. A Jira Cloud instance to file issues to.
+3. A Jira Cloud instance to file issues.
 
 ## Setting up connections to services
 
-On several steps of the tutorial, OpenOps will need to interact with CloudHealth, Slack, and Jira. To enable this interaction, you need to configure what OpenOps calls "connections" to these services.
+At several steps in this tutorial, OpenOps will need to interact with CloudHealth, Slack, and Jira. To enable this interaction, you need to configure what OpenOps calls "connections" to these services.
 
 While you could do this as you go, it's easier to set up connections in advance and use them throughout the tutorial.
 
-In the left pane in your OpenOps instance, click **Connections**.
+In the left pane of your OpenOps instance, click **Connections**.
 
 ### Set up a CloudHealth connection
 
@@ -37,7 +37,7 @@ Click **New Connection** in the top right, then select **CloudHealth** from the 
 
 ![Creating a CloudHealth connection](/images/cloudhealth/create-cloudhealth-connection.png)
 
-In the **API Key** field in the dialog, you need to enter your CloudHealth API key. If you don't have it at hand, follow the instructions in the dialog to generate an API key. Once you have the key, paste it into the **API Key** field and click **Save**.
+In the **API Key** field, enter your CloudHealth API key. If you don't have it at hand, follow the instructions in the dialog to generate an API key. Once you have the key, paste it into the **API Key** field and click **Save**.
 
 ### Set up a Slack connection
 
@@ -45,7 +45,7 @@ Click **New Connection** in the top right, then select **Slack** from the list o
 
 ![Creating a Slack connection](/images/cloudhealth/create-slack-connection.png)
 
-Click **Connect**. This will open a pop-up window that asks you to authorize OpenOps to connect to your Slack workspace:
+Click **Connect**. This will open a pop-up window asking you to authorize OpenOps to connect to your Slack workspace:
 
 ![Authorizing OpenOps to connect to Slack](/images/cloudhealth/slack-connection-authorize.png)
 
@@ -75,48 +75,48 @@ You can now proceed to creating the actual workflows.
 
 ## Creating a workflow to fill the project-owner mapping table
 
-The first workflow that you're going to build will help track resource ownership by project. For this workflow to operate, it needs an OpenOps table to store project information. Let's create the table first.
+The first workflow you're going to build will help track resource ownership by project. For this workflow to operate, it needs an OpenOps table to store project information. Let's create the table first.
 
 ### Create a project-owner mapping table
 
 To create the table that will store project names and their owners, follow these steps:
 
-1. On the left-side OpenOps menu bar, click **Tables**.
+1. In the left-side OpenOps menu bar, click **Tables**.
 2. Under the **Tables** heading, click **OpenOps Dataset** to expand the list of tables.
 3. At the bottom of the list, click **New table**.
-4. In the **Name** textbox, enter _CloudHealth project-owner mapping_.
+4. In the **Name** textbox, enter *CloudHealth project-owner mapping*.
 5. Click **Add table**.
-6. When the new table is created, it has a few default fields (a _field_ in OpenOps tables is what we typically call a column). You won't need them; instead, create two new fields. Start with a field for the project name:
+6. When the new table is created, it has a few default fields (a *field* in OpenOps tables is what we typically call a column). You won't need them. Instead, create two new fields. Start with a field for the project name:
     1. Click **+** in the table header to create a new field.
     2. In the list of field data types, click **Single line text**.
-    3. Replace the default name of the field with _CloudHealth project_.
+    3. Replace the default field name with *CloudHealth project*.
     4. Click **Create**.
 7. Create a second field for the owner email:
      1. Click **+** in the table header to create a new field.
      2. In the list of field data types, click **Email**.
-     3. Replace the default name of the field with _Owner email_.
-8. Now, make _CloudHealth project_ the primary field:
-    1. Click the down arrow in the header of the **Name** field that was created by default.
+     3. Replace the default field name with *Owner email*.
+8. Now, make *CloudHealth project* the primary field:
+    1. Click the down arrow in the header of the **Name** field created by default.
     2. Click **Change primary field**.
-    3. In the **Primary field** dropdown, select _CloudHealth project_.
+    3. In the **Primary field** dropdown, select *CloudHealth project*.
     4. Click **Change**.
 9. Delete the three default fields: **Name**, **Notes**, and **Active**. For each of these fields, click the down arrow in the header, then click **Delete field**.
 
 The resulting project-owner mapping table should look like this:
 
-![A ready to use project-owner mapping table](/images/cloudhealth/project-owner-mapping/mapping-table.png)
+![A ready-to-use project-owner mapping table](/images/cloudhealth/project-owner-mapping/mapping-table.png)
 
 ### Create a new workflow
 
 Now that you've prepared a project-owner mapping table, you can start creating a workflow that takes advantage of it.
 
-On the left-side OpenOps menu bar, click **Workflows**. When the list of workflows opens, click the **+ New Workflow** button on the top right.
+In the left-side OpenOps menu bar, click **Workflows**. When the list of workflows opens, click the **+ New Workflow** button in the top right.
 
-OpenOps will open its workflow editor with a new untitled workflow that initially only contains an empty trigger step:
+OpenOps will open its workflow editor with a new untitled workflow that initially contains only an empty trigger step:
 
 ![A new workflow in OpenOps](/images/cloudhealth/project-owner-mapping/empty-workflow.png)
 
-On the top left, click the down arrow next to the workflow name, then click **Rename**, and rename the workflow to _Fill the Project-Owner mapping table_.
+In the top left, click the down arrow next to the workflow name, then click **Rename** and rename the workflow *Fill the Project-Owner mapping table*.
 
 ### Configure the trigger to run every week
 
@@ -124,9 +124,9 @@ The first thing that needs to be done is to configure your workflow to run on a 
 
 In the workflow editor, click the trigger step. When a dropdown with types of triggers opens, select **Schedule**, then **Every Week**.
 
-After selecting the trigger type and frequency, you will see the trigger step's properties pane on the right, with the **Configure** tab open. Under **Day of the week**, select **Monday**. Under **Hour of the day**, select **Noon**. Keep the default time zone (UTC) or set it to the time zone you're in.
+After selecting the trigger type and frequency, you'll see the trigger step's properties pane on the right, with the **Configure** tab open. Under **Day of the week**, select **Monday**. Under **Hour of the day**, select **Noon**. Keep the default time zone (UTC), or set it to the time zone you're in.
 
-Now, open the **Test** tab in the properties pane. There, under **Step output**, click **Load Data**. This way, you're testing your step, and going forward, you'll need to test all steps before you can test the entire workflow. While in the case of a trigger this looks more like a formality, in many cases testing individual steps will help you spot and fix configuration errors quickly.
+Now, open the **Test** tab in the properties pane. Under **Step output**, click **Load Data**. This tests your step. Going forward, you'll need to test all steps before you can test the entire workflow. While in the case of a trigger this is more of a formality, in many cases testing individual steps will help you spot and fix configuration errors quickly.
 
 Here's what your workflow should look like at this point:
 
@@ -134,19 +134,19 @@ Here's what your workflow should look like at this point:
 
 ### Get all AWS instances from CloudHealth
 
-The goal of this workflow is to get all project names from AWS instance metadata stored in CloudHealth, and write them to an OpenOps table. This way, the EC2 rightsizing workflow that you're going to write next can look up project owners based on project names.
+The goal of this workflow is to get all project names from AWS instance metadata stored in CloudHealth and write them to an OpenOps table. This way, the EC2 rightsizing workflow you'll create next can look up project owners based on project names.
 
 Therefore, the first action of this workflow is to fetch information about all AWS instances from CloudHealth.
 
 In the workflow graph, under the trigger, click **+** to add a new step.
 
-In the pop-up menu, scroll down to and click **CloudHealth**. In the list of CloudHealth-related actions, select **Search Assets**:
+In the pop-up menu, scroll down and click **CloudHealth**. In the list of CloudHealth-related actions, select **Search Assets**:
 
 ![Selecting a CloudHealth action](/images/cloudhealth/selecting-cloudhealth-action.png)
 
 This adds a new step to the workflow graph and displays the action's properties pane on the right. You'll now need to configure the action.
 
-First, at the very top of the properties pane, click **Edit Step Name** next to the default name, and rename the step to _Get all AWS instances_.
+First, at the very top of the properties pane, click **Edit Step Name** next to the default name and rename the step *Get all AWS instances*.
 
 For **API Key**, select your existing CloudHealth connection that you set up earlier.
 
@@ -160,19 +160,19 @@ Your workflow should now look like this:
 
 ### Extract distinct project names
 
-Now that you have a list of all AWS instances, you need to know all projects they belong to. For this, let's create a JavaScript code block that goes through metadata of all instances, extracts project names, and returns a list of distinct project names.
+Now that you have a list of all AWS instances, you need to know which projects they belong to. For this, let's create a JavaScript code block that goes through the metadata of all instances, extracts project names, and returns a list of distinct project names.
 
 In the workflow graph, click **+** to add a new step.
 
 In the pop-up menu, select **Code** in the left pane, then click **Custom TypeScript Code** in the right pane. This adds a new step to the workflow graph and displays the code block's properties pane on the right.
 
-At the top of the properties pane, click **Edit Step Name** and rename the step to _Extract distinct project names_.
+At the top of the properties pane, click **Edit Step Name** and rename the step *Extract distinct project names*.
 
-Next, you need to let the custom code action know exactly what data it needs to process. Under **Inputs** in the properties pane, click **Add Item**, which will display two new fields. Enter `instances` in the left field. When you click in the right field, the **Data Selector** view opens. Inside that view, click **Insert** alongside the **Get all AWS instances** entry:
+Next, you need to let the custom code action know exactly what data it should process. Under **Inputs** in the properties pane, click **Add Item**, which will display two new fields. Enter `instances` in the left field. When you click in the right field, the **Data Selector** view opens. Inside that view, click **Insert** alongside the **Get all AWS instances** entry:
 
 ![Selecting an input for a code action](/images/cloudhealth/project-owner-mapping/code-block-data-selector.png)
 
-This will make sure that the code action gets the list of instances as an input.
+This ensures that the code action gets the list of instances as an input.
 
 Next, inside the **Code** editor field, replace the placeholder with the following JavaScript code snippet:
 
@@ -197,13 +197,13 @@ Click the **Test** tab in the properties pane. Under **Step output**, click **Te
 
 ### Iterate over project names
 
-Now that you have a list of all project names, create a loop to go over each of them and decide what to do with them.
+Now that you have a list of all project names, create a loop to go through each of them and decide what to do with them.
 
 First, click **+** in the workflow editor to add a new step.
 
 In the pop-up menu, select **Loop on Items** in the left pane, then click **Loop on Items** in the right pane.
 
-At the top of the properties pane, click **Edit Step Name** and rename the step to _For each project name_.
+At the top of the properties pane, click **Edit Step Name** and rename the step *For each project name*.
 
 Click in the **Items** field. In the **Data Selector** view that opens, click **Insert** alongside the **3. Extract distinct project names** entry. This passes the list of project names obtained in the previous step as the input for the loop to iterate over.
 
@@ -222,17 +222,17 @@ Click the **Test** tab in the properties pane. Under **Step output**, click **Te
 
 ### Check if the project name is already in the table
 
-If a project is already listed in the table and a project owner email is already defined for it, you don't need to update the existing record to avoid overwriting project emails that were added before.
+If a project is already listed in the table and a project owner email is already defined for it, you don't need to update the existing record. This avoids overwriting project emails that were added earlier.
 
 First, let's see if the project name is already in the table.
 
-In the workflow editor, click the **+** button _inside_ the loop:
+In the workflow editor, click the **+** button *inside* the loop:
 
 ![Creating a step inside a loop](/images/cloudhealth/project-owner-mapping/new-step-inside-loop.png)
 
 In the pop-up menu, select **OpenOps Tables** in the left pane, then click **Get Records** in the right pane.
 
-At the top of the properties pane, click **Edit Step Name** and rename the step to _Get project record_.
+At the top of the properties pane, click **Edit Step Name** and rename the step *Get project record*.
 
 For the **Table** field, select **CloudHealth project-owner mapping** — that's the table you created manually earlier.
 
@@ -246,7 +246,7 @@ Here's what the new step in the workflow graph and the **Configure** tab in its 
 
 ![A configured step to search the table for a project name](/images/cloudhealth/project-owner-mapping/get-project-record-added.png)
 
-Click the **Test** tab in the properties pane. Under **Step output**, click **Test Step**. After testing, the output is a JSON object that represents the search results in the OpenOps table. Since the table is empty so far, the output looks like this:
+Click the **Test** tab in the properties pane. Under **Step output**, click **Test Step**. After testing, the output is a JSON object representing the search results in the OpenOps table. Since the table is empty so far, the output looks like this:
 
 ```json
 {
@@ -255,7 +255,7 @@ Click the **Test** tab in the properties pane. Under **Step output**, click **Te
 }
 ```
 
-This is a problem because the configuration of the next step assumes a found record. In cases like this, OpenOps allows you to override the actual testing output. To do this, click **Sample output** in the **Test** tab. In the **Output** area, paste the following JSON, then click **Apply**:
+This is a problem because the configuration of the next step assumes that a record has been found. In cases like this, OpenOps allows you to override the actual testing output. To do this, click **Sample output** in the **Test** tab. In the **Output** area, paste the following JSON, then click **Apply**:
 
 ```json
 {
@@ -273,15 +273,15 @@ This is a problem because the configuration of the next step assumes a found rec
 
 ### Check if a project owner email is already defined
 
-Now, if the project name is already in the table, you need to check if a project owner email is defined for it. If it is, you don't need to update the existing record.
+Now, if the project name is already in the table, you need to check whether a project owner email is defined for it. If it is, you don't need to update the existing record.
 
 In the workflow editor, click **+** to add a new step.
 
 In the pop-up menu, select **Condition** in the left pane, then click **Condition** in the right pane.
 
-At the top of the properties pane, click **Edit Step Name** and rename the step to _Is email already defined?_.
+At the top of the properties pane, click **Edit Step Name** and rename the step *Is email already defined?*.
 
-Under **Continue If**, click the left field with a placeholder that reads _First value_. In **Data Selector**, expand **5. Get project record**, then **items**, then **items[1]**. Click **Insert** alongside the **Owner email** entry:
+Under **Continue If**, click the left field with the placeholder text *First value*. In **Data Selector**, expand **5. Get project record**, then **items**, then **items[1]**. Click **Insert** alongside the **Owner email** entry:
 
 ![Selecting the owner email](/images/cloudhealth/project-owner-mapping/select-owner-email.png)
 
@@ -291,7 +291,7 @@ Here's what the new step in the workflow graph and the **Configure** tab in its 
 
 ![A configured step to determine if an email is already defined](/images/cloudhealth/project-owner-mapping/is-email-defined-added.png)
 
-Click the **Test** tab in the properties pane. Under **Step output**, click **Test Step**. After testing, the output is a JSON object that represents the condition evaluation:
+Click the **Test** tab in the properties pane. Under **Step output**, click **Test Step**. After testing, the output is a JSON object representing the condition evaluation:
 
 ```json
 {
@@ -301,27 +301,27 @@ Click the **Test** tab in the properties pane. Under **Step output**, click **Te
 
 ### Add project name to the OpenOps table
 
-Now, you need to add a record with the project name to the OpenOps table, unless it's already there and the owner email is already defined.
+Now you need to add a record with the project name to the OpenOps table, unless it's already there *and* the owner email is defined.
 
 To do this, click **+** in the workflow editor under the **False** branch of the **Is email already defined?** condition.
 
 In the pop-up menu, select **OpenOps Tables** in the left pane, then click **Add or Update Record** in the right pane.
 
-In the properties pane of the new step, rename the step to _Add project to mapping table_.
+In the properties pane of the new step, rename the step *Add project to mapping table*.
 
 For the **Table** field, select **CloudHealth project-owner mapping**.
 
-Click the **Primary Key Value** field to display the **Data Selector** view. Inside that view, expand the **4. For each project name** entry, then click **Insert** alongside the **item** entry.
+Click the **Primary Key Value** field to open the **Data Selector** view. In this view, expand the **4. For each project name** entry, then click **Insert** alongside the **item** entry.
 
-Under **Fields to update**, click **Add Item**. This will open a new area that lets you specify what to add in the **Owner email** field of your OpenOps table. Inside the area:
+Under **Fields to update**, click **Add Item**. This opens a new area where you specify what to add in the **Owner email** field of your OpenOps table. Inside this area:
 * In the **Field name** dropdown, select **Owner email**.
-* In the **Owner email** field, enter your own email as you'll be using it to test the EC2 rightsizing workflow described next. Your account in your organization's Slack workspace should be registered to this email. Once both workflows described in this tutorial are ready, you will replace your email with emails of the actual project owners.
+* In the **Owner email** field, enter your own email address. You'll use this to test the EC2 rightsizing workflow described next. Your account in your organization's Slack workspace should be registered to this email. Once both workflows described in this tutorial are complete, replace your email with the actual project owners' emails.
 
 Here's what the **Configure** tab in the properties pane should now look like:
 
 ![A configured table step](/images/cloudhealth/project-owner-mapping/add-to-table-added.png)
 
-Click the **Test** tab in the properties pane. Under **Step output**, click **Test Step**. After testing, the output is a JSON object that represents the new row added to the table:
+Click the **Test** tab in the properties pane. Under **Step output**, click **Test Step**. After testing, the output is a JSON object representing the new row added to the table:
 
 ```json
 {
@@ -334,63 +334,63 @@ Click the **Test** tab in the properties pane. Under **Step output**, click **Te
 
 ### Test and publish the workflow
 
-These are all the steps you need to fill the project-owner mapping table. All you need to do now is to test and publish the workflow.
+You now have all the steps needed to populate the project-owner mapping table. The final task is to test and publish the workflow.
 
-To test the workflow, scroll the workflow graph all the way up and click the **Test Workflow** button above the trigger:
+To test the workflow, scroll to the top of the workflow graph and click the **Test Workflow** button above the trigger:
 
 ![Test workflow](/images/cloudhealth/project-owner-mapping/test-workflow.png)
 
-Even though this is called "testing", OpenOps will actually run the entire workflow, doing everything it would do if it was run on a schedule. Once the run completes, you should see green checkmarks next to each step in the **Run Details** pane on the right, as well as a **Run Succeeded** status message at the bottom:
+Although this is called "testing", OpenOps will actually run the entire workflow, performing all actions as if it were running on its defined schedule. Once the run completes, you should see green checkmarks next to each step in the **Run Details** pane on the right, along with a **Run Succeeded** status message at the bottom:
 
 ![Workflow tested successfully](/images/cloudhealth/project-owner-mapping/workflow-tested.png)
 
-Click **Edit** in the top right to get back to the workflow editor. Then, click **Publish** in the same top right corner to get the workflow live.
+Click **Edit** in the top right to return to the workflow editor. Then click **Publish** in the same corner to make the workflow live.
 
-Once you do, the workflow will run on a schedule you've defined, which is every Monday at noon UTC.
+After publishing, the workflow will run on the schedule you defined, which is every Monday at noon UTC.
 
-If you click **Workflows** in the left-side menu, you should see the workflow you just published. All its runs will be listed in the view that you can open by clicking **Runs** in the left-side menu.
+If you click **Workflows** in the left-side menu, you'll see the workflow you just published. Its runs will appear in the view that opens when you click **Runs** in the same menu.
 
 ### Review the project-owner mapping table
 
-Click **Tables** in the left-side menu. In the list of tables under **OpenOps Dataset**, click **CloudHealth project-owner mapping**. After running the workflow, the table should look something like this:
+Click **Tables** in the left-side menu. Under **OpenOps Dataset**, click **CloudHealth project-owner mapping**. After running the workflow, the table should look something like this:
 
 ![Project-owner mapping table](/images/cloudhealth/project-owner-mapping/table-filled.png)
 
-You now have all you need to start creating the second workflow.
+At this point, you have everything you need to begin building the second workflow.
 
 ## Creating a workflow to process CloudHealth rightsizing recommendations
 
-Let's now create another workflow that will actually process CloudHealth EC2 rightsizing recommendations.
+Now let's create another workflow — this one will process CloudHealth EC2 rightsizing recommendations.
 
 ### Create a new workflow
 
-In the **Overview** or **Workflows** view in OpenOps, click the **+ New Workflow** button on the top right.
+In the **Overview** or **Workflows** view in OpenOps, click the **+ New Workflow** button in the top right.
 
-When the OpenOps workflow editor opens with a new workflow, click the down arrow next to the workflow name on the top left, then click **Rename**, and rename the workflow to _CloudHealth Rightsizing Recommendations_.
+When the OpenOps workflow editor opens with a blank workflow, click the down arrow next to the workflow name in the top left, then click **Rename**, and change the name to *CloudHealth Rightsizing Recommendations*.
 
 ### Configure the trigger to run every working day
 
-In the workflow editor, click the trigger step. When a dropdown with types of triggers opens, select **Schedule**, then **Every Day**.
+Click the trigger step in the workflow editor. In the trigger type dropdown, select **Schedule**, then choose **Every Day**.
 
-In the trigger step's properties pane on the right, in the **Configure** tab, keep the defaults. With the default trigger settings, your workflow will run every day, excluding weekends, at midnight UTC:
+In the trigger step's properties pane on the right, under the **Configure** tab, keep the default settings. With these defaults, the workflow will run every day (excluding weekends) at midnight UTC:
 
 ![A configured and tested trigger](/images/cloudhealth/trigger-added.png)
 
-Now, open the **Test** tab in the properties pane, and under **Step output**, click **Load Data**. Remember that it's important to test every step of your workflow: testing all previous steps enables you to test every subsequent step and, later, the entire workflow.
+Next, open the **Test** tab in the properties pane, and under **Step output**, click **Load Data**. Remember: testing every step is important. Testing earlier steps enables you to test later ones — and eventually the full workflow.
 
 ### Fetch rightsizing recommendations from CloudHealth
 
-Now is the time to add the first action step. Since the workflow is centered around processing recommendations from CloudHealth, let's start with that.
+Now it's time to add the first action step. Since this workflow is built around processing CloudHealth recommendations, let's start there.
 
 In the workflow graph, under the trigger, click the **+** button to add a new step.
 
-In the pop-up menu, scroll down to and click **CloudHealth**. In the list of CloudHealth-related actions, select **Get Recommendations**:
+In the pop-up menu, scroll down and click **CloudHealth**. From the list of available CloudHealth actions, select **Get Recommendations**:
 
 ![Selecting a CloudHealth action](/images/cloudhealth/selecting-cloudhealth-action.png)
 
-At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Get EC2 rightsizing recommendations_.
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step *Get EC2 rightsizing recommendations*.
 
-Under **API Key** in the properties pane, select your existing CloudHealth connection that you set up earlier when working on the project-mapping workflow.
+Under **API Key**, select the CloudHealth connection you created earlier.
 
 Then, configure the remaining action properties like this:
 * Under **Recommendation Type**, select **EC2 Rightsizing**.
@@ -401,7 +401,7 @@ Your workflow should now look like this:
 
 ![A configured CloudHealth action](/images/cloudhealth/cloudhealth-action-added.png)
 
-Click the **Test** tab in the properties pane. Under **Step output**, click **Test Step**. This will test the action and display its output in the bottom right pane. Since the action returns a list of recommendations, expect to see JSON output like this:
+Click the **Test** tab in the properties pane. Under **Step output**, click **Test Step**. This will test the action and display its output in the bottom-right pane. Because the action returns a list of recommendations, expect JSON output similar to this:
 
 ```json
 {
@@ -436,25 +436,23 @@ Click the **Test** tab in the properties pane. Under **Step output**, click **Te
 
 ### Loop over recommendations
 
-CloudHealth returns a list of recommendations, but we only want to process one at a time. To do this, let's use a **Loop on Items** action.
+CloudHealth returns a list of recommendations, but you'll want to process them one at a time. To do this, let's use a **Loop on Items** action.
 
 In the workflow graph, click the **+** button to add a new step.
 
 In the pop-up menu, select **Loop on Items** in the left pane, then click **Loop on Items** in the right pane.
 
-At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _For each recommendation_.
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step *For each recommendation*.
 
-In the properties pane, click the **Items** field. In the **Data Selector** view that opens, expand the **2. Get EC2 rightsizing recommendations** entry, then expand **rightsizingRecommendations**, and click **Insert** alongside the **edges** entry:
+In the properties pane, click the **Items** field. In the **Data Selector** view that opens, expand **2. Get EC2 rightsizing recommendations**, then expand **rightsizingRecommendations**, and click **Insert** alongside the **edges** entry:
 
 ![Selecting items to loop over](/images/cloudhealth/data-selector-edges.png)
 
-This will add the **edges** entry to the **Items** field in the properties pane, ensuring that OpenOps loops over this particular array in the list of CloudHealth recommendations.
-
-The new step in the workflow graph and the **Configure** tab in its properties pane should now look like this:
+Your new step in the workflow graph and the **Configure** tab in its properties pane should now look like this:
 
 ![A configured Loop on Items block](/images/cloudhealth/loop-added.png)
 
-Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output should be a JSON object representing the first rightsizing recommendation:
+Open the **Test** tab in the properties pane. Under **Step output**, click **Test Step**. The output should be a JSON object representing the first rightsizing recommendation:
 
 ```json
 {
@@ -483,29 +481,29 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
 
 ### Generate opportunity ID
 
-The first new step you'll need to add inside the loop will generate an ID for the current recommendation. CloudHealth doesn't provide this ID, so you'll need to generate it yourself. The ID will be used to save the recommendation in the OpenOps' preconfigured *Opportunities* table, track the status of the recommendation, and, most crucially, decide whether to send a Slack notification to the project owner.
+The first step inside the loop will generate an ID for the current recommendation. Since CloudHealth does not provide this ID, you'll need to create one yourself. The ID will be used to save the recommendation in the preconfigured *Opportunities* table in OpenOps, track its status, and, most importantly, determine whether to send a Slack notification to the project owner.
 
-While you could simplify the workflow greatly without tracking recommendations in an OpenOps table, you then wouldn't be able to select which notifications to send and which to ignore. As a result, project owners would potentially receive multiple notifications for the same recommendation, which would get annoying very soon.
+While you could simplify the workflow greatly without tracking recommendations in an OpenOps table, you then wouldn't be able to select which notifications to send and which to ignore. As a result, project owners would potentially receive multiple notifications for the same recommendation, which would get frustrating very soon.
 
 Inside the loop in the workflow graph, click **+** to add a new step.
 
 In the pop-up menu, select **Text Operations** in the left pane, then click **Concatenate** in the right pane.
 
-At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Opportunity ID_.
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step *Opportunity ID*.
 
-In the properties pane, under **Texts**, click **Add Item**. Click the new field to open the **Data Selector** view. Inside that view, expand **3. For each recommendation**, then **item**, then **node**, then **targetAsset**. Click **Insert** alongside the **id** entry:
+In the properties pane, under **Texts**, click **Add Item**. Click the new field to open the **Data Selector** view. From there, expand **3. For each recommendation**, then **item**, then **node**, then **targetAsset**, and click **Insert** alongside the **id** entry:
 
 ![Selecting a targetAsset ID](/images/cloudhealth/opportunity-id-targetAsset-id.png)
 
-Under **Texts**, click **Add Item** again to add a new field. Click the new field to open the **Data Selector** view again. Expand **3. For each recommendation**, then **item**, then **node**, then **targetAsset**. Click **Insert** alongside the **awsInstanceId** entry:
+Next, under **Texts**, click **Add Item** again to add another field. Open the **Data Selector** view once more, expand **3. For each recommendation**, then **item**, then **node**, then **targetAsset**, and click **Insert** alongside the **awsInstanceId** entry:
 
 ![Selecting a targetAsset AWS instance ID](/images/cloudhealth/opportunity-id-awsInstanceId.png)
 
-The new step in the workflow graph and the **Configure** tab in its properties pane should now look like this:
+Your new step in the workflow graph and the **Configure** tab in its properties pane should now look like this:
 
 ![A configured text concatenation block](/images/cloudhealth/opportunity-id-added.png)
 
-Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output should be a string that combines the two IDs that you've just added to the step's properties:
+Open the **Test** tab in the properties pane. Under **Step output**, click **Test Step**. The output should be a string that concatenates the two IDs you just configured:
 
 ```text
 6322302345294i-0fbc4dbf9ca0b46c0
@@ -513,13 +511,13 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
 
 ### Look up the opportunity in the OpenOps table
 
-Now that you have an opportunity ID, let's add a step that checks if the recommendation that has it already exists in the *Opportunities* table in OpenOps.
+Now that you have an opportunity ID, the next step is to check whether a recommendation with this ID already exists in the *Opportunities* table in OpenOps.
 
 Inside the loop in the workflow graph, click **+** to add a new step.
 
 In the pop-up menu, select **OpenOps Tables** in the left pane, then click **Get Records** in the right pane.
 
-At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Find table entry for opportunity_.
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step *Find table entry for opportunity*.
 
 In the **Configure** tab in the properties pane, under **Table**, select **Opportunities**.
 
@@ -532,7 +530,7 @@ The new step in the workflow graph and the **Configure** tab in its properties p
 
 ![A configured table lookup step](/images/cloudhealth/find-table-entry-added.png)
 
-Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output will be an object representing the number of found table entries and the content of these entries. Since there are no existing entries for a new recommendation, here's the expected output:
+Next, open the **Test** tab in the properties pane. Under **Step output**, click **Test Step**. The output will be an object showing the number of matching table entries and their contents. Since this is a new recommendation, there should be no existing entries. The expected output looks like this:
 
 ```json
 {
@@ -541,9 +539,9 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
 }
 ```
 
-However, the structure of the output is different if the recommendation already exists in the table. Since the next step of the workflow will need to use a part of the output for an existing table record, let's add a sample output for the step.
+However, if the recommendation already exists in the table, the output will have a different structure. Because the next step of the workflow relies on part of that output, you'll need to provide a sample output for testing.
 
-Click **Sample output** in the **Test** tab. In the **Output** area, paste the following JSON, then click **Apply**:
+To do this, click **Sample output** in the **Test** tab. In the **Output** area, paste the following JSON, then click **Apply**:
 
 ```json
 {
@@ -583,13 +581,13 @@ Click **Sample output** in the **Test** tab. In the **Output** area, paste the f
 
 ### Save table entry ID to OpenOps storage
 
-You should now map the ID of the current recommendation to the ID of its entry in the *Opportunities* table, and save this mapping to OpenOps' built-in key-value storage. You'll need this later on in the workflow when you decide whether to send a notification to the project owner.
+You now need to map the ID of the current recommendation to the ID of its entry in the *Opportunities* table, and save this mapping to OpenOps' built-in key-value storage. This will be required later in the workflow when deciding whether to send a notification to the project owner.
 
 Inside the loop in the workflow graph, click **+** to add a new step.
 
 In the pop-up menu, select **Storage** in the left pane, then click **Put** in the right pane.
 
-At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Save table record ID to storage_.
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step _Save table record ID to storage_.
 
 In the **Key** field, use **Data Selector** to select **4. Opportunity ID**.
 
@@ -599,9 +597,9 @@ In the **Value** field, open **Data Selector**, expand **5. Find table entry for
 
 The new step in the workflow graph and the **Configure** tab in its properties pane should now look like this:
 
-![A configured storge step](/images/cloudhealth/save-table-entry-id-added.png)
+![A configured storage step](/images/cloudhealth/save-table-entry-id-added.png)
 
-Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output will be the value of the ID field in the *Opportunities* table entry that represents the current recommendation:
+Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output will be the value of the ID field in the *Opportunities* table entry representing the current recommendation:
 
 ```text
 6cc0f15a-f3eb-4d77-b6b3-2f51eebbe8cf
@@ -609,15 +607,15 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
 
 ### Check if a table entry exists
 
-When you run a published workflow, an entry for a CloudHealth recommendation may or may not already exist in the *Opportunities* table. What this workflow does next depends on whether the entry exists or not. To check this, you need to introduce a condition step next.
+When you run a published workflow, an entry for a CloudHealth recommendation may or may not already exist in the *Opportunities* table. What happens next in the workflow depends on whether the entry exists. To check this, you'll add a condition step.
 
 Inside the loop in the workflow graph, click **+** to add a new step.
 
 In the pop-up menu, select **Condition** in the left pane, then click **Condition** in the right pane.
 
-At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _If no table entry for opportunity_.
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step _If no table entry for opportunity_.
 
-Under **Continue If**, click the left field with a placeholder that reads _First value_. In the **Data Selector** view, expand **5. Find table entry for opportunity** and click **Insert** alongside the **count** entry.
+Under **Continue If**, click the left field with the placeholder _First value_. In the **Data Selector** view, expand **5. Find table entry for opportunity** and click **Insert** alongside the **count** entry.
 
 In the dropdown between the two fields, select **(Number) Is less than**.
 
@@ -627,9 +625,9 @@ The new step in the workflow graph and the **Configure** tab in its properties p
 
 ![A configured condition](/images/cloudhealth/table-entry-condition-added.png)
 
-This condition should evaluate to `true` if there is no table entry for the current recommendation, and `false` if there is one.
+This condition evaluates to `true` if there's no table entry for the current recommendation, and `false` if one exists.
 
-Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. Since you've added a sample output data for step five that contains a table entry, the test output will be `false`:
+Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. Since you added sample output data for step five that contains a table entry, the test output will be `false`:
 
 ```json
 {
@@ -639,7 +637,7 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
 
 ### If no table entry, create one
 
-If the condition above evaluates to `true`, this means the *Opportunities* doesn't have a record for it. In this case, you need to create a new table entry and save its ID to storage for later use.
+If the condition above evaluates to `true`, it means the *Opportunities* table doesn't have a record for the recommendation. In this case, you'll create a new table entry and save its ID to storage for later use.
 
 #### Create a new table entry
 
@@ -647,17 +645,17 @@ Inside the **True** branch of the condition, click **+** to add a new step.
 
 In the pop-up menu, select **OpenOps Tables** in the left pane, then click **Add or Update Record** in the right pane.
 
-At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Add table entry for opportunity_.
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step _Add table entry for opportunity_.
 
 For the **Table** field, select **Opportunities**.
 
-Leave the **Primary Key Value** field empty, letting OpenOps generate a unique ID for the new record.
+Leave the **Primary Key Value** field empty so that OpenOps generates a unique ID for the new record.
 
 Under **Fields to update**, click **Add Item**. In the new area:
 * In the **Field name** dropdown, select **External Opportunity Id**.
 * In the **External Opportunity Id** field, open the **Data Selector** view and click **Insert** alongside the **4. Opportunity ID** entry.
 
-Click **Add Item** again to add a new field. In the new area:
+Click **Add Item** again to add another field. In the new area:
 * In the **Field name** dropdown, select **Status**.
 * In the **Status** dropdown, select **Created**.
 
@@ -665,7 +663,7 @@ Here's what the **Configure** tab in the properties pane should now look like:
 
 ![A configured step to add a table entry](/images/cloudhealth/add-table-entry-added.png)
 
-Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output represents a new entry in the *Opportunities* table:
+Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output will represent a new entry in the *Opportunities* table:
 
 ```json
 {
@@ -700,13 +698,13 @@ Click the **Test** tab in the properties pane, then under **Step output**, click
 
 #### Save table entry ID to storage
 
-Now that you have a new table entry, you need to save its ID to OpenOps' built-in key-value storage.
+Now that you have a new table entry, save its ID to OpenOps' built-in key-value storage.
 
 Inside the **True** branch of the condition, click **+** to add a new step.
 
 In the pop-up menu, select **Storage** in the left pane, then click **Put** in the right pane.
 
-At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Update table record ID in storage_. You're using the word "update" because in a prior step, you've already created a key-value pair, but since no table record existed yet, its value was empty.
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step _Update table record ID in storage_. You use the word "update" here because a key-value pair was already created in a prior step, but since no table record existed, its value was empty.
 
 In the **Key** field, use **Data Selector** to select **4. Opportunity ID**.
 
@@ -736,7 +734,7 @@ Inside the **False** branch of the condition, click **+** to add a new step.
 
 In the pop-up menu, select **Condition** in the left pane, then click **Condition** in the right pane.
 
-At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Table entry exists but opportunity is marked as new_.
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step _Table entry exists but opportunity is marked as new_.
 
 Under **Continue If**, click the left field. In the **Data Selector** view, expand **5. Find table entry for opportunity**, then **items**, then **items[1]**, then **Status**. Click **Insert** alongside the **value** entry:
 
@@ -760,7 +758,7 @@ In the **True** branch of the _Table entry exists but opportunity is marked as n
 
 In the pop-up menu, select **OpenOps Tables** in the left pane, then click **Add or Update Record** in the right pane.
 
-At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Change status of existing opportunity_.
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step _Change status of existing opportunity_.
 
 For the **Table** field, select **Opportunities**.
 
@@ -814,7 +812,7 @@ Click **+** to add a new step.
 
 In the pop-up menu, select **Storage** in the left pane, then click **Get** in the right pane.
 
-At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Get table ID for opportunity_.
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step _Get table ID for opportunity_.
 
 In the **Key** field, use **Data Selector** to select **4. Opportunity ID**. Keep **Default Value** blank and **Store Scope** at the default value.
 
@@ -836,7 +834,7 @@ Click **+** to add a new step.
 
 In the pop-up menu, select **OpenOps Tables** in the left pane, then click **Get Records** in the right pane.
 
-At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Get table entry for opportunity_.
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step _Get table entry for opportunity_.
 
 In the **Table** field, select **Opportunities**.
 
@@ -878,7 +876,7 @@ In the workflow graph, click **+** to add a new step.
 
 In the pop-up menu, select **Condition** in the left pane, then click **Condition** in the right pane.
 
-At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Skip or notify?_.
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step _Skip or notify?_.
 
 You want to notify the project owner in two cases:
 * If this is a new recommendation, as evidenced by the "Created" state.
@@ -892,7 +890,7 @@ In the dropdown between the two fields, select **(Text) Is**.
 
 In the right field, enter `Created`.
 
-Click **+ Or**. In the new area, click the left field.  In **Data Selector**, expand **14. Get table entry for opportunity**, then **items**, then **items[1]**. Scroll down and click **Insert** alongside the **Snoozed until** entry.
+Click **+ Or**. In the new area, click the left field. In **Data Selector**, expand **14. Get table entry for opportunity**, then **items**, then **items[1]**. Scroll down and click **Insert** alongside the **Snoozed until** entry.
 
 In the dropdown between the two fields, select **(Date) Is before**.
 
@@ -914,7 +912,7 @@ In the **True** branch of the *Skip or notify?* condition, click **+** to add a 
 
 In the pop-up menu, select **CloudHealth** in the left pane, then click **Get Asset Perspectives** in the right pane.
 
-At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Get project and more perspectives_.
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step _Get project and more perspectives_.
 
 Under **API Key** in the properties pane, select your existing CloudHealth connection.
 
@@ -956,7 +954,7 @@ Click **+** to add a new step.
 
 In the pop-up menu, select **OpenOps Tables** in the left pane, then click **Get Records** in the right pane.
 
-At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Get owner by project_.
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step _Get owner by project_.
 
 In the **Table** field, select **CloudHealth project-owner mapping**.
 
@@ -994,7 +992,7 @@ Click **+** to add a new step.
 
 In the pop-up menu, select **Math Operations** in the left pane, then click **Truncate** in the right pane.
 
-At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Format monthly savings_.
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step _Format monthly savings_.
 
 In the **Number to truncate** field, use **Data Selector** to expand **3. For each recommendation**, then **item**, then **node**. Scroll down and click **Insert** alongside the **projectedMonthlySavings** entry.
 
@@ -1018,14 +1016,14 @@ Click **+** to add a new step.
 
 In the pop-up menu, select **Storage** in the left pane, then click **Put** in the right pane.
 
-At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Opportunity description_.
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step _Opportunity description_.
 
 In the **Key** field, use **Data Selector** to expand **3. For each recommendation**, then **item**, then **node**, then **targetAsset**. Click **Insert** alongside the **id** entry.
 
 The **Value** field represents the opportunity description, and it needs to be multi-line:
 1. In the first line, type in "Account: ", then use **Data Selector** to expand **3. For each recommendation**, then **item**, then **node**, then **targetAsset**, then **account**. Click **Insert** alongside the **name** entry.
-2. In the second line, type in "Instance ID: ", then use **Data Selector** to expand **3. For each recommendation**, then **item**, then **node**, then **targetAsset**, Click **Insert** alongside the **awsInstanceId** entry.
-3. In the third line, type in "Instance name: ", then use **Data Selector** to expand **3. For each recommendation**, then **item**, then **node**, then **targetAsset**, Click **Insert** alongside the **name** entry.
+2. In the second line, type in "Instance ID: ", then use **Data Selector** to expand **3. For each recommendation**, then **item**, then **node**, then **targetAsset**. Click **Insert** alongside the **awsInstanceId** entry.
+3. In the third line, type in "Instance name: ", then use **Data Selector** to expand **3. For each recommendation**, then **item**, then **node**, then **targetAsset**. Click **Insert** alongside the **name** entry.
 4. In the fourth line, type in "Projected monthly savings: $", then in the **Data Selector**, insert **18. Format monthly savings**.
 
 Here's what the new step in the workflow graph and the **Configure** tab in its properties pane should now look like:
@@ -1049,7 +1047,7 @@ Click **+** to add a new step.
 
 In the pop-up menu, select **Storage** in the left pane, then click **Get** in the right pane.
 
-At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Get table record ID from storage_.
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step _Get table record ID from storage_.
 
 In the **Key** field, use **Data Selector** to insert **4. Opportunity ID**.
 
@@ -1167,7 +1165,7 @@ In the **Jira** branch, click **+** to add a new step.
 
 In the pop-up menu, select **Jira Cloud** in the left pane, then click **Create Issue** in the right pane.
 
-At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Create Jira issue to investigate opportunity_.
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step _Create Jira issue to investigate opportunity_.
 
 In the **Connection** dropdown, select the Jira connection you created earlier.
 
@@ -1175,7 +1173,7 @@ In the **Project** dropdown, select a project in your Jira Cloud instance that y
 
 In the **Issue Type** dropdown, select **Task**.
 
-The **Summary** field, type in "\[Investigate EC2 Rightsizing Opportunity\]". Add a space, and use **Data Selector** to expand **3. For each recommendation**, then **item**, then **node**, then **targetAsset**. Click **Insert** alongside the **awsInstanceId** entry:
+In the **Summary** field, type in "\[Investigate EC2 Rightsizing Opportunity\]". Add a space, and use **Data Selector** to expand **3. For each recommendation**, then **item**, then **node**, then **targetAsset**. Click **Insert** alongside the **awsInstanceId** entry:
     ![Selecting AWS instance ID](/images/cloudhealth/selecting-awsinstanceid.png)
 
 In the **Description** field, use **Data Selector** to insert **19. Opportunity description**.
@@ -1205,7 +1203,7 @@ In the **Jira** branch, click **+** to add a new step.
 
 In the pop-up menu, select **OpenOps Tables** in the left pane, then click **Add or Update Record** in the right pane.
 
-At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Set to Approved_.
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step _Set to Approved_.
 
 In the **Table** field, select **Opportunities**.
 
@@ -1242,7 +1240,7 @@ In the **Jira** branch, click **+** to add a new step.
 
 In the pop-up menu, select **Slack** in the left pane, then click **Send Message** in the right pane.
 
-At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Send confirmation on Slack_.
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step _Send confirmation on Slack_.
 
 In the **Connection** dropdown, select the Slack connection that you created earlier.
 
@@ -1269,7 +1267,7 @@ In the **Snooze** branch, click **+** to add a new step.
 
 In the pop-up menu, select **Date Operations** in the left pane, then click **Add/Subtract Time** in the right pane.
 
-At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Date a week from now_.
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step _Date a week from now_.
 
 In the **Input Date** field, use **Data Selector** to select **12. Get Current Date**.
 
@@ -1286,7 +1284,7 @@ In the **Snooze** branch, click **+** to add a new step.
 
 In the pop-up menu, select **OpenOps Tables** in the left pane, then click **Add or Update Record** in the right pane.
 
-At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Snooze for a week_.
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step _Snooze for a week_.
 
 In the **Table** field, select **Opportunities**.
 
@@ -1331,7 +1329,7 @@ In the **Dismiss** branch, click **+** to add a new step.
 
 In the pop-up menu, select **OpenOps Tables** in the left pane, then click **Add or Update Record** in the right pane.
 
-At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Set to Dismissed_.
+At the top of the new step's properties pane, click **Edit Step Name** and rename the step _Set to Dismissed_.
 
 In the **Table** field, select **Opportunities**.
 
