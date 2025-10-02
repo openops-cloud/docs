@@ -122,7 +122,7 @@ On the top left, click the down arrow next to the workflow name, then click **Re
 
 The first thing that needs to be done is to configure your workflow to run on a schedule.
 
-In the workflow editor, click the trigger step. When a drop-down with types of triggers opens, select **Schedule**, then **Every Week**.
+In the workflow editor, click the trigger step. When a dropdown with types of triggers opens, select **Schedule**, then **Every Week**.
 
 After selecting the trigger type and frequency, you will see the trigger step's properties pane on the right, with the **Configure** tab open. Under **Day of the week**, select **Monday**. Under **Hour of the day**, select **Noon**. Keep the default time zone (UTC) or set it to the time zone you're in.
 
@@ -291,7 +291,7 @@ When the OpenOps workflow editor opens with a new workflow, click the down arrow
 
 ### Configure the trigger to run every working day
 
-In the workflow editor, click the trigger step. When a drop-down with types of triggers opens, select **Schedule**, then **Every Day**.
+In the workflow editor, click the trigger step. When a dropdown with types of triggers opens, select **Schedule**, then **Every Day**.
 
 In the trigger step's properties pane on the right, in the **Configure** tab, keep the defaults. With the default trigger settings, your workflow will run every day, excluding weekends, at midnight UTC:
 
@@ -540,7 +540,7 @@ At the top of the new step's properties pane, click **Edit Step Name** and renam
 
 Under **Continue If**, click the left field with a placeholder that reads _First value_. In the **Data Selector** view, expand **5. Find table entry for opportunity** and click **Insert** alongside the **count** entry.
 
-In the combobox between the two fields, select **(Number) Is less than**.
+In the dropdown between the two fields, select **(Number) Is less than**.
 
 In the right field, enter `1`.
 
@@ -663,7 +663,7 @@ Under **Continue If**, click the left field. In the **Data Selector** view, expa
 
 ![Selecting a status value](/images/cloudhealth/data-selector-status-value.png)
 
-In the combobox between the two fields, select **(Text) Is**.
+In the dropdown between the two fields, select **(Text) Is**.
 
 In the right field, enter `Created`.
 
@@ -809,13 +809,13 @@ Let's define these two cases. Under **Continue If**, click the left field. In **
 
 ![Selecting a status value](/images/cloudhealth/skip-or-notify-selecting-status-value.png)
 
-In the combobox between the two fields, select **(Text) Is**.
+In the dropdown between the two fields, select **(Text) Is**.
 
 In the right field, enter `Created`.
 
 Click **+ Or**. In the new area, click the left field.  In **Data Selector**, expand **14. Get table entry for opportunity**, then **items**, then **items[1]**. Scroll down and click **Insert** alongside the **Snoozed until** entry.
 
-In the combobox between the two fields, select **(Date) Is before**.
+In the dropdown between the two fields, select **(Date) Is before**.
 
 In the right field, use **Data Selector** to insert **12. Get Current Date**.
 
@@ -984,9 +984,9 @@ Click **+** to add a new step.
 
 In the pop-up menu, select **Slack** in the left pane, then click **Request Action** in the right pane.
 
-In the **Connection** drop-down, select the Slack connection you created earlier.
+In the **Connection** dropdown, select the Slack connection you created earlier.
 
-Alongside the **Recipient Channel or User** field, click **Dynamic** to enable specifying the output of a previous step instead of selecting from a drop-down. Then, in **Recipient Channel or User**, use **Data Selector** to expand **17. Get owner by project**, then **items**, then **items[1]**. Click **Insert** alongside the **Owner email** entry.
+Alongside the **Recipient Channel or User** field, click **Dynamic** to enable specifying the output of a previous step instead of selecting from a dropdown. Then, in **Recipient Channel or User**, use **Data Selector** to expand **17. Get owner by project**, then **items**, then **items[1]**. Click **Insert** alongside the **Owner email** entry.
 
 In the **Header** field, enter "New CloudHealth savings opportunity".
 
@@ -1061,12 +1061,12 @@ Rename the default branch (**Branch 1**) to **Jira**.
 
 Rename the second branch (**Branch 2**) to **Snooze**. In the **Where** section of this branch:
 1. In the left field, use **Data Selector** to expand **21. Request Action**, then click **Insert** alongside the **action** entry.
-2. In the drop-down, select **(Text) Contains**.
+2. In the dropdown, select **(Text) Contains**.
 3. In the right field, enter `Snooze`.
 
 Rename the third branch (**Branch 3**) to **Dismiss**. In the **Where** section of this branch:
 1. In the left field, use **Data Selector** to expand **21. Request Action**, then click **Insert** alongside the **action** entry.
-2. In the drop-down, select **(Text) Contains**.
+2. In the dropdown, select **(Text) Contains**.
 3. In the right field, enter `Dismiss`.
 
 Here's what the new step in the workflow graph and the **Configure** tab in its properties pane should now look like:
@@ -1090,11 +1090,11 @@ In the pop-up menu, select **Jira Cloud** in the left pane, then click **Create 
 
 At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Create Jira issue to investigate opportunity_.
 
-In the **Connection** drop-down, select the Jira connection you created earlier.
+In the **Connection** dropdown, select the Jira connection you created earlier.
 
-In the **Project** drop-down, select a project in your Jira Cloud instance that you want to create issues in.
+In the **Project** dropdown, select a project in your Jira Cloud instance that you want to create issues in.
 
-In the **Issue Type** drop-down, select **Task**.
+In the **Issue Type** dropdown, select **Task**.
 
 The **Summary** field, type in "\[Investigate EC2 Rightsizing Opportunity\]". Add a space, and use **Data Selector** to expand **3. For each recommendation**, then **item**, then **node**, then **targetAsset**. Click **Insert** alongside the **awsInstanceId** entry:
     ![Selecting AWS instance ID](/images/cloudhealth/selecting-awsinstanceid.png)
@@ -1165,7 +1165,7 @@ In the pop-up menu, select **Slack** in the left pane, then click **Send Message
 
 At the top of the new step's properties pane, click **Edit Step Name** and rename the step to _Send confirmation on Slack_.
 
-In the **Connection** drop-down, select the Slack connection that you created earlier.
+In the **Connection** dropdown, select the Slack connection that you created earlier.
 
 Alongside the **Recipient Channel or User** field, click **Dynamic**. Then use **Data Selector** to expand **17. Get owner by project**, then **items**, then **items[1]**. Click **Insert** alongside the **Owner email** entry.
 
