@@ -25,10 +25,10 @@ Every condition contains one or two data fields. Clicking a data field opens the
 
 Alongside the data fields, there's a combo box that defines the specific operation for your condition. See [Operators](#operators) for details.
 
-Here's an example of a complete condition that takes a list from a previous action and checks if the list contains any actions &mdash; in other words, if its length is more than zero:
+Here's an example of a complete condition that uses disjunction to check values returned from two separate prior steps:
 ![Condition action](/images/conditions-condition-list.png)
 
-As shown in the screenshot above, you can test your condition in the **Step output** pane and verify if the result is as expected.
+If you click the **Test** tab in the condition step's properties pane, you can evaluate the condition and verify that the result matches your expectations.
 
 ## Split
 
@@ -83,8 +83,14 @@ All text operators provide a setting to toggle case sensitivity. All other opera
 
 ## Exploring conditional branches in large workflows
 
-If you're dealing with a large workflow with many conditional branches and are having trouble navigating between them, click **Tree view** in the top control pane of the workflow editor:
+If you're working with a large workflow that has many conditional branches and are having trouble navigating between them, consider collapsing steps you don't need to focus on right now, or use the **Tree view** pane.
+
+To collapse a condition, split, or loop step, click the collapse icon to the left of the node. A collapsed node can be expanded by clicking the icon again:
+
+![Collapsed condition step](/images/workflow-editor-condition-collapsed.png)
+
+Alternatively, for a bird's-eye view of the workflow, click **Tree view** in the top control pane of the workflow editor:
 ![Tree View in the workflow editor control pane](/images/conditions-controls-tree-view.png)
 
-This displays the **Tree view** pane on the left of the editor — a great way to see a compact representation of your workflow, including conditions and branches:
+This displays the **Tree view** pane on the left side of the editor — a great way to see a compact representation of your workflow, including conditions and branches:
 ![Conditional branches in the tree view](/images/conditions-tree-view.png)
