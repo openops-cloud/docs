@@ -49,5 +49,57 @@ In the **Ports** tool window, click **Open in browser** in the **App Frontend** 
 ![Ports tool window](/images/contributing/ports.png)
 
 When the OpenOps frontend opens, log in with the following credentials:
+* Username: `Dev@openops.com`
+* Password: `12345678`
 
-TODO
+### Scaffold a new block
+
+To get started, let's generate a new block for Gelato
+
+```bash
+npm run cli blocks create
+```
+
+You will be asked three questions to define your new piece:
+
+1. `Block name`: Specify a name for your block. This name uniquely identifies your block within the OpenOps ecosystem.
+2. `Package name`: Optionally, you can enter a name for the npm package associated with your piece. If left blank, the default name will be used, which is: `@openops/block-<piece-name>`.
+3. `Authentication type`: select one of `None`, `Secret (API key)`, `Custom (custom properties)`, `OAuth2 (OAuth2 flow)`.
+4. `Create opinionated folder structure with stubs for actions, tests, and common service layer`: select one of `Yes - Create full folder structure with stubs`, `No - Create minimal structure only`.
+
+OpenOps will generate a full project template inside `packages/blocks/<your-block-name>/`. This gives you everything you need to start writing, testing, and integrating your block.
+
+### Project metadata
+- **`package.json`** – Declares the block as an npm package, including its name, dependencies, and scripts.
+- **`project.json`** – Nx configuration that tells the monorepo how to build, lint, and test the block.
+- **`README.md`** – A starter readme where you should describe what the block does and how to use it.
+
+### TypeScript setup
+- **`tsconfig.json`** – Base TypeScript configuration for the block.
+- **`tsconfig.lib.json`** – TypeScript settings for building the block’s library code.
+- **`tsconfig.spec.json`** – TypeScript settings for compiling and running tests.
+- **`tsconfig.base.json`** *(in the repo root, automatically updated)* – Keeps a central list of all projects; the CLI updates it to include your new block.
+
+### Tooling and quality
+- **`.eslintrc.json`** – ESLint rules for enforcing code style and catching errors.
+- **`jest.config.ts`** – Configuration for Jest, the test runner used in the repo.
+
+### Source and tests
+- **`src/index.ts`** – The main entry point of your block. This is where you’ll define its metadata (name, display name, description) and register actions or triggers.
+- **`test/index.test.ts`** – A starter Jest test file where you can add unit tests for your block.
+
+The `src/index.ts` file should contain the following code:
+
+```ts
+import { BlockAuth, createBlock } from '@openops/blocks-framework';
+
+export const myUniqueBlock = createBlock({
+  displayName: 'My-unique-block',
+  auth: BlockAuth.None(),
+  minimumSupportedRelease: '0.20.0',
+  logoUrl: 'https://static.openops.com/blocks/my-unique-block.png',
+  authors: [],
+  actions: [],
+  triggers: [],
+});
+```
