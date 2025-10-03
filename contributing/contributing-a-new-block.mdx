@@ -11,7 +11,7 @@ OpenOps is based on [Activepieces](https://www.activepieces.com/), and contribut
 The main differences are as follows:
 * Activepieces uses "[piece types](https://www.activepieces.com/docs/developers/building-pieces/piece-definition)" but OpenOps doesn't have the concept of a block type.
 * OpenOps doesn't support [creating new triggers](https://www.activepieces.com/docs/developers/building-pieces/create-trigger).
-* The `AP_DEV_PIECES` variable inside `packages/server/api/.env` is not used in OpenOps.
+* The `AP_DEV_PIECES` variable inside `packages/server/api/.env` is not used in OpenOps as it builds all its components by default.
 * Contributing to OpenOps does not involve publishing your block as an npm package.
 
 ## Examples of contributions
@@ -54,16 +54,16 @@ When the OpenOps frontend opens, log in with the following credentials:
 
 ### Scaffold a new block
 
-To get started, let's generate a new block for Gelato
+To get started, generate a new block by running the following command:
 
 ```bash
 npm run cli blocks create
 ```
 
-You will be asked three questions to define your new piece:
+You will be asked three questions to define your new block:
 
 1. `Block name`: Specify a name for your block. This name uniquely identifies your block within the OpenOps ecosystem.
-2. `Package name`: Optionally, you can enter a name for the npm package associated with your piece. If left blank, the default name will be used, which is: `@openops/block-<piece-name>`.
+2. `Package name`: Optionally, you can enter a name for the npm package associated with your block. If left blank, the default name will be used, which is: `@openops/block-<block-name>`.
 3. `Authentication type`: select one of `None`, `Secret (API key)`, `Custom (custom properties)`, `OAuth2 (OAuth2 flow)`.
 4. `Create opinionated folder structure with stubs for actions, tests, and common service layer`: select one of `Yes - Create full folder structure with stubs`, `No - Create minimal structure only`.
 
@@ -182,6 +182,7 @@ export const myUniqueBlock = createBlock({
   triggers: [],
 });
 ```
+
 ### See your action in the OpenOps UI
 
 Once you reference an action from your block definition and the running `npm start` process rebuilds OpenOps, you should see your action in the OpenOps UI for the first time:
