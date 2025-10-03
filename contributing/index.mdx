@@ -1,0 +1,25 @@
+---
+title: 'Overview'
+description: 'How to contribute to OpenOps'
+icon: 'code'
+---
+
+OpenOps is an open-source project that welcomes external contributions. In fact, extending OpenOps is fairly straightforward, and this section explains what you need to know to get started.
+
+## OpenOps vs Activepieces
+
+OpenOps is based on [Activepieces](https://www.activepieces.com/), and contributing to OpenOps is very similar to [contributing to Activepieces](https://www.activepieces.com/docs/developers/building-pieces/overview).
+
+The main differences are as follows:
+* What Activepieces calls "pieces" is called "blocks" in OpenOps.
+* Activepieces uses "[piece types](https://www.activepieces.com/docs/developers/building-pieces/piece-definition)" but OpenOps doesn't have the concept of a block type.
+* OpenOps doesn't support [creating new triggers](https://www.activepieces.com/docs/developers/building-pieces/create-trigger).
+* The `AP_DEV_PIECES` variable inside `packages/server/api/.env` is not used in OpenOps as it builds all its components by default.
+* Contributing to OpenOps does not involve publishing your block as an npm package.
+
+## Examples of contributions
+
+Here are examples of past pull requests that contributed new block to OpenOps:
+* [Ternary integration](https://github.com/openops-cloud/openops/pull/326)
+* [Databricks integration](https://github.com/openops-cloud/openops/pull/434)
+

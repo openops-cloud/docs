@@ -1,58 +1,14 @@
 ---
-title: 'Contributing a new block'
+title: 'Contributing a Minimal Block'
 description: 'How to contribute a new block to OpenOps'
 icon: 'code'
 ---
 
-## OpenOps vs Activepieces
+Let's see what it takes to create a new OpenOps block, create an action in it, and see it in the OpenOps UI.
 
-OpenOps is based on [Activepieces](https://www.activepieces.com/), and contributing to OpenOps is very similar to [contributing to Activepieces](https://www.activepieces.com/docs/developers/building-pieces/overview). What Activepieces calls "pieces" is called "blocks" in OpenOps.
+Before you start, [set up your development environment](/contributing/development-environment/).
 
-The main differences are as follows:
-* Activepieces uses "[piece types](https://www.activepieces.com/docs/developers/building-pieces/piece-definition)" but OpenOps doesn't have the concept of a block type.
-* OpenOps doesn't support [creating new triggers](https://www.activepieces.com/docs/developers/building-pieces/create-trigger).
-* The `AP_DEV_PIECES` variable inside `packages/server/api/.env` is not used in OpenOps as it builds all its components by default.
-* Contributing to OpenOps does not involve publishing your block as an npm package.
-
-## Examples of contributions
-
-Here are examples of past pull requests that contributed new block to OpenOps:
-* [Ternary integration](https://github.com/openops-cloud/openops/pull/326)
-* [Databricks integration](https://github.com/openops-cloud/openops/pull/434)
-
-## Steps
-
-### Fork the OpenOps repository
-
-Follow these steps to fork the OpenOps repository:
-
-1. Go to the repository page at https://github.com/openops-cloud/openops.
-2. Click the `Fork` button located in the top right corner of the page.
-3. When GitHub opens a fork configuration page, accept the default option and click **Create Fork**.
-
-Your fork is now at https://github.com/your_github_username/openops
-
-### Set up Codespaces
-
-In your OpenOps fork, click **\<\> Code**, open the **Codespaces** tab, and click **Create codespace on main**:
-
-![Create a codespace](/images/contributing/create-codespace.png)
-
-GitHub will open a new browser tab with a codespace. Wait for the codespace to be ready.
-
-Review extensions that Codespaces recommends for you. Consider installing **Prettier - Code formatter** and **Jest Runner** extensions.
-
-Codespaces will automatically run `npm start` in the terminal.
-
-In the **Ports** tool window, click **Open in browser** in the **App Frontend** row to open the OpenOps frontend in a new browser tab:
-
-![Ports tool window](/images/contributing/ports.png)
-
-When the OpenOps frontend opens, log in with the following credentials:
-* Username: `Dev@openops.com`
-* Password: `12345678`
-
-### Scaffold a new block
+## Scaffold a new block
 
 To get started, generate a new block by running the following command:
 
@@ -101,7 +57,7 @@ export const myUniqueBlock = createBlock({
 });
 ```
 
-### Create an action
+## Create an action
 
 Now let's create first action that will make a simple GET request to [httpbin.org](https://httpbin.org/).
 
@@ -164,7 +120,7 @@ The `run` function is the function that is called when the action is executed. I
 
 The `run` function uses the `httpClient.sendRequest` function to make a GET request to [httpbin.org](https://httpbin.org/) and returns the response body.
 
-### Reference the action in the block definition
+## Reference the action in the block definition
 
 To make the action discoverable by OpenOps, import it into the block definition file at `src/index.ts` and add it to the `actions` array in the definition:
 
@@ -183,7 +139,7 @@ export const myUniqueBlock = createBlock({
 });
 ```
 
-### See your action in the OpenOps UI
+## See your action in the OpenOps UI
 
 Once you reference an action from your block definition and the running `npm start` process rebuilds OpenOps, you should see your action in the OpenOps UI for the first time:
 

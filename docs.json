@@ -79,7 +79,11 @@
       {
         "group": "Contributing to OpenOps",
         "pages": [
-          "contributing/contributing-a-new-block"
+          "contributing/index",
+          "contributing/development-environment",
+          "contributing/contributing-a-minimal-block",
+          "contributing/contributing-an-integration",
+          "contributing/authentication"
         ]
       }
     ]

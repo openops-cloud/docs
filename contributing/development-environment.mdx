@@ -1,0 +1,38 @@
+---
+title: 'Development Environment'
+description: 'Setting up the development environment for contributing to OpenOps'
+icon: 'code'
+---
+
+Before you start contributing to OpenOps, you need to set up a development environment. While you can set up a local development environment, using GitHub's Codespaces is the easiest way to get started.
+
+## Fork the OpenOps repository
+
+Follow these steps to fork the OpenOps repository:
+
+1. Go to the repository page at https://github.com/openops-cloud/openops.
+2. Click the `Fork` button located in the top right corner of the page.
+3. When GitHub opens a fork configuration page, accept the default option and click **Create Fork**.
+
+Your fork is now at https://github.com/your_github_username/openops
+
+## Set up Codespaces
+
+In your OpenOps fork, click **\<\> Code**, open the **Codespaces** tab, and click **Create codespace on main**:
+
+![Create a codespace](/images/contributing/create-codespace.png)
+
+GitHub will open a new browser tab with a codespace. Wait for the codespace to be ready.
+
+Review extensions that Codespaces recommends for you. Consider installing **Prettier - Code formatter** and **Jest Runner** extensions.
+
+Codespaces will automatically run `npm start` in the terminal.
+
+In the **Ports** tool window, click **Open in browser** in the **App Frontend** row to open the OpenOps frontend in a new browser tab:
+
+![Ports tool window](/images/contributing/ports.png)
+
+When the OpenOps frontend opens, log in with the following credentials:
+* Username: `Dev@openops.com`
+* Password: `12345678`
+
