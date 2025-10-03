@@ -75,6 +75,12 @@
           "reporting-analytics/tables",
           "reporting-analytics/data-visualization"
         ]
+      },
+      {
+        "group": "Integrations",
+        "pages": [
+          "integrations/cloudhealth"
+        ]
       }
     ]
   },
