@@ -4,4 +4,78 @@ description: 'Developing a fully working OpenOps block to integrate with a third
 icon: 'code'
 ---
 
-TODO YouTrack
+[Contributing a minimal block](/contributing/contributing-a-minimal-block/) demonstrated how to use scaffolding and make a block show up in the OpenOps UI. Let's now create another block - this time, it's going to be a fully functional integration with a third-party service.
+
+OpenOps integrates with Jira Cloud and Linear, but what if you use a different service for tracking your cloud optimization opportunities? Let's create a block that integrates with [JetBrains YouTrack](https://www.jetbrains.com/youtrack/). This will involve implementing API key based authentication, designing actions that interact with the YouTrack API, and writing basic tests.
+
+Before you start, [set up your development environment](/contributing/development-environment/).
+
+## Scaffold a new block
+
+Run the following command to scaffold a new block:
+
+```bash
+npm run cli blocks create
+```
+
+Supply the following information to the CLI:
+
+1. `Block name`: enter "youtrack" (lowercase) as the block name.
+2. `Package name`: leave blank to use the default name.
+3. `Authentication type`: select `Secret (API key)`.
+4. `Create opinionated folder structure with stubs for actions, tests, and common service layer`: select `Yes - Create full folder structure with stubs`.
+
+OpenOps will generate a full project template inside `packages/blocks/youtrack/`, including `package.json`, TypeScript configuration files, ESLint and Jest configuration files, an entry point for the block at `src/index.ts` and a starter test file at `test/index.test.ts`.
+
+The `src/index.ts` file should contain the following code:
+
+```ts
+import { createCustomApiCallAction } from '@openops/blocks-common';
+import { createBlock, Property } from '@openops/blocks-framework';
+import { BlockCategory } from '@openops/shared';
+import { youtrackAuth } from './lib/auth';
+
+export const youtrack = createBlock({
+  displayName: 'Youtrack',
+  auth: youtrackAuth,
+  minimumSupportedRelease: '0.20.0',
+  logoUrl: 'https://static.openops.com/blocks/youtrack.png',
+  authors: [],
+  categories: [BlockCategory.FINOPS],
+  actions: [
+    createCustomApiCallAction({
+      baseUrl: () => 'https://api.youtrack.com',
+      auth: youtrackAuth,
+      additionalProps: {
+        documentation: Property.MarkDown({
+          value:
+            'For more information, visit the [Youtrack API documentation](https://docs.youtrack.com/reference/introduction).',
+        }),
+      },
+    }),
+  ],
+  triggers: [],
+});
+```
+
+Since you've chosen to create a block with a secret authentication type, the generated code includes the `src/lib/auth.ts` file with placeholder authentication logic:
+
+```ts
+import { BlockAuth } from '@openops/blocks-framework';
+
+export const youtrackAuth = BlockAuth.SecretAuth({
+  displayName: 'API Key',
+  required: true,
+  authProviderKey: 'youtrack',
+  authProviderDisplayName: 'Youtrack',
+  authProviderLogoUrl: 'https://static.openops.com/blocks/youtrack.png',
+  description: '',
+});
+```
+
+## Fix the product name and logo
+
+When generating, OpenOps didn't use the proper casing for the product name, and now is a good time for a case-sensitive search of "Youtrack" and replacing it with "YouTrack" in the generated code.
+
+It has also generated logo URLs at static.openops.com that don't exist. Let's replace https://static.openops.com/blocks/youtrack.png with a live YouTrack logo URL, which is https://resources.jetbrains.com/storage/products/company/brand/logos/YouTrack_icon.png
+
