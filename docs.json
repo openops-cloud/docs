@@ -77,6 +77,12 @@
         ]
       },
       {
+        "group": "Integrations",
+        "pages": [
+          "integrations/cloudhealth"
+        ]
+      },
+      {
         "group": "Contributing to OpenOps",
         "pages": [
           "contributing/index",
