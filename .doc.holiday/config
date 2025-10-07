@@ -1,0 +1,29 @@
+Publishing = "Mintlify"
+Includes = [
+  "!**/.git/**",
+  "!**/build/**",
+  "!**/dist/**",
+  "!**/node_modules/**",
+  "!.mintlify/**",
+  "**/*.md",
+  "**/*.mdx",
+  "**/*.rst",
+  "**/*.txt",
+  "**/CHANGELOG*",
+  "**/CONTRIBUTING*",
+  "**/LICENSE*",
+  "**/README*",
+  "docs.json",
+  "getting-started/**/*.md",
+  "getting-started/**/*.mdx",
+  "introduction/**/*.md",
+  "introduction/**/*.mdx",
+  "mint.json"
+]
+DocumentationRoot = "."
+
+[DocumentationRootEvidence]
+method = "default-root"
+message = "No clear documentation directory found, defaulting to repository root"
+docFiles = 1
+candidates = [ ]
