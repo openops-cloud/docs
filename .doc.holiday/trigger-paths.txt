@@ -1,0 +1,13 @@
+Cargo.lock
+Cargo.toml
+Gemfile
+Gemfile.lock
+docs.json
+mint.json
+package-lock.json
+package.json
+pnpm-lock.yaml
+pyproject.toml
+requirements.txt
+setup.py
+yarn.lock
