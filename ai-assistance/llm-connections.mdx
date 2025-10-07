@@ -9,21 +9,20 @@ Using [AI assistance](/ai-assistance/overview) in OpenOps requires enabling AI i
 To enable AI and configure an LLM connection:
 1. In the OpenOps left sidebar, click the **Settings** icon at the bottom:
 ![Settings icon](/images/access-llm-settings-icon.png)
-2. In the **Settings** view, click **AI**. The **AI providers** section will open:
+2. In the **Settings** view, click **AI**. The **AI providers** section opens:
 ![AI providers](/images/access-llm-ai-providers.png)
 3. Switch on the **Enable AI** toggle.
-4. In the **Connection** dropdown, select **Create Connection**. The **Create AI Connection** view will open:
+4. In the **Connection** dropdown, select **Create Connection**. The **Create AI Connection** view opens:
 ![Create AI Connection](/images/access-llm-create-connection.png)
-5. In the **Provider** dropdown, select one of the supported LLM providers. Anthropic, Azure OpenAI, Cerebras, Cohere, Deep Infra, Deep Seek, Google Generative AI, Google Vertex AI, Groq, Mistral, OpenAI, OpenAI-compatible providers, Perplexity, Together.ai, and xAI Grok are currently supported.
-6. In the **Model** dropdown, select one of the models that your LLM provider supports.
-7. (Optional) If the model you're looking for is not listed, you can specify a custom model in the **Custom model** field, which will then override whatever you've selected under **Model**.
+5. In the **Provider** dropdown, select one of the supported LLM providers. Anthropic, Azure OpenAI, Cerebras, Cohere, Deep Infra, DeepSeek, Google Generative AI, Google Vertex AI, Groq, Mistral, OpenAI, OpenAI-compatible providers, Perplexity, Together.ai, and xAI Grok are currently supported.
+6. In the **Model** dropdown, select one of the models your LLM provider supports.
+7. (Optional) If the model you're looking for is not listed, specify a custom model in the **Custom model** field. This overrides whatever you've selected under **Model**.
 8. Enter your API key for the selected LLM provider in the **API Key** field.
-9. (Optional) Enter a **Base URL** for the selected model. This is useful if you want to use a proxy or if your LLM provider does not use the default base URL. If you have selected _OpenAI Compatible_ as the provider, then you are required to enter the base URL.
-10. (Optional) Use the **Provider settings** and **Model settings** fields to specify custom parameters as JSON. The JSON schema will vary depending on the chosen provider and model. For example, if you've selected OpenAI, you can use **Provider settings** for JSON that you'd normally pass to the `createOpenAI` function, and **Model settings** for JSON that you'd normally pass to the `streamText` function. For more details, see the [OpenAI documentation](https://platform.openai.com/docs/api-reference).
+9. (Optional) Enter a **Base URL** for the selected model. This is useful if you want to use a proxy or if your LLM provider does not use the default base URL. If you selected _OpenAI Compatible_ as the provider, then you are required to enter the base URL.
+10. (Optional) Use the **Provider settings** and **Model settings** fields to specify custom parameters as JSON. The JSON schema varies depending on the chosen provider and model. For example, if you've selected OpenAI, you can use **Provider settings** for JSON that you'd normally pass to the `createOpenAI` function, and **Model settings** for JSON that you'd normally pass to the `streamText` function. For more details, see the [OpenAI documentation](https://platform.openai.com/docs/api-reference).
 11. Click **Save** to apply your changes in the **Create AI Connection** view.
 12. (Optional) Back in the **AI providers** section, if you're working with AWS and you want your AI connection to have access to the AWS Cost MCP server, click **AWS Cost** in the **MCP** section, and select an [AWS connection](/cloud-access/access-levels-permissions#aws-connections) to use for the MCP server.
 ![AWS Cost MCP connection](/images/access-llm-mcp.png)
 13. Click **Save** to apply your changes in the **AI providers** section.
 
 Configuring an LLM connection enables all [AI assistance features](/ai-assistance/overview) in OpenOps.
-
