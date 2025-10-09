@@ -6,6 +6,7 @@ icon: 'robot'
 
 OpenOps can use a large language model (LLM) of your choice to help you with:
 * Answering questions about OpenOps and FinOps using the AI chatbot
+* Using prompts as workflow steps based on outputs from previous steps
 * Generating CLI commands for AWS, Azure, and GCP
 * Writing SQL queries for AWS Athena, BigQuery, Snowflake, and Databricks
 * Generating JavaScript code for custom code steps in your workflows
@@ -20,7 +21,10 @@ Supported LLMs include OpenAI, Anthropic, Google Generative AI, Groq, Mistral, P
 
 ## Using AI assistance
 
-AI assistance in OpenOps is available in two main forms: the AI assistant chat, where you ask free-form questions, and the **Generate with AI** command, which helps you generate commands, queries, and code snippets.
+AI assistance in OpenOps is available in several forms:
+* The AI assistant chat, where you ask free-form questions
+* A standalone **Ask AI** action that lets you send prompts that use the outputs of previous workflow steps as context
+* The **Generate with AI** command in step properties, which helps you generate commands, queries, and code snippets
 
 ### AI assistant chat
 
@@ -39,6 +43,16 @@ You can use it to ask a variety of questions about OpenOps, your cloud resources
 To provide in-depth answers about your OpenOps installation, the AI assistant takes advantage of the OpenOps MCP server, which is enabled by default.
 
 It can also work with the Amazon Cost MCP server, enabling you to ask questions about your AWS expenses like "How much did I spend on EC2 last month?". However, you need to explicitly enable OpenOps to access the Amazon Cost MCP server. See [LLM Connections](/ai-assistance/llm-connections) for how to connect.
+
+### Ask AI action
+
+The **Ask AI** action lets you run AI prompts in a separate step in your workflow, using outputs of its previous steps as context.
+
+You add **Ask AI** as you would [add any other action](workflow-management/building-workflows#adding-more-actions). You then specify a prompt in the **Prompt** field and any relevant outputs of previous steps in the **Additional input** section:
+
+![Ask AI](/images/access-llm-ask-ai-action.png)
+
+Alternatively, you can combine prompt text and outputs from previous steps in the **Prompt** field.
 
 ### Generating commands and queries
 
