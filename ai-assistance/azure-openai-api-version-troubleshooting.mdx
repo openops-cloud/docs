@@ -1,0 +1,47 @@
+---
+title: "Azure OpenAI 'apiVersion' Missing Error"
+description: "Troubleshooting the error when 'apiVersion' is not set for Azure OpenAI with API Management integration."
+icon: "🐛"
+iconType: 1
+---
+
+## Problem Statement
+
+When integrating Azure OpenAI with API Management in OpenOps, you may encounter the following error message:
+
+```
+Error: Missing required 'apiVersion' parameter for Azure OpenAI when used with API Management.
+```
+
+## Cause
+
+Azure OpenAI requires the 'apiVersion' query parameter to be set for all API calls through API Management. If this parameter is not defined, requests will be rejected.
+
+## Resolution Steps
+
+1. Ensure you have set the 'apiVersion' parameter in your Azure OpenAI API configuration.
+2. In your workflow or integration settings, specify 'apiVersion' under the API parameters. For example:
+
+    ```json
+    {
+      "provider": "azure-openai",
+      "endpoint": "<your-endpoint>",
+      "apiVersion": "2023-05-15"
+    }
+    ```
+3. Save the configuration and re-run the workflow.
+
+## Verification
+
+After updating the API configuration, test the connection again. Successful requests should proceed without raising the 'apiVersion' error.
+
+## Additional Help
+
+For more detailed integration steps, see [AI Assistance Overview](/ai-assistance/overview).
+
+## Troubleshooting
+
+- Double-check the spelling and casing of 'apiVersion'.
+- Refer to the Azure OpenAI documentation for the latest supported API versions.
+
+If the error persists, contact your system administrator or review your API Management policies.
