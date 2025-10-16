@@ -22,20 +22,62 @@ OpenOps (Beta) Documentation documents OpenOps — a No‑Code FinOps automation
 
 ### Tone Guidelines
 
-#### Default Tone (Technical Users)
-- Direct and practical language
-- Assume familiarity with TypeScript, package managers, CLI
-- Use technical jargon and shorthand
-- Focus on code examples over explanations
-- Avoid marketing language or benefit statements
-
-#### Non-Technical User Adjustments
-When explicitly writing for non-technical users:
+#### Default Tone (Non-Technical Users)
 - Explain what each command does and why
 - Spell out abbreviations and technical terms
 - Provide simpler code examples with explanations
 - Include more step-by-step guidance
 - Link to additional learning resources
+
+#### Technical User Adjustments
+When explicitly writing for technical users:
+- Direct and practical language
+- Assume familiarity with FinOps, AWS, Azure, GCP
+- Focus on code examples over explanations
+- Avoid marketing language or benefit statements
+
+### Release Notes Specific
+- **Emojis required** for category headers (🚀 🐛 ✨)
+- Indented descriptions with `-`
+- Add a breaking change notice if there are linear tickets with a "Breaking change" tag as part of this release.
+- GitHub release title is the version (i.e. 0.6.0)
+
+#### DO - Release Notes:
+- Use emoji categories (🚀 🐛 ✨)
+- Keep descriptions concise
+- Include a breaking change notice 
+
+#### DON'T - Release Notes:
+- Skip the emoji format
+- Include internal changes
+- Mix with regular documentation
+
+#### Breaking change Notes Examples
+----------
+
+## ⚠️ NOTICE
+
+**Breaking Change**: This release has breaking changes:
+1. AWS action "Tag Resources" will now fail the step if some resources were not tagged
+2. Removed deprecated AWS actions:
+- "Get Account Information": please use instesad "AWS CLI" action with [describe-account](https://docs.aws.amazon.com/cli/latest/reference/organizations/describe-account.html) command
+- "Get Account Alias": please use instead "Get Account IDs"
+
+## ⚠️ NOTICE
+
+**Breaking Change**: This release removes 2 features: 
+1. Removing the ability to rerun failed workflows from the failed step.
+2. Removing Zendesk block trigger "New Ticket In View".
+
+## ⚠️ NOTICE
+
+**Breaking Change**: The Slack 'Request Action' workflow action now sends a different payload when an interaction is made. This update will affect **paused** workflows that ran **before** the update and are resumed **after** the update. Please **re-run** the workflows to fix this issue.
+
+## ⚠️ NOTICE
+
+**Breaking Change**: Connection-related event metadata now includes `authProviderKey`. This update may affect integrations relying on previous event formats.
+
+----------
 
 ### Publishing System Requirements
 Mintlify publishing requirements and front matter patterns
