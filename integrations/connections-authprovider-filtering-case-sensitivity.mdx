@@ -1,0 +1,41 @@
+---
+title: "Connections Filtering by Auth Provider: Case Sensitivity"
+description: "Describes case-insensitive filtering for connections by authentication provider in API queries."
+icon: "🔑"
+iconType: 1
+---
+
+## Overview
+Connections filtering by authentication provider (authProvider) in the OpenOps API is now case-insensitive. API requests filtering connections on the `authProvider` parameter will return matching results regardless of letter casing in the provided value.
+
+This change applies to all endpoints that support filtering by `authProvider`, including integrations with Azure OpenAI and other cloud platforms.
+
+## Impact
+- Filter values for `authProvider` no longer require exact casing.
+- Improves consistency and reduces issues with provider matching in API queries.
+- Existing integrations using different casing (e.g., `AzureOpenAI`, `azureopenai`, `azureOpenAI`) will now behave identically.
+
+## API Filtering Example
+
+### Request Example
+```http
+GET /api/v1/connections?authProvider=AZUREOPENAI
+```
+
+This request will return all connections using the `AzureOpenAI` provider, regardless of whether they were created with a different casing in the `authProvider` field.
+
+### Request Example (Mixed Case)
+```http
+GET /api/v1/connections?authProvider=AzureOpenAI
+```
+
+This request returns the same results as above.
+
+## Usage Notes
+- No action is needed for existing connections or workflows. All queries are now normalized for case.
+- This behavior applies to all integrations, not limited to Azure OpenAI.
+
+## Troubleshooting
+- If your connection queries previously failed due to case mismatch, simply retry the query. Results are now consistent across casing variants.
+
+For additional information on API usage, see the [API documentation](/README.md).
