@@ -1,0 +1,57 @@
+---
+title: "Azure OpenAI APIM: Missing apiVersion Error"
+description: "How to resolve 'apiVersion missing' errors when connecting OpenOps to Azure OpenAI via API Management (APIM)."
+icon: "🧩"
+iconType: 1
+---
+
+# Azure OpenAI APIM: Missing apiVersion Error
+
+Learn how to diagnose and fix the 'apiVersion missing' error when using API Management (APIM) with Azure OpenAI connections in OpenOps.
+
+## Problem
+
+When configuring an AI Assistance API connection to Azure OpenAI using API Management (APIM) as a proxy, OpenOps requires the `apiVersion` parameter. If this parameter is not provided, you will encounter an error indicating that `apiVersion` is missing.
+
+**Audience:** Platform administrators, cloud engineers, and SREs connecting OpenOps to Azure OpenAI through APIM.
+
+## Prerequisites
+
+- OpenOps is installed and accessible
+- API Management (APIM) endpoint configured for Azure OpenAI
+- Permissions to update API connection settings in OpenOps
+
+## Symptoms
+
+- API requests to Azure OpenAI via APIM fail from OpenOps
+- Error message includes:
+  ```
+  Error: Missing required parameter 'apiVersion' when connecting to Azure OpenAI with APIM.
+  ```
+
+## Steps to Resolve
+
+1. **Edit the AI Assistance API Connection**  
+   Go to the OpenOps admin interface. Navigate to the AI Assistance or Integrations section and locate your Azure OpenAI (APIM) connection.
+
+2. **Ensure you include the `apiVersion` parameter**  
+   When specifying the endpoint URL for Azure OpenAI, append the `api-version` query parameter. For example:
+   ```
+   https://<your-apim-endpoint>/openai/deployments/<deployment-name>/completions?api-version=2023-05-15
+   ```
+   Replace `<your-apim-endpoint>` and `<deployment-name>` as appropriate, and set `api-version` to the version supported by your Azure OpenAI resource.
+
+3. **Save and Apply Configuration**  
+   After updating the endpoint, save changes and restart any related workflow or connection as needed.
+
+## Verification
+
+- Trigger an AI Assistance workflow in OpenOps that uses the Azure OpenAI (APIM) integration
+- The workflow should execute without the missing `apiVersion` error
+
+## Troubleshooting
+
+- If the issue persists, double-check that the APIM instance is routing requests correctly and that `api-version` matches one supported by your Azure OpenAI deployment
+- Check OpenOps logs for any further error details
+
+For further reading, see the [AI Assistance Overview](/ai-assistance/overview).
