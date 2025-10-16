@@ -2,113 +2,7 @@
 
 ## Project Summary
 
-Project summary and analysis
-
-Project: OpenOps (Beta) Documentation
-Description: OpenOps is a No-Code FinOps automation platform that helps organizations reduce cloud costs and streamline financial operations. The docs cover product overviews, deployment and installation guides, workflow building and management, integrations, cloud access configurations, AI assistance, snippets (operational runbooks), and reporting/analytics. Publishing system: Mintlify (front-matter-based MDX pages).
-
-Audience
-- Primary: Cloud engineers, SREs, FinOps practitioners, platform administrators, and DevOps/IT teams who install, configure, and operate OpenOps. They need step-by-step deployment guides, configuration reference, and runbook snippets.
-- Secondary: Product managers and technical evaluators seeking feature overviews and ROI/benefit content.
-
-Content types present
-- Concept pages / overviews (overview.mdx, features-and-benefits.mdx)
-- Getting started and quick-start tutorials (quick-start-guide.mdx, local.mdx, aws-ec2.mdx)
-- How-to / procedural guides (building-workflows.mdx, scheduling.mdx, passing-data.mdx)
-- Reference / configuration (system-requirements.mdx, access-levels-permissions.mdx, aws-cf-role-stack.mdx)
-- Workflow / lifecycle documentation (workflow-version-history-lifecycle.mdx, workflow-templates.mdx)
-- Snippets / runbooks (restart-containers.mdx, env-update-credentials.mdx)
-- API documentation (explicitly present in the repo metadata summary)
-- Tables and data-visualization pages (reporting-analytics/tables.mdx)
-
-Technical complexity
-- Medium to high. The content mixes conceptual (FinOps basics, high-level feature descriptions) with hands-on deployment (VMs, cloud roles, system requirements) and advanced topics (workflow branching, human-in-the-loop flows, API examples). Writers should assume readers know cloud basics but provide explicit steps and commands.
-
-Writing patterns and conventions observed (summary)
-- Files are MDX (.mdx) and use front-matter metadata fields consistently: title, description, icon, iconType.
-- Table of contents is used (TOC present in content features), and front matter contains metadata for navigation and icons.
-- File names use kebab-case and map directly to long-form topic titles.
-- Directory structure groups content by product area: getting-started, deployment, workflow-management, snippets, integrations, cloud-access, ai-assistance, reporting-analytics, introduction.
-- Examples present: code blocks, tables, and API reference snippets are used. Snippets folder contains operational commands or short runbooks.
-
-Pattern extraction (exact patterns and examples)
-
-Heading hierarchy patterns (exact examples inferred from filenames and standard doc patterns)
-- H1 (document title) — single top-level title coming from front matter title (rendered as page H1). Example titles from front matter fields: "Overview", "Quick Start Guide", "Building Workflows", "Workflow Templates".
-- H2 (major sections) — Used for core sections within a page. Example H2s to copy from file names/sections: "Prerequisites", "Installation", "Configuration", "Usage", "Troubleshooting", "Scheduling".
-- H3 (subsections) — For sub-steps, options, or detailed explanations. Example H3s: "Create AWS Role", "Passing Data Between Actions", "Human in the Loop Parameters".
-- H4+ — Rare, for very specific technical details such as response schema fields, CLI flags, or lifecycle event tables.
-
-Exact heading examples (use these literal phrased headings as canonical examples)
-- H1: Overview
-- H2: Quick Start
-- H2: Prerequisites
-- H2: Installation
-- H2: Configuration
-- H2: Usage
-- H2: Troubleshooting
-- H3: Create AWS CloudFormation Role Stack
-- H3: Passing Data Between Actions
-
-Link formatting patterns (exact examples)
-- Internal link — absolute path from docs root (recommended): [Quick Start Guide](/getting-started/quick-start-guide)
-- Internal link — relative path (allowed in nested content): [Restart containers](../snippets/restart-containers)
-- Anchor link to a heading in same page: [See Troubleshooting](#troubleshooting)
-- External link — full URL: [AWS Docs](https://docs.aws.amazon.com/)
-- Link to file path including extension (if necessary): [Workflow Templates](/workflow-management/workflow-templates.mdx)
-
-Front matter fields (exact formatting observed)
-- Required fields: title, description, icon, iconType
-- Observed usage (counts): title (37), description (37), icon (37), iconType (1)
-
-Exact front matter field names and minimal example (must be used in each MDX file):
----
-title: "<Page Title>"
-description: "<Short description: 1–2 sentences>"
-icon: "<icon-name-or-emoji>"
-iconType: 1
----
-
-Directory organization patterns (exact examples from repo)
-- Top-level directories represent major product areas: getting-started, introduction, workflow-management, snippets, reporting-analytics, integrations, cloud-access, ai-assistance.
-- Subfolders exist for deployment variants under getting-started/deployment.
-- Filenames are kebab-case and unique per topic (e.g., quick-start-guide.mdx, aws-ec2.mdx, workflow-templates.mdx).
-
-Other patterns
-- Repeated filenames in listing (e.g., overview.mdx appears multiple times in 'introduction' — ensure deduplication and canonical file presence).
-- Snippets contain short runbooks or small operational docs and should be concise (title, problem statement, steps, commands, verification).
-
-Examples of good documentation patterns found (concrete examples)
-- Quick Start Guide (procedural): clear step-by-step install + commands + expected results. Example skeleton:
-  - H2: Prerequisites
-  - H2: Installation
-  - H3: Local (or Cloud) steps
-  - Code block: fenced triple-backticks with language
-  - H2: Verify
-  - H2: Troubleshooting
-
-- API example (pattern): short description, endpoint, request example, response example. Example Markdown structure:
-  - H2: API: Create Workflow
-  - H3: Endpoint
-    ```http
-    POST /api/v1/workflows
-    ```
-  - H3: Request
-    ```json
-    { "name": "cleanup", "triggers": [...] }
-    ```
-  - H3: Response
-    ```json
-    { "id": "w-123", "status": "created" }
-    ```
-
-- Table example (pattern): use Markdown tables for small datasets; use code block plus table for larger schema. Example:
-| Field | Type | Description |
-|---|---:|---|
-| id | string | Unique identifier |
-| cost | number | Monthly estimated cost |
-
-
+OpenOps (Beta) Documentation documents OpenOps — a No‑Code FinOps automation platform that helps organizations reduce cloud costs and streamline financial operations. The docs target cloud/FinOps practitioners, DevOps engineers, SREs, platform and finance teams who operate cloud accounts, create automation workflows, and integrate billing/visibility tools. Documentation types in the repo include: product overviews, quickstarts and deployment guides, workflow/tutorial pages, how‑to snippets, integration guides, API reference and tables/analytics pages. Technical complexity ranges from non‑technical user flows (UI walkthroughs, user management) to moderately advanced cloud setup (IAM/CF/VM provisioning) and workflow logic (conditional branching, human‑in‑the‑loop), plus API examples. Writing patterns observed: MDX files with front matter metadata, Table of Contents present in several pages, use of code blocks and examples, and small focused “snippets” pages for common operational tasks. Files are organized by functional areas (getting-started, workflow-management, cloud-access, snippets, reporting-analytics, ai-assistance, integrations).
 
 ## Context
 
@@ -128,152 +22,231 @@ Examples of good documentation patterns found (concrete examples)
 
 ### Tone Guidelines
 
-#### Default Tone (Technical Users)
-- Direct and practical language
-- Assume familiarity with TypeScript, package managers, CLI
-- Use technical jargon and shorthand
-- Focus on code examples over explanations
-- Avoid marketing language or benefit statements
-
-#### Non-Technical User Adjustments
-When explicitly writing for non-technical users:
+#### Default Tone (Non-Technical Users)
 - Explain what each command does and why
 - Spell out abbreviations and technical terms
 - Provide simpler code examples with explanations
 - Include more step-by-step guidance
 - Link to additional learning resources
 
+#### Technical User Adjustments
+When explicitly writing for technical users:
+- Direct and practical language
+- Assume familiarity with FinOps, AWS, Azure, GCP
+- Focus on code examples over explanations
+- Avoid marketing language or benefit statements
+
+### Release Notes Specific
+- **Emojis required** for category headers (🚀 🐛 ✨)
+- Indented descriptions with `-`
+- Add a breaking change notice if there are linear tickets with a "Breaking change" tag as part of this release.
+- GitHub release title is the version (i.e. 0.6.0)
+
+#### DO - Release Notes:
+- Use emoji categories (🚀 🐛 ✨)
+- Keep descriptions concise
+- Include a breaking change notice 
+
+#### DON'T - Release Notes:
+- Skip the emoji format
+- Include internal changes
+- Mix with regular documentation
+
+#### Breaking change Notes Examples
+----------
+
+## ⚠️ NOTICE
+
+**Breaking Change**: This release has breaking changes:
+1. AWS action "Tag Resources" will now fail the step if some resources were not tagged
+2. Removed deprecated AWS actions:
+- "Get Account Information": please use instesad "AWS CLI" action with [describe-account](https://docs.aws.amazon.com/cli/latest/reference/organizations/describe-account.html) command
+- "Get Account Alias": please use instead "Get Account IDs"
+
+## ⚠️ NOTICE
+
+**Breaking Change**: This release removes 2 features: 
+1. Removing the ability to rerun failed workflows from the failed step.
+2. Removing Zendesk block trigger "New Ticket In View".
+
+## ⚠️ NOTICE
+
+**Breaking Change**: The Slack 'Request Action' workflow action now sends a different payload when an interaction is made. This update will affect **paused** workflows that ran **before** the update and are resumed **after** the update. Please **re-run** the workflows to fix this issue.
+
+## ⚠️ NOTICE
+
+**Breaking Change**: Connection-related event metadata now includes `authProviderKey`. This update may affect integrations relying on previous event formats.
+
+----------
+
 ### Publishing System Requirements
-Mintlify publishing requirements and front matter templates
+Mintlify publishing requirements and front matter patterns
 
-General rules
-- Files must be MDX (.mdx) unless a platform-specific exception exists.
-- Use a single front-matter block at the top of each MDX file. Mintlify uses YAML front matter between triple dashes.
-- Every page MUST include the required metadata fields: title, description, icon, iconType.
-- Keep description short (1–2 sentences). This is used for search snippets and card descriptions.
-- Use kebab-case filenames that map to the canonical URL path.
-- Include a clear H1 (document title). The H1 is rendered from the page title; avoid duplicating the title in the body.
-- Include a Table of Contents if the page length exceeds ~500 words (Mintlify may auto-generate a TOC; ensure headings follow structure so TOC is meaningful).
+Required front matter fields (observed across repository):
+- title (string) — human readable page title
+- description (string) — 1‑line summary used for search/SEO and cards
+- icon (string) — short icon identifier or emoji used in navigation cards
+- iconType (string) — type indicator for icon usage (e.g. "emoji" | "svg" | "font")
 
-Exact front matter template (required fields)
+Recommended optional fields (for consistency and Mintlify features):
+- slug (string) — explicit URL path (if you need a custom path)
+- tags (array) — category/tags for filtering
+- draft (boolean) — publish state
+- sidebar_order (integer) — ordering within a section
+- hide_toc (boolean) — hide table of contents when appropriate
+
+Exact front matter template (copy-paste for each new page):
 
 ---
 title: "<Page Title>"
-description: "<One-line description of the page content>"
-icon: "<emoji-or-icon-name>"
-iconType: 1
-# optional fields (use when needed):
-# tags: ["getting-started","deployment"]
-# slug: "/custom-path" # when overriding canonical path
-# aliases: ["/old/path"]
+description: "<Short one-line summary of the page's purpose>"
+icon: "<icon-name-or-emoji>"
+iconType: "<emoji|svg|font>"
+# Optional:
+slug: "/path/if/you/want/custom-url"
+tags: ["category", "topic"]
+draft: false
+sidebar_order: 10
+hide_toc: false
 ---
 
-Notes about icon/iconType
-- icon: pick a short string (emoji or icon name consistent with Mintlify icon set). Keep it consistent across the product nav.
-- iconType: use 1 unless there is a documented reason for other values in Mintlify setup. The repo shows iconType: 1 being used.
+Notes and rules for Mintlify:
+- Use YAML front matter at the very top of each .mdx file. Missing or malformed front matter may prevent Mintlify from correctly indexing the page.
+- Keep title short (ideally < 60 characters) and description under 160 characters.
+- Use the 'icon' and 'iconType' consistently; prefer emoji for quick drafts, use standardized icon names for published pages.
+- If using slug, ensure it is unique and mirrors the directory path unless there is a deliberate reason to override it.
 
-Code and API documentation conventions
-- Use fenced code blocks with language annotations for syntax highlighting. Examples:
-  ```bash
-  ./install.sh --env local
-  ```
-  ```json
-  { "name": "my-workflow" }
-  ```
-  ```http
-  POST /api/v1/workflows
-  ```
-- For API reference pages, include:
-  - Short summary
-  - Endpoint (method + path)
-  - Request example (JSON)
-  - Response example (JSON)
-  - Error codes / status table
-- Use consistent formatting for request/response examples; prefer complete JSON objects, not fragments.
+Code and example conventions (examples observed and recommended):
+- Inline code and commands: wrap in backticks, e.g. `openops-cli sync`
+- Block code examples: specify language for syntax highlighting
 
-Tables
-- Use Markdown tables for small reference tables. For large tables or tabular data with many columns, prefer a concise summary + downloadable CSV/JSON.
-- Keep table column headers Title Case.
+Example: shell snippet
 
-Publishing checklist (before merging)
-- Front matter present with required fields
-- Unique and descriptive title
-- Short description present
-- File is placed in the correct directory according to topic
-- Headings follow the prescribed hierarchy (one H1, H2s for major sections, etc.)
-- Code blocks language-tagged
-- Internal links use canonical path style
-- Run link-checker to ensure no broken internal/external links
+```bash
+# Authenticate with OpenOps
+openops login --api-key $OPENOPS_API_KEY
+```
 
-Additional Mintlify tips
-- Avoid duplicate filenames across directories (deduplicate overview.mdx occurrences).
-- Use tags in front matter to improve search and grouping if supported by the Mintlify site configuration.
+Example: API example (JSON + curl)
 
+```bash
+curl -X POST "https://api.openops.example/v1/workflows" \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"pause-unused-resources","trigger":"schedule","actions":[]}'
+```
+
+Examples of good documentation patterns discovered:
+- Focused short pages per concept (e.g., "scheduling.mdx", "passing-data.mdx") that include purpose, prerequisites, step-by-step instructions, sample inputs/outputs, and a troubleshooting note.
+- Snippets folder for quick operational commands and small procedures (e.g., "restart-containers.mdx", "tls.mdx").
+- Deployment subsection under getting-started (local, aws-ec2, gcp-vm, azure-vm) grouping pragmatic platform-specific install guides.
+
+Publishing checklist (before marking a page ready):
+1. Front matter present and valid YAML per template.
+2. Title matches the H1 or is present in front matter only (see heading rules below).
+3. TOC generated (or hide_toc set intentionally).
+4. Links verified (internal links start with / and external links use full URL).
+5. Code blocks include language and example inputs/outputs where appropriate.
+6. Tags and sidebar_order set for navigation if relevant.
+
+If you need a template for a new guide file, use the front matter above followed immediately by a single H1 or rely on front matter title (see heading guidance).
 
 ### Content Structure Rules
 Content organization guidelines
 
 General principles
-- One topic per page. Aim for discoverability and scannability: clear H2 sections, short paragraphs, and code blocks for commands.
-- Put the most important information 'above the fold' — quick description, who it's for, and a 1–2 line summary at top.
-- Use numbered steps for sequences and bulleted lists for non-sequential items.
+- One primary purpose per page. Open with a 1–2 sentence summary (what the page is and who it’s for).
+- Use the front matter description for a short single-sentence summary; repeat as the first paragraph if helpful.
+- Keep pages scannable: use short paragraphs, bullets, numbered steps for procedures, and code blocks for commands.
+- Always include prerequisites and expected outcomes for tutorials and procedures.
 
-Technical Documentation Pages
-- Start: short summary (1–2 sentences) and audience.
-- Next: Prerequisites (tools, permissions, versions).
-- Core: Step-by-step instructions (Installation → Configuration → Usage).
-- Examples: Minimal viable example then a full example.
-- End: Verification steps and Troubleshooting / Common Errors.
-- Include code blocks with example inputs/outputs and, where relevant, full JSON request/response examples.
+Page templates by content type
 
-Process / How-to Pages
-- Begin with a short purpose statement.
-- List prerequisites and the expected outcome.
-- Provide numbered steps. Each step should be a short paragraph followed by a code block or command if necessary.
-- Include a verification step and expected output snippet.
-- Add a Troubleshooting section that ties to common failure modes and fixes.
+Technical Documentation Pages (guides, how-to, configuration):
+- Title (front matter)
+- Summary / What this page covers
+- Prerequisites (software, permissions, quotas)
+- Step-by-step instructions (numbered lists)
+- Example inputs/outputs or code snippets
+- Validation (how to confirm success)
+- Troubleshooting and common errors
+- Related links and next steps
 
-Reference / API Pages
-- Use a consistent structure: Summary → Endpoint → Parameters → Request Example → Response Example → Error codes.
-- Use tables for parameter lists (Name, Type, Required, Description).
+Process Documentation Pages (procedural steps):
+- Start with prerequisites and requirements
+- Use numbered steps for sequence; indicate estimated time for each step when applicable
+- Include command examples and expected results
+- End with verification steps and troubleshooting
 
-Snippets / Runbooks
-- Title: short action-oriented name (Restart containers, Update credentials)
-- Problem: 1–2 lines describing when to use.
-- Steps: concise numbered steps.
-- Commands: copy-paste ready fenced code blocks.
-- Verification: how to confirm success.
-- Safety notes: required permissions, non-production warnings (link to non-production-disclaimer if present).
+API Documentation / Reference Pages:
+- Start with a high-level description of the endpoint/purpose
+- Authentication and required headers
+- Method and path (HTTP verb and URL)
+- Request parameters (table: name, type, required, description)
+- Request body example (JSON)
+- Response example (200 success and common error responses) with schema when possible
+- Error codes and remediation tips
+- Curl + SDK examples
 
+Snippets and Cookbook Pages:
+- 1 goal per page (e.g., "Restart containers")
+- Show the one-line summary, the command or code block, and a brief explanation
+- Link to full workflows or guides where applicable
+
+Tables and Data Visualization:
+- Provide sample table schema, example queries, screenshots (if applicable), and an interpretation of key columns
+- Keep tables small and descriptive; use column headings in Title Case and include units in header where needed
+
+Style and tone
+- Voice: professional, concise, neutral, action-oriented.
+- Audience: assume an IT/DevOps user with basic cloud knowledge.
+- Use active voice and second person where appropriate (e.g., "Click Create," "Run the following command").
+- Use consistent capitalization: Title Case in headings; sentence case in body paragraphs except for product names and acronyms (AWS, GCP, IAM).
+- Use backticks for inline code and variables like `PROJECT_ID` or `apiKey`.
+- When giving example values, mark placeholders clearly: `<YOUR_ACCOUNT_ID>` or `$YOUR_ENV_VAR`.
+- Do not include internal or sensitive information in examples; use fictional safe values.
+
+Content lifecycle
+- Add a last-updated comment in page metadata or rely on Mintlify's change log. Use version history pages for workflow lifecycle notes (observed in workflow-version-history-lifecycle.mdx).
+- Deprecation notes: mark deprecated features clearly at the top with a prominent NOTE block and link to migration instructions.
 
 #### Heading Rules
 ```markdown
-Heading style and hierarchy for OpenOps docs
+Heading style and hierarchy
 
 H1 (Single per file)
-- Use exactly one H1 per document. This should match the title in front matter.
-- No trailing punctuation.
-- Examples: "Overview", "Quick Start Guide", "Building Workflows"
+- Use exactly one H1 per document. Prefer placing the title in front matter and NOT repeating a top-level H1 in the body to avoid duplication in Mintlify navigation. If you must include an H1 in the body, it must match the front matter title exactly.
+- Examples from repository: "Overview", "Quick Start Guide", "Building Workflows", "Tables" (use Title Case)
+- No trailing punctuation on H1 lines.
 
 H2 (Major sections)
-- Use for top-level organization within a page: Prerequisites, Installation, Configuration, Usage, API, Examples, Troubleshooting, References.
-- Capitalization: Title Case (capitalize main words) for section names.
-- Examples: "Prerequisites", "Installation", "Configuration", "Troubleshooting"
+- Use for top-level sections such as Purpose, Prerequisites, Steps, Examples, API Reference, Troubleshooting, Related.
+- Examples: "## Prerequisites", "## Quick start", "## API Examples", "## Troubleshooting"
+- Capitalization: Title Case for section names.
 
 H3 (Subsections)
-- Use for steps, subtopics, parameters, and detailed breakdowns under H2 sections.
-- Examples: "Create AWS CloudFormation Role Stack", "Passing Data Between Actions", "API: Create Workflow"
+- Use for step groups, individual examples, parameter lists, or subtopics under H2.
+- Examples: "### Installing on AWS EC2", "### Sample payload", "### Common errors"
+- Maintain strict H1 → H2 → H3 progression.
 
-H4 and below (Rare usage)
-- Only for deeply nested technical details (field-by-field schema descriptions, long tables, or advanced config options).
-- Prefer avoiding beyond H4 where possible—split into separate pages instead.
+H4-H6 (Rare usage)
+- Only used for very detailed technical blocks (e.g., multi-part code explanation, complex table breakdowns).
+- Example usage: "#### cURL example headers" or "#### JSON schema fields"
 
-Formatting rules for headings
-- Use Title Case for all headings (not ALL CAPS).
-- Do not include trailing punctuation on headings.
-- Keep headings concise (ideally 3–6 words for H2/H3).
-- Where appropriate, include short descriptive headings for code examples, e.g., "Request Example" and "Response Example".
+Additional heading rules
+- Do not use ALL CAPS headings. Use Title Case (capitalize main words).
+- Avoid punctuation at the end of headings (no trailing periods or colons except where grammatically necessary in code or literal headings).
+- Keep headings concise (ideally under 6–8 words).
 
+Exact heading examples (recommended to follow):
+- # Quick Start Guide  (front matter title)
+- ## Prerequisites
+- ## Step-by-step
+- ## Example
+- ### Example: Create a Workflow
+- ### API Example
+- ## Troubleshooting
+- ## Related Documentation
 ```
 
 ### Formatting Requirements
@@ -297,34 +270,43 @@ Formatting rules for headings
 Linking strategy and examples
 
 Internal links
-- Preferred style: absolute path from the doc root to keep links stable across contexts.
-  - Example: [Quick Start Guide](/getting-started/quick-start-guide)
-- Relative links: permitted for tightly-coupled sibling pages or content that will move together.
-  - Example: [Restart containers](../snippets/restart-containers)
-- Link text: use descriptive text that explains the destination (avoid "click here").
-- When linking to a heading in the same page use anchor links formatted as lowercase, hyphenated headings with no special characters.
-  - Example: [See Troubleshooting](#troubleshooting)
+- Prefer absolute doc-root paths starting with / for internal links. This makes refs stable across pages and Mintlify navigation consistent.
+- Format: [Link text](/section/subsection/page)
+- Examples:
+  - [Quick Start Guide](/getting-started/quick-start-guide)
+  - [Scheduling](/workflow-management/scheduling)
+  - [Tables](/reporting-analytics/tables)
+- If you must link to a sibling or child MDX file within the same folder in authoring (relative links are allowed), keep them consistent: `./sibling-page` or `../other-section/page` but convert to absolute paths in front matter slug if desired.
 
 External links
-- Use full URLs and open in the same tab (unless there is a product requirement to open new tabs).
-  - Example: [AWS Documentation](https://docs.aws.amazon.com/)
-- Mark external links with an icon or explicit note when linking to sites requiring an account or when they contain billing-sensitive instructions.
+- Use full URLs and add a short note for external destinations if they require credentials or billing.
+- Example: [AWS Documentation](https://docs.aws.amazon.com/)
+- For external links that should open in a new tab, prefer a short inline HTML anchor only when necessary: <a href="https://example.com" target="_blank" rel="noopener noreferrer">Example</a>. Use sparingly; Mintlify may control link behavior in the platform.
 
-Cross-reference and navigation standards
-- Prefer linking to canonical pages in the directory structure, not to raw files in the repo.
-- When multiple pages cover similar topics, create a parent index page (e.g., Workflow Management index) that links to subtopics.
-- Use link validation as part of pre-merge checks. Run a link checker to catch broken internal/external links.
-- For redirects and renamed pages, add aliases in front matter (aliases: ["/old/path"]) to avoid 404s and maintain external links.
+Cross-references and anchors
+- Link to sections in the same page using hash anchors based on heading text. Prefer automatic slugified anchors generated by the system. Example: [Troubleshooting](#troubleshooting)
+- When linking to a specific example or code block in another page, reference the section anchor: [API Example](/getting-started/quick-start-guide#api-example)
 
-When to use each linking approach
-- Absolute internal path: when linking from any place in the docs to a stable canonical page.
-- Relative path: when writing a page within the same section and both pages are expected to remain together.
-- External link: when pointing to vendor docs, SDKs, or third-party integrations.
+Link maintenance and validation
+- Before publishing, run a link-checker to validate internal and external links. Fix broken links or update slugs.
+- Prefer linking to the canonical doc page (not to a snippet) — link to the high-level guide and reference snippets rather than duplicating content.
 
-Maintenance
-- Every major release or restructuring must include a link sweep to update internal references.
-- Keep a short list of high-traffic pages (Quick Start, Installation) that must not be moved without redirects/aliases.
+When to use each approach
+- Use absolute doc-root links for production-facing navigation and cross-site references.
+- Use relative links for in-repo authoring convenience only if you have a build step that normalizes them to absolute paths.
+- Use external links for third-party docs, downloads, or cloud provider references. Annotate any link that requires authorization, billing, or has costs.
 
+Observed link formatting patterns (exact examples to follow):
+- Internal absolute example: [Investigate Workflow Run](/workflow-management/investigate-workflow-run)
+- Relative example (authoring): [Scheduling](./scheduling.mdx)
+- External example: [Node.js](https://nodejs.org/)
+
+Accessibility and link text
+- Use descriptive link text (avoid ‘click here’). Include the destination type if not obvious (e.g., "View API reference for workflows").
+- If linking to downloadable assets, include file size and format where practical.
+
+Summary rules
+- Always prefer absolute doc-root internal links, keep link text descriptive, validate links regularly, and annotate external/billing links.
 
 ### Documentation Content Examples
 - Below are examples of existing documentation that you should use for reference, including formatting, structure, layout, style, and language.
@@ -333,59 +315,49 @@ Maintenance
 undefined
 
 ## Existing Documentation Directory Structure
-Directory structure and recommended content mapping
+Top-level organization and what belongs in each path
 
-Top-level directories (what to put where):
-- introduction/
-  - Purpose: Conceptual overview, product mission, features & benefits, who should use OpenOps.
-  - Example files: overview.mdx, features-and-benefits.mdx
-  - Tone: high-level, persuasive, non-procedural.
+./
+- README.md: Repository and documentation root summary (maintain as canonical repo README).
+- docs.json / LICENSE: repo config and licensing.
 
-- getting-started/
-  - Purpose: Onboarding, quick start, installation, user management, system requirements.
-  - Example files: quick-start-guide.mdx, system-requirements.mdx, user-management.mdx, updating-openops.mdx
-  - Subfolder: getting-started/deployment for platform-specific deployment instructions (local, aws-ec2, gcp-vm, azure-vm).
-  - Tone: step-by-step, actionable, with verification steps and common troubleshooting.
+getting-started/
+- Quick start, system requirements, user management, updating OpenOps, and a deployment subfolder with platform-specific install instructions. Put introductory and onboarding content here.
+- Files: quick-start-guide.mdx, system-requirements.mdx, user-management.mdx, updating-openops.mdx
+- Subdir: getting-started/deployment/ contains local and cloud VM installation guides (aws-ec2.mdx, gcp-vm.mdx, azure-vm.mdx, local.mdx)
 
-- getting-started/deployment/
-  - Purpose: Platform-specific deployment instructions and variants.
-  - Example files: local.mdx, aws-ec2.mdx, gcp-vm.mdx, azure-vm.mdx
-  - Structure: Each file should have Prerequisites, Steps, Verify, Troubleshooting.
+introduction/
+- Overview and features pages; high-level product descriptions and benefits targeted at new users and stakeholders.
+- Files: overview.mdx, features-and-benefits.mdx
 
-- workflow-management/
-  - Purpose: Building workflows, actions, conditional branching, scheduling, lifecycle and versioning, templates, run investigations.
-  - Example files: building-workflows.mdx, actions.mdx, conditional-branching.mdx, scheduling.mdx, workflow-templates.mdx, workflow-version-history-lifecycle.mdx, investigate-workflow-run.mdx
-  - Tone: technical, example-driven, include screenshots or workflow diagrams where appropriate.
+workflow-management/
+- Core product flows: building workflows, scheduling, templates, actions, human-in-the-loop, conditional branching, passing data, investigating runs, version history/lifecycle. This is where users learn the platform’s automation model.
+- Files: building-workflows.mdx, scheduling.mdx, workflow-templates.mdx, actions.mdx, human-in-the-loop.mdx, conditional-branching.mdx, passing-data.mdx, investigate-workflow-run.mdx, workflow-version-history-lifecycle.mdx
 
-- snippets/
-  - Purpose: Short operational runbooks and reusable task snippets (one problem, one solution). Should be concise and copy-paste ready.
-  - Example files: restart-containers.mdx, env-update-credentials.mdx, tls.mdx, update-link.mdx, auto-install.mdx, non-production-disclaimer.mdx
-  - Structure: Problem statement, Steps (numbered), Commands (fenced), Verification.
+cloud-access/
+- Multi-cloud access patterns and cloud-specific setup instructions (IAM, CF templates).
+- Files: multi-cloud.mdx, aws-cf-role-stack.mdx, access-levels-permissions.mdx
 
-- reporting-analytics/
-  - Purpose: Tables, data-visualization, how to interpret reports, sample dashboards.
-  - Example files: tables.mdx, data-visualization.mdx
+integrations/
+- Integrations with third-party tooling and billing/visibility platforms (e.g., CloudHealth). Use for connector setup and sync instructions.
+- Files: cloudhealth.mdx (and other per‑integration files)
 
-- cloud-access/
-  - Purpose: Cloud provider access patterns, permissions, roles, and provider-specific guides (e.g., AWS CloudFormation roles)
-  - Example files: multi-cloud.mdx, aws-cf-role-stack.mdx, access-levels-permissions.mdx
+reporting-analytics/
+- Analytics, tables, and data visualization pages. Include sample queries, dashboards or export instructions.
+- Files: tables.mdx, data-visualization.mdx
 
-- integrations/
-  - Purpose: Third-party integrations (e.g., CloudHealth), configuration steps, and notes about data ingestion.
-  - Example files: cloudhealth.mdx
+ai-assistance/
+- LLM and AI features documentation (overview and connections). Keep guidance for prompts, safety, and privacy here.
+- Files: overview.mdx, llm-connections.mdx
 
-- ai-assistance/
-  - Purpose: LLM / AI integration overviews and configuration
-  - Example files: overview.mdx, llm-connections.mdx
+snippets/
+- Short, single-purpose operational recipes and one-off commands (restart-containers, tls, auto-install, env-update-credentials, update-link, non-production-disclaimer). Use small, searchable pages that are easy to embed into other docs.
+- Files: update-link.mdx, tls.mdx, restart-containers.mdx, non-production-disclaimer.mdx, env-update-credentials.mdx, auto-install.mdx
 
-Root files
-- README.md and docs.json: repository-level metadata and contributor-facing instructions. Keep these up-to-date with structure guidance and contribution process.
-
-Best practices for directories
-- One topic per file. If content grows beyond ~2,000 words, split into multiple focused pages.
-- Keep filenames unique and descriptive (no duplicate 'overview.mdx' across different directories unless intentionally different scoped). If duplicates exist, rename to 'overview-introduction.mdx' vs 'overview-ai-assistance.mdx' or consolidate.
-- Place short reusable content in snippets; do not bloat snippets with long conceptual content.
+Organizational rules:
+- One concept per file. If content grows, split into a subsection directory (e.g., workflow-management/troubleshooting/).
+- Keep filenames kebab-case and match the slug (unless overridden in front matter).
+- Avoid duplicates—some directories currently have duplicated filenames; ensure each file exists only once and deduplicate during cleanup.
 
 
-
-*Generated on: 2025-10-16T09:15:27.988Z*
+*Generated on: 2025-10-07T14:12:20.803Z*
