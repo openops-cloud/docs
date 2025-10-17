@@ -4,30 +4,36 @@ description: 'Developing a fully working OpenOps block to integrate with a third
 icon: 'code'
 ---
 
-[Contributing a minimal block](/contributing/contributing-a-minimal-block/) demonstrated how to use scaffolding and make a block show up in the OpenOps UI. Let's now create another block - this time, it's going to be a fully functional integration with a third-party service.
+[Contributing a minimal block](/contributing/contributing-a-minimal-block/) demonstrated how to use scaffolding and make a block show up in the OpenOps UI. Let's now see how you would create a fully functional integration with a third-party service.
 
-OpenOps integrates with Jira Cloud and Linear, but what if you use a different service for tracking your cloud optimization opportunities? Let's create a block that integrates with [JetBrains YouTrack](https://www.jetbrains.com/youtrack/). This will involve implementing API key based authentication, designing actions that interact with the YouTrack API, and writing basic tests.
+OpenOps integrates with Jira Cloud and Linear, but what if you use a different service for tracking your cloud optimization opportunities? Let's see how you would create a block that integrates with [JetBrains YouTrack](https://www.jetbrains.com/youtrack/). This involves implementing API key based authentication and designing a couple actions that interact with the [YouTrack API](https://www.jetbrains.com/help/youtrack/devportal/youtrack-rest-api.html).
 
-Before you start, [set up your development environment](/contributing/development-environment/).
+This is not a step-by-step guide. Instead, it's an overview that highlights prominent parts of the process.
 
-## Scaffold a new block
+## Scaffolding a new block
 
-Run the following command to scaffold a new block:
+To scaffold a new block, you run the following command:
 
 ```bash
 npm run cli blocks create
 ```
 
-Supply the following information to the CLI:
+For a YouTrack integration, you would supply the following information to the CLI:
 
-1. `Block name`: enter "youtrack" (lowercase) as the block name.
+1. `Block name`: "youtrack" (lowercase).
 2. `Package name`: leave blank to use the default name.
-3. `Authentication type`: select `Secret (API key)`.
+3. `Authentication type`: select `Custom (Custom properties)`.
 4. `Create opinionated folder structure with stubs for actions, tests, and common service layer`: select `Yes - Create full folder structure with stubs`.
 
 OpenOps will generate a full project template inside `packages/blocks/youtrack/`, including `package.json`, TypeScript configuration files, ESLint and Jest configuration files, an entry point for the block at `src/index.ts` and a starter test file at `test/index.test.ts`.
 
-The `src/index.ts` file should contain the following code:
+Browse through the tabs below to see the generated files and read about their purpose.
+
+<Tabs>
+  <Tab title="src/index.ts">
+This is the entry point to the new block. It uses the `createBlock()` function from the OpenOps block framework to create a new block. This function takes a number of arguments, but the most important ones are:
+* `auth`: authentication implementation for the block.
+* `actions`: an array that contains the actions that the block exposes.
 
 ```ts
 import { createCustomApiCallAction } from '@openops/blocks-common';
@@ -57,6 +63,233 @@ export const youtrack = createBlock({
   triggers: [],
 });
 ```
+  </Tab>
+  <Tab title="src/lib/auth.ts">
+Scaffolding generates a placeholder authentication implementation in a separate file. It uses a `CustomAuth()` helper function from the OpenOps block framework. The function takes several parameters, of which the most important ones are:
+* `props`: an object that defines the inputs necessary to authenticate with the service provider that the block integrates with.
+* `validate`: a function that validates the inputs provied in `props`.
+
+```ts
+import { BlockAuth, Property } from '@openops/blocks-framework';
+
+export const youtrackAuth = BlockAuth.CustomAuth({
+  authProviderKey: 'youtrack',
+  authProviderDisplayName: 'Youtrack',
+  authProviderLogoUrl: 'https://static.openops.com/blocks/youtrack.png',
+  description: 'Configure your Youtrack connection',
+  required: true,
+  props: {
+    apiKey: Property.SecretText({
+      displayName: 'API Key',
+      required: true,
+    }),
+    baseUrl: Property.ShortText({
+      displayName: 'Base URL',
+      description: 'The base URL for Youtrack API',
+      required: true,
+    }),
+  },
+  validate: async ({ auth }) => {
+    // Add validation logic here
+    return { valid: true };
+  },
+});
+```
+  </Tab>
+  <Tab title="test/index.test.ts">
+Text
+```ts
+import { youtrack } from '../src/index';
+
+describe('block declaration tests', () => {
+  test('should return block with correct authentication', () => {
+    expect(youtrack.auth).toMatchObject({
+      type: 'CUSTOM_AUTH',
+      required: true,
+      authProviderKey: 'youtrack',
+      authProviderDisplayName: 'Youtrack',
+      authProviderLogoUrl: 'https://static.openops.com/blocks/youtrack.png',
+    });
+  });
+
+  test('should return block with correct number of actions', () => {
+    expect(Object.keys(youtrack.actions()).length).toBe(1);
+    expect(youtrack.actions()).toMatchObject({
+      custom_api_call: {
+        name: 'custom_api_call',
+        requireAuth: true,
+      },
+    });
+  });
+});
+```
+  </Tab>
+  <Tab title=".eslintrc.json">
+Text
+```json
+{
+  "extends": ["../../../.eslintrc.json"],
+  "ignorePatterns": ["!**/*"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "rules": {}
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {}
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "rules": {}
+    }
+  ]
+}
+```
+  </Tab>
+  <Tab title="jest.config.ts">
+Text
+```ts
+export default {
+  displayName: 'blocks-youtrack',
+  preset: '../../../jest.preset.js',
+  setupFiles: ['../../../jest.env.js'],
+  testEnvironment: 'node',
+  transform: {
+    '^.+\\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
+  },
+  moduleFileExtensions: ['ts', 'js', 'html'],
+  coverageDirectory: '../../../coverage/packages/blocks/youtrack',
+};
+```
+  </Tab>
+  <Tab title="package.json">
+Text
+```json
+{
+  "name": "@openops/block-youtrack",
+  "version": "0.0.1"
+}
+```
+  </Tab>
+  <Tab title="project.json">
+Text
+```json
+{
+  "name": "blocks-youtrack",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/blocks/youtrack/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/blocks/youtrack",
+        "tsConfig": "packages/blocks/youtrack/tsconfig.lib.json",
+        "packageJson": "packages/blocks/youtrack/package.json",
+        "main": "packages/blocks/youtrack/src/index.ts",
+        "assets": ["packages/blocks/youtrack/*.md"],
+        "buildableProjectDepsInPackageJsonType": "dependencies",
+        "updateBuildableProjectDepsInPackageJson": true
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/blocks/youtrack/jest.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    }
+  }
+}
+```
+  </Tab>
+  <Tab title="README.md">
+Text
+```md
+# blocks-youtrack
+
+This library was generated with [Nx](https://nx.dev).
+
+## Building
+
+Run `nx build blocks-youtrack` to build the library.
+
+## Running unit tests
+
+Run `nx test blocks-youtrack` to execute the unit tests via [Jest](https://jestjs.io).
+```
+  </Tab>
+  <Tab title="tsconfig.json">
+Text
+```json
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "./tsconfig.lib.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
+}
+```
+  </Tab>
+  <Tab title="tsconfig.lib.json">
+Text
+```json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "outDir": "../../../dist/out-tsc",
+    "declaration": true,
+    "types": ["node"]
+  },
+  "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"],
+  "include": ["src/**/*.ts"]
+}
+```
+  </Tab>
+  <Tab title="tsconfig.spec.json">
+Text
+```json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../../dist/out-tsc",
+    "module": "commonjs",
+    "types": ["jest", "node"]
+  },
+  "include": [
+    "jest.config.ts",
+    "src/**/*.test.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts"
+  ]
+}
+```
+  </Tab>
+</Tabs>
+
 
 Since you've chosen to create a block with a secret authentication type, the generated code includes the `src/lib/auth.ts` file with placeholder authentication logic:
 
