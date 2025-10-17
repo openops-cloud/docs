@@ -1,0 +1,110 @@
+---
+title: "AWS Billing and Cost Management MCP Server Integration"
+description: "How to deploy and configure the AWS Billing and Cost Management MCP Server for cloud cost analysis in OpenOps."
+icon: "💵"
+iconType: 1
+---
+
+# AWS Billing and Cost Management MCP Server Integration
+
+This guide describes how to deploy and configure the AWS Billing and Cost Management Multi-Cloud Provider (MCP) Server in OpenOps, enabling automated collection and analysis of AWS cost and billing data within your FinOps workflows.
+
+## Prerequisites
+- AWS account with IAM permissions for Billing and Cost Management
+- Docker installed on host/server
+- OpenOps deployed and accessible
+- API credentials for OpenOps (see [README](/README.md))
+- Network access to AWS APIs from the MCP container
+
+## Installation
+
+### Docker Setup
+The AWS Billing MCP Server can be deployed as a container alongside other OpenOps services. Update your Docker Compose file to include the `aws-billing-mcp` service:
+
+```yaml
+services:
+  aws-billing-mcp:
+    image: openops/aws-billing-mcp:latest
+    environment:
+      AWS_ACCESS_KEY_ID: <your-access-key>
+      AWS_SECRET_ACCESS_KEY: <your-secret-key>
+      AWS_DEFAULT_REGION: <aws-region>
+    ports:
+      - "8088:8080" # Adjust as needed
+    restart: unless-stopped
+```
+
+- Replace environment variable values with your AWS credentials.
+- Confirm that the network configuration allows outbound calls to AWS APIs.
+
+### API Tool Initialization
+To enable API-driven access to AWS billing data, initialize the MCP API tool by registering its endpoint with OpenOps:
+
+```json
+POST /api/v1/tools/register
+{
+  "name": "aws-billing-mcp",
+  "endpoint": "http://aws-billing-mcp:8080/api",
+  "type": "billing-provider"
+}
+```
+
+**Request Example:**
+```http
+POST /api/v1/tools/register
+Content-Type: application/json
+
+{
+  "name": "aws-billing-mcp",
+  "endpoint": "http://aws-billing-mcp:8080/api",
+  "type": "billing-provider"
+}
+```
+**Response Example:**
+```json
+{
+  "id": "tool-123",
+  "status": "registered"
+}
+```
+
+## Usage
+
+Once registered, workflows and automation within OpenOps can access AWS Billing and Cost Management data via the MCP server's API. Example usage within a workflow action:
+
+```json
+{
+  "tool": "aws-billing-mcp",
+  "operation": "fetch-cost-summary",
+  "parameters": {
+    "timePeriod": {
+      "start": "2025-10-01",
+      "end": "2025-10-15"
+    }
+  }
+}
+```
+
+## Verification
+
+1. Confirm the container is running:
+    ```bash
+    docker ps | grep aws-billing-mcp
+    ```
+2. Test direct API connectivity:
+    ```bash
+    curl http://localhost:8088/api/health
+    ```
+    Expected response:
+    ```json
+    { "status": "ok" }
+    ```
+3. Check workflow logs in OpenOps for successful billing data fetches.
+
+## Troubleshooting
+
+- **Invalid AWS Credentials:** Ensure IAM keys are correct and have billing read permissions
+- **Connection Issues:** Confirm ports and network settings in Docker Compose
+- **API Registration Fails:** Verify container endpoint is reachable from the OpenOps API server
+
+For more advanced scenarios, see [Access Levels and Permissions](/cloud-access/access-levels-permissions) and your organization's security compliance guidelines.
