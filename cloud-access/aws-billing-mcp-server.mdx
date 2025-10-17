@@ -1,0 +1,101 @@
+---
+title: "AWS Billing and Cost Management MCP Server"
+description: "Guide for integrating AWS Billing and Cost Management MCP Server with OpenOps to automate FinOps workflows."
+icon: "💸"
+iconType: 1
+---
+
+## Overview
+
+The AWS Billing and Cost Management MCP Server enables OpenOps to ingest and automate workflows using detailed AWS billing and cost management data. Integrating this server allows FinOps teams to monitor, analyze, and optimize AWS expenditures via automated actions across the OpenOps platform.
+
+This guide explains the integration process, required permissions, installation steps, configuration, and verification for connecting the AWS Billing and Cost Management MCP Server to your OpenOps environment.
+
+## Prerequisites
+
+- OpenOps backend deployed and running
+- AWS account with sufficient permissions to access Cost Explorer and Billing APIs
+- Access to the AWS IAM Management Console
+- Docker (if deploying via container)
+
+## Installation and Setup
+
+### 1. Provision Required AWS IAM Role
+
+Create an IAM role with the following permissions for billing and cost management:
+- `ce:*` (Cost Explorer)
+- `cur:*` (Cost and Usage Reports)
+- `organizations:ListAccounts`
+- `s3:GetObject` (for CUR export)
+- `aws-portal:ViewBilling`
+- `cloudwatch:GetMetricData`
+
+Attach this role to the MCP Server’s execution environment.
+
+### 2. Deploy the MCP Server
+
+You can deploy the MCP Server as a Docker container or within your existing OpenOps deployment.
+
+```bash
+docker run -d \
+  --name openops-aws-billing-mcp \
+  -e AWS_REGION=us-west-2 \
+  -e AWS_ROLE_ARN=arn:aws:iam::<account-id>:role/<openops-billing-role> \
+  -e MCP_PORT=9002 \
+  openops/aws-billing-mcp:latest
+```
+
+Configure the following environment variables:
+- `AWS_REGION` – The AWS region for data retrieval
+- `AWS_ROLE_ARN` – The role ARN with permissions listed above
+- `MCP_PORT` – The port for the MCP server (default: 9002)
+
+If deploying with Docker Compose, add the following service definition:
+
+```yaml
+services:
+  aws-billing-mcp:
+    image: openops/aws-billing-mcp:latest
+    environment:
+      - AWS_REGION=us-west-2
+      - AWS_ROLE_ARN=arn:aws:iam::<account-id>:role/<openops-billing-role>
+      - MCP_PORT=9002
+    ports:
+      - "9002:9002"
+```
+
+### 3. Connect MCP Server to OpenOps Backend
+
+Update your OpenOps backend configuration to include the MCP Server endpoint. Example (in `openops-backend.env` or similar backend config file):
+
+```
+MCP_AWS_BILLING_URL=http://aws-billing-mcp:9002
+```
+
+Restart the OpenOps backend for changes to take effect.
+
+## Verification
+
+To verify the connection:
+1. Access the OpenOps dashboard
+2. Navigate to "Integrations" > "MCP Servers"
+3. Confirm "AWS Billing and Cost Management MCP" is listed as "Online"
+4. Trigger a billing data collection workflow, or review automation logs for recent cost data pulls.
+
+You can also check the MCP Server logs:
+
+```bash
+docker logs openops-aws-billing-mcp
+```
+
+## Troubleshooting
+
+- **Server not showing as Online**: Ensure network access between OpenOps backend and MCP container. Verify correct environment variable configuration and IAM role permissions.
+- **Data not updating**: Confirm the AWS billing APIs are enabled and update frequency matches your workflow schedule.
+- **Permission errors**: Review the assigned IAM role and ensure all required permissions are present.
+
+For additional troubleshooting help, consult the [system requirements](/getting-started/system-requirements) and [AWS CloudFormation role setup guide](/cloud-access/aws-cf-role-stack).
+
+---
+
+For more information on configuring cloud access and permissions, see the [Cloud Access](/cloud-access/multi-cloud) section. For workflow automation examples, see [Building Workflows](/workflow-management/building-workflows).

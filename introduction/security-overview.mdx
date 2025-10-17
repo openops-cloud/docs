@@ -1,0 +1,52 @@
+---
+title: "Security Overview"
+description: "Summary of OpenOps security principles, best practices, and implementation guidelines."
+icon: "🔐"
+iconType: 1
+---
+
+# Security Overview
+
+OpenOps is designed with a strong security foundation to help organizations safely automate financial operations and manage cloud costs. This page summarizes the main security principles and practices that guide how OpenOps is deployed, configured, and operated.
+
+## Core Security Principles
+
+- **Least Privilege**: OpenOps employs role-based access controls (RBAC) to ensure users and integrations receive only the permissions necessary to perform their tasks.
+- **Data Protection**: All sensitive data, including credentials and workflow variables, are encrypted in transit and at rest.
+- **Isolation**: Workflow execution environments are isolated to prevent accidental leaks or escalation across workflows or teams.
+- **Auditability**: Key user and system actions are logged for compliance, audit trails, and troubleshooting.
+
+## Security Features and Configuration
+
+### Authentication and Access Control
+- Supports granular user roles (see [Access Levels and Permissions](/cloud-access/access-levels-permissions))
+- Integrates with SSO providers (e.g., SAML, OAuth) where supported
+- Enforces strong password and session management policies
+
+### Secrets Management
+- Credentials, API tokens, and environment variables are stored securely and never exposed in logs or UI
+- Refer to [Environment Update Credentials](/snippets/env-update-credentials) for procedures to update or rotate sensitive data
+
+### Network and Deployment Security
+- Supports deployment on isolated VPC/cloud networks or local infrastructure
+- All control-plane communications use HTTPS
+- For cloud deployments, see [Cloud Access](/cloud-access/multi-cloud) for provider-specific role and network configuration guidance
+
+### Auditing and Monitoring
+- Activity logs are available for key operations, configuration changes, and user actions
+- Supports export of logs for integration with SIEM or log analytics tools (consult your deployment's Monitoring section)
+
+## Security Maintenance
+
+- Keep OpenOps installations up to date with the latest security patches (see [Updating OpenOps](/getting-started/updating-openops))
+- Periodically review access privileges and audit logs for unusual activity
+- Follow [system requirements](/getting-started/system-requirements) to maintain secure baseline configurations
+
+---
+
+For detailed security guides and troubleshooting:
+- [Access Levels and Permissions](/cloud-access/access-levels-permissions)
+- [Environment Update Credentials](/snippets/env-update-credentials)
+- [Updating OpenOps](/getting-started/updating-openops)
+
+If you detect a potential security vulnerability, follow responsible disclosure practices and contact your OpenOps administrator.
