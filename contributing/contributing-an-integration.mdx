@@ -68,7 +68,7 @@ export const youtrack = createBlock({
 
 Scaffolding generates a placeholder authentication implementation in a separate file. It uses a `CustomAuth()` helper function from the OpenOps block framework. The function takes several parameters, of which the most important ones are:
 * `props`: an object that defines the inputs necessary to authenticate with the service provider that the block integrates with.
-* `validate`: a function for frontend validation of the inputs provided in `props`.
+* `validate`: a function for optional validation of the inputs provided in `props`.
 
 ```ts
 import { BlockAuth, Property } from '@openops/blocks-framework';
@@ -270,17 +270,149 @@ OpenOps may alter the spelling of your block's display name when running scaffol
 
 Note that OpenOps also generates a stub logo URL at the static.openops.com domain, which doesn't exist. To see your product's logo in the OpenOps UI during development, consider replacing the stub logo URL with a URL on a server that you control. For example, for YouTrack, the https://static.openops.com/blocks/youtrack.png stub URL can be replaced with a [live YouTrack logo URL](https://resources.jetbrains.com/storage/products/company/brand/logos/YouTrack_icon.png). Alternatively, you can keep the stub as is and ask OpenOps to upload your logo when you open a PR.
 
+Even this basic scaffolding introduces the new block to the OpenOps UI, even though the block doesn't do much yet. Here's what you can see at this point if you run `npm run start` and open the OpenOps frontend at http://localhost:4200/ in your browser:
+
+![The scaffolded block in OpenOps UI](/images/contributing/youtrack-in-the-ui.png)
+
 ## Implementing authentication (and getting a connection for free)
 
-Now that you have a block, you could get right to building its actions. However, unless your block interacts with a publicly accessible API, you need to provide the user with a way to authenticate with the API that your block is built upon.
+Now that you have a block, you could get right to building its actions. However, unless your block interacts with a publicly accessible API, you need to provide the user with a way to authenticate with the API that your block is built upon. How you implement authentication defines what the user will see when they try to create a new [connection](/cloud-access/access-levels-permissions) for your block.
 
-If you open your OpenOps instance now and try to create a new connection, you'll see that YouTrack is already listed as an available connection type.
+Scaffolding generated a placeholder authentication implementation and referenced it from the YouTrack block's entry point. What's left to do is implement the actual authentication logic in the `src/lib/auth.ts` file. As a reminder, here's what the scaffolded file initially looked like:
+
+```ts
+import { BlockAuth, Property } from '@openops/blocks-framework';
+
+export const youtrackAuth = BlockAuth.CustomAuth({
+  authProviderKey: 'youtrack',
+  authProviderDisplayName: 'Youtrack',
+  authProviderLogoUrl: 'https://static.openops.com/blocks/youtrack.png',
+  description: 'Configure your Youtrack connection',
+  required: true,
+  props: {
+    apiKey: Property.SecretText({
+      displayName: 'API Key',
+      required: true,
+    }),
+    baseUrl: Property.ShortText({
+      displayName: 'Base URL',
+      description: 'The base URL for Youtrack API',
+      required: true,
+    }),
+  },
+  validate: async ({ auth }) => {
+    // Add validation logic here
+    return { valid: true };
+  },
+});
+```
+
+As you can see, this block uses a `CustomAuth()` helper function to define YouTrack authentication. There are other [types of authentication](/contributing/authentication/), but `CustomAuth()` works best for YouTrack because apart from an API key, the user needs to specify a base URL as YouTrack can be cloud-hosted by JetBrains, with a base URL different for each cloud instance, or self-hosted by customers.
+
+The values of `authProviderKey`, `authProviderDisplayName`, `authProviderLogoUrl` and `required` properties are just fine as they are. What needs to be changed are the values of `props`, `validate`, and `description`. Let's start with `props`.
+
+### Defining connection properties
+
+`props` defines the inputs necessary to authenticate with the service provider that the block integrates with. Each of these inputs is an OpenOps UI component that can be a regular or a masked input field, a checkbox, a dropdown, and more. To learn more about the component library, see [Activepieces documentation](https://www.activepieces.com/docs/developers/piece-reference/properties). This component library is not only used in defining connections, but also in actions that a block exposes.
+
+The first property, `apiKey`, is for the user to provide a YouTrack API key a.k.a. a permanent token. The scaffolded version of this property uses a `SecretText` property type, which is a masked input field, and it's just what we need to this kind of data. Let's expand the scaffolded version of the property to include a description:
+
+```ts
+apiKey: Property.SecretText({
+  required: true,
+  displayName: 'API key',
+  description:
+    'The API key (permanent token) for your YouTrack installation.',
+})
+````
+
+The second property, `apiUrl`, is for the user to provide a base URL for their YouTrack instance. This property is a regular input field. The scaffolded version is a good start, but we can improve it by adding a better description, providing a default value, and using a predefined validation rule for URLs:
+
+```ts
+apiUrl: Property.ShortText({
+  displayName: 'Base URL',
+  description:
+    'The base URL of your YouTrack installation without a trailing slash.',
+  required: true,
+  validators: [Validators.url],
+  defaultValue: 'https://your-instance.myjetbrains.com/youtrack',
+})
+```
+
+Note that for this to compile, we need to extend the import from the `@openops/blocks-framework` package to include the `Validators` object:
+
+```ts
+import { BlockAuth, Property, Validators } from '@openops/blocks-framework';
+```
+
+`Validators.url` is not the only predefined validation rule. OpenOps provides an array of ready-to-use validation rules for value ranges, dates, emails, phone numbers, image formats, and more.
+
+### Adding custom validation
+
+### Adding a Markdown description
+
+### The resulting authentication code and connection UI
+
+The result:
+
+```ts
+import { BlockAuth, Property, Validators } from '@openops/blocks-framework';
+
+const markdown = `
+To get your YouTrack API key:
+1. Go to your YouTrack installation.
+2. In the navigation menu, click your user profile icon, then click **Profile**.
+3. Open the **Account Security** tab.
+4. Under **Tokens**, click **New token**.
+5. Give the new token a name and select **YouTrack** in the list of scopes.
+6. Click **Create**.
+7. Copy the token to your clipboard.`;
+
+export const youtrackAuth = BlockAuth.CustomAuth({
+  required: true,
+  authProviderKey: 'youtrack',
+  authProviderDisplayName: 'YouTrack',
+  authProviderLogoUrl:
+    'https://resources.jetbrains.com/storage/products/company/brand/logos/YouTrack_icon.png',
+  description: markdown,
+  props: {
+    apiKey: Property.SecretText({
+      required: true,
+      displayName: 'API key',
+      description:
+        'The API key (permanent token) for your YouTrack installation.',
+    }),
+    apiUrl: Property.ShortText({
+      displayName: 'Base URL',
+      description:
+        'The base URL of your YouTrack installation without a trailing slash.',
+      required: true,
+      validators: [Validators.url],
+      defaultValue: 'https://your-instance.myjetbrains.com/youtrack',
+    }),
+  },
+  validate: async ({ auth }) => {
+    if (auth.apiUrl.endsWith('/')) {
+      return {
+        valid: false,
+        error: 'Base URL must not end with a slash',
+      };
+    } else {
+      return { valid: true };
+    }
+  },
+});
+
+export interface YouTrackAuth {
+  apiUrl: string;
+  apiKey: string;
+}
+```
+
 
 ![Your action in OpenOps UI](/images/contributing/youtrack-connection-type.png)
 
-Theres no additional effort required to enable configuring connections: as soon as you have an authentication it enables itself as soon as an auth configuration is present.
 
-That's because scaffolding generated a placeholder authentication implementation. You'll now need to implement the actual authentication logic in the `src/lib/auth.ts` file.
 
 ## Adding a simple action
 
