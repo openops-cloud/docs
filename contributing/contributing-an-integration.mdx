@@ -295,3 +295,18 @@ OpenOps may alter the spelling of your block's display name when running scaffol
 
 Note that OpenOps also generates a stub logo URL at the static.openops.com domain, which doesn't exist. To see your product's logo in the OpenOps UI during development, consider replacing the stub logo URL with a URL on a server that you control. For example, for YouTrack, the https://static.openops.com/blocks/youtrack.png stub URL can be replaced with a [live YouTrack logo URL](https://resources.jetbrains.com/storage/products/company/brand/logos/YouTrack_icon.png). Alternatively, you can keep the stub as is and ask OpenOps to upload your logo when you open a PR.
 
+## Implementing authentication (and getting a connection for free)
+
+Now that you have a block, you could get right to building its actions. However, unless your block interacts with a publicly accessible API, you need to provide the user with a way to authenticate with the API that your block is built upon.
+
+If you open your OpenOps instance now and try to create a new connection, you'll see that YouTrack is already listed as an available connection type.
+
+![Your action in OpenOps UI](/images/contributing/youtrack-connection-type.png)
+
+There’s no additional effort required to enable configuring connections: as soon as you have an authentication it enables itself as soon as an auth configuration is present.
+
+That's because scaffolding generated a placeholder authentication implementation. You'll now need to implement the actual authentication logic in the `src/lib/auth.ts` file.
+
+## Adding a simple action
+
+## Adding an action with properties
