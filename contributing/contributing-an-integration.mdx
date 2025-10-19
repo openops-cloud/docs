@@ -97,7 +97,7 @@ export const youtrackAuth = BlockAuth.CustomAuth({
 ```
   </Tab>
   <Tab title="test/index.test.ts">
-Text
+TODO
 ```ts
 import { youtrack } from '../src/index';
 
@@ -125,7 +125,7 @@ describe('block declaration tests', () => {
 ```
   </Tab>
   <Tab title=".eslintrc.json">
-Text
+TODO
 ```json
 {
   "extends": ["../../../.eslintrc.json"],
@@ -148,7 +148,7 @@ Text
 ```
   </Tab>
   <Tab title="jest.config.ts">
-Text
+TODO
 ```ts
 export default {
   displayName: 'blocks-youtrack',
@@ -164,7 +164,7 @@ export default {
 ```
   </Tab>
   <Tab title="package.json">
-Text
+TODO
 ```json
 {
   "name": "@openops/block-youtrack",
@@ -173,7 +173,7 @@ Text
 ```
   </Tab>
   <Tab title="project.json">
-Text
+TODO
 ```json
 {
   "name": "blocks-youtrack",
@@ -211,7 +211,7 @@ Text
 ```
   </Tab>
   <Tab title="README.md">
-Text
+TODO
 ```md
 # blocks-youtrack
 
@@ -227,7 +227,7 @@ Run `nx test blocks-youtrack` to execute the unit tests via [Jest](https://jestj
 ```
   </Tab>
   <Tab title="tsconfig.json">
-Text
+TODO
 ```json
 {
   "extends": "../../../tsconfig.base.json",
@@ -254,7 +254,7 @@ Text
 ```
   </Tab>
   <Tab title="tsconfig.lib.json">
-Text
+TODO
 ```json
 {
   "extends": "./tsconfig.json",
@@ -270,45 +270,28 @@ Text
 ```
   </Tab>
   <Tab title="tsconfig.spec.json">
-Text
-```json
-{
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "outDir": "../../../dist/out-tsc",
-    "module": "commonjs",
-    "types": ["jest", "node"]
-  },
-  "include": [
-    "jest.config.ts",
-    "src/**/*.test.ts",
-    "src/**/*.spec.ts",
-    "src/**/*.d.ts"
-  ]
-}
-```
+    TODO
+
+    ```json
+    {
+      "extends": "./tsconfig.json",
+      "compilerOptions": {
+        "outDir": "../../../dist/out-tsc",
+        "module": "commonjs",
+        "types": ["jest", "node"]
+      },
+      "include": [
+        "jest.config.ts",
+        "src/**/*.test.ts",
+        "src/**/*.spec.ts",
+        "src/**/*.d.ts"
+      ]
+    }
+    ```
   </Tab>
 </Tabs>
 
+OpenOps may alter the spelling of your block's display name when running scaffolding, so you may want to review this and run search and replace if needed. With YouTrack, it didn't use the proper casing for the product name, using "Youtrack" instead of "YouTrack".
 
-Since you've chosen to create a block with a secret authentication type, the generated code includes the `src/lib/auth.ts` file with placeholder authentication logic:
-
-```ts
-import { BlockAuth } from '@openops/blocks-framework';
-
-export const youtrackAuth = BlockAuth.SecretAuth({
-  displayName: 'API Key',
-  required: true,
-  authProviderKey: 'youtrack',
-  authProviderDisplayName: 'Youtrack',
-  authProviderLogoUrl: 'https://static.openops.com/blocks/youtrack.png',
-  description: '',
-});
-```
-
-## Fix the product name and logo
-
-When generating, OpenOps didn't use the proper casing for the product name, and now is a good time for a case-sensitive search of "Youtrack" and replacing it with "YouTrack" in the generated code.
-
-It has also generated logo URLs at static.openops.com that don't exist. Let's replace https://static.openops.com/blocks/youtrack.png with a live YouTrack logo URL, which is https://resources.jetbrains.com/storage/products/company/brand/logos/YouTrack_icon.png
+Note that OpenOps also generates a stub logo URL at the static.openops.com domain, which doesn't exist. To see your product's logo in the OpenOps UI during development, consider replacing the stub logo URL with a URL on a server that you control. For example, for YouTrack, the https://static.openops.com/blocks/youtrack.png stub URL can be replaced with a [live YouTrack logo URL](https://resources.jetbrains.com/storage/products/company/brand/logos/YouTrack_icon.png). Alternatively, you can keep the stub as is and ask OpenOps to upload your logo when you open a PR.
 
