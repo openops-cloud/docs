@@ -25,15 +25,15 @@ For a YouTrack integration, you would supply the following information to the CL
 3. `Authentication type`: select `Custom (Custom properties)`.
 4. `Create opinionated folder structure with stubs for actions, tests, and common service layer`: select `Yes - Create full folder structure with stubs`.
 
-OpenOps will generate a full project template inside `packages/blocks/youtrack/`, including `package.json`, TypeScript configuration files, ESLint and Jest configuration files, an entry point for the block at `src/index.ts` and a starter test file at `test/index.test.ts`.
+OpenOps generates a full project template inside `packages/blocks/youtrack/`, including `package.json`, TypeScript configuration files, ESLint and Jest configuration files, an entry point for the block at `src/index.ts` and a starter test file at `test/index.test.ts`.
 
-Browse through the tabs below to see the generated files and read about their purpose.
+Let's take a closer look at the generated files.
 
-<Tabs>
-  <Tab title="src/index.ts">
-This is the entry point to the new block. It uses the `createBlock()` function from the OpenOps block framework to create a new block. This function takes a number of arguments, but the most important ones are:
-* `auth`: authentication implementation for the block.
-* `actions`: an array that contains the actions that the block exposes.
+### src/index.ts
+
+`src/index.ts`  is the entry point to the new block. It uses the `createBlock()` function from the OpenOps block framework to create a new block. This function takes a number of arguments, of which the most important ones are:
+* `auth`: authentication implementation for the block. It defines which credentials the user needs to specify in your block's [connection](/cloud-access/access-levels-permissions) properties to authenticate with the API that the block integrates with.
+* `actions`: an array that contains the actions that the block exposes. The scaffolded version includes a predefined action that allows making a custom API call to the block's API.
 
 ```ts
 import { createCustomApiCallAction } from '@openops/blocks-common';
@@ -63,11 +63,12 @@ export const youtrack = createBlock({
   triggers: [],
 });
 ```
-  </Tab>
-  <Tab title="src/lib/auth.ts">
+
+### src/lib/auth.ts
+
 Scaffolding generates a placeholder authentication implementation in a separate file. It uses a `CustomAuth()` helper function from the OpenOps block framework. The function takes several parameters, of which the most important ones are:
 * `props`: an object that defines the inputs necessary to authenticate with the service provider that the block integrates with.
-* `validate`: a function that validates the inputs provied in `props`.
+* `validate`: a function for frontend validation of the inputs provided in `props`.
 
 ```ts
 import { BlockAuth, Property } from '@openops/blocks-framework';
@@ -95,85 +96,11 @@ export const youtrackAuth = BlockAuth.CustomAuth({
   },
 });
 ```
-  </Tab>
-  <Tab title="test/index.test.ts">
-TODO
-```ts
-import { youtrack } from '../src/index';
 
-describe('block declaration tests', () => {
-  test('should return block with correct authentication', () => {
-    expect(youtrack.auth).toMatchObject({
-      type: 'CUSTOM_AUTH',
-      required: true,
-      authProviderKey: 'youtrack',
-      authProviderDisplayName: 'Youtrack',
-      authProviderLogoUrl: 'https://static.openops.com/blocks/youtrack.png',
-    });
-  });
+### Project files
 
-  test('should return block with correct number of actions', () => {
-    expect(Object.keys(youtrack.actions()).length).toBe(1);
-    expect(youtrack.actions()).toMatchObject({
-      custom_api_call: {
-        name: 'custom_api_call',
-        requireAuth: true,
-      },
-    });
-  });
-});
-```
-  </Tab>
-  <Tab title=".eslintrc.json">
-TODO
-```json
-{
-  "extends": ["../../../.eslintrc.json"],
-  "ignorePatterns": ["!**/*"],
-  "overrides": [
-    {
-      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "rules": {}
-    },
-    {
-      "files": ["*.ts", "*.tsx"],
-      "rules": {}
-    },
-    {
-      "files": ["*.js", "*.jsx"],
-      "rules": {}
-    }
-  ]
-}
-```
-  </Tab>
-  <Tab title="jest.config.ts">
-TODO
-```ts
-export default {
-  displayName: 'blocks-youtrack',
-  preset: '../../../jest.preset.js',
-  setupFiles: ['../../../jest.env.js'],
-  testEnvironment: 'node',
-  transform: {
-    '^.+\\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
-  },
-  moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../../coverage/packages/blocks/youtrack',
-};
-```
-  </Tab>
-  <Tab title="package.json">
-TODO
-```json
-{
-  "name": "@openops/block-youtrack",
-  "version": "0.0.1"
-}
-```
-  </Tab>
-  <Tab title="project.json">
-TODO
+OpenOps uses [Nx](https://nx.dev/) as its build system, and `project.json` is the Nx project file that defines how the new block is built, tested, and linted in an Nx workspace. It sets the source root, output path, TypeScript config, package entry points, and assets, and declares executors for build (`@nx/js:tsc`), test (`@nx/jest:jest`), and lint (`@nx/eslint:lint`).
+
 ```json
 {
   "name": "blocks-youtrack",
@@ -209,25 +136,68 @@ TODO
   }
 }
 ```
-  </Tab>
-  <Tab title="README.md">
-TODO
-```md
-# blocks-youtrack
 
-This library was generated with [Nx](https://nx.dev).
+`package.json` is a minimal metadata file declaring the block's name and version within the Nx workspace. Unlike typical npm packages and as opposed to the Activepieces extension practices, this file isn't meant for publication to the npm registry. Instead, it mainly helps Nx identify the project and marks the block as a versioned unit inside the larger repository.
 
-## Building
-
-Run `nx build blocks-youtrack` to build the library.
-
-## Running unit tests
-
-Run `nx test blocks-youtrack` to execute the unit tests via [Jest](https://jestjs.io).
+```json
+{
+  "name": "@openops/block-youtrack",
+  "version": "0.0.1"
+}
 ```
-  </Tab>
-  <Tab title="tsconfig.json">
-TODO
+
+### Test files
+
+`test/index.test.ts` is a stub Jest test fixture that includes a few sample tests for the block. Tests in this fixture can be executed by running `nx test blocks-youtrack`.
+
+```ts
+import { youtrack } from '../src/index';
+
+describe('block declaration tests', () => {
+  test('should return block with correct authentication', () => {
+    expect(youtrack.auth).toMatchObject({
+      type: 'CUSTOM_AUTH',
+      required: true,
+      authProviderKey: 'youtrack',
+      authProviderDisplayName: 'Youtrack',
+      authProviderLogoUrl: 'https://static.openops.com/blocks/youtrack.png',
+    });
+  });
+
+  test('should return block with correct number of actions', () => {
+    expect(Object.keys(youtrack.actions()).length).toBe(1);
+    expect(youtrack.actions()).toMatchObject({
+      custom_api_call: {
+        name: 'custom_api_call',
+        requireAuth: true,
+      },
+    });
+  });
+});
+```
+
+There's also a Jest configuration file, `jest.config.ts`, that inherits shared settings from OpenOps' Jest preset, references a TypeScript config file, defines recognized file extensions and specifies where to store code coverage reports:
+
+```ts
+export default {
+  displayName: 'blocks-youtrack',
+  preset: '../../../jest.preset.js',
+  setupFiles: ['../../../jest.env.js'],
+  testEnvironment: 'node',
+  transform: {
+    '^.+\\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
+  },
+  moduleFileExtensions: ['ts', 'js', 'html'],
+  coverageDirectory: '../../../coverage/packages/blocks/youtrack',
+};
+```
+
+### TypeScript configuration files
+
+Scaffolding generates three TypeScript configuration files: `tsconfig.json`, `tsconfig.lib.json`, and `tsconfig.spec.json`
+
+`tsconfig.json` is the base config for the block. It extends the workspace's root `tsconfig.base.json` and enforces strict compiler options but doesn't include any source files directly. Instead, it references the other two config files, serving as an entry point for both:
+
 ```json
 {
   "extends": "../../../tsconfig.base.json",
@@ -252,9 +222,9 @@ TODO
   ]
 }
 ```
-  </Tab>
-  <Tab title="tsconfig.lib.json">
-TODO
+
+`tsconfig.lib.json` applies to the block's source code. It outputs compiled files to `dist/out-tsc`, generates type declarations, and includes only non-test TypeScript files under `src/`:
+
 ```json
 {
   "extends": "./tsconfig.json",
@@ -268,28 +238,33 @@ TODO
   "include": ["src/**/*.ts"]
 }
 ```
-  </Tab>
-  <Tab title="tsconfig.spec.json">
-    TODO
 
-    ```json
-    {
-      "extends": "./tsconfig.json",
-      "compilerOptions": {
-        "outDir": "../../../dist/out-tsc",
-        "module": "commonjs",
-        "types": ["jest", "node"]
-      },
-      "include": [
-        "jest.config.ts",
-        "src/**/*.test.ts",
-        "src/**/*.spec.ts",
-        "src/**/*.d.ts"
-      ]
-    }
-    ```
-  </Tab>
-</Tabs>
+`tsconfig.spec.json` is tailored for testing. It includes test and declaration files and sets up Jest typings:
+
+```json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../../dist/out-tsc",
+    "module": "commonjs",
+    "types": ["jest", "node"]
+  },
+  "include": [
+    "jest.config.ts",
+    "src/**/*.test.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts"
+  ]
+}
+```
+
+### Other files
+
+`.eslintrc.json` defines JavaScript and TypeScript linting behavior for the block, extending the OpenOps repository's root ESLint configuration. The `overrides` section provides placeholders for block-specific linting rules in case you feel like introducing them.
+
+`README.md` stubs out documentation for the block.
+
+## Post-scaffolding cleanup
 
 OpenOps may alter the spelling of your block's display name when running scaffolding, so you may want to review this and run search and replace if needed. With YouTrack, it didn't use the proper casing for the product name, using "Youtrack" instead of "YouTrack".
 
@@ -303,7 +278,7 @@ If you open your OpenOps instance now and try to create a new connection, you'll
 
 ![Your action in OpenOps UI](/images/contributing/youtrack-connection-type.png)
 
-There’s no additional effort required to enable configuring connections: as soon as you have an authentication it enables itself as soon as an auth configuration is present.
+Theres no additional effort required to enable configuring connections: as soon as you have an authentication it enables itself as soon as an auth configuration is present.
 
 That's because scaffolding generated a placeholder authentication implementation. You'll now need to implement the actual authentication logic in the `src/lib/auth.ts` file.
 
