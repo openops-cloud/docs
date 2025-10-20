@@ -1,20 +1,20 @@
 ---
 title: 'Authentication'
-description: 'Block authentication methods that OpenOps supports'
+description: 'Block authentication methods supported by OpenOps'
 icon: 'code'
 ---
 
 OpenOps supports several forms of authentication for blocks: **basic**, **secret-based**, **custom**, and **OAuth2**.
 
-Block authentication defines which credentials the user must enter to log in to the API that your block integrates with. As soon as you implement authentication for your block, the user can create a [connection](/cloud-access/access-levels-permissions). Apart from implementing authentication, there's no additional effort required to enable the connection UI.
+Block authentication defines which credentials the user must enter to log in to the API that your block integrates with. Once authentication is implemented for your block, the user can create a [connection](/cloud-access/access-levels-permissions). Apart from implementing authentication, no additional setup is required to enable the connection UI.
 
-Block authentication must be specified using the `auth` parameter in the `createBlock` function in your block definition, as well as in all `createAction` functions in your action definitions.
+Authentication for a block must be defined using the `auth` parameter in the `createBlock` function within your block definition, as well as in all `createAction` functions within your action definitions.
 
-One type of authentication is allowed per block.
+Each block can use only one authentication type.
 
 ## Basic authentication
 
-This authentication type collects a username and password as two separate fields. It can also be used to pass an API key and an API secret or similar pairs of public/private credentials, in which case they are sent in the HTTP `Authorization: Basic` header.
+This authentication type collects a username and password as two separate fields. It can also be used to pass an API key and an API secret, or similar pairs of public/private credentials, in which case they are sent in the HTTP `Authorization: Basic` header.
 
 ```typescript
 BlockAuth.BasicAuth({
@@ -38,11 +38,11 @@ The connection UI for this authentication type requests two credentials, typical
 
 ![Connection UI - basic authentication](/images/contributing/connection-basic.png)
 
-Basic authentication is used by [some blocks](https://github.com/search?q=repo%3Aactivepieces%2Factivepieces%20BlockAuth.BasicAuth&type=code) in the upstream Activepieces repository that OpenOps is a fork of, but is not currently used in any OpenOps blocks.
+Basic authentication is used by [some blocks](https://github.com/search?q=repo%3Aactivepieces%2Factivepieces%20BlockAuth.BasicAuth&type=code) in the upstream Activepieces repository that OpenOps is forked from, but is not currently used in any OpenOps blocks.
 
 ## Secret-based authentication
 
-Use secret-based authentication when an API key is all that is needed to authenticate with a service you're integrating with, and the service's base URL is always the same.
+Use secret-based authentication when an API key is all that's required to authenticate with a service you're integrating with, and the service's base URL is always the same.
 
 This authentication type is used by many OpenOps blocks, including [CloudHealth](https://github.com/openops-cloud/openops/blob/main/packages/blocks/cloudhealth/src/lib/auth.ts), [CloudZero](https://github.com/openops-cloud/openops/blob/main/packages/blocks/cloudzero/src/lib/auth.ts), [Flexera](https://github.com/openops-cloud/openops/blob/main/packages/blocks/flexera/src/auth.ts), [Linear](https://github.com/openops-cloud/openops/blob/main/packages/blocks/linear/src/index.ts), [Monday.com](https://github.com/openops-cloud/openops/blob/main/packages/blocks/monday/src/index.ts), [nOps](https://github.com/openops-cloud/openops/blob/main/packages/blocks/nops/src/lib/auth.ts), and [Vantage](https://github.com/openops-cloud/openops/blob/main/packages/blocks/vantage/src/lib/auth.ts).
 
@@ -75,9 +75,9 @@ The connection UI for this authentication type only requests an API key:
 
 ## Custom authentication
 
-This type of authentication allows collecting multiple properties, such as a base URL and access token. Use this type when you need to the user to enter more than just an API key.
+This type of authentication allows collecting multiple properties, such as a base URL and an access token. Use this type when you need the user to enter more than just an API key.
 
-In OpenOps, this is so far the most used authentication type, used by blocks such as [AWS](https://github.com/openops-cloud/openops/blob/950ce3eaecf0d5f991f5828ab82f0cfc91bfe01b/packages/openops/src/lib/aws/auth.ts#L169), [Azure](https://github.com/openops-cloud/openops/blob/main/packages/openops/src/lib/azure/auth.ts), [Google Cloud](https://github.com/openops-cloud/openops/blob/main/packages/openops/src/lib/google-cloud/auth.ts), [Zendesk](https://github.com/openops-cloud/openops/blob/main/packages/blocks/zendesk/src/index.ts), [Ternary](https://github.com/openops-cloud/openops/blob/main/packages/blocks/ternary/src/lib/common/auth.ts), [ServiceNow](https://github.com/openops-cloud/openops/blob/main/packages/blocks/servicenow/src/lib/auth.ts), [Kion](https://github.com/openops-cloud/openops/blob/main/packages/blocks/kion/src/lib/auth.ts), [Flexera One](https://github.com/openops-cloud/openops/blob/main/packages/blocks/flexera-one/src/lib/auth.ts), [Databricks](https://github.com/openops-cloud/openops/blob/main/packages/blocks/databricks/src/lib/common/auth.ts), and [CloudFix](https://github.com/openops-cloud/openops/blob/main/packages/blocks/cloudfix/src/lib/common/auth.ts).
+In OpenOps, this is currently the most commonly used authentication type. It's used by blocks such as [AWS](https://github.com/openops-cloud/openops/blob/950ce3eaecf0d5f991f5828ab82f0cfc91bfe01b/packages/openops/src/lib/aws/auth.ts#L169), [Azure](https://github.com/openops-cloud/openops/blob/main/packages/openops/src/lib/azure/auth.ts), [Google Cloud](https://github.com/openops-cloud/openops/blob/main/packages/openops/src/lib/google-cloud/auth.ts), [Zendesk](https://github.com/openops-cloud/openops/blob/main/packages/blocks/zendesk/src/index.ts), [Ternary](https://github.com/openops-cloud/openops/blob/main/packages/blocks/ternary/src/lib/common/auth.ts), [ServiceNow](https://github.com/openops-cloud/openops/blob/main/packages/blocks/servicenow/src/lib/auth.ts), [Kion](https://github.com/openops-cloud/openops/blob/main/packages/blocks/kion/src/lib/auth.ts), [Flexera One](https://github.com/openops-cloud/openops/blob/main/packages/blocks/flexera-one/src/lib/auth.ts), [Databricks](https://github.com/openops-cloud/openops/blob/main/packages/blocks/databricks/src/lib/common/auth.ts), and [CloudFix](https://github.com/openops-cloud/openops/blob/main/packages/blocks/cloudfix/src/lib/common/auth.ts).
 
 Using the custom authentication type is demonstrated in [Contributing an Integration](/contributing/contributing-an-integration/), a guide that explains how to create a fully functional integration block.
 
@@ -120,9 +120,9 @@ The connection UI for this authentication type requests whatever inputs you defi
 
 ## OAuth2
 
-This authentication type allows authenticating with an OAuth2 provider either on behalf of a specific user (authorization code grant) or on behalf of a service (client credentials grant).
+This authentication type allows logging in with an OAuth2 provider either on behalf of a specific user (authorization code grant) or on behalf of a service (client credentials grant).
 
-It is currently used by some OpenOps blocks, including [GitHub](https://github.com/openops-cloud/openops/blob/main/packages/blocks/github/src/lib/common/auth.ts), [Slack](https://github.com/openops-cloud/openops/blob/main/packages/blocks/slack/src/lib/common/authentication.ts), [Microsoft Teams](https://github.com/openops-cloud/openops/blob/main/packages/blocks/microsoft-teams/src/lib/common/microsoft-teams-auth.ts), and [Microsoft Outlook](https://github.com/openops-cloud/openops/blob/main/packages/blocks/microsoft-teams/src/lib/common/microsoft-teams-auth.ts).
+It's currently used by some OpenOps blocks, including [GitHub](https://github.com/openops-cloud/openops/blob/main/packages/blocks/github/src/lib/common/auth.ts), [Slack](https://github.com/openops-cloud/openops/blob/main/packages/blocks/slack/src/lib/common/authentication.ts), [Microsoft Teams](https://github.com/openops-cloud/openops/blob/main/packages/blocks/microsoft-teams/src/lib/common/microsoft-teams-auth.ts), and [Microsoft Outlook](https://github.com/openops-cloud/openops/blob/main/packages/blocks/microsoft-teams/src/lib/common/microsoft-teams-auth.ts).
 
 ```typescript
 BlockAuth.OAuth2({
@@ -142,10 +142,10 @@ BlockAuth.OAuth2({
 })
 ```
 
-In the connection UI, the user can either click the **Connect** button to log in to the OAuth2 provider with their own credentials, or enter a client ID and a client secret to authenticate a service.
+In the connection UI, the user can either click **Connect** to log in to the OAuth2 provider with their own credentials, or enter a client ID and client secret to authenticate a service.
 
 ![Connection UI - OAuth2 authentication](/images/contributing/connection-oauth2.png)
 
 ## No authentication
 
-If your block does not require authentication, you should declare this explicitly by assigning `BlockAuth.None()` to the `auth` property.
+If your block doesn't require authentication, declare this explicitly by assigning `BlockAuth.None()` to the `auth` property.
