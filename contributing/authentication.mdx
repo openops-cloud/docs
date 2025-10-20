@@ -4,7 +4,131 @@ description: 'Authentication methods that OpenOps supports'
 icon: 'code'
 ---
 
-TODO
-Based on:
-* https://www.activepieces.com/docs/developers/building-pieces/piece-authentication
-* https://www.activepieces.com/docs/developers/piece-reference/authentication
+OpenOps supports [several forms of authentication](https://github.com/openops-cloud/openops/blob/main/packages/blocks/framework/src/lib/property/authentication/index.ts) for blocks:
+* **Secret-based authentication** (`SecretAuth`). Enough when the base URL is always the same, and only an API key is required. Used by CloudHealth, CloudZero, Flexera (this one is interesting: connection has more fields than just an API key), Linear, Monday.com, nOps, Vantage
+* **OAuth2 authentication** (`OAuth2`). Used by: GitHub, Slack, MS Teams, MS Outlook
+* **Basic authentication** (`BasicAuth`). Available but unused so far
+* **Custom authentication** (`CustomAuth`). Most used so far. Use when only an API key is not sufficient to define the connection. Some of the users; AWS, Azure, Google Cloud, Zendesk, Ternary, ServiceNow, Kion, Flexera, Databricks, CloudFix
+* **No authentication** (`None`). Auth not required.
+
+
+
+
+Block authentication must be defined as the `auth` parameter in the `createBlock` function in your block definition, as well as in all `createAction` functions in your action definitions.
+
+Block authentication defines which credentials the user must enter to log in to the API that your block integrates with. As soon as you implement authentication for your block, the user can create a [connection](/cloud-access/access-levels-permissions) for your block. Apart from implementing authentication, there's no additional effort required to enable the connection UI.
+
+One type of authentication is allowed per block. TODO is OAuth an exception?
+
+## Secret-based authentication
+
+This authentication collects sensitive information, such as passwords or API keys. It is displayed as a masked input field.
+
+```typescript
+PieceAuth.SecretText({
+    displayName: 'API Key',
+    description: 'Enter your API key',
+    required: true,
+    // Optional Validation
+    validate: async ({auth}) => {
+        if(auth.startsWith('sk_')){
+            return {
+                valid: true,
+            }
+        }
+        return {
+            valid: false,
+            error: 'Invalid Api Key'
+        }
+    }
+})
+```
+
+## Basic authentication
+
+This authentication collects a username and password as separate fields.
+
+```typescript
+PieceAuth.BasicAuth({
+    displayName: 'Credentials',
+    description: 'Enter your username and password',
+    required: true,
+    username: {
+        displayName: 'Username',
+        description: 'Enter your username',
+    },
+    password: {
+        displayName: 'Password',
+        description: 'Enter your password',
+    },
+    // Optional Validation
+    validate: async ({auth}) => {
+        if(auth){
+            return {
+                valid: true,
+            }
+        }
+        return {
+            valid: false,
+            error: 'Invalid Api Key'
+        }
+    }
+})
+```
+
+## Custom authentication
+
+This authentication allows for custom authentication by collecting specific properties, such as a base URL and access token.
+
+```typescript
+PieceAuth.CustomAuth({
+    displayName: 'Custom Authentication',
+    description: 'Enter custom authentication details',
+    props: {
+        base_url: Property.ShortText({
+            displayName: 'Base URL',
+            description: 'Enter the base URL',
+            required: true,
+        }),
+        access_token: PieceAuth.SecretText({
+            displayName: 'Access Token',
+            description: 'Enter the access token',
+            required: true
+        })
+    },
+    // Optional Validation
+    validate: async ({auth}) => {
+        if(auth){
+            return {
+                valid: true,
+            }
+        }
+        return {
+            valid: false,
+            error: 'Invalid Api Key'
+        }
+    },
+    required: true
+})
+```
+
+## OAuth2
+
+This authentication collects OAuth2 authentication details, including the authentication URL, token URL, and scope.
+
+```typescript
+PieceAuth.OAuth2({
+    displayName: 'OAuth2 Authentication',
+    grantType: OAuth2GrantType.AUTHORIZATION_CODE,
+    required: true,
+    authUrl: 'https://example.com/auth',
+    tokenUrl: 'https://example.com/token',
+    scope: ['read', 'write']
+})
+```
+
+Please note that `OAuth2GrantType.CLIENT_CREDENTIALS` is also supported for service-based authentication.
+
+## No authentication
+
+If your block does not require authentication, you should declare this explicitly by assigning `PieceAuth.None()` to the `auth` property.
