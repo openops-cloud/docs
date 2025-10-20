@@ -349,9 +349,27 @@ import { BlockAuth, Property, Validators } from '@openops/blocks-framework';
 
 ### Adding custom validation
 
-Show basic trailing slash validation
+Adding predefined validation rules to properties is one way of enforcing a certain format or pattern for user input. You can also add custom validation rules using the `validate()` function.
 
-Add examples of various custom validation rules in existing blocks
+Some blocks, such as [Linear](https://github.com/openops-cloud/openops/blob/7fad45c16a0ab4a01eaa5a2b9b50d304effc9f83/packages/blocks/linear/src/index.ts#L29C1-L39C5), use `validate()` to make sure that the API key confirms to a specific format. With YouTrack, there's no need to do this. Instead, it's reasonable to check that the base URL doesn't have a trailing slash as YouTrack doesn't normalize URLs with double slashes. Here's how this could be done:
+
+```ts
+validate: async ({ auth }) => {
+  if (auth.apiUrl.endsWith('/')) {
+    return {
+      valid: false,
+      error: 'Base URL must not end with a slash',
+    };
+  } else {
+    return { valid: true };
+  }
+}
+```
+
+The `auth` object passed to `validate()` contains the values of all the properties that the user has provided. This lets you introduce any additional checks on `auth.apiUrl`, which holds the entered base URL value.
+
+You could also use `validate()` to try authenticate the user with a given API key. For example, the
+[ServiceNow](https://github.com/openops-cloud/openops/blob/7fad45c16a0ab4a01eaa5a2b9b50d304effc9f83/packages/blocks/servicenow/src/lib/auth.ts#L34C1-L54C5) and [Umbrella](https://github.com/openops-cloud/openops/blob/7fad45c16a0ab4a01eaa5a2b9b50d304effc9f83/packages/blocks/anodot/src/lib/anodot-auth-property.ts#L37C1-L64C5) blocks make sample requests to their APIs to tell the user right away if authentication fails.
 
 ### Adding a Markdown description
 
@@ -423,6 +441,8 @@ TODO img connection dialog
 TODO img connection dialog with error
 
 ## Adding a simple action
+
+Remove scaffolded action
 
 Demonstrate /packages/blocks/youtrack/src/lib/actions/get-all-issues.ts
 
