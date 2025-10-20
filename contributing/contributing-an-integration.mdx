@@ -146,6 +146,8 @@ OpenOps uses [Nx](https://nx.dev/) as its build system, and `project.json` is th
 }
 ```
 
+If you need extra dependencies for your block, such as an SDK for your service, you can later add them to the `dependencies` section of `package.json`.
+
 ### Test files
 
 `test/index.test.ts` is a stub Jest test fixture that includes a few sample tests for the block. Tests in this fixture can be executed by running `nx test blocks-youtrack`.
