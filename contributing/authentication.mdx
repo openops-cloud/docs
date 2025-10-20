@@ -1,18 +1,16 @@
 ---
 title: 'Authentication'
-description: 'Authentication methods that OpenOps supports'
+description: 'Block authentication methods that OpenOps supports'
 icon: 'code'
 ---
 
 OpenOps supports several forms of authentication for blocks: **basic**, **secret-based**, **custom**, and **OAuth2**.
 
-Block authentication defines which credentials the user must enter to log in to the API that your block integrates with. As soon as you implement authentication for your block, the user can create a [connection](/cloud-access/access-levels-permissions) for your block. Apart from implementing authentication, there's no additional effort required to enable the connection UI.
+Block authentication defines which credentials the user must enter to log in to the API that your block integrates with. As soon as you implement authentication for your block, the user can create a [connection](/cloud-access/access-levels-permissions). Apart from implementing authentication, there's no additional effort required to enable the connection UI.
 
 Block authentication must be specified using the `auth` parameter in the `createBlock` function in your block definition, as well as in all `createAction` functions in your action definitions.
 
-One type of authentication is allowed per block. TODO is OAuth an exception?
-
-You can look up the implementation of all authentication types [on GitHub](https://github.com/openops-cloud/openops/blob/main/packages/blocks/framework/src/lib/property/authentication/index.ts).
+One type of authentication is allowed per block.
 
 ## Basic authentication
 
@@ -36,7 +34,7 @@ BlockAuth.BasicAuth({
 })
 ```
 
-The connection UI for this authentication type requests a username and password:
+The connection UI for this authentication type requests two credentials, typically a username and a password:
 
 ![Connection UI - basic authentication](/images/contributing/connection-basic.png)
 
@@ -77,11 +75,11 @@ The connection UI for this authentication type only requests an API key:
 
 ## Custom authentication
 
-This type of authentication allows collecting multiple properties, such as a base URL and access token. Use this type when you need to collect more than just an API key.
+This type of authentication allows collecting multiple properties, such as a base URL and access token. Use this type when you need to the user to enter more than just an API key.
 
 In OpenOps, this is so far the most used authentication type, used by blocks such as [AWS](https://github.com/openops-cloud/openops/blob/950ce3eaecf0d5f991f5828ab82f0cfc91bfe01b/packages/openops/src/lib/aws/auth.ts#L169), [Azure](https://github.com/openops-cloud/openops/blob/main/packages/openops/src/lib/azure/auth.ts), [Google Cloud](https://github.com/openops-cloud/openops/blob/main/packages/openops/src/lib/google-cloud/auth.ts), [Zendesk](https://github.com/openops-cloud/openops/blob/main/packages/blocks/zendesk/src/index.ts), [Ternary](https://github.com/openops-cloud/openops/blob/main/packages/blocks/ternary/src/lib/common/auth.ts), [ServiceNow](https://github.com/openops-cloud/openops/blob/main/packages/blocks/servicenow/src/lib/auth.ts), [Kion](https://github.com/openops-cloud/openops/blob/main/packages/blocks/kion/src/lib/auth.ts), [Flexera One](https://github.com/openops-cloud/openops/blob/main/packages/blocks/flexera-one/src/lib/auth.ts), [Databricks](https://github.com/openops-cloud/openops/blob/main/packages/blocks/databricks/src/lib/common/auth.ts), and [CloudFix](https://github.com/openops-cloud/openops/blob/main/packages/blocks/cloudfix/src/lib/common/auth.ts).
 
-Using authentication type is shown in [Contributing an Integration](/contributing/contributing-an-integration/), a guide that explains how to create a fully functional integration block.
+Using the custom authentication type is demonstrated in [Contributing an Integration](/contributing/contributing-an-integration/), a guide that explains how to create a fully functional integration block.
 
 ```typescript
 BlockAuth.CustomAuth({
