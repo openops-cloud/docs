@@ -368,10 +368,34 @@ validate: async ({ auth }) => {
 
 The `auth` object passed to `validate()` contains the values of all the properties that the user has provided. This lets you introduce any additional checks on `auth.apiUrl`, which holds the entered base URL value.
 
-You could also use `validate()` to try authenticate the user with a given API key. For example, the
+You could also use `validate()` to try to authenticate the user with a given API key. For example, the
 [ServiceNow](https://github.com/openops-cloud/openops/blob/7fad45c16a0ab4a01eaa5a2b9b50d304effc9f83/packages/blocks/servicenow/src/lib/auth.ts#L34C1-L54C5) and [Umbrella](https://github.com/openops-cloud/openops/blob/7fad45c16a0ab4a01eaa5a2b9b50d304effc9f83/packages/blocks/anodot/src/lib/anodot-auth-property.ts#L37C1-L64C5) blocks make sample requests to their APIs to tell the user right away if authentication fails.
 
 ### Adding a Markdown description
+
+When a user sets up a connection, they don't necessarily know right away how to obtain an API key or a different value that they're expected to enter during connection setup.
+
+To guide them, use the `description` property. The best part about this property is that it's not limited to plain text; instead, you can provide a Markdown-formatted string, and OpenOps will render it in the connection UI, between the title and the first input.
+
+For YouTrack, a Markdown description could look like this:
+
+```ts
+const markdown = `
+To get your YouTrack API key:
+1. Go to your YouTrack installation.
+2. In the navigation menu, click your user profile icon, then click **Profile**.
+3. Open the **Account Security** tab.
+4. Under **Tokens**, click **New token**.
+5. Give the new token a name and select **YouTrack** in the list of scopes.
+6. Click **Create**.
+7. Copy the token to your clipboard.`;
+```
+
+When providing a description as a separate variable as shown here, remember to assign the variable to the `description` property:
+
+```ts
+description: markdown
+```
 
 ### Adding an interface
 
