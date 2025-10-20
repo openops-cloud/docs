@@ -482,18 +482,170 @@ If the user enters a base URL with a trailing slash, the connection dialog will 
 
 ## Adding a simple action
 
-Remove scaffolded action
+We have a block, we've implemented authenticaton, and now it's time to proceed to developing the meat of every integration: actions.
 
-Demonstrate /packages/blocks/youtrack/src/lib/actions/get-all-issues.ts
+### Removing the default action
 
-Add the action to block definition
+When you scaffold a block, OpenOps adds an action called "Custom API Call". While we could tweak it to make it work for YouTrack, let's instead remove it and create a new action from scratch.
 
-Show result in OpenOps UI
+After removing the scaffolded action, the `src/index.ts` file looks like this:
+
+```ts
+import { createBlock } from '@openops/blocks-framework';
+import { BlockCategory } from '@openops/shared';
+import { youtrackAuth } from './lib/auth';
+
+export const youtrack = createBlock({
+  displayName: 'YouTrack',
+  auth: youtrackAuth,
+  minimumSupportedRelease: '0.20.0',
+  logoUrl:
+    'https://resources.jetbrains.com/storage/products/company/brand/logos/YouTrack_icon.png',
+  authors: [],
+  categories: [BlockCategory.FINOPS],
+  actions: [],
+  triggers: [],
+});
+```
+
+The `actions` array is now empty. As soon as we have an action, we'll need to add a reference to it there.
+
+### Scaffolding a new action
+
+OpenOps provides scaffolding for actions, too, so let's run this in the terminal:
+
+```bash
+npm run cli actions create
+```
+
+The CLI asks three questions to help define the new action:
+
+1. `Enter the block folder name`: this should be the folder where the block for the new action resides. For the existing YouTrack block, the value shoud be `youtrack`
+2. `Enter the action display name`: this should be a human-readable name for the action that users will see in the UI, and it's  also used to name a file for the action. We want to create an action that simply lists issues in a YouTrack instance, so let's call it `Get all issues`.
+3. `Enter the action description`: this should be a brief, informative text to show in the UI to explain the function and purpose of the action. Let's use the following: `Retrieves all issues from a YouTrack instance`.
+
+With these values, the CLI scaffolds the action in a new file called `get-all-issues.ts` in the YouTrack block's `/src/lib/actions` directory. The file initially looks like this:
+
+```ts
+import { createAction, Property } from '@openops/blocks-framework';
+
+export const getAllIssues = createAction({
+  requireToolApproval: false,
+  name: 'getAllIssues',
+  displayName: 'Get all issues',
+  description: 'Retrieves all issues from a YouTrack instance',
+  props: {},
+  async run() {
+    // Action logic here
+  },
+});
+```
+
+As you can see, the scaffolding uses the `createAction()` helper function to define the action. The values of `displayName` and `description` are the same as we provided in the CLI.
+
+The `props` property is empty, which means there are no configuration options for the user to set. For this first action, this is fine: we'll add another action with configuration options later.
+
+### Adding the action logic
+
+The scaffolded action has two prominent omissions:
+1. It doesn't have an `auth` property that references the block's authentication logic that we've implemented earlier.
+2. Its `run()` function that should define the action logic is empty.
+
+Let's fix these two issues by replacing the scaffolded version with the following:
+
+```ts
+import { httpClient, HttpMethod } from '@openops/blocks-common';
+import { createAction } from '@openops/blocks-framework';
+import { youtrackAuth, YouTrackAuth } from '../auth';
+
+export const getAllIssues = createAction({
+  requireToolApproval: false,
+  name: 'getAllIssues',
+  displayName: 'Get all issues',
+  description: 'Retrieves all issues from a YouTrack instance',
+  props: {},
+  auth: youtrackAuth,
+  async run(context) {
+    const endpoint =
+      '/api/issues?query=for:%20me%20%23Unresolved%20&fields=id,project(shortName),numberInProject,summary,description&$top=10';
+    const auth = context.auth as YouTrackAuth;
+    const requestUrl = `${auth.apiUrl}${endpoint}`;
+
+    const response = await httpClient.sendRequest({
+      method: HttpMethod.GET,
+      url: requestUrl,
+      headers: {
+        Authorization: `Bearer ${auth.apiKey}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return {
+      _debug: {
+        request: {
+          method: 'GET',
+          requestUrl,
+        },
+        response: {
+          status: response.status,
+        },
+      },
+      issues: response.body,
+    };
+  },
+});
+```
+
+Here's what's changed:
+1. The action now has an `auth` property that references the block's authentication logic. Both the authentication logic and the interface for it are imported from the block's `auth.ts` file.
+2. The `run()` function now makes a request to a YouTrack API endpoint to retrieve the first 10 unresolved issues.
+3. In making the API call, the `run()` function makes use of the imported `httpClient` constant, which is an OpenOps-provided wrapper over the Axios HTTP client. Some blocks, such as [Linear](http://github.com/openops-cloud/openops/blob/main/packages/blocks/linear/src/lib/common/client.ts) and [Jira](https://github.com/openops-cloud/openops/blob/main/packages/blocks/jira-cloud/src/lib/common/index.ts), create separate functions to make HTTP requests to their APIs. This can be helpful for providing extra error handling or making use of existing SDKs, but for YouTrack, we can just use the `httpClient` directly.
+4. The `return` statement of the `run()` function is what the user will see as the output of running the action. The format of the returned object is up to the block author. In this case, we're returning an object with two properties: `_debug` and `issues`. The `_debug` property is a container for debugging information that can be useful for troubleshooting during development. The `issues` property is an array of issues that the action retrieved from the YouTrack instance.
+
+### Referencing the action from the block definition
+
+Before we can test the action, we need to add it to the block's definition. Back in the `src/index.ts` file, we need to import this action and add it to the `actions` array:
+
+```ts
+import { createBlock } from '@openops/blocks-framework';
+import { BlockCategory } from '@openops/shared';
+import { getAllIssues } from './lib/actions/get-all-issues';
+import { youtrackAuth } from './lib/auth';
+
+export const youtrack = createBlock({
+  displayName: 'YouTrack',
+  auth: youtrackAuth,
+  minimumSupportedRelease: '0.20.0',
+  logoUrl:
+    'https://resources.jetbrains.com/storage/products/company/brand/logos/YouTrack_icon.png',
+  authors: [],
+  categories: [BlockCategory.FINOPS],
+  actions: [getAllIssues],
+  triggers: [],
+});
+```
+
+### Testing the action
+
+Let's see what happens in the OpenOps UI now that we have the action in place.
+
+First, the action is now visible in the workflow editor and available for selection:
+
+![The Get All Issues action in the workflow editor](/images/contributing/youtrack-get-all-issues-action-selector.png)
+
+In the **Configure** tab of the action's properties pane, there's a connection selector, which comes for free because the action requires authentication. There are also two toggles, **Continue on Failure** and **Retry on Failure**, which are available for all actions. There are no properties specific to this action as we have not defined any.
+
+![The properties pane for Get All Issues](/images/contributing/youtrack-get-all-issues-properties-pane.png)
+
+If we go to the **Test** tab and click **Test Step**, the action will connect to the YouTrack instance configured in the connection and return results in the format defined by the return statement in the action's `run()` function:
+
+![The output of the Get All Issues action](/images/contributing/youtrack-get-all-issues-output.png)
 
 ## Adding an action with properties
 
-Demonstrate /packages/blocks/youtrack/src/lib/actions/change-issue-status.ts
+TODO Demonstrate /packages/blocks/youtrack/src/lib/actions/change-issue-status.ts
 
-Add the action to block definition
+TODO Add the action to block definition
 
-Show result in OpenOps UI
+TODO Show result in OpenOps UI
