@@ -512,7 +512,7 @@ export const youtrack = createBlock({
 
 The `actions` array is now empty. As soon as we have an action, we'll need to add a reference to it there.
 
-### Scaffolding a new action
+### Scaffolding the new action
 
 OpenOps provides scaffolding for actions, too, so let's run this in the terminal:
 
@@ -646,8 +646,159 @@ If we go to the **Test** tab and click **Test Step**, the action will connect to
 
 ## Adding an action with properties
 
-TODO Demonstrate /packages/blocks/youtrack/src/lib/actions/change-issue-status.ts
+We've seen how to create a simple action that doesn't require any configuration. More often than not, real-world actions do require the user to enter or select values in the properties pane, and the values of these properties often depend on one another.
 
-TODO Add the action to block definition
+For a YouTrack integration, it would make sense to enable the user not only to get the list of issues, but also to update specific issues. Let's add a new action that allows the user to change the status of an issue. This action will include several configurable properties, and one of these properties will depend on the value of another property.
 
-TODO Show result in OpenOps UI
+### Scaffolding the new action
+
+First, let's use the OpenOps scaffolding to create a stub for the new action:
+
+```bash
+npm run cli actions create
+```
+
+The values to feed to the CLI will be as follows:
+
+1. `Enter the block folder name`: same as before, this should be `youtrack`.
+2. `Enter the action display name`: let's call the new action `Change issue status`.
+3. `Enter the action description`: let's describe the action as `Updates the status of a given issue`.
+
+With these values, the CLI scaffolds the action in a new file called `change-issue-status.ts` in the YouTrack block's `/src/lib/actions` directory:
+
+```ts
+import { createAction, Property } from '@openops/blocks-framework';
+
+export const changeIssueStatus = createAction({
+  requireToolApproval: false,
+  name: 'changeIssueStatus',
+  displayName: 'Change issue status',
+  description: 'Updates the status of a given issue',
+  props: {},
+  async run() {
+    // Action logic here
+  },
+});
+```
+
+### Referencing the action from the block definition
+
+This time, let's reference the new action in the block's definition (`src/index.ts`) before working on the action logic:
+
+```ts
+import { createBlock } from '@openops/blocks-framework';
+import { BlockCategory } from '@openops/shared';
+import { changeIssueStatus } from './lib/actions/change-issue-status';
+import { getAllIssues } from './lib/actions/get-all-issues';
+import { youtrackAuth } from './lib/auth';
+
+export const youtrack = createBlock({
+  displayName: 'YouTrack',
+  auth: youtrackAuth,
+  minimumSupportedRelease: '0.20.0',
+  logoUrl:
+    'https://resources.jetbrains.com/storage/products/company/brand/logos/YouTrack_icon.png',
+  authors: [],
+  categories: [BlockCategory.FINOPS],
+  actions: [getAllIssues, changeIssueStatus],
+  triggers: [],
+});
+```
+
+### Adding authentication and imports
+
+Back in the action file, let's start by referencing the authentication logic we've defined earlier. While we're at it, let's also import the `YouTrackAuth` interface, as well as the HTTP client that OpenOps provides:
+
+```ts
+import { httpClient, HttpMethod } from '@openops/blocks-common';
+import { createAction, Property } from '@openops/blocks-framework';
+import { YouTrackAuth, youtrackAuth } from '../auth';
+
+export const changeIssueStatus = createAction({
+  auth: youtrackAuth,
+  requireToolApproval: false,
+  name: 'changeIssueStatus',
+  displayName: 'Change issue status',
+  description: 'Updates the status of a given issue',
+  props: {},
+  async run() {
+    // Action logic here
+  },
+});
+```
+
+### Adding an interface representing a YouTrack project
+
+Before adding properties, let's define an interface for the YouTrack project that the issue being updated belongs to. We'll use it both in the property that helps select a project and in another property that depends on it.
+
+We could create the interface in a separate file, but placing it at the end of the `change-issue-status.ts` file should work, too:
+
+```ts
+interface YouTrackProject {
+  id: string;
+  name: string;
+  shortName: string;
+}
+```
+
+### Adding a dropdown property to select a project
+
+We can now add the first property to the `props` parameter of `createAction()`. It will represent a dropdown allowing the user to select a YouTrack project that the issue being updated belongs to:
+
+```ts
+props: {
+  project: Property.Dropdown({
+    displayName: 'Project',
+    required: true,
+    refreshers: ['auth'],
+    options: async ({ auth }) => {
+      if (!auth) {
+        return {
+          options: [],
+        };
+      }
+
+      const requestAuth = auth as YouTrackAuth;
+
+      const projectsRequest = await httpClient.sendRequest({
+        method: HttpMethod.GET,
+        url: `${requestAuth.apiUrl}/api/admin/projects?fields=id,name,shortName`,
+        headers: {
+          Authorization: `Bearer ${requestAuth.apiKey}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+
+      return {
+        options: projectsRequest.body.map((project: YouTrackProject) => {
+          return {
+            label: project.name,
+            value: project,
+          };
+        }),
+      };
+    },
+  }),
+}
+```
+
+Here's what happens inside the `project` property:
+* `displayName` is how the dropdown that this property represents will be named in the UI.
+* `required` marks this property as required. The action will not work unless the user has selected a value.
+* `refreshers` defines when the values of this property should be re-evaluated. The value `auth` in this array means that this property should only refresh when the connection that this action uses changes.
+* `options()` defines the logic of how the values of this property should be populated. The `auth` property allows returning an empty set of values when a connection is not defined.
+* If a connection is defined, then it's OK to make a request to the YouTrack API that gets the list of projects that exist in the connected YouTrack instance.
+* When the YouTrack API request succeeds, its response is transformed into an array of objects that represent the projects. Each object has two properties: `label` and `value`. The `label` property is the text that will be shown in dropdown items, representing the name of each found YouTrack project. The `value` property contains more information about the project retrieved from the API, including its ID and short name — these will be useful later when passed to another property.
+* The array is put into the `options` property of a new object that serves as the return value of the `options()` function.
+
+If we launch OpenOps, we can see that the new action is now available in the workflow editor:
+
+![The Change Issue Status action](/images/contributing/youtrack-change-status-action-selector.png)
+
+If we add the action and go to the properties pane, we can see the **Project** dropdown that lists the projects available in the connected YouTrack instance:
+
+![The Project dropdown](/images/contributing/youtrack-change-status-project-property.png)
+
+## Summary
+TODO add a link to Activepieces property reference
