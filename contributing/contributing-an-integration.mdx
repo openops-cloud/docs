@@ -399,9 +399,20 @@ description: markdown
 
 ### Adding an interface
 
+The last thing to do in the `src/lib/auth.ts` file is to define an interface for the two authentication properties. This interface will be imported in files defining the block's actions to provide typing to the parameters of the actions.
+
+For YouTrack authentication, the interface could look like this:
+
+```ts
+export interface YouTrackAuth {
+  apiUrl: string;
+  apiKey: string;
+}
+```
+
 ### The resulting authentication code and connection UI
 
-The result:
+After implementing authentication, the `src/lib/auth.ts` file looks like this:
 
 ```ts
 import { BlockAuth, Property, Validators } from '@openops/blocks-framework';
@@ -457,12 +468,17 @@ export interface YouTrackAuth {
 }
 ```
 
+With this code, if the user chooses to create a new connection in OpenOps, they will see a connection type for YouTrack:
 
 ![A YouTrack connection type in OpenOps UI](/images/contributing/youtrack-connection-type.png)
 
-TODO img connection dialog
+When they click the YouTrack logo, they will see a connection dialog with a properly rendered Markdown description and three input fields. The **Connection name** field is predefined and prefilled with a suggested name of the connection. The other two fields, **API key** and **Base URL**, are the two properties that we defined earlier:
 
-TODO img connection dialog with error
+![A YouTrack connection dialog](/images/contributing/youtrack-connection-dialog.png)
+
+If the user enters a base URL with a trailing slash, the connection dialog will execute the validation logic we've defined above and show an error message:
+
+![Base URL validation error](/images/contributing/youtrack-connection-validation.png)
 
 ## Adding a simple action
 
