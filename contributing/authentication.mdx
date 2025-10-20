@@ -122,23 +122,31 @@ The connection UI for this authentication type requests whatever inputs you defi
 
 ## OAuth2
 
-This authentication collects OAuth2 authentication details, including the authentication URL, token URL, and scope.
+This authentication type allows authenticating with an OAuth2 provider either on behalf of a specific user (authorization code grant) or on behalf of a service (client credentials grant).
 
-Used by: GitHub, Slack, MS Teams, MS Outlook
-
+It is currently used by some OpenOps blocks, including [GitHub](https://github.com/openops-cloud/openops/blob/main/packages/blocks/github/src/lib/common/auth.ts), [Slack](https://github.com/openops-cloud/openops/blob/main/packages/blocks/slack/src/lib/common/authentication.ts), [Microsoft Teams](https://github.com/openops-cloud/openops/blob/main/packages/blocks/microsoft-teams/src/lib/common/microsoft-teams-auth.ts), and [Microsoft Outlook](https://github.com/openops-cloud/openops/blob/main/packages/blocks/microsoft-teams/src/lib/common/microsoft-teams-auth.ts).
 
 ```typescript
 BlockAuth.OAuth2({
-    displayName: 'OAuth2 Authentication',
-    grantType: OAuth2GrantType.AUTHORIZATION_CODE,
-    required: true,
-    authUrl: 'https://example.com/auth',
-    tokenUrl: 'https://example.com/token',
-    scope: ['read', 'write']
+  authProviderKey: 'bitbucket',
+  authProviderDisplayName: 'Bitbucket',
+  authProviderLogoUrl: `https://static.openops.com/blocks/bitbucket.png`,
+  description: '',
+  required: true,
+  scope: [
+    'account:write',
+    'repository:read',
+    'repository:write',
+    'pullrequest:write',
+  ],
+  authUrl: 'https://bitbucket.org/site/oauth2/authorize',
+  tokenUrl: 'https://bitbucket.org/site/oauth2/access_token',
 })
 ```
 
-Please note that `OAuth2GrantType.CLIENT_CREDENTIALS` is also supported for service-based authentication.
+In the connection UI, the user can either click the **Connect** button to log in to the OAuth2 provider with their own credentials, or enter a client ID and a client secret to authenticate a service.
+
+![Connection UI - OAuth2 authentication](/images/contributing/connection-oauth2.png)
 
 ## No authentication
 
