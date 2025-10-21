@@ -980,6 +980,189 @@ If we go to the workflow editor now and test the action, here's the kind of outp
 
 In this case, we're simply returning the body of the response from the YouTrack API, but it's entirely possible to return an object with a different shape, this is entirely up to you.
 
-TODO full resulting code of the action
+This wraps up the "Change issue status" action. Since it used a few dynamic properties, and the YouTrack API isn't always succinct, the code for the action is fairly long. Here's the full listing of the resulting `change-issue-status.ts` file:
+
+<Expandable title="Change Issue Status action code">
+```ts
+import { httpClient, HttpMethod } from '@openops/blocks-common';
+import { createAction, Property } from '@openops/blocks-framework';
+import { YouTrackAuth, youtrackAuth } from '../auth';
+
+export const changeIssueStatus = createAction({
+  auth: youtrackAuth,
+  requireToolApproval: false,
+  name: 'changeIssueStatus',
+  displayName: 'Change issue status',
+  description: 'Updates the status of a given issue',
+  props: {
+    project: Property.Dropdown({
+      displayName: 'Project',
+      required: true,
+      refreshers: ['auth'],
+      options: async ({ auth }) => {
+        if (!auth) {
+          return {
+            options: [],
+          };
+        }
+
+        const requestAuth = auth as YouTrackAuth;
+
+        const projectsRequest = await httpClient.sendRequest({
+          method: HttpMethod.GET,
+          url: `${requestAuth.apiUrl}/api/admin/projects?fields=id,name,shortName`,
+          headers: {
+            Authorization: `Bearer ${requestAuth.apiKey}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        });
+
+        return {
+          options: projectsRequest.body.map((project: YouTrackProject) => {
+            return {
+              label: project.name,
+              value: project,
+            };
+          }),
+        };
+      },
+    }),
+    issueId: Property.Number({
+      displayName: 'Number from issue ID',
+      description: 'If issue ID is PRJ-47, enter 47 in this field',
+      required: true,
+    }),
+    newStatus: Property.Dropdown({
+      displayName: 'New Status',
+      refreshers: ['project'],
+      required: true,
+      options: async ({
+        auth,
+        project,
+      }: {
+        auth?: YouTrackAuth;
+        project?: YouTrackProject;
+      }) => {
+        if (!auth || !project) {
+          return {
+            disabled: true,
+            options: [],
+            placeholder: 'Please authenticate and specify a project',
+          };
+        }
+
+        const projectCustomFieldsResponse = await httpClient.sendRequest({
+          method: HttpMethod.GET,
+          url: `${auth.apiUrl}/api/admin/projects/${project.id}/customFields?fields=id,field(id,name,fieldType),bundle(id)`,
+          headers: {
+            Authorization: `Bearer ${auth.apiKey}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const statusBundle = projectCustomFieldsResponse.body.find(
+          (item: { bundle?: { $type?: string } }) =>
+            item.bundle?.$type === 'StateBundle',
+        );
+
+        if (!statusBundle) {
+          return {
+            disabled: true,
+            options: [],
+            placeholder: "The selected project doesn't have a Status field.",
+          };
+        }
+
+        const statusBundleId = statusBundle.bundle.id;
+
+        const statusValuesResponse = await httpClient.sendRequest({
+          method: HttpMethod.GET,
+          url: `${auth.apiUrl}/api/admin/customFieldSettings/bundles/enum/${statusBundleId}/values?fields=id,name`,
+          headers: {
+            Authorization: `Bearer ${auth.apiKey}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        });
+
+        return {
+          disabled: false,
+          options: statusValuesResponse.body.map(
+            (statusValue: { name: string; id: string }) => {
+              return {
+                label: statusValue.name,
+                value: {
+                  newStatusValue: statusValue,
+                  bundle: statusBundle,
+                },
+              };
+            },
+          ),
+        };
+      },
+    }),
+  },
+  async run(context) {
+    const { project, issueId, newStatus } = context.propsValue;
+    const { auth } = context;
+
+    const issueExistsResponse = await httpClient.sendRequest({
+      method: HttpMethod.GET,
+      url: `${auth.apiUrl}/api/issues/${project.shortName}-${issueId}?fields=id,summary,description,customFields(id,name,value(id,name))`,
+      headers: {
+        Authorization: `Bearer ${auth.apiKey}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const issueDbId = issueExistsResponse.body?.id;
+
+    if (!issueDbId) {
+      throw new Error(
+        'The issue does not exist. Please fix inputs to specify an existing issue',
+      );
+    } else {
+      const issueCustomField = issueExistsResponse.body?.customFields?.find(
+        (x: { id: string; $type: string }) => x.id === newStatus.bundle.id,
+      );
+
+      const updateIssueStatusResponse = await httpClient.sendRequest({
+        method: HttpMethod.POST,
+        url: `${auth.apiUrl}/api/issues/${issueDbId}?fields=id,numberInProject,project,summary,description,customFields(id,name,value(id,name))`,
+        headers: {
+          Authorization: `Bearer ${auth.apiKey}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: {
+          customFields: [
+            {
+              value: newStatus.newStatusValue,
+              id: issueCustomField.id,
+              $type: issueCustomField.$type,
+            },
+          ],
+        },
+      });
+
+      return updateIssueStatusResponse.body;
+    }
+  },
+});
+
+interface YouTrackProject {
+  id: string;
+  name: string;
+  shortName: string;
+}
+```
+</Expandable>
+
 ## Summary
+
+
+
 TODO add a link to Activepieces property reference
