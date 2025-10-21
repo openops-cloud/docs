@@ -87,7 +87,7 @@
         "pages": [
           "contributing/index",
           "contributing/development-environment",
-          "contributing/contributing-a-minimal-block",
+          "contributing/creating-a-minimal-block",
           "contributing/contributing-an-integration",
           "contributing/authentication"
         ]
