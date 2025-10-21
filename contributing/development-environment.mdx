@@ -4,7 +4,7 @@ description: 'Setting up the development environment for contributing to OpenOps
 icon: 'code'
 ---
 
-Before you start contributing to OpenOps, you need to set up a development environment. While you can set up a local development environment, using GitHub's Codespaces is the easiest way to get started.
+Before you start contributing to OpenOps, you need to set up a development environment. While you could set up a local development environment, using GitHub's Codespaces is the easiest way to get started.
 
 ## Fork the OpenOps repository
 
@@ -12,9 +12,9 @@ Follow these steps to fork the OpenOps repository:
 
 1. Go to the repository page at https://github.com/openops-cloud/openops.
 2. Click the `Fork` button located in the top right corner of the page.
-3. When GitHub opens a fork configuration page, accept the default option and click **Create Fork**.
+3. When GitHub opens a fork configuration page, select the owner to fork under (which would be either your personal account or organizations that you're part of), then click **Create Fork**.
 
-Your fork is now at https://github.com/your_github_username/openops
+Your fork is now at https://github.com/your_github_account_or_organization/openops
 
 ## Set up Codespaces
 
@@ -35,4 +35,10 @@ In the **Ports** tool window, click **Open in browser** in the **App Frontend** 
 When the OpenOps frontend opens, log in with the following credentials:
 * Username: `Dev@openops.com`
 * Password: `12345678`
+
+When developing on Codespaces, keep in mind the following:
+* GitHub caps Codespaces usage for free GitHub accounts if you're working on a fork in your personal account. Consider forking to a GitHub organization to be able to use the Codespaces hours available to the organization.
+* After extended inactivity, Codespaces may lose connectivity between ports that different OpenOps components are exposed on. To fix this, do one of the following:
+    * Run `sh .devcontainer/codespaces.sh` in the terminal.
+    * In the **Ports** tab in Codespaces, make the following ports public: 3000, 3001, 3005, 4200.
 
