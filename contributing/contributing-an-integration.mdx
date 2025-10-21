@@ -4,11 +4,17 @@ description: 'Developing a fully working OpenOps block to integrate with a third
 icon: 'code'
 ---
 
-[Contributing a minimal block](/contributing/contributing-a-minimal-block/) demonstrated how to use scaffolding and make a block show up in the OpenOps UI. Let's now see how you would create a fully functional integration with a third-party service.
+[Contributing a Minimal Block](/contributing/contributing-a-minimal-block/) demonstrated how to use scaffolding and make a block show up in the OpenOps UI. Let's now see how you would create a fully functional integration with a third-party service.
 
-OpenOps integrates with Jira Cloud and Linear, but what if you use a different service for tracking your cloud optimization opportunities? Let's see how you would create a block that integrates with [JetBrains YouTrack](https://www.jetbrains.com/youtrack/). This involves implementing API key based authentication and designing a couple actions that interact with the [YouTrack API](https://www.jetbrains.com/help/youtrack/devportal/youtrack-rest-api.html).
+OpenOps integrates with Jira Cloud and Linear, but what if you use a different service for tracking your cloud optimization opportunities? Let's see how you would create a block that integrates with [JetBrains YouTrack](https://www.jetbrains.com/youtrack/) via its [REST API](https://www.jetbrains.com/help/youtrack/devportal/youtrack-rest-api.html).
 
-This is not a step-by-step guide. Instead, it's an overview that highlights prominent parts of the process.
+The process of developing the YouTrack block will include:
+* Scaffolding the block and actions using the OpenOps CLI.
+* Implementing custom API key-based authentication that enables the user to set up a connection.
+* Developing a simple action that authenticates with YouTrack and retrieves data.
+* Developing an advanced action that involves several dynamic, interdependent properties, and updates a YouTrack issue.
+
+This is not a step-by-step guide. Instead, it's an overview that highlights prominent parts of the process that you can use to develop your own blocks.
 
 ## Scaffolding a new block
 
@@ -1163,6 +1169,9 @@ interface YouTrackProject {
 
 ## Summary
 
+This guide walked you through creating a fully functional third-party integration for OpenOps by building a JetBrains YouTrack block with two actions. You have learned more techniques involved in developing OpenOps blocks, including:
+* Implementing custom authentication that requires specifying an API key and a base URL. To learn more about authentication types that OpenOps supports, see [Authentication](/contributing/authentication/).
+* Adding configuration properties to actions, including dynamic, interdependent properties. To learn more about property types that OpenOps supports by virtue of being based on Activepieces, see [Props](https://www.activepieces.com/docs/developers/piece-reference/properties) in Activepieces documentation.
+* Using values returned by properties in other properties as well as in the action's execution logic.
 
-
-TODO add a link to Activepieces property reference
+To learn more about the internals of OpenOps blocks, consider exploring the [code of existing blocks](https://github.com/openops-cloud/openops/tree/main/packages/blocks) or past pull requests that added new blocks, such as [Ternary](https://github.com/openops-cloud/openops/pull/326), [ServiceNow](https://github.com/openops-cloud/openops/pull/1078), and [nOps.io](https://github.com/openops-cloud/openops/pull/1403).
