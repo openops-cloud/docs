@@ -4,9 +4,9 @@ description: 'How to quickly create a new minimal OpenOps block'
 icon: 'code'
 ---
 
-Let's see what it takes to create a new OpenOps block, create an action in it, and see it in the OpenOps UI.
+Let's see what it takes to create a new OpenOps block, add an action to it, and view it in the OpenOps UI.
 
-Before you start, [set up your development environment](/contributing/development-environment/).
+Before you begin, make sure you've [set up your development environment](/contributing/development-environment/).
 
 ## Scaffold a new block
 
@@ -16,29 +16,29 @@ To get started, generate a new block by running the following command:
 npm run cli blocks create
 ```
 
-You will be asked three questions to define your new block:
+You will be asked four questions to define your new block:
 
 1. `Block name`: enter `my-unique-block`: a name that uniquely identifies your block in the OpenOps repository.
-2. `Package name`: optionally, you can enter a name for the npm package associated with your block. If left blank, the default name will be used, which is: `@openops/block-<block-name>`.
-3. `Authentication type`: select `None` for now as this minimal block will work with a publicly available API. Other options are `Secret (API key)`, `Custom (custom properties)`, and `OAuth2 (OAuth2 flow)`.
+2. `Package name`: optionally, enter a name for the npm package associated with your block. If left blank, the default name will be used: `@openops/block-<block-name>`.
+3. `Authentication type`: select `None` for now, as this minimal block will work with a publicly available API. Other options are `Secret (API key)`, `Custom (custom properties)`, and `OAuth2 (OAuth2 flow)`.
 4. `Create opinionated folder structure with stubs for actions, tests, and common service layer`: select `Yes - Create full folder structure with stubs`.
 
 OpenOps will generate a full project template inside `packages/blocks/<your-block-name>/`. The scaffolded files are as follows:
 * Source and tests:
-    * `src/index.ts`: the main entry point of your block. This is where you'll define its metadata (name, display name, description) and register actions.
+    * `src/index.ts`: the main entry point of your block, where you'll define its metadata (name, display name, description) and register actions.
     * `test/index.test.ts`: a starter Jest test file where you can add unit tests for your block.
 * Project metadata:
     * `package.json`: declares the block as an npm package.
-    * `project.json`: a configuration file for the Nx build system that OpenOps uses.
-    * `README.md`: a starter readme file where you should describe what the block does and how to use it.
+    * `project.json`: configuration for the Nx build system that OpenOps uses.
+    * `README.md`: a starter readme file describing what the block does and how to use it.
 * Tooling and quality:
     * `.eslintrc.json`: ESLint rules for enforcing code style and catching errors.
-    * `jest.config.ts`: configuration for Jest, the test runner that OpenOps uses.
+    * `jest.config.ts`: configuration for Jest, the test runner used by OpenOps.
 * TypeScript setup:
     * `tsconfig.json`: base TypeScript configuration for the block.
     * `tsconfig.lib.json`: TypeScript settings for the block's source code.
     * `tsconfig.spec.json`: TypeScript settings for the block's tests.
-    * `tsconfig.base.json` (in the repo root): this file serves as a central list of all TypeScript settings, and the CLI updates it to include your new block.
+    * `tsconfig.base.json` (in the repo root): serves as a central list of all TypeScript settings, and the CLI updates it to include your new block.
 
 The `src/index.ts` file should contain the following code:
 
@@ -58,7 +58,7 @@ export const myUniqueBlock = createBlock({
 
 ## Create an action
 
-Now let's create the first action that will make a simple GET request to [httpbin.org](https://httpbin.org/).
+Now let's create the first action, which will make a simple GET request to [httpbin.org](https://httpbin.org/).
 
 ```bash
 npm run cli actions create
@@ -66,9 +66,9 @@ npm run cli actions create
 
 You will be asked three questions to define your new action:
 
-1. `Enter the block folder name`: enter be the folder of the block you've just created: `my-unique-block`.
-2. `Enter the action display name`: enter the name of the action that users see in the OpenOps UI. This is also used as a base for the name of the file for the action. For this exercise, enter `My first action`.
-3. `Enter the action description`: this should be a brief but informative text in the UI, elaborating about the action's function and purpose. For this exercise, it's OK to enter `What this action does`.
+1. `Enter the block folder name`: enter the folder of the block you've just created: `my-unique-block`.
+2. `Enter the action display name`: enter the name of the action that users see in the OpenOps UI. This is also used as the base for the name of the file for the action. For this exercise, enter `My first action`.
+3. `Enter the action description`: this should be a brief but informative text in the UI, explaining the action's function and purpose. For this exercise, it's OK to enter `What this action does`.
 
 If the action display name is `My first action`, the CLI will create a new file named `my-first-action.ts` in the `packages/blocks/<your-block-name>/src/lib/actions` directory. The file should look like this:
 
@@ -111,8 +111,8 @@ export const myFirstAction = createAction({
 
 Here's what happens in the code above:
 * The `createAction` function takes an object with several properties, including the `name`, `displayName`, `description`, `props`, and `run` function of the action.
-* The `props` property is an object that defines the properties that the action needs the user to configure. In this case, the action doesn't require any properties.
-* The `run()` function is called when the action is executed. It takes a single argument, `context`, which contains the values of the action's properties. In this case, the action doesn't have any properties, and the `context` parameter remains unused.
+* The `props` property is an object that defines the properties the action needs the user to configure. In this case, the action doesn't require any properties.
+* The `run()` function is called when the action is executed. It takes a single argument, `context`, which contains the values of the action's properties. In this case, the action doesn't have any properties, so the `context` parameter remains unused.
 * The `run()` function uses the `httpClient` helper provided by OpenOps to make a GET request to [httpbin.org](https://httpbin.org/).
 * The `run()` function returns the body of the response to the GET request, and this is what the action provides as its final output.
 
@@ -141,12 +141,12 @@ Once you reference an action from your block definition and the running `npm sta
 
 ![Your action in OpenOps UI](/images/contributing/action-debuts-in-openops-ui.png)
 
-If you use the action, you can see that it doesn't contain configurable properties apart from the two switches that OpenOps makes available to all actions. This is expected as you haven't defined any properties in your action:
+If you use the action, you can see that it doesn't contain configurable properties apart from the two switches that OpenOps makes available to all actions. This is expected, as you haven't defined any properties in your action:
 
 ![Action properties](/images/contributing/action-properties-none.png)
 
-If you go to the **Test** tab and click **Test Step**, you can see that it successfully returns a response of an API call to [httpbin.org](https://httpbin.org/):
+If you go to the **Test** tab and click **Test Step**, you can see that it successfully returns a response from an API call to [httpbin.org](https://httpbin.org/):
 
 ![Testing the action](/images/contributing/action-testing.png)
 
-Congratulations! You've just created your first OpenOps block and action. The block doesn't do a lot, and if you're wondering how to develop a block that does something useful, such as implements a working integration with a third-party API, check out the [Contributing an Integration](/contributing/contributing-an-integration/) guide.
+Congratulations! You've just created your first OpenOps block and action. The block doesn't do a lot, and if you're wondering how to develop a block that does something useful, such as implementing a working integration with a third-party API, check out the [Contributing an Integration](/contributing/contributing-an-integration/) guide.
