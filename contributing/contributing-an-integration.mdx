@@ -787,7 +787,7 @@ Here's what happens inside the `project` property:
 * `displayName` is how the dropdown that this property represents will be named in the UI.
 * `required` marks this property as required. The action will not work unless the user has selected a value.
 * `refreshers` defines when the values of this property should be re-evaluated. The value `auth` in this array means that this property should only refresh when the connection that this action uses changes.
-* `options()` defines the logic of how the values of this property should be populated. The `auth` property allows returning an empty set of values when a connection is not defined.
+* `options()` defines the logic of how the values of this property should be populated. A quick check on the value of the `auth` property allows returning an empty set of values when a connection is not defined.
 * If a connection is defined, then it's OK to make a request to the YouTrack API that gets the list of projects that exist in the connected YouTrack instance.
 * When the YouTrack API request succeeds, its response is transformed into an array of objects that represent the projects. Each object has two properties: `label` and `value`. The `label` property is the text that will be shown in dropdown items, representing the name of each found YouTrack project. The `value` property contains more information about the project retrieved from the API, including its ID and short name — these will be useful later when passed to another property.
 * The array is put into the `options` property of a new object that serves as the return value of the `options()` function.
@@ -819,6 +819,100 @@ In the OpenOps UI, the user will be able to enter the value manually or use **Da
 
 ![The issue ID input field](/images/contributing/youtrack-change-status-id-property.png)
 
+### Adding a dropdown property for the new status
+
+The final property we'll add to `prop` is another dropdown that allows the user to select the new status for the issue. This property will show different values depending on what's selected in the **Project** dropdown.
+
+```ts
+props: {
+  ...
+  newStatus: Property.Dropdown({
+    displayName: 'New Status',
+    refreshers: ['project'],
+    required: true,
+    options: async ({
+      auth,
+      project,
+    }: {
+      auth?: YouTrackAuth;
+      project?: YouTrackProject;
+    }) => {
+      if (!auth || !project) {
+        return {
+          disabled: true,
+          options: [],
+          placeholder: 'Please authenticate and specify a project',
+        };
+      }
+
+      const projectCustomFieldsResponse = await httpClient.sendRequest({
+        method: HttpMethod.GET,
+        url: `${auth.apiUrl}/api/admin/projects/${project.id}/customFields?fields=id,field(id,name,fieldType),bundle(id)`,
+        headers: {
+          Authorization: `Bearer ${auth.apiKey}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const statusBundle = projectCustomFieldsResponse.body.find(
+        (item: { bundle?: { $type?: string } }) =>
+          item.bundle?.$type === 'StateBundle',
+      );
+
+      if (!statusBundle) {
+        return {
+          disabled: true,
+          options: [],
+          placeholder: "The selected project doesn't have a Status field.",
+        };
+      }
+
+      const statusBundleId = statusBundle.bundle.id;
+
+      const statusValuesResponse = await httpClient.sendRequest({
+        method: HttpMethod.GET,
+        url: `${auth.apiUrl}/api/admin/customFieldSettings/bundles/enum/${statusBundleId}/values?fields=id,name`,
+        headers: {
+          Authorization: `Bearer ${auth.apiKey}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+
+      return {
+        disabled: false,
+        options: statusValuesResponse.body.map(
+          (statusValue: { name: string; id: string }) => {
+            return {
+              label: statusValue.name,
+              value: {
+                newStatusValue: statusValue,
+                bundle: statusBundle,
+              },
+            };
+          },
+        ),
+      };
+    },
+  })
+}
+```
+
+It's quite a lot of code, but most of it has to do with the specifics of the YouTrack API. Let's see what exactly is going on here:
+* The `refreshers` array contains `project`, meaning that this dropdown will refresh every time a new value is selected in the **Project** dropdown. This is exactly what we want because different projects will have different status values.
+* The `options()` function receives two parameters: `auth` represents the block authentication and `project` holds the object representing the selected project. Remember the `value` property that we returned from `options()` of the `project` property? That's what the `project` parameter here contains.
+* If either of the parameters is undefined, meaning a connection is not configured or a project is not selected, we quickly make the dropdown disabled.
+* Two calls are made to YouTrack API endpoints to get the list of status values in the selected project. The first of these calls takes advantage of the `project` parameter that reflects the selected value of the **Project** dropdown. If the project doesn't have a Status field, the dropdown is disabled and a placeholder is shown.
+* Once the list of status values is obtained, it's returned as an array in the `options` property representing dropdown items. The `label` is the name of each status to be shown in the dropdown, and `value` contains additional data that will be used later when the action is executed.
+
+Looking at the OpenOps UI now, we can see that the **New Status** dropdown is available and list status value for the selected project:
+
+![The New Status dropdown](/images/contributing/youtrack-change-status-status-property-1.png)
+
+If we select another project that has a different set of status values, the dropdown is updated accordingly:
+
+![The New Status dropdown for a different project](/images/contributing/youtrack-change-status-status-property-2.png)
 
 ## Summary
 TODO add a link to Activepieces property reference
