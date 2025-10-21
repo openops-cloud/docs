@@ -800,5 +800,25 @@ If we add the action and go to the properties pane, we can see the **Project** d
 
 ![The Project dropdown](/images/contributing/youtrack-change-status-project-property.png)
 
+### Adding an input property for an issue ID
+
+The next property we'll add to `prop` is an input field that allows the user to enter the numeric part of the ID of the issue that should be updated. This type of property is simple, declarative, and doesn't contain any custom logic:
+
+```ts
+props: {
+  ...
+  issueId: Property.Number({
+    displayName: 'Number from issue ID',
+    description: 'If issue ID is PRJ-47, enter 47 in this field',
+    required: true,
+  }),
+}
+```
+
+In the OpenOps UI, the user will be able to enter the value manually or use **Data Selector** to select a value from a previous step:
+
+![The issue ID input field](/images/contributing/youtrack-change-status-id-property.png)
+
+
 ## Summary
 TODO add a link to Activepieces property reference
