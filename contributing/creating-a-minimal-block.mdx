@@ -18,28 +18,27 @@ npm run cli blocks create
 
 You will be asked three questions to define your new block:
 
-1. `Block name`: Specify a name for your block. This name uniquely identifies your block within the OpenOps ecosystem.
-2. `Package name`: Optionally, you can enter a name for the npm package associated with your block. If left blank, the default name will be used, which is: `@openops/block-<block-name>`.
-3. `Authentication type`: select one of `None`, `Secret (API key)`, `Custom (custom properties)`, `OAuth2 (OAuth2 flow)`.
-4. `Create opinionated folder structure with stubs for actions, tests, and common service layer`: select one of `Yes - Create full folder structure with stubs`, `No - Create minimal structure only`.
+1. `Block name`: enter `my-unique-block`: a name that uniquely identifies your block in the OpenOps repository.
+2. `Package name`: optionally, you can enter a name for the npm package associated with your block. If left blank, the default name will be used, which is: `@openops/block-<block-name>`.
+3. `Authentication type`: select `None` for now as this minimal block will work with a publicly available API. Other options are `Secret (API key)`, `Custom (custom properties)`, and `OAuth2 (OAuth2 flow)`.
+4. `Create opinionated folder structure with stubs for actions, tests, and common service layer`: select `Yes - Create full folder structure with stubs`.
 
-OpenOps will generate a full project template inside `packages/blocks/<your-block-name>/`. This gives you everything you need to start writing, testing, and integrating your block.
-
-* Project metadata:
-    * **`package.json`** – Declares the block as an npm package, including its name, dependencies, and scripts.
-    * **`project.json`** – Nx configuration that tells the monorepo how to build, lint, and test the block.
-    * **`README.md`** – A starter readme where you should describe what the block does and how to use it.
-* TypeScript setup:
-    * **`tsconfig.json`** – Base TypeScript configuration for the block.
-    * **`tsconfig.lib.json`** – TypeScript settings for building the block’s library code.
-    * **`tsconfig.spec.json`** – TypeScript settings for compiling and running tests.
-    * **`tsconfig.base.json`** *(in the repo root, automatically updated)* – Keeps a central list of all projects; the CLI updates it to include your new block.
-* Tooling and quality:
-    * **`.eslintrc.json`** – ESLint rules for enforcing code style and catching errors.
-    * **`jest.config.ts`** – Configuration for Jest, the test runner used in the repo.
+OpenOps will generate a full project template inside `packages/blocks/<your-block-name>/`. The scaffolded files are as follows:
 * Source and tests:
-    * **`src/index.ts`** – The main entry point of your block. This is where you’ll define its metadata (name, display name, description) and register actions or triggers.
-    * **`test/index.test.ts`** – A starter Jest test file where you can add unit tests for your block.
+    * `src/index.ts`: the main entry point of your block. This is where you'll define its metadata (name, display name, description) and register actions.
+    * `test/index.test.ts`: a starter Jest test file where you can add unit tests for your block.
+* Project metadata:
+    * `package.json`: declares the block as an npm package.
+    * `project.json`: a configuration file for the Nx build system that OpenOps uses.
+    * `README.md`: a starter readme file where you should describe what the block does and how to use it.
+* Tooling and quality:
+    * `.eslintrc.json`: ESLint rules for enforcing code style and catching errors.
+    * `jest.config.ts`: configuration for Jest, the test runner that OpenOps uses.
+* TypeScript setup:
+    * `tsconfig.json`: base TypeScript configuration for the block.
+    * `tsconfig.lib.json`: TypeScript settings for the block's source code.
+    * `tsconfig.spec.json`: TypeScript settings for the block's tests.
+    * `tsconfig.base.json` (in the repo root): this file serves as a central list of all TypeScript settings, and the CLI updates it to include your new block.
 
 The `src/index.ts` file should contain the following code:
 
@@ -59,7 +58,7 @@ export const myUniqueBlock = createBlock({
 
 ## Create an action
 
-Now let's create first action that will make a simple GET request to [httpbin.org](https://httpbin.org/).
+Now let's create the first action that will make a simple GET request to [httpbin.org](https://httpbin.org/).
 
 ```bash
 npm run cli actions create
@@ -67,9 +66,9 @@ npm run cli actions create
 
 You will be asked three questions to define your new action:
 
-1. `Enter the block folder name`: this is the name associated with the folder where the action resides. Should be the folder of the block you've just created: `my-unique-block`.
-2. `Enter the action display name`: the name users see in the interface, conveying the action's purpose clearly. This is also used as the name of the file for the action.
-3. `Enter the action description`: a brief, informative text in the UI, guiding users about the action's function and purpose.
+1. `Enter the block folder name`: enter be the folder of the block you've just created: `my-unique-block`.
+2. `Enter the action display name`: enter the name of the action that users see in the OpenOps UI. This is also used as a base for the name of the file for the action. For this exercise, enter `My first action`.
+3. `Enter the action description`: this should be a brief but informative text in the UI, elaborating about the action's function and purpose. For this exercise, it's OK to enter `What this action does`.
 
 If the action display name is `My first action`, the CLI will create a new file named `my-first-action.ts` in the `packages/blocks/<your-block-name>/src/lib/actions` directory. The file should look like this:
 
@@ -110,15 +109,12 @@ export const myFirstAction = createAction({
 });
 ```
 
-The `createAction` function takes an object with several properties, including the `name`, `displayName`, `description`, `props`, and `run` function of the action.
-
-The `name` property is a unique identifier for the action. The `displayName` and `description` properties are used to provide a human-readable name and description for the action.
-
-The `props` property is an object that defines the properties that the action requires from the user. In this case, the action doesn't require any properties.
-
-The `run` function is the function that is called when the action is executed. It takes a single argument, context, which contains the values of the action's properties.
-
-The `run` function uses the `httpClient.sendRequest` function to make a GET request to [httpbin.org](https://httpbin.org/) and returns the response body.
+Here's what happens in the code above:
+* The `createAction` function takes an object with several properties, including the `name`, `displayName`, `description`, `props`, and `run` function of the action.
+* The `props` property is an object that defines the properties that the action needs the user to configure. In this case, the action doesn't require any properties.
+* The `run()` function is called when the action is executed. It takes a single argument, `context`, which contains the values of the action's properties. In this case, the action doesn't have any properties, and the `context` parameter remains unused.
+* The `run()` function uses the `httpClient` helper provided by OpenOps to make a GET request to [httpbin.org](https://httpbin.org/).
+* The `run()` function returns the body of the response to the GET request, and this is what the action provides as its final output.
 
 ## Reference the action in the block definition
 
@@ -145,10 +141,12 @@ Once you reference an action from your block definition and the running `npm sta
 
 ![Your action in OpenOps UI](/images/contributing/action-debuts-in-openops-ui.png)
 
-If you use the action, you can see that it doesn't contain any configurable properties so far. This is expected as you haven't defined them yet:
+If you use the action, you can see that it doesn't contain configurable properties apart from the two switches that OpenOps makes available to all actions. This is expected as you haven't defined any properties in your action:
 
 ![Action properties](/images/contributing/action-properties-none.png)
 
 If you go to the **Test** tab and click **Test Step**, you can see that it successfully returns a response of an API call to [httpbin.org](https://httpbin.org/):
 
 ![Testing the action](/images/contributing/action-testing.png)
+
+Congratulations! You've just created your first OpenOps block and action. The block doesn't do a lot, and if you're wondering how to develop a block that does something useful, such as implements a working integration with a third-party API, check out the [Contributing an Integration](/contributing/contributing-an-integration/) guide.
