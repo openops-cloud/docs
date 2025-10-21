@@ -547,7 +547,7 @@ As you can see, the scaffolding uses the `createAction()` helper function to def
 
 The `props` property is empty, which means there are no configuration options for the user to set. For this first action, this is fine: we'll add another action with configuration options later.
 
-### Adding the action logic
+### Adding action execution logic
 
 The scaffolded action has two prominent omissions:
 1. It doesn't have an `auth` property that references the block's authentication logic that we've implemented earlier.
@@ -914,5 +914,72 @@ If we select another project that has a different set of status values, the drop
 
 ![The New Status dropdown for a different project](/images/contributing/youtrack-change-status-status-property-2.png)
 
+### Adding action execution logic
+
+The last step is to add the logic that will be executed when the action is run. This logic will make a request to the YouTrack API to update the status of the issue. In doing so, it will use the inputs provided by the user in the properties we've added above.
+
+```ts
+async run(context) {
+  const { project, issueId, newStatus } = context.propsValue;
+  const { auth } = context;
+
+  const issueExistsResponse = await httpClient.sendRequest({
+    method: HttpMethod.GET,
+    url: `${auth.apiUrl}/api/issues/${project.shortName}-${issueId}?fields=id,summary,description,customFields(id,name,value(id,name))`,
+    headers: {
+      Authorization: `Bearer ${auth.apiKey}`,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const issueDbId = issueExistsResponse.body?.id;
+
+  if (!issueDbId) {
+    throw new Error(
+      'The issue does not exist. Please fix inputs to specify an existing issue',
+    );
+  } else {
+    const issueCustomField = issueExistsResponse.body?.customFields?.find(
+      (x: { id: string; $type: string }) => x.id === newStatus.bundle.id,
+    );
+
+    const updateIssueStatusResponse = await httpClient.sendRequest({
+      method: HttpMethod.POST,
+      url: `${auth.apiUrl}/api/issues/${issueDbId}?fields=id,numberInProject,project,summary,description,customFields(id,name,value(id,name))`,
+      headers: {
+        Authorization: `Bearer ${auth.apiKey}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: {
+        customFields: [
+          {
+            value: newStatus.newStatusValue,
+            id: issueCustomField.id,
+            $type: issueCustomField.$type,
+          },
+        ],
+      },
+    });
+
+    return updateIssueStatusResponse.body;
+  }
+}
+```
+
+Here's what's going on in this function:
+* The `run()` function receives the `context` object that contains lots of data about the current action and the workflow's execution state, including the block authentication (`context.auth`) and the values of all the action's properties (`context.propsValue`).
+* The first call to the YouTrack API is made to make sure that the specified issue exists. In that call, we're using the values of both the **Project** dropdown and the **Number from issue ID** input field.
+* If the issue exists, we're looking for a part of its data representing the status field. Once that is found, another YouTrack API call is made, this time to update the status to the value that was specified in the **New Status** dropdown.
+* The updated issue data is returned from the `run()` function, and this is what the user will see as the output of the executed action.
+
+If we go to the workflow editor now and test the action, here's the kind of output we should see:
+
+![The output of the Change Issue Status action](/images/contributing/youtrack-change-status-output.png)
+
+In this case, we're simply returning the body of the response from the YouTrack API, but it's entirely possible to return an object with a different shape, this is entirely up to you.
+
+TODO full resulting code of the action
 ## Summary
 TODO add a link to Activepieces property reference
