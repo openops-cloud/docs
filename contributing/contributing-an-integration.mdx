@@ -1,6 +1,6 @@
 ---
 title: 'Contributing an Integration'
-description: 'Developing a fully working OpenOps block to integrate with a third party service'
+description: 'Developing a fully working OpenOps block to integrate with a third-party service'
 icon: 'code'
 ---
 
@@ -12,7 +12,7 @@ The process of developing the YouTrack block will include:
 * Scaffolding the block and actions using the OpenOps CLI.
 * Implementing custom API key-based authentication that enables the user to set up a connection.
 * Developing a simple action that authenticates with YouTrack and retrieves data.
-* Developing an advanced action that involves several dynamic, interdependent properties, and updates a YouTrack issue.
+* Developing an advanced action that involves several dynamic, interdependent properties and updates a YouTrack issue.
 
 This is not a step-by-step guide. Instead, it's an overview that highlights prominent parts of the process that you can use to develop your own blocks.
 
@@ -26,19 +26,19 @@ npm run cli blocks create
 
 For a YouTrack integration, you would supply the following information to the CLI:
 
-1. `Block name`: "youtrack" (lowercase).
-2. `Package name`: leave blank to use the default name.
+1. `Block name`: `youtrack` (lowercase).
+2. `Package name`: leave blank to use the default.
 3. `Authentication type`: select `Custom (Custom properties)`.
 4. `Create opinionated folder structure with stubs for actions, tests, and common service layer`: select `Yes - Create full folder structure with stubs`.
 
-OpenOps generates a full project template inside `packages/blocks/youtrack/`, including `package.json`, TypeScript configuration files, ESLint and Jest configuration files, an entry point for the block at `src/index.ts` and a starter test file at `test/index.test.ts`.
+OpenOps generates a full project template inside `packages/blocks/youtrack/`, including `package.json`, TypeScript configuration files, ESLint and Jest configuration files, an entry point for the block at `src/index.ts`, and a starter test file at `test/index.test.ts`.
 
 Let's take a closer look at the generated files.
 
 ### src/index.ts
 
-`src/index.ts`  is the entry point to the new block. It uses the `createBlock()` function from the OpenOps block framework to create a new block. This function takes a number of arguments, of which the most important ones are:
-* `auth`: authentication implementation for the block. It defines which credentials the user needs to specify in your block's [connection](/cloud-access/access-levels-permissions) properties to authenticate with the API that the block integrates with.
+`src/index.ts` is the entry point to the new block. It uses the `createBlock()` function from the OpenOps block framework to create a new block. This function takes a number of arguments, of which the most important ones are:
+* `auth`: authentication implementation for the block. It defines which credentials the user needs to specify in the block's [connection](/cloud-access/access-levels-permissions) properties to authenticate with the API that the block integrates with.
 * `actions`: an array that contains the actions that the block exposes. The scaffolded version includes a predefined action that allows making a custom API call to the block's API.
 
 ```ts
@@ -72,9 +72,9 @@ export const youtrack = createBlock({
 
 ### src/lib/auth.ts
 
-Scaffolding generates a placeholder authentication implementation in a separate file. It uses a `CustomAuth()` helper function from the OpenOps block framework. The function takes several parameters, of which the most important ones are:
-* `props`: an object that defines the inputs necessary to authenticate with the service provider that the block integrates with.
-* `validate`: a function for optional validation of the inputs provided in `props`.
+Scaffolding generates a placeholder authentication implementation in a separate file. It uses the `CustomAuth()` helper function from the OpenOps block framework. The function takes several parameters, of which the most important ones are:
+* `props`: an object that defines the inputs required to authenticate with the service that the block integrates with.
+* `validate`: a function for optional validation of the inputs defined in `props`.
 
 ```ts
 import { BlockAuth, Property } from '@openops/blocks-framework';
@@ -105,7 +105,7 @@ export const youtrackAuth = BlockAuth.CustomAuth({
 
 ### Project files
 
-OpenOps uses [Nx](https://nx.dev/) as its build system, and `project.json` is the Nx project file that defines how the new block is built, tested, and linted in an Nx workspace. It sets the source root, output path, TypeScript config, package entry points, and assets, and declares executors for build (`@nx/js:tsc`), test (`@nx/jest:jest`), and lint (`@nx/eslint:lint`).
+OpenOps uses [Nx](https://nx.dev/) as its build system. The `project.json` file defines how the new block is built, tested, and linted within the Nx workspace. It specifies the source root, output path, TypeScript configuration, package entry points, and assets. It also declares executors for build (`@nx/js:tsc`), test (`@nx/jest:jest`), and lint (`@nx/eslint:lint`).
 
 ```json
 {
@@ -143,7 +143,7 @@ OpenOps uses [Nx](https://nx.dev/) as its build system, and `project.json` is th
 }
 ```
 
-`package.json` is a minimal metadata file declaring the block's name and version within the Nx workspace. Unlike typical npm packages and as opposed to the Activepieces extension practices, this file isn't meant for publication to the npm registry. Instead, it mainly helps Nx identify the project and marks the block as a versioned unit inside the larger repository.
+`package.json` is a minimal metadata file that declares the block's name and version within the Nx workspace. Unlike typical npm packages — and unlike the Activepieces extension practices — this file isn't meant for publication to the npm registry. Instead, it helps Nx identify the project and marks the block as a versioned unit within the larger repository.
 
 ```json
 {
@@ -152,11 +152,11 @@ OpenOps uses [Nx](https://nx.dev/) as its build system, and `project.json` is th
 }
 ```
 
-If you need extra dependencies for your block, such as an SDK for your service, you can later add them to the `dependencies` section of `package.json`.
+If your block requires additional dependencies, such as an SDK for the service you're integrating with, you can add them to the `dependencies` section of `package.json`.
 
 ### Test files
 
-`test/index.test.ts` is a stub Jest test fixture that includes a few sample tests for the block. Tests in this fixture can be executed by running `nx test blocks-youtrack`.
+`test/index.test.ts` is a stub Jest test fixture that includes a few sample tests for the block:
 
 ```ts
 import { youtrack } from '../src/index';
@@ -184,7 +184,9 @@ describe('block declaration tests', () => {
 });
 ```
 
-There's also a Jest configuration file, `jest.config.ts`, that inherits shared settings from OpenOps' Jest preset, references a TypeScript config file, defines recognized file extensions and specifies where to store code coverage reports:
+You can run these tests using `nx test blocks-youtrack`.
+
+There's also a Jest configuration file, `jest.config.ts`, which inherits shared settings from the OpenOps Jest preset, references a TypeScript config file, defines recognized file extensions, and specifies where to store code coverage reports:
 
 ```ts
 export default {
@@ -202,7 +204,7 @@ export default {
 
 ### TypeScript configuration files
 
-Scaffolding generates three TypeScript configuration files: `tsconfig.json`, `tsconfig.lib.json`, and `tsconfig.spec.json`
+Scaffolding generates three TypeScript configuration files: `tsconfig.json`, `tsconfig.lib.json`, and `tsconfig.spec.json`.
 
 `tsconfig.json` is the base config for the block. It extends the workspace's root `tsconfig.base.json` and enforces strict compiler options but doesn't include any source files directly. Instead, it references the other two config files, serving as an entry point for both:
 
@@ -247,7 +249,7 @@ Scaffolding generates three TypeScript configuration files: `tsconfig.json`, `ts
 }
 ```
 
-`tsconfig.spec.json` is tailored for testing. It includes test and declaration files and sets up Jest typings:
+`tsconfig.spec.json` is tailored for testing. It includes test and declaration files and configures Jest typings:
 
 ```json
 {
@@ -268,25 +270,25 @@ Scaffolding generates three TypeScript configuration files: `tsconfig.json`, `ts
 
 ### Other files
 
-`.eslintrc.json` defines JavaScript and TypeScript linting behavior for the block, extending the OpenOps repository's root ESLint configuration. The `overrides` section provides placeholders for block-specific linting rules in case you feel like introducing them.
+`.eslintrc.json` defines JavaScript and TypeScript linting behavior for the block, extending the OpenOps repository's root ESLint configuration. The `overrides` section provides placeholders for block-specific linting rules if you want to introduce them.
 
 `README.md` stubs out documentation for the block.
 
 ## Post-scaffolding cleanup
 
-OpenOps may alter the spelling of your block's display name when running scaffolding, so you may want to review this and run search and replace if needed. With YouTrack, it didn't use the proper casing for the product name, using "Youtrack" instead of "YouTrack".
+OpenOps may alter the spelling of your block's display name during scaffolding, so review this and run search and replace if needed. For example, with YouTrack it didn't use the proper casing for the product name, generating "Youtrack" instead of "YouTrack".
 
-Note that OpenOps also generates a stub logo URL at the static.openops.com domain, which doesn't exist. To see your product's logo in the OpenOps UI during development, consider replacing the stub logo URL with a URL on a server that you control. For example, for YouTrack, the https://static.openops.com/blocks/youtrack.png stub URL can be replaced with a [live YouTrack logo URL](https://resources.jetbrains.com/storage/products/company/brand/logos/YouTrack_icon.png). Alternatively, you can keep the stub as is and ask OpenOps to upload your logo when you open a PR.
+OpenOps also generates a stub logo URL at the `static.openops.com` domain, which doesn't exist. To see your product's logo in the OpenOps UI during development, replace the stub logo URL with a URL you control. For example, for YouTrack, the stub URL `https://static.openops.com/blocks/youtrack.png` can be replaced with a [live YouTrack logo URL](https://resources.jetbrains.com/storage/products/company/brand/logos/YouTrack_icon.png). Alternatively, you can leave the stub as is and ask OpenOps to upload your logo when you open a PR.
 
-Even this basic scaffolding introduces the new block to the OpenOps UI, even though the block doesn't do much yet. Here's what you can see at this point if you run `npm run start` and open the OpenOps frontend at http://localhost:4200/ in your browser:
+Even this basic scaffolding introduces the new block to the OpenOps UI, though the block doesn't do much yet. Here's what you can see at this point if you run `npm run start` and open the OpenOps frontend at http://localhost:4200/ in your browser:
 
 ![The scaffolded block in OpenOps UI](/images/contributing/youtrack-in-the-ui.png)
 
 ## Implementing authentication (and getting a connection for free)
 
-Now that you have a block, you could get right to building its actions. However, unless your block interacts with a publicly accessible API, you need to provide the user with a way to authenticate with the API that your block is built upon. How you implement authentication defines what the user will see when they try to create a new [connection](/cloud-access/access-levels-permissions) for your block.
+Now that you have a block, you could start building its actions. However, unless your block interacts with a publicly accessible API, you need to provide the user with a way to authenticate with the API that your block is built on. How you implement authentication defines what the user sees when they try to create a new [connection](/cloud-access/access-levels-permissions) for your block.
 
-Scaffolding generated a placeholder authentication implementation and referenced it from the YouTrack block's entry point. What's left to do is implement the actual authentication logic in the `src/lib/auth.ts` file. As a reminder, here's what the scaffolded file initially looked like:
+Scaffolding generated a placeholder authentication implementation and referenced it from the YouTrack block's entry point. What's left is to implement the actual authentication logic in the `src/lib/auth.ts` file. As a reminder, here's what the scaffolded file initially looked like:
 
 ```ts
 import { BlockAuth, Property } from '@openops/blocks-framework';
@@ -315,15 +317,15 @@ export const youtrackAuth = BlockAuth.CustomAuth({
 });
 ```
 
-As you can see, this block uses a `CustomAuth()` helper function to define YouTrack authentication. There are other [types of authentication](/contributing/authentication/), but `CustomAuth()` works best for YouTrack because apart from an API key, the user needs to specify a base URL as YouTrack can be cloud-hosted by JetBrains, with a base URL different for each cloud instance, or self-hosted by customers.
+As you can see, this block uses the `CustomAuth()` helper function to define YouTrack authentication. There are other [types of authentication](/contributing/authentication/), but `CustomAuth()` works best for YouTrack because, in addition to an API key, the user needs to specify a base URL. YouTrack can be cloud-hosted by JetBrains, with a unique base URL for each cloud instance, or self-hosted by customers.
 
-The values of `authProviderKey`, `authProviderDisplayName`, `authProviderLogoUrl` and `required` properties are just fine as they are. What needs to be changed are the values of `props`, `validate`, and `description`. Let's start with `props`.
+The values of the `authProviderKey`, `authProviderDisplayName`, `authProviderLogoUrl`, and `required` properties are fine as they are. What needs to be changed are the values of `props`, `validate`, and `description`. Let's start with `props`.
 
 ### Defining connection properties
 
-`props` defines the inputs necessary to authenticate with the service provider that the block integrates with. Each of these inputs is an OpenOps UI component that can be a regular or a masked input field, a checkbox, a dropdown, and more. To learn more about the component library, see [Activepieces documentation](https://www.activepieces.com/docs/developers/piece-reference/properties). This component library is not only used in defining connections, but also in actions that a block exposes.
+`props` defines the inputs required to authenticate with the service provider that the block integrates with. Each of these inputs is an OpenOps UI component: it can be a regular or masked input field, a checkbox, a dropdown, and more. To learn more about the component library, see the [Activepieces documentation](https://www.activepieces.com/docs/developers/piece-reference/properties). This component library is used not only for defining connections but also for defining the actions that a block exposes.
 
-The first property, `apiKey`, is for the user to provide a YouTrack API key a.k.a. a permanent token. The scaffolded version of this property uses a `SecretText` property type, which is a masked input field, and it's just what we need to this kind of data. Let's expand the scaffolded version of the property to include a description:
+The first property, `apiKey`, is for the user to provide a YouTrack API key (a.k.a. permanent token). The scaffolded version of this property uses the `SecretText` property type, which is a masked input field, and it's exactly what we need for this kind of data. Let's expand the scaffolded version of the property to include a description:
 
 ```ts
 apiKey: Property.SecretText({
@@ -334,7 +336,7 @@ apiKey: Property.SecretText({
 })
 ````
 
-The second property, `apiUrl`, is for the user to provide a base URL for their YouTrack instance. This property is a regular input field. The scaffolded version is a good start, but we can improve it by adding a better description, providing a default value, and using a predefined validation rule for URLs:
+The second property, `apiUrl`, is for the user to provide the base URL of their YouTrack instance. This property is a regular input field. The scaffolded version is a good start, but we can improve it by adding a clearer description, providing a default value, and using a predefined validation rule for URLs:
 
 ```ts
 apiUrl: Property.ShortText({
@@ -353,13 +355,13 @@ Note that for this to compile, we need to extend the import from the `@openops/b
 import { BlockAuth, Property, Validators } from '@openops/blocks-framework';
 ```
 
-`Validators.url` is not the only predefined validation rule. OpenOps provides an array of ready-to-use validation rules for value ranges, dates, emails, phone numbers, image formats, and more.
+`Validators.url` is not the only predefined validation rule. OpenOps provides a set of ready-to-use validation rules for value ranges, dates, emails, phone numbers, image formats, and more.
 
 ### Adding custom validation
 
-Adding predefined validation rules to properties is one way of enforcing a certain format or pattern for user input. You can also add custom validation rules using the `validate()` function.
+Adding predefined validation rules to properties is one way to enforce a specific format or pattern for user input. You can also add custom validation rules using the `validate()` function.
 
-Some blocks, such as [Linear](https://github.com/openops-cloud/openops/blob/7fad45c16a0ab4a01eaa5a2b9b50d304effc9f83/packages/blocks/linear/src/index.ts#L29C1-L39C5), use `validate()` to make sure that the API key confirms to a specific format. With YouTrack, there's no need to do this. Instead, it's reasonable to check that the base URL doesn't have a trailing slash as YouTrack doesn't normalize URLs with double slashes. Here's how this could be done:
+Some blocks, such as [Linear](https://github.com/openops-cloud/openops/blob/7fad45c16a0ab4a01eaa5a2b9b50d304effc9f83/packages/blocks/linear/src/index.ts#L29C1-L39C5), use `validate()` to ensure that the API key conforms to a specific format. With YouTrack, there's no need for this. Instead, it makes sense to check that the base URL doesn't have a trailing slash, since YouTrack doesn't normalize URLs with double slashes. Here's how this could be done:
 
 ```ts
 validate: async ({ auth }) => {
@@ -374,16 +376,15 @@ validate: async ({ auth }) => {
 }
 ```
 
-The `auth` object passed to `validate()` contains the values of all the properties that the user has provided. This lets you introduce any additional checks on `auth.apiUrl`, which holds the entered base URL value.
+The `auth` object passed to `validate()` contains the values of all the properties provided by the user. This lets you introduce additional checks on `auth.apiUrl`, which holds the entered base URL.
 
-You could also use `validate()` to try to authenticate the user with a given API key. For example, the
-[ServiceNow](https://github.com/openops-cloud/openops/blob/7fad45c16a0ab4a01eaa5a2b9b50d304effc9f83/packages/blocks/servicenow/src/lib/auth.ts#L34C1-L54C5) and [Umbrella](https://github.com/openops-cloud/openops/blob/7fad45c16a0ab4a01eaa5a2b9b50d304effc9f83/packages/blocks/anodot/src/lib/anodot-auth-property.ts#L37C1-L64C5) blocks make sample requests to their APIs to tell the user right away if authentication fails.
+You could also use `validate()` to try authenticating the user with a given API key. For example, the [ServiceNow](https://github.com/openops-cloud/openops/blob/7fad45c16a0ab4a01eaa5a2b9b50d304effc9f83/packages/blocks/servicenow/src/lib/auth.ts#L34C1-L54C5) and [Umbrella](https://github.com/openops-cloud/openops/blob/7fad45c16a0ab4a01eaa5a2b9b50d304effc9f83/packages/blocks/anodot/src/lib/anodot-auth-property.ts#L37C1-L64C5) blocks make sample requests to their APIs to let the user know immediately if authentication fails.
 
 ### Adding a Markdown description
 
-When a user sets up a connection, they don't necessarily know right away how to obtain an API key or a different value that they're expected to enter during connection setup.
+When a user sets up a connection, they may not immediately know how to obtain an API key or another value required during connection setup.
 
-To guide them, use the `description` property. The best part about this property is that it's not limited to plain text; instead, you can provide a Markdown-formatted string, and OpenOps will render it in the connection UI, between the title and the first input.
+To guide them, use the `description` property. The best part about this property is that it isn't limited to plain text — you can provide a Markdown-formatted string, and OpenOps will render it in the connection UI, between the title and the first input.
 
 For YouTrack, a Markdown description could look like this:
 
@@ -399,7 +400,7 @@ To get your YouTrack API key:
 7. Copy the token to your clipboard.`;
 ```
 
-When providing a description as a separate variable as shown here, remember to assign the variable to the `description` property:
+When providing a description as a separate variable, as shown here, remember to assign that variable to the `description` property:
 
 ```ts
 description: markdown
@@ -407,7 +408,7 @@ description: markdown
 
 ### Adding an interface
 
-The last thing to do in the `src/lib/auth.ts` file is to define an interface for the two authentication properties. This interface will be imported in files defining the block's actions to provide typing to the parameters of the actions.
+The last step in the `src/lib/auth.ts` file is to define an interface for the two authentication properties. This interface will be imported into the files that define the block's actions to provide typing for the action parameters.
 
 For YouTrack authentication, the interface could look like this:
 
@@ -476,25 +477,25 @@ export interface YouTrackAuth {
 }
 ```
 
-With this code, if the user chooses to create a new connection in OpenOps, they will see a connection type for YouTrack:
+With this code, if the user creates a new connection in OpenOps, they will see a connection type for YouTrack:
 
 ![A YouTrack connection type in OpenOps UI](/images/contributing/youtrack-connection-type.png)
 
-When they click the YouTrack logo, they will see a connection dialog with a properly rendered Markdown description and three input fields. The **Connection name** field is predefined and prefilled with a suggested name of the connection. The other two fields, **API key** and **Base URL**, are the two properties that we defined earlier:
+When they click the YouTrack logo, a connection dialog appears with a properly rendered Markdown description and three input fields. The **Connection name** field is predefined and prefilled with a suggested name for the connection. The other two fields, **API key** and **Base URL**, are the properties we defined earlier:
 
 ![A YouTrack connection dialog](/images/contributing/youtrack-connection-dialog.png)
 
-If the user enters a base URL with a trailing slash, the connection dialog will execute the validation logic we've defined above and show an error message:
+If the user enters a base URL with a trailing slash, the connection dialog executes the validation logic defined above and shows an error message:
 
 ![Base URL validation error](/images/contributing/youtrack-connection-validation.png)
 
 ## Adding a simple action
 
-We have a block, we've implemented authenticaton, and now it's time to proceed to developing the meat of every integration: actions.
+We have a block, we've implemented authentication, and now it's time to move on to the core of every integration: actions.
 
 ### Removing the default action
 
-When you scaffold a block, OpenOps adds an action called "Custom API Call". While we could tweak it to make it work for YouTrack, let's instead remove it and create a new action from scratch.
+When you scaffold a block, OpenOps adds an action called **Custom API Call**. While we could tweak it to work for YouTrack, let's instead remove it and create a new action from scratch.
 
 After removing the scaffolded action, the `src/index.ts` file looks like this:
 
@@ -516,23 +517,23 @@ export const youtrack = createBlock({
 });
 ```
 
-The `actions` array is now empty. As soon as we have an action, we'll need to add a reference to it there.
+The `actions` array is now empty. Once we create an action, we'll need to add a reference to it there.
 
 ### Scaffolding the new action
 
-OpenOps provides scaffolding for actions, too, so let's run this in the terminal:
+OpenOps provides scaffolding for actions as well, so let's run this in the terminal:
 
 ```bash
 npm run cli actions create
 ```
 
-The CLI asks three questions to help define the new action:
+The CLI asks three questions to define the new action:
 
-1. `Enter the block folder name`: this should be the folder where the block for the new action resides. For the existing YouTrack block, the value shoud be `youtrack`
-2. `Enter the action display name`: this should be a human-readable name for the action that users will see in the UI, and it's  also used to name a file for the action. We want to create an action that simply lists issues in a YouTrack instance, so let's call it `Get all issues`.
-3. `Enter the action description`: this should be a brief, informative text to show in the UI to explain the function and purpose of the action. Let's use the following: `Retrieves all issues from a YouTrack instance`.
+1. `Enter the block folder name`: the folder where the block for the new action resides. For the existing YouTrack block, the value should be `youtrack`.
+2. `Enter the action display name`: a human-readable name for the action that users will see in the UI. It's also used to name the action's file. In this case, we want an action that lists issues in a YouTrack instance, so let's call it `Get all issues`.
+3. `Enter the action description`: a brief, informative text shown in the UI to explain the action's function and purpose. Let's enter `Retrieves all issues from a YouTrack instance`.
 
-With these values, the CLI scaffolds the action in a new file called `get-all-issues.ts` in the YouTrack block's `/src/lib/actions` directory. The file initially looks like this:
+With these values, the CLI scaffolds the action in a new file named `get-all-issues.ts` in the YouTrack block's `/src/lib/actions` directory. The file initially looks like this:
 
 ```ts
 import { createAction, Property } from '@openops/blocks-framework';
@@ -549,15 +550,15 @@ export const getAllIssues = createAction({
 });
 ```
 
-As you can see, the scaffolding uses the `createAction()` helper function to define the action. The values of `displayName` and `description` are the same as we provided in the CLI.
+As you can see, the scaffolding uses the `createAction()` helper function to define the action. The values of `displayName` and `description` are the same as the values provided in the CLI.
 
-The `props` property is empty, which means there are no configuration options for the user to set. For this first action, this is fine: we'll add another action with configuration options later.
+The `props` property is empty, which means there are no configuration options for the user to set. For this first action, that's fine; we'll add another action with configuration options later.
 
 ### Adding action execution logic
 
 The scaffolded action has two prominent omissions:
-1. It doesn't have an `auth` property that references the block's authentication logic that we've implemented earlier.
-2. Its `run()` function that should define the action logic is empty.
+1. It doesn't have an `auth` property referencing the block's authentication logic implemented earlier.
+2. Its `run()` function, which should define the action logic, is empty.
 
 Let's fix these two issues by replacing the scaffolded version with the following:
 
@@ -606,14 +607,14 @@ export const getAllIssues = createAction({
 ```
 
 Here's what's changed:
-1. The action now has an `auth` property that references the block's authentication logic. Both the authentication logic and the interface for it are imported from the block's `auth.ts` file.
+1. The action now has an `auth` property that references the block's authentication logic. Both the authentication logic and its interface are imported from the block's `auth.ts` file.
 2. The `run()` function now makes a request to a YouTrack API endpoint to retrieve the first 10 unresolved issues.
-3. In making the API call, the `run()` function makes use of the imported `httpClient` constant, which is an OpenOps-provided wrapper over the Axios HTTP client. Some blocks, such as [Linear](http://github.com/openops-cloud/openops/blob/main/packages/blocks/linear/src/lib/common/client.ts) and [Jira](https://github.com/openops-cloud/openops/blob/main/packages/blocks/jira-cloud/src/lib/common/index.ts), create separate functions to make HTTP requests to their APIs. This can be helpful for providing extra error handling or making use of existing SDKs, but for YouTrack, we can just use the `httpClient` directly.
-4. The `return` statement of the `run()` function is what the user will see as the output of running the action. The format of the returned object is up to the block author. In this case, we're returning an object with two properties: `_debug` and `issues`. The `_debug` property is a container for debugging information that can be useful for troubleshooting during development. The `issues` property is an array of issues that the action retrieved from the YouTrack instance.
+3. To make the API call, the `run()` function uses the imported `httpClient` constant, which is an OpenOps-provided wrapper around the Axios HTTP client. Some blocks, such as [Linear](http://github.com/openops-cloud/openops/blob/main/packages/blocks/linear/src/lib/common/client.ts) and [Jira](https://github.com/openops-cloud/openops/blob/main/packages/blocks/jira-cloud/src/lib/common/index.ts), create separate functions for making HTTP requests to their APIs. This can be useful for providing extra error handling or leveraging existing SDKs, but for YouTrack, we can just use `httpClient` directly.
+4. The `return` statement of the `run()` function defines what the user sees as the output of the action. The format of the returned object is up to the block author. In this case, we're returning an object with two properties: `_debug` and `issues`. The `_debug` property is a container for debugging information useful during development. The `issues` property is an array of issues retrieved from the YouTrack instance.
 
 ### Referencing the action from the block definition
 
-Before we can test the action, we need to add it to the block's definition. Back in the `src/index.ts` file, we need to import this action and add it to the `actions` array:
+Before testing the action, we need to add it to the block's definition. In the `src/index.ts` file, we need to import the action and add it to the `actions` array:
 
 ```ts
 import { createBlock } from '@openops/blocks-framework';
@@ -636,17 +637,17 @@ export const youtrack = createBlock({
 
 ### Testing the action
 
-Let's see what happens in the OpenOps UI now that we have the action in place.
+Let's see what happens in the OpenOps UI now that the action is in place.
 
-First, the action is now visible in the workflow editor and available for selection:
+First, the action is visible in the workflow editor and available for selection:
 
 ![The Get All Issues action in the workflow editor](/images/contributing/youtrack-get-all-issues-action-selector.png)
 
-In the **Configure** tab of the action's properties pane, there's a connection selector, which comes for free because the action requires authentication. There are also two toggles, **Continue on Failure** and **Retry on Failure**, which are available for all actions. There are no properties specific to this action as we have not defined any.
+In the **Configure** tab of the action's properties pane, there's a connection selector, which is provided automatically because the action requires authentication. There are also two toggles, **Continue on Failure** and **Retry on Failure**, which are available for all actions. There are no properties specific to this action since we haven't defined any.
 
 ![The properties pane for Get All Issues](/images/contributing/youtrack-get-all-issues-properties-pane.png)
 
-If we go to the **Test** tab and click **Test Step**, the action will connect to the YouTrack instance configured in the connection and return results in the format defined by the return statement in the action's `run()` function:
+If we go to the **Test** tab and click **Test Step**, the action connects to the YouTrack instance configured in the connection and returns results in the format defined by the `return` statement in the action's `run()` function:
 
 ![The output of the Get All Issues action](/images/contributing/youtrack-get-all-issues-output.png)
 
@@ -654,7 +655,7 @@ If we go to the **Test** tab and click **Test Step**, the action will connect to
 
 We've seen how to create a simple action that doesn't require any configuration. More often than not, real-world actions do require the user to enter or select values in the properties pane, and the values of these properties often depend on one another.
 
-For a YouTrack integration, it would make sense to enable the user not only to get the list of issues, but also to update specific issues. Let's add a new action that allows the user to change the status of an issue. This action will include several configurable properties, and one of these properties will depend on the value of another property.
+For a YouTrack integration, it makes sense to enable the user not only to get the list of issues but also to update specific issues. Let's add a new action that allows the user to change the status of an issue. This action will include several configurable properties, and one of these properties will depend on the value of another.
 
 ### Scaffolding the new action
 
@@ -664,13 +665,13 @@ First, let's use the OpenOps scaffolding to create a stub for the new action:
 npm run cli actions create
 ```
 
-The values to feed to the CLI will be as follows:
+The values to provide to the CLI are as follows:
 
-1. `Enter the block folder name`: same as before, this should be `youtrack`.
+1. `Enter the block folder name`: as before, this should be `youtrack`.
 2. `Enter the action display name`: let's call the new action `Change issue status`.
 3. `Enter the action description`: let's describe the action as `Updates the status of a given issue`.
 
-With these values, the CLI scaffolds the action in a new file called `change-issue-status.ts` in the YouTrack block's `/src/lib/actions` directory:
+With these values, the CLI scaffolds the action in a new file named `change-issue-status.ts` in the YouTrack block's `/src/lib/actions` directory:
 
 ```ts
 import { createAction, Property } from '@openops/blocks-framework';
@@ -713,7 +714,7 @@ export const youtrack = createBlock({
 
 ### Adding authentication and imports
 
-Back in the action file, let's start by referencing the authentication logic we've defined earlier. While we're at it, let's also import the `YouTrackAuth` interface, as well as the HTTP client that OpenOps provides:
+Back in the action file, let's start by referencing the authentication logic we defined earlier. While we're at it, let's also import the `YouTrackAuth` interface, along with the HTTP client that OpenOps provides:
 
 ```ts
 import { httpClient, HttpMethod } from '@openops/blocks-common';
@@ -737,7 +738,7 @@ export const changeIssueStatus = createAction({
 
 Before adding properties, let's define an interface for the YouTrack project that the issue being updated belongs to. We'll use it both in the property that helps select a project and in another property that depends on it.
 
-We could create the interface in a separate file, but placing it at the end of the `change-issue-status.ts` file should work, too:
+We could create the interface in a separate file, but placing it at the end of the `change-issue-status.ts` file works just as well:
 
 ```ts
 interface YouTrackProject {
@@ -749,7 +750,7 @@ interface YouTrackProject {
 
 ### Adding a dropdown property to select a project
 
-We can now add the first property to the `props` parameter of `createAction()`. It will represent a dropdown allowing the user to select a YouTrack project that the issue being updated belongs to:
+We can now add the first property to the `props` parameter of `createAction()`. This property represents a dropdown that lets the user select a YouTrack project that the issue being updated belongs to:
 
 ```ts
 props: {
@@ -790,25 +791,25 @@ props: {
 ```
 
 Here's what happens inside the `project` property:
-* `displayName` is how the dropdown that this property represents will be named in the UI.
-* `required` marks this property as required. The action will not work unless the user has selected a value.
-* `refreshers` defines when the values of this property should be re-evaluated. The value `auth` in this array means that this property should only refresh when the connection that this action uses changes.
-* `options()` defines the logic of how the values of this property should be populated. A quick check on the value of the `auth` property allows returning an empty set of values when a connection is not defined.
-* If a connection is defined, then it's OK to make a request to the YouTrack API that gets the list of projects that exist in the connected YouTrack instance.
-* When the YouTrack API request succeeds, its response is transformed into an array of objects that represent the projects. Each object has two properties: `label` and `value`. The `label` property is the text that will be shown in dropdown items, representing the name of each found YouTrack project. The `value` property contains more information about the project retrieved from the API, including its ID and short name — these will be useful later when passed to another property.
-* The array is put into the `options` property of a new object that serves as the return value of the `options()` function.
+* `displayName` is how the dropdown for this property is labeled in the UI.
+* `required` marks this property as required. The action will not run unless the user selects a value.
+* `refreshers` defines when the values of this property should be re-evaluated. The value `auth` in this array means that this property refreshes only when the connection used by this action changes.
+* `options()` defines the logic for populating the values of this property. A quick check on the value of the `auth` property allows returning an empty set of values when no connection is defined.
+* If a connection is defined, it's safe to make a request to the YouTrack API to retrieve the list of projects in the connected YouTrack instance.
+* When the YouTrack API request succeeds, its response is transformed into an array of objects representing the projects. Each object has two properties: `label` and `value`. The `label` property is the text shown in dropdown items, representing the name of each YouTrack project. The `value` property contains additional information about the project retrieved from the API, including its ID and short name — these will be useful later when passed to another property.
+* The array is assigned to the `options` property of a new object that serves as the return value of the `options()` function.
 
 If we launch OpenOps, we can see that the new action is now available in the workflow editor:
 
 ![The Change Issue Status action](/images/contributing/youtrack-change-status-action-selector.png)
 
-If we add the action and go to the properties pane, we can see the **Project** dropdown that lists the projects available in the connected YouTrack instance:
+If we add the action and open the properties pane, we can see the **Project** dropdown listing the projects available in the connected YouTrack instance:
 
 ![The Project dropdown](/images/contributing/youtrack-change-status-project-property.png)
 
 ### Adding an input property for an issue ID
 
-The next property we'll add to `prop` is an input field that allows the user to enter the numeric part of the ID of the issue that should be updated. This type of property is simple, declarative, and doesn't contain any custom logic:
+The next property we'll add to `props` is an input field that lets the user enter the numeric part of the ID of the issue to update. This type of property is simple, declarative, and doesn't contain any custom logic:
 
 ```ts
 props: {
@@ -821,13 +822,13 @@ props: {
 }
 ```
 
-In the OpenOps UI, the user will be able to enter the value manually or use **Data Selector** to select a value from a previous step:
+In the OpenOps UI, the user can either enter the value manually or use **Data Selector** to select a value from a previous step:
 
 ![The issue ID input field](/images/contributing/youtrack-change-status-id-property.png)
 
 ### Adding a dropdown property for the new status
 
-The final property we'll add to `prop` is another dropdown that allows the user to select the new status for the issue. This property will show different values depending on what's selected in the **Project** dropdown.
+The final property we'll add to `props` is another dropdown that lets the user select the new status for the issue. This property shows different values depending on what's selected in the **Project** dropdown.
 
 ```ts
 props: {
@@ -905,24 +906,24 @@ props: {
 }
 ```
 
-It's quite a lot of code, but most of it has to do with the specifics of the YouTrack API. Let's see what exactly is going on here:
-* The `refreshers` array contains `project`, meaning that this dropdown will refresh every time a new value is selected in the **Project** dropdown. This is exactly what we want because different projects will have different status values.
-* The `options()` function receives two parameters: `auth` represents the block authentication and `project` holds the object representing the selected project. Remember the `value` property that we returned from `options()` of the `project` property? That's what the `project` parameter here contains.
-* If either of the parameters is undefined, meaning a connection is not configured or a project is not selected, we quickly make the dropdown disabled.
-* Two calls are made to YouTrack API endpoints to get the list of status values in the selected project. The first of these calls takes advantage of the `project` parameter that reflects the selected value of the **Project** dropdown. If the project doesn't have a Status field, the dropdown is disabled and a placeholder is shown.
-* Once the list of status values is obtained, it's returned as an array in the `options` property representing dropdown items. The `label` is the name of each status to be shown in the dropdown, and `value` contains additional data that will be used later when the action is executed.
+It's quite a lot of code, but most of it deals with the specifics of the YouTrack API. Let's break down what's happening here:
+* The `refreshers` array contains `project`, meaning this dropdown refreshes every time a new value is selected in the **Project** dropdown. This is exactly what we want because different projects have different status values.
+* The `options()` function receives two parameters: `auth`, which represents the block authentication, and `project`, which holds the object representing the selected project. Remember the `value` property we returned from the `options()` of the `project` property? That's what the `project` parameter contains here.
+* If either parameter is undefined — meaning a connection isn't configured or a project isn't selected — the dropdown is disabled.
+* Two calls are made to YouTrack API endpoints to retrieve the list of status values in the selected project. The first call uses the `project` parameter, which reflects the selected value of the **Project** dropdown. If the project doesn't have a Status field, the dropdown is disabled and a placeholder is shown.
+* Once the list of status values is obtained, it's returned as an array in the `options` property representing the dropdown items. The `label` is the name of each status shown in the dropdown, and `value` contains additional data that will be used later when the action is executed.
 
-Looking at the OpenOps UI now, we can see that the **New Status** dropdown is available and list status value for the selected project:
+Looking at the OpenOps UI now, we can see that the **New Status** dropdown is available and lists status values for the selected project:
 
 ![The New Status dropdown](/images/contributing/youtrack-change-status-status-property-1.png)
 
-If we select another project that has a different set of status values, the dropdown is updated accordingly:
+If we select another project with a different set of status values, the dropdown updates accordingly:
 
 ![The New Status dropdown for a different project](/images/contributing/youtrack-change-status-status-property-2.png)
 
 ### Adding action execution logic
 
-The last step is to add the logic that will be executed when the action is run. This logic will make a request to the YouTrack API to update the status of the issue. In doing so, it will use the inputs provided by the user in the properties we've added above.
+The last step is to add the logic executed when the action runs. This logic makes a request to the YouTrack API to update the issue's status, using the inputs provided by the user in the properties we added above.
 
 ```ts
 async run(context) {
@@ -974,19 +975,19 @@ async run(context) {
 }
 ```
 
-Here's what's going on in this function:
-* The `run()` function receives the `context` object that contains lots of data about the current action and the workflow's execution state, including the block authentication (`context.auth`) and the values of all the action's properties (`context.propsValue`).
-* The first call to the YouTrack API is made to make sure that the specified issue exists. In that call, we're using the values of both the **Project** dropdown and the **Number from issue ID** input field.
-* If the issue exists, we're looking for a part of its data representing the status field. Once that is found, another YouTrack API call is made, this time to update the status to the value that was specified in the **New Status** dropdown.
-* The updated issue data is returned from the `run()` function, and this is what the user will see as the output of the executed action.
+Here's what's happening in this function:
+* The `run()` function receives the `context` object, which contains extensive data about the current action and the workflow's execution state, including the block authentication (`context.auth`) and the values of all the action's properties (`context.propsValue`).
+* The first call to the YouTrack API checks that the specified issue exists. In that call, we're using the values from both the **Project** dropdown and the **Number from issue ID** input field.
+* If the issue exists, we look for the part of its data that represents the status field. Once found, another YouTrack API call updates the status to the value specified in the **New Status** dropdown.
+* The updated issue data is returned from the `run()` function, and this is what the user sees as the output of the executed action.
 
 If we go to the workflow editor now and test the action, here's the kind of output we should see:
 
 ![The output of the Change Issue Status action](/images/contributing/youtrack-change-status-output.png)
 
-In this case, we're simply returning the body of the response from the YouTrack API, but it's entirely possible to return an object with a different shape, this is entirely up to you.
+In this case, we're simply returning the body of the response from the YouTrack API, but you could return an object with a different shape. That's entirely up to you.
 
-This wraps up the "Change issue status" action. Since it used a few dynamic properties, and the YouTrack API isn't always succinct, the code for the action is fairly long. Here's the full listing of the resulting `change-issue-status.ts` file:
+This wraps up the **Change issue status** action. Since it uses several dynamic properties and the YouTrack API isn't always succinct, the code for the action is fairly long. Here's the full listing of the resulting `change-issue-status.ts` file:
 
 <Expandable title="Change Issue Status action code">
 ```ts
@@ -1169,9 +1170,9 @@ interface YouTrackProject {
 
 ## Summary
 
-This guide walked you through creating a fully functional third-party integration for OpenOps by building a JetBrains YouTrack block with two actions. You have learned more techniques involved in developing OpenOps blocks, including:
+This guide walked you through creating a fully functional third-party integration for OpenOps by building a JetBrains YouTrack block with two actions. Along the way, you learned techniques involved in developing OpenOps blocks, including:
 * Implementing custom authentication that requires specifying an API key and a base URL. To learn more about authentication types that OpenOps supports, see [Authentication](/contributing/authentication/).
-* Adding configuration properties to actions, including dynamic, interdependent properties. To learn more about property types that OpenOps supports by virtue of being based on Activepieces, see [Props](https://www.activepieces.com/docs/developers/piece-reference/properties) in Activepieces documentation.
-* Using values returned by properties in other properties as well as in the action's execution logic.
+* Adding configuration properties to actions, including dynamic, interdependent properties. To learn more about property types that OpenOps supports, see [Props](https://www.activepieces.com/docs/developers/piece-reference/properties) in the Activepieces documentation.
+* Using values returned by properties in other properties, as well as in the action's execution logic.
 
-To learn more about the internals of OpenOps blocks, consider exploring the [code of existing blocks](https://github.com/openops-cloud/openops/tree/main/packages/blocks) or past pull requests that added new blocks, such as [Ternary](https://github.com/openops-cloud/openops/pull/326), [ServiceNow](https://github.com/openops-cloud/openops/pull/1078), and [nOps.io](https://github.com/openops-cloud/openops/pull/1403).
+To dive deeper into the internals of OpenOps blocks, explore the [code of existing blocks](https://github.com/openops-cloud/openops/tree/main/packages/blocks) or review past pull requests that added new blocks, such as [Ternary](https://github.com/openops-cloud/openops/pull/326), [ServiceNow](https://github.com/openops-cloud/openops/pull/1078), and [nOps.io](https://github.com/openops-cloud/openops/pull/1403).
