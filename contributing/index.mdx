@@ -4,39 +4,38 @@ description: 'How to contribute to OpenOps'
 icon: 'code'
 ---
 
-OpenOps is an [open-source project](https://github.com/openops-cloud/openops) that welcomes external contributions. In fact, extending OpenOps is fairly straightforward, and this section explains what you need to know to get started.
+OpenOps is an [open-source project](https://github.com/openops-cloud/openops) that welcomes external contributions. Extending OpenOps is fairly straightforward, and this section explains what you need to know to get started.
 
 ## OpenOps vs Activepieces
 
 OpenOps is based on [Activepieces](https://www.activepieces.com/), and contributing to OpenOps is very similar to [contributing to Activepieces](https://www.activepieces.com/docs/developers/building-pieces/overview).
 
 The main differences are as follows:
-* What Activepieces calls "pieces" is called "blocks" in OpenOps.
-* Activepieces uses "[piece types](https://www.activepieces.com/docs/developers/building-pieces/piece-definition)" but OpenOps doesn't have the concept of a block type.
-* OpenOps doesn't support [creating new triggers](https://www.activepieces.com/docs/developers/building-pieces/create-trigger).
-* The `AP_DEV_PIECES` variable inside `packages/server/api/.env` is not used in OpenOps as it builds all its components by default.
-* Contributing to OpenOps does not involve publishing your block as an npm package.
+* What Activepieces calls "pieces" are called "blocks" in OpenOps.
+* Activepieces uses "[piece types](https://www.activepieces.com/docs/developers/building-pieces/piece-definition)", but OpenOps doesn't have the concept of block types.
+* OpenOps doesn’t support [creating new triggers](https://www.activepieces.com/docs/developers/building-pieces/create-trigger).
+* The `AP_DEV_PIECES` variable inside `packages/server/api/.env` isn't used in OpenOps, as it builds all its components by default.
+* Contributing to OpenOps doesn't involve publishing your block as an npm package.
 
 ## How to contribute
 
 The general process of contributing to OpenOps consists of:
 * Scaffolding a new block. The block serves as a container for [actions](/workflow-management/actions/) that users can add to their workflows as steps.
-* Implementing authentication for the block. Most non-core OpenOps blocks serve as integrations with third-party services via their APIs, and most APIs require authentication. Implemented authentication allows users to set up [connections](/cloud-access/access-levels-permissions/) and get access to whatever API your block is built around.
+* Implementing authentication for the block. Most non-core OpenOps blocks integrate with third-party services via their APIs, and most APIs require authentication. Implemented authentication allows users to set up [connections](/cloud-access/access-levels-permissions/) and access whatever API your block is built around.
 * Scaffolding one or more actions.
-* Implementing properties (the configuration settings available to users in the properties pane) in the actions. Some actions don't have properties, but most do.
-* Implementing the logic of the actions: what exactly they should execute when all properties are configured.
+* Implementing properties: the configuration settings available to users in the properties pane. Some actions don't have properties, but most do.
+* Implementing the logic of the actions: what exactly they execute once all properties are configured.
 * Testing the block.
 * [Submitting a pull request](https://github.com/openops-cloud/openops/blob/main/CONTRIBUTING.md) to the main OpenOps repository.
 
-To learn how to quickly come up with a block that becomes available in the OpenOps UI and executes a minimal workload, see [Creating a Minimal Block](/contributing/creating-a-minimal-block/).
+To learn how to quickly create a block that appears in the OpenOps UI and executes a minimal workload, see [Creating a Minimal Block](/contributing/creating-a-minimal-block/).
 
 To learn how to develop a more advanced block that provides full-fledged integration with a third-party service, see [Contributing an Integration](/contributing/contributing-an-integration/).
 
 ## Examples of contributions
 
-For your reference, here are examples of past pull requests that contributed new blocks to OpenOps:
+For reference, here are examples of past pull requests that contributed new blocks to OpenOps:
 * [Ternary integration](https://github.com/openops-cloud/openops/pull/326)
 * [Databricks integration](https://github.com/openops-cloud/openops/pull/434)
 * [ServiceNow integration](https://github.com/openops-cloud/openops/pull/1078)
 * [nOps.io integration](https://github.com/openops-cloud/openops/pull/1403)
-
