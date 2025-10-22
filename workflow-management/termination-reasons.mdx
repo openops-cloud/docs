@@ -1,0 +1,45 @@
+---
+title: "Termination Reasons in Workflow Executions"
+description: "Explains the 'terminationReason' field in OpenOps workflow executions and API responses."
+icon: "🚦"
+iconType: "emoji"
+tags: [workflows, execution, error-handling]
+draft: false
+sidebar_order: 60
+---
+
+OpenOps workflow executions now include a `terminationReason` field to provide more transparency into why a workflow ended—whether it completed successfully, failed due to an error, was canceled manually, or stopped for another reason. This feature is useful for FinOps operators, DevOps engineers, and SREs monitoring automation runs.
+
+## Where You'll See Termination Reasons
+- **Workflow Analytics and Run History**: The `terminationReason` appears in workflow run details and audit trails.
+- **API Responses**: All execution-related API endpoints that return workflow status now include a `terminationReason` property when applicable.
+- **Error Handling**: When a workflow does not complete normally, examine `terminationReason` to understand the failure mode and next troubleshooting steps.
+
+## Example API Response
+
+```json
+{
+  "runId": "flowrun-87a01c3",
+  "status": "failed",
+  "terminationReason": "step_timeout",
+  "finishedAt": "2025-10-22T12:40:31Z"
+}
+```
+
+## Common Termination Reasons
+- `success`: The workflow finished all steps successfully.
+- `error`: Unhandled error was encountered in a step.
+- `manual_cancel`: The run was stopped manually by a user.
+- `timeout`: Workflow exceeded its maximum allotted time.
+- `step_timeout`: A specific step did not complete within its timeout window.
+- `dependency_failure`: Workflow stopped due to a failed dependency or precondition.
+- `system_update`: Run interrupted due to a platform update or deployment.
+
+> **Note**: The `terminationReason` field may be absent if the workflow is still in progress.
+
+## Troubleshooting with Termination Reasons
+For guidance on interpreting workflow statuses and failure analysis, see [Investigate Workflow Run](/workflow-management/investigate-workflow-run).
+
+## Related Documentation
+- [Workflow Version History & Lifecycle](/workflow-management/workflow-version-history-lifecycle)
+- [Building Workflows](/workflow-management/building-workflows)
