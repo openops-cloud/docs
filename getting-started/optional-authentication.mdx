@@ -1,0 +1,59 @@
+---
+title: "Optional Authentication in OpenOps"
+description: "Details how and when authentication may be optional or null for actions, with examples."
+icon: "🔑"
+iconType: "emoji"
+tags: ["authentication", "security", "getting-started"]
+draft: false
+sidebar_order: 30
+---
+
+This page describes how OpenOps handles cases where authentication may be optional (null or unset), enabling certain actions or integrations to function without user credentials. It applies to OpenOps (Beta) users configuring workflows or tool integrations that do not require authentication.
+
+## Overview
+
+Some OpenOps actions and integrations do not require authentication to operate. In these cases, the authentication parameter can be explicitly set to `null`. This is distinct from required authentication, where credentials or tokens must be provided for each action or tool.
+
+## When Authentication Is Optional
+
+- API endpoints or tools that support anonymous or public access
+- Internal utility actions that do not access restricted cloud resources
+- Service integrations configured to allow unauthenticated requests (rare)
+
+Typical examples:
+- Fetching public information from a service that does not require user-specific credentials
+- Running actions within OpenOps that are purely computational or workflow-internal
+
+> Note: Always verify whether a particular action or tool explicitly allows `null` or omitted authentication—some services will reject unauthenticated requests.
+
+## How to Specify No Authentication
+
+When configuring a step, tool, or API integration in OpenOps:
+- Set the authentication field/parameter to `null`, or leave it blank if tolerated by the UI/editor.
+- In YAML/JSON configuration, use `"authentication": null`
+
+Example (JSON):
+
+```json
+{
+  "action": "fetch-public-status",
+  "authentication": null
+}
+```
+
+## Validation and Expected Behavior
+
+- When authentication is optional and not provided, the action should run as expected if the underlying service allows it.
+- If authentication is required by the tool or endpoint, OpenOps will return a validation error and prevent execution.
+- Some actions may support both authenticated and unauthenticated modes, with reduced functionality when unauthenticated.
+
+## Troubleshooting
+
+- **Access Denied/Error:** If a step fails with an authentication error, re-check whether authentication is required for the chosen action.
+- **Intermittent Failures:** Cloud/resource policies may change—periodically validate with your cloud/security teams if behavior changes.
+- **Unexpected Outcomes:** Review the documentation for the specific tool or action to determine mandatory/optional fields.
+
+## Related Documentation
+
+- [Project README](/README.md) — overview of repository and initial setup steps
+- Refer to action/integration-specific guides for authentication requirements.
