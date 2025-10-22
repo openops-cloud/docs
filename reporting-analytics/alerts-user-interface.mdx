@@ -1,0 +1,46 @@
+---
+title: "Alerts User Interface"
+description: "How to view, filter, and act on alerts in the OpenOps platform UI."
+icon: "🚨"
+iconType: "emoji"
+tags: ["alerts", "user-interface", "monitoring"]
+draft: false
+sidebar_order: 30
+---
+
+The Alerts User Interface (UI) in OpenOps allows you to monitor workflow incidents, system warnings, and budget thresholds in real time. This page covers features for FinOps and platform users to investigate, manage, and resolve alerts efficiently.
+
+## Prerequisites
+- Access to the OpenOps platform and a user account with read permissions on alerts or monitoring features
+- Assigned role with permission to view dashboards and notification settings
+
+## Alerts UI Features
+- **Alert List Panel:** Displays active and historical alerts, sortable by status (open/acknowledged/resolved), severity, workflow, or time.
+- **Alert Details View:** Click to expand any alert for detailed context—trigger source, affected workflow, timestamp, error or threshold data, and recommended actions.
+- **Filters & Search:** Quickly narrow down alerts using multi-field filters (severity, workflow, date range) and search by keyword or alert ID.
+- **Bulk Actions:** Select multiple alerts to acknowledge, resolve, or clear them in bulk (requires appropriate permissions).
+- **Acknowledge & Resolve:** Mark alerts as acknowledged for tracking, or resolve them once remediated. Status changes are reflected platform-wide.
+- **Export & Subscribe:** Export alerts to CSV or subscribe to alert notifications if enabled via the integrations page.
+
+## Using the Alerts UI
+1. Navigate to the **Alerts** section from the OpenOps sidebar.
+2. Use filters or search to find relevant incidents or budget triggers.
+3. Click any alert to view its details and recommended actions.
+4. Acknowledge or resolve alerts as workflow remediation proceeds.
+5. (Optional) Export alert listings or manage alert subscriptions under integrations.
+
+## Example
+For a workflow failure alert:
+- The alert detail displays failure context (workflow name, error log, time of failure)
+- You may find recommended remediation steps or a link to [Investigate Workflow Run](/workflow-management/investigate-workflow-run)
+- Status changes you make (acknowledged, resolved) are instantly reflected in the alerts panel
+
+## Troubleshooting
+- **Missing Alerts:** Confirm you are assigned a role with permissions for alert viewing
+- **Cannot Resolve/Acknowledge:** Ensure you have update rights or contact your OpenOps administrator
+- **Slow loading or incomplete list:** Refresh the browser or check integration sync status
+
+## Related Documentation
+- [Investigate Workflow Run](/workflow-management/investigate-workflow-run)
+- [Tables](/reporting-analytics/tables)
+- [Integration Guides](/integrations/)
