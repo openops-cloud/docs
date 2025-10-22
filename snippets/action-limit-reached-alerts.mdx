@@ -1,0 +1,46 @@
+---
+title: "Action Limit Reached Alerts"
+description: "How action limit alerts are shown and customized during workflow test runs."
+icon: "🚨"
+iconType: emoji
+slug: "/snippets/action-limit-reached-alerts"
+tags: ["workflow", "limits", "alerts"]
+draft: false
+sidebar_order: 10
+hide_toc: false
+---
+
+During workflow test runs, OpenOps will display an alert if you reach the configured action limit for a workflow. This alert helps prevent excessive or unintended executions when designing automations.
+
+## Purpose
+OpenOps restricts the total number of actions that can execute in a single workflow run for safety and cost control. When this limit is reached during testing, an on-screen alert appears with details and a link to the current action limit settings.
+
+## Behavior
+- When the action limit is reached:
+  - You see an in-app alert warning "Action limit reached" during the workflow test run
+  - A settings panel or link allows you to adjust the limit if needed
+- No further actions in the workflow will execute after the limit is hit
+- You can re-test after modifying the action limit
+
+## How to Configure Action Limits
+
+1. Open a workflow in the designer
+2. Start a test run
+3. If the alert appears, click the provided configuration link
+4. Adjust the "Action limit per run" value to a safe maximum for your workflow
+
+## Example
+
+```plaintext
+Action limit reached
+You have triggered the maximum number of actions for this workflow run. To change this limit, go to: Workflow Settings > Action limits
+```
+
+## Troubleshooting
+- If your workflow is unexpectedly halted, check if you hit the action limit
+- Increase the limit only if you understand the action count and associated cloud costs
+- For bulk operations, consider using batch actions or splitting the workflow
+
+## Related
+- [Building Workflows](/workflow-management/building-workflows)
+- [Investigate Workflow Run](/workflow-management/investigate-workflow-run)
