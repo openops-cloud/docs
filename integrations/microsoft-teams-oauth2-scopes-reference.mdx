@@ -1,0 +1,44 @@
+---
+title: "Microsoft Teams OAuth2 Scopes Reference"
+description: "List and descriptions of Microsoft Teams scopes supported for OAuth2 integration in OpenOps API."
+icon: "🔐"
+iconType: "emoji"
+tags: ["api", "oauth2", "microsoft-teams", "integrations"]
+sidebar_order: 15
+---
+
+This page lists supported Microsoft Teams OAuth2 scopes that can be requested during integration with OpenOps API. Use these scopes when configuring Microsoft Teams as a connection or integration provider to define the permissions your automation workflows require.
+
+## Supported Microsoft Teams Scopes
+
+Request one or more of the following scopes in your OAuth2 configuration:
+
+- `Channel.ReadBasic.All` — Allows the app to read the names and descriptions of all channels in Microsoft Teams.
+- `Chat.ReadBasic` — Grants the ability to read the metadata and history of user chats.
+- `Chat.Read` — Permits reading full chat messages in Teams.
+- `Chat.ReadWrite` — Allows reading and sending messages in user chats.
+- `ChatMessage.Read` — Lets the app read chat messages in all Teams.
+- `Team.ReadBasic.All` — Enables the app to read basic properties of all teams, such as names, descriptions, and settings.
+
+### Usage Example
+
+When configuring an OAuth2 app for Microsoft Teams in your OpenOps settings or workflow integration, include the required scopes in your authorization request:
+
+```json
+"scope": "Channel.ReadBasic.All Chat.ReadBasic Chat.Read Chat.ReadWrite ChatMessage.Read Team.ReadBasic.All"
+```
+
+Adjust the scope list to match the permissions your workflow or use case requires. Only request the minimum scopes necessary for your automation.
+
+## Related Documentation
+
+- [Integrations Overview](/integrations/)
+- [API Authentication Guide](/getting-started/quick-start-guide)
+
+For additional Microsoft Teams API scope definitions, refer to the official Microsoft documentation.
+
+## Troubleshooting
+
+If your OAuth2 authentication fails or your workflow cannot access Microsoft Teams resources, verify that the requested scopes match those configured in your integration. Ensure your Azure tenant has granted admin consent if required.
+
+For integration setup, see [Integrations Overview](/integrations/).
