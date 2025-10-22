@@ -1,0 +1,68 @@
+---
+title: "System Administration Guide"
+description: "Best practices and daily tasks for OpenOps system administrators"
+icon: "🛠️"
+iconType: "emoji"
+tags: ["system", "administration", "ops"]
+draft: false
+sidebar_order: 60
+---
+
+_System administration in OpenOps involves managing users, roles, platform settings, and ensuring ongoing system health._ This guide is designed for platform and DevOps teams that configure and maintain OpenOps environments.
+
+## Purpose
+This guide outlines what OpenOps system administrators do and provides actionable steps for performing common administrative tasks.
+
+## Prerequisites
+- You have access to the OpenOps platform as an administrator
+- You are familiar with the [OpenOps platform Overview](/README.md)
+
+## Core Responsibilities
+- Manage user accounts and permissions
+- Configure system-wide settings and integrations
+- Monitor platform status and handle system events
+- Schedule platform maintenance, updates, and backups
+- Apply security policies such as password standards, MFA, and access reviews
+
+## Key Tasks and Procedures
+
+### 1. Managing Users and Roles
+- Add, modify, or remove users from the system
+- Assign roles for fine-grained access control using the OpenOps UI or automation workflows
+- Review audit logs for user activity
+
+### 2. Configuring Platform Settings
+- Update core configuration, such as notification channels or integration endpoints
+- Apply environment variables as needed for workflows
+
+#### Example: Configuring a Dynamic Variable for Object Key Resolution
+As of October 2025, OpenOps supports dynamic variable resolution for object keys in workflows.
+
+```yaml
+# Example: Using a workflow variable to select an object key dynamically
+object_lookup:
+  key: "${user.selected_key}"
+```
+This enables referencing runtime values in workflow logic, improving automation flexibility.
+
+### 3. Monitoring and Maintenance
+- Review system health dashboards regularly
+- Use built-in tools to restart or troubleshoot system components
+- Schedule regular backups for configuration and workflow states
+
+### 4. Security and Compliance
+- Enforce least-privilege principles with role-based access
+- Audit workflows and connections for compliance
+- Review integration scopes and API key usage
+
+## Troubleshooting Common Issues
+- Review recent logs in the admin dashboard
+- Restart affected services using admin tools if workflows hang
+- Contact support if platform issues persist
+
+## Related Documentation
+- [User Management](/getting-started/user-management)
+- [Access Levels and Permissions](/cloud-access/access-levels-permissions)
+- [Building Workflows](/workflow-management/building-workflows)
+
+_For additional operational recipes, see the [Snippets](/snippets) section._
