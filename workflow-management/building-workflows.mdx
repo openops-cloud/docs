@@ -179,12 +179,12 @@ If some of the steps aren't complete, you'll see the **Complete _n_ steps** butt
 
 Click **Complete _n_ steps** to navigate to the first incomplete step in your workflow. Locate the remaining incomplete steps by the yellow warning icons next to them.
 
-As soon as you've made sure that all individual steps are complete, the **Test Workflow** button at the top of the workflow editor becomes active.
+Once you've confirmed that all individual steps are complete, the **Test Workflow** button at the top of the workflow editor becomes active.
 
-Before you click the button, there's one more consideration to make. "Testing" the workflow in OpenOps means running all actions in the workflow against their respective live systems. If your workflow contains loops, and actions in your loops update the live systems, you may want to set execution limits for each of these actions. To do this, click the **Settings** icon to the right of the **Test Workflow** button. This brings up the **Set Action Limits** dialog:
+Before clicking the button, there's one more consideration. "Testing" the workflow in OpenOps means running all actions in the workflow against their respective live systems. If your workflow contains loops, and actions within those loops update live systems, you may want to set execution limits for each of these actions. To do this, click the **Settings** icon to the right of the **Test Workflow** button. This opens the **Set Action Limits** dialog:
 ![Set Action Limits dialog](/images/workflow-editor-set-action-limits.png)
 
-In the **Set Action Limits** dialog, OpenOps lists all write actions found inside loops in your workflow. For each action, you can set a maximum number of times the action can be executed during workflow testing, or accept the default value of 10 times.
+In the **Set Action Limits** dialog, OpenOps lists all write actions found inside loops in your workflow. For each action, you can set the maximum number of times it can be executed during workflow testing, or keep the default value of 10.
 
 After setting and saving the execution limits, click **Test Workflow** to start testing.
 
