@@ -1,0 +1,75 @@
+---
+title: "OpenOps Documentation Branding, Style, and Tone"
+description: "Standards for branding, voice, and styling when contributing to OpenOps documentation."
+icon: "🎨"
+iconType: "emoji"
+tag: ["contributing", "style"]
+draft: false
+sidebar_order: 90
+hide_toc: false
+---
+
+This page provides branding and style standards for OpenOps documentation. It is intended for anyone writing or maintaining documentation within the OpenOps (Beta) project. Following these guidelines ensures a clear, consistent, and professional experience for users and contributors.
+
+## Summary
+OpenOps documentation serves FinOps practitioners, cloud/DevOps engineers, SREs, platform and finance teams. Docs range from product overviews through technical guides and snippets. Consistency of branding, language, and formatting is essential for readability and user trust.
+
+## Voice and Tone
+- **Professional and concise:** Use the fewest words necessary.
+- **Action-oriented:** Guide the user with commands and steps.
+- **Neutral and clear:** Avoid marketing phrases and excessive adjectives.
+- **Audience-aware:**
+    - For non-technical users: explain abbreviations, offer step-by-step instructions, and include more explanations.
+    - For technical audiences: use direct, practical language; assume familiarity with FinOps, AWS, Azure, GCP; focus on code/examples.
+
+## Formatting Standards
+- **One primary purpose per page.** Open with a 1-2 sentence summary describing what and who the page is for.
+- **Front matter:** All docs require YAML front matter with fields: `title`, `description`, `icon`, and `iconType`. Optional fields include `slug`, `tags`, `draft`, `sidebar_order`, and `hide_toc`.
+- **Heading structure:**
+    - Title is typically present only in front matter, not repeated as H1 in the body
+    - H2 for major sections (e.g., Purpose, Prerequisites, Examples)
+    - H3 for detailed subtopics or step groups
+    - Title Case for all headings
+- **Lists:** Use bullets for unordered lists, no punctuation at the end of items, Oxford comma for series.
+- **Code and examples:**
+    - Inline code using backticks (`)
+    - Code blocks use language tags for syntax highlighting
+    - Provide example inputs/outputs where feasible; include comments for complex tasks
+    - Place runnable code near the page top where possible
+    - Use codetabs for platform-specific variants
+
+## Branding Conventions
+- Product names and acronyms appear as OpenOps (Beta), FinOps, AWS, GCP, Azure, etc.
+- Use fictional values for sensitive data (e.g., `<YOUR_API_KEY>`)
+- Avoid all-caps except for acronyms
+- Prefer absolute internal links starting with `/`; keep link text descriptive
+
+## Common Patterns
+- Short focused pages: each file addresses a single concept or operational need
+- One clear outcome per how-to, snippet, or reference page
+- Consistent use of front matter and metadata for navigation and search
+- Emphasize troubleshooting and validation in guides
+
+## Release Notes Style
+- Use emojis for release category headers (🚀 Features, 🐛 Fixes, ✨ Improvements)
+- Describe breaking changes under a prominent "⚠️ NOTICE" block as shown in the template
+
+## Example Front Matter
+```yaml
+---
+title: "<Page Title>"
+description: "<Short purpose description>"
+icon: "<icon-name-or-emoji>"
+iconType: "emoji|svg|font"
+slug: "/path/if/needed"
+tags: ["category", "topic"]
+draft: false
+sidebar_order: 10
+hide_toc: false
+---
+```
+
+## Related Resources
+- [Repository README](/README.md)
+
+Refer to this page before authoring or reviewing any OpenOps documentation. For more examples, review existing pages and the directory structure as outlined above.
