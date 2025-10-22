@@ -1,0 +1,102 @@
+---
+title: "Automation Engine Error Handling"
+description: "How the OpenOps automation engine detects, reports, and remediates workflow errors."
+icon: "🛑"
+iconType: "emoji"
+tags: ["workflow-management", "error-handling", "automation"]
+draft: false
+sidebar_order: 40
+---
+
+Learn how the OpenOps automation engine handles errors during workflow execution, including error types, detection methods, remediation practices, and troubleshooting guidance for FinOps and DevOps users.
+
+## Overview
+
+The OpenOps automation engine powers all workflow executions. Reliable error detection and robust error handling are crucial for ensuring workflows behave as intended and failures are visible and actionable by operators. This page details error types, core handling strategies, and best practices for recovery.
+
+## Error Types
+
+Automation engine errors fall into several categories:
+
+- **Step Execution Errors**: Failure within an individual step (e.g., command failed, API call returns 4xx/5xx).
+- **Workflow Configuration Errors**: Invalid workflow definition (e.g., missing required fields, bad YAML).
+- **External System Failures**: Downstream service or API unavailable, credentials expired.
+- **Timeouts**: Step or workflow exceeded configured maximum runtime.
+- **Dependency Failures**: Dependent step or prerequisite failed (e.g., conditional branch not satisfied).
+
+## Error Detection and Reporting
+
+- All step and workflow errors are detected automatically during execution.
+- Errors are logged and surfaced in the OpenOps console (see the workflow run Activity tab).
+- Each error entry includes:
+   - Error message
+   - Failing step ID/name
+   - Timestamp of failure
+   - Raw output or exception details when available
+- For advanced debugging, raw execution logs can be downloaded.
+
+## Handling and Remediation Strategies
+
+The automation engine provides several strategies for handling and responding to errors:
+
+### Automatic Step Retries
+
+- Steps can be configured (in workflow YAML or UI) to retry on failure up to a specified count.
+- Example configuration:
+
+```yaml
+steps:
+  - name: fetch-cost-usage
+    action: aws:cost-explorer:get-usage
+    retry:
+      count: 3
+      delay_seconds: 30
+```
+
+### Conditional Error Branching
+
+- Use conditional logic to branch the workflow or execute contingency steps on error:
+
+```yaml
+steps:
+  - name: main-action
+    action: ...
+  - name: on-failure
+    when: step("main-action").failed
+    action: notify:slack
+```
+
+### Human-in-the-Loop Pausing
+
+- Pause workflow automatically on error for user intervention:
+
+```yaml
+steps:
+  - name: risky-task
+    action: ...
+    on_error: pause
+```
+
+## Best Practices
+
+- Always define error-handling logic for critical steps (e.g., retries, fallback actions).
+- Monitor workflow run status and review error outputs via the OpenOps console.
+- Use alerts/notifications to inform responsible personnel of failures.
+- Regularly test workflows with intentional errors to confirm behavior.
+
+## Troubleshooting Common Issues
+
+- Check the full error message and log details in the Activity tab.
+- Confirm credentials and external dependencies are correctly configured and accessible.
+- Review and correct workflow YAML syntax or schema errors.
+- For intermittent failures, increase retry count or delay.
+- For step timeouts, consider increasing maximum runtime if appropriate.
+
+## Related Documentation
+
+- [Quick Start Guide](/getting-started/quick-start-guide)
+- [Building Workflows](/workflow-management/building-workflows)
+- [Conditional Branching](/workflow-management/conditional-branching)
+- [Human-in-the-Loop](/workflow-management/human-in-the-loop)
+- [Investigate Workflow Run](/workflow-management/investigate-workflow-run)
+- [README](/README.md)
