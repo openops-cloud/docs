@@ -1,0 +1,74 @@
+---
+title: "ServiceNow Request Actions"
+description: "How to use deletion, retrieval, and upsert actions for ServiceNow request items in OpenOps workflows."
+icon: "🧾"
+iconType: "emoji"
+tags: ["integration","servicenow","actions"]
+draft: false
+sidebar_order: 10
+---
+
+This page explains how to use the ServiceNow request actions—deletion, retrieval, and upsert—for request items within OpenOps workflows. Intended for DevOps and FinOps users configuring automation with the ServiceNow integration.
+
+## Prerequisites
+- OpenOps platform access with admin privileges
+- ServiceNow integration configured ([see README](/README.md))
+- ServiceNow instance URL and credentials (API access enabled)
+- API credentials (with permissions for request operations)
+
+## Supported Actions
+
+| Action      | Description                                                           |
+|-------------|-----------------------------------------------------------------------|
+| Delete      | Removes a ServiceNow request item by its identifier                   |
+| Retrieve    | Fetches details for a single request item, or batch by filter/ID      |
+| Upsert      | Creates or updates a request item by ID or defined matching criteria  |
+
+## Using ServiceNow Request Actions in Workflows
+
+Below are sample usage patterns for each action type. Substitute placeholders with your values.
+
+### Delete Request Item Example
+
+```yaml
+- action: serviceNow.deleteRequest
+  with:
+    requestItemId: "<REQUEST_ITEM_ID>"
+```
+
+### Retrieve Request Item Example
+
+```yaml
+- action: serviceNow.getRequest
+  with:
+    requestItemId: "<REQUEST_ITEM_ID>"
+# OR: fetch multiple by filter
+- action: serviceNow.getRequests
+  with:
+    filter: "state=Active"
+    limit: 10
+```
+
+### Upsert Request Item Example
+
+```yaml
+- action: serviceNow.upsertRequest
+  with:
+    requestItemId: "<REQUEST_ITEM_ID>"   # Omit to create new
+    data:
+      short_description: "Example request"
+      priority: 2
+```
+
+## Validation
+- Success: Action returns the ServiceNow item JSON or deletion confirmation
+- Failure: Action error with HTTP status and ServiceNow error message (check authentication, permissions, or input validity)
+
+## Troubleshooting
+- Ensure integration credentials remain active
+- Confirm user has permissions for request API endpoints
+- Inspect workflow logs for HTTP error details
+
+## Related Documentation
+- [OpenOps README](/README.md)
+- See your ServiceNow API documentation for field details and error codes
