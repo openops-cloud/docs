@@ -1,0 +1,73 @@
+---
+title: "ServiceNow Request Actions Integration Guide"
+description: "How to use ServiceNow request actions (get_requests, upsert_request, delete_request) in OpenOps workflows to automate ITSM operations."
+icon: "🧰"
+iconType: "emoji"
+tags: ["integration", "servicenow", "itsm"]
+draft: false
+sidebar_order: 20
+---
+
+This page explains how to integrate ServiceNow request actions with OpenOps workflows, enabling automated IT Service Management (ITSM) operations in your organization.
+
+## Prerequisites
+
+- ServiceNow account with API access
+- OpenOps environment with integration permissions
+- ServiceNow instance URL, credentials, and access token
+
+## Available Actions
+
+OpenOps provides the following ServiceNow request actions for use in your workflows:
+
+- `get_requests`: Retrieve existing service requests from ServiceNow
+- `upsert_request`: Create or update a service request (upsert)
+- `delete_request`: Remove a service request from ServiceNow
+
+## Example Usage
+
+### 1. Retrieve Requests
+
+```yaml
+- action: servicenow.get_requests
+  inputs:
+    query: "state=Pending Approval"
+```
+_This step fetches all requests in the state 'Pending Approval'._
+
+### 2. Upsert a Request
+
+```yaml
+- action: servicenow.upsert_request
+  inputs:
+    request_id: "REQ0012345"
+    fields:
+      short_description: "Cloud resource request update"
+      priority: "2"
+```
+_This either updates the existing request REQ0012345 or creates it if it doesn't exist._
+
+### 3. Delete a Request
+
+```yaml
+- action: servicenow.delete_request
+  inputs:
+    request_id: "REQ0012345"
+```
+_This removes the specified service request from ServiceNow._
+
+## Validation
+
+- Check the workflow run summary in OpenOps for action output and confirmation.
+- Confirm changes in your ServiceNow instance directly for critical operations.
+
+## Troubleshooting
+
+- Ensure ServiceNow API credentials are correct and have the required permissions
+- Verify the ServiceNow instance URL is accessible from the OpenOps environment
+- Review the error message in the workflow run for additional context
+
+## Related Documentation
+
+- [Overview](/introduction/overview)
+- [Building Workflows](/workflow-management/building-workflows)
