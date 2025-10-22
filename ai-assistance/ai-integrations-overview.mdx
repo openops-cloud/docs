@@ -1,0 +1,72 @@
+---
+title: "AI Integrations Overview"
+description: "How to use, connect, and manage AI integrations in OpenOps."
+icon: "🤖"
+iconType: "emoji"
+tags: ["ai", "integrations"]
+draft: false
+sidebar_order: 10
+---
+
+OpenOps supports AI integrations to enhance automation, process optimization, and data analysis. This page provides an overview of AI integrations, setup steps, and troubleshooting information for users.
+
+## What Are AI Integrations?
+
+AI integrations connect OpenOps with external large language models (LLMs), AI services, or cloud-based machine learning providers. This enables:
+- Natural language automation (e.g., generate workflow steps)
+- AI-driven analytics or anomaly detection
+- Human-in-the-loop review and approvals
+
+## Prerequisites
+- OpenOps account and admin access
+- API credentials for the desired AI provider (e.g., OpenAI, Azure AI)
+- Network access from OpenOps to provider endpoint
+
+## Supported AI Provider Types
+
+| Integration Type   | Description                                      |
+|-------------------|--------------------------------------------------|
+| OpenAI            | Integrate with GPT models for language tasks      |
+| Azure AI          | Use Azure's Cognitive Services and LLMs          |
+| Google AI         | Integrate with Vertex AI APIs                     |
+| Custom Endpoint   | Connect to any REST-compatible LLM/ML endpoint   |
+
+## Adding an AI Integration
+
+1. Open the OpenOps dashboard and navigate to **Integrations**.
+2. Click **Add Integration** and select your provider (e.g., OpenAI).
+3. Enter API credentials and required details (endpoint, key).
+4. Click **Save**. The integration status should show as **Connected**.
+
+Example: Adding OpenAI
+```bash
+# Set environment variables for OpenAI
+export OPENOPS_AI_PROVIDER="openai"
+export OPENOPS_OPENAI_API_KEY="<YOUR_OPENAI_API_KEY>"
+
+# Test the integration (optional)
+openops ai test --provider openai
+```
+
+## Usage Example
+
+Once an AI provider is connected, you can add AI steps to automations and workflows, such as:
+
+```yaml
+- action: ai.run
+  provider: openai
+  input:
+    prompt: "Summarize this incident report: {{ incident.description }}"
+  output: summary
+```
+
+## Troubleshooting
+- **Connection errors:** Verify API keys and endpoint URLs
+- **Access denied:** Ensure permissions for the OpenOps service account
+- **Quota issues:** Check usage limits with the AI provider
+
+## Related Documentation
+- [LLM Connections](/ai-assistance/llm-connections)
+- [Building Workflows](/workflow-management/building-workflows)
+- [Human-in-the-Loop](/workflow-management/human-in-the-loop)
+
