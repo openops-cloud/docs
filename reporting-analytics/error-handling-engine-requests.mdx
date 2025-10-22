@@ -1,0 +1,83 @@
+---
+title: "Error Handling in Engine Requests"
+description: "How engine request errors are detected, surfaced, and managed in the OpenOps platform."
+icon: "🚫"
+iconType: "emoji"
+tags: ["engine", "errors", "diagnostics"]
+draft: false
+sidebar_order: 40
+---
+
+This page describes how errors are detected and handled for engine requests in OpenOps, especially for failures returned by the core automation engine. It is relevant for workflow developers, system integrators, and operators aiming to surface failure diagnostics and build robust automations.
+
+## Overview
+
+Engine requests (automation API calls, workflow actions) now include enhanced error handling utilizing a unified error response schema. Errors are detected based on a `success` indicator in the response, and relevant error messages are surfaced for prompt troubleshooting.
+
+## Error Response Structure
+
+The platform standardizes error responses using an `EngineErrorResponse` object. Typical structure:
+
+```json
+{
+  "success": false,
+  "error": {
+    "message": "Detailed error message here",
+    "code": "ENGINE_FAILURE_CODE",
+    "details": { /* Additional context-specific info */ }
+  }
+}
+```
+
+- `success`: Boolean indicating overall operation outcome. `false` means request failed.
+- `error.message`: Human-readable error summary, suitable for user display or logging.
+- `error.code`: Programmatic error identifier (e.g., `ENGINE_FAILURE_CODE`).
+- `error.details`: Additional context, if available, for deeper diagnostics.
+
+## Handling an Engine Error
+
+When an engine response is received:
+
+1. **Check the `success` field:**
+   - If `success` is `false`, treat as an error.
+2. **Display or log the error message:**
+   - Use the `error.message` to inform users or for log entries.
+3. **Optionally use `error.code` or `error.details`:**
+   - For advanced remediation (e.g., auto-retry, conditional handling).
+
+### Example: Handling a Failed Engine Request
+
+```js
+// Example response from engine
+const response = {
+  success: false,
+  error: {
+    message: "Failed to deploy workflow: missing permissions",
+    code: "PERMISSION_DENIED"
+  }
+};
+
+// Handling logic
+if (!response.success) {
+  console.error(response.error.message); // For operator logs
+  // Optionally, provide feedback in UI or trigger remediation
+}
+```
+
+## Common Scenarios
+
+- **Option Display**: If a user invokes an action and it fails, the returned `error.message` is now shown directly in UI dropdowns or option lists for immediate feedback.
+- **Programmatic Handling**: Integrators can use `error.code` for automated workflows (e.g., retrying on transient errors, escalating on permission issues).
+
+## Troubleshooting
+
+- Always check the `success` flag before assuming a workflow or request completed normally.
+- Capture `error.message` in logs for post-mortem analysis.
+- For recurring error codes, review IAM permissions, configuration validity, or consult platform support.
+
+## Related Documentation
+
+- [Building Workflows](/workflow-management/building-workflows)
+- [Investigate Workflow Run](/workflow-management/investigate-workflow-run)
+- [Quick Start Guide](/getting-started/quick-start-guide)
+
