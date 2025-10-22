@@ -1,0 +1,66 @@
+---
+title: "Langfuse Telemetry Integration"
+description: "How to use and configure Langfuse telemetry with OpenOps Ask AI and server startup actions."
+icon: "📊"
+iconType: "emoji"
+tag: ["api integrations", "telemetry", "ai"]
+draft: false
+sidebar_order: 30
+---
+
+OpenOps now supports Langfuse telemetry integration for improved observability and analytics in both the Ask AI workflow action and during server startup. This page covers what Langfuse telemetry provides, how it's integrated, and practical setup steps for users needing workflow, AI, and server behavior tracing.
+
+## Summary
+Langfuse is a telemetry and observability platform used to trace, monitor, and analyze agent or AI workflow executions and server-level events. Integration with OpenOps enables:
+- Tracking execution traces for workflows using the "Ask AI" action
+- Capturing telemetry during OpenOps server startup events
+- Enhanced debugging and monitoring of LLM-driven processes
+
+## Prerequisites
+- OpenOps deployment compatible with custom integrations (see [README](/README.md) for base setup)
+- Valid Langfuse credentials (API key and API host)
+- OpenOps version that includes the Langfuse integration features (see release notes)
+
+## Configuration Steps
+1. **Add Langfuse Credentials**
+    - Obtain your Langfuse API key and API host URL from your Langfuse account.
+    - Set the following environment variables in your server configuration or deployment pipeline:
+      ```shell
+      export LANGFUSE_PUBLIC_KEY="<your-langfuse-public-key>"
+      export LANGFUSE_SECRET_KEY="<your-langfuse-secret-key>"
+      export LANGFUSE_HOST="https://<your-langfuse-instance>"  # Default: https://app.langfuse.com
+      ```
+
+2. **Restart OpenOps Server**
+    - Apply the new credentials by restarting your OpenOps deployment.
+    - On server startup, if credentials are present, OpenOps initializes the Langfuse SDK.
+
+3. **Use "Ask AI" in Workflows**
+    - When a workflow includes the "Ask AI" action, all invocations generate trace events automatically.
+    - Traces include: workflow name/ID, prompt/request, AI model info, and timestamps.
+
+4. **Verify Telemetry Events**
+    - Log in to your Langfuse dashboard.
+    - Confirm events under the project matching your server or workflow context.
+    
+## Example: Environment Setup for Docker Deployment
+```yaml
+environment:
+  LANGFUSE_PUBLIC_KEY: "your-public-key"
+  LANGFUSE_SECRET_KEY: "your-secret-key"
+  LANGFUSE_HOST: "https://app.langfuse.com"
+```
+
+## Validation
+- Run a sample workflow using the "Ask AI" action
+- Check Langfuse for a new trace event matching the timestamp and workflow name
+- Verify event content includes request payload
+
+## Troubleshooting
+- **No telemetry recorded:** Confirm environment variables are present and valid; check server logs for Langfuse SDK startup messages
+- **Incomplete traces:** Ensure "Ask AI" action is properly configured in workflow
+- **Connection errors:** Validate network/firewall external access to Langfuse host URL
+
+## Related Documentation
+- [README](/README.md)
+- See your Langfuse dashboard for additional analytics and project settings
