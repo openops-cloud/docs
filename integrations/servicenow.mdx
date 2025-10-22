@@ -1,0 +1,84 @@
+---
+title: "ServiceNow Integration"
+description: "Automate ServiceNow record management actions in OpenOps workflows."
+icon: "🧾"
+iconType: "emoji"
+tags: ["integration", "ServiceNow"]
+draft: false
+sidebar_order: 7
+---
+
+OpenOps provides built-in actions to automate ServiceNow record management. These actions allow you to create, update, retrieve, and list ServiceNow records as part of your workflow automation.
+
+## Prerequisites
+- ServiceNow instance with API access
+- ServiceNow account credentials and permissions for target tables
+- OpenOps platform access
+
+## Available Actions
+
+- **Create Record**: Add a new record to a ServiceNow table
+- **Update Record**: Update an existing record by its identifier
+- **Get Record**: Retrieve a single record by its identifier
+- **List Records**: Query records from a table with filters
+
+## Setup Steps
+
+1. **Configure ServiceNow Connection**
+   - Go to **Integrations > ServiceNow** in OpenOps
+   - Enter your ServiceNow instance URL and credentials
+   - Test the connection to verify access
+
+2. **Add ServiceNow Action to a Workflow**
+   - In workflow builder, select "Add Action"
+   - Choose the ServiceNow action you want (Create, Update, Get, or List Record)
+   - Configure required fields: specify the table, input the record data or filters
+
+### Example: Create a ServiceNow Incident
+
+```json
+{
+  "action": "servicenow.createRecord",
+  "table": "incident",
+  "fields": {
+    "short_description": "Automation-triggered Incident",
+    "priority": "2",
+    "category": "network"
+  }
+}
+```
+
+### Example: List Records With Filter
+
+```json
+{
+  "action": "servicenow.listRecords",
+  "table": "incident",
+  "filter": {
+    "state": "New",
+    "priority": "1"
+  },
+  "limit": 10
+}
+```
+
+## Field Handling
+- Supported field types include string, number, date, reference, choices, and booleans
+- Use exact ServiceNow field names as keys when specifying input data
+- For reference fields, provide the sys_id of the target record
+
+## Validation
+- Successful action returns record data from ServiceNow
+- On failure, OpenOps will return an error message with status details
+
+## Troubleshooting
+- Ensure credentials have correct ServiceNow API permissions
+- Double-check table and field names for typos
+- For connectivity errors, confirm the ServiceNow API endpoint is accessible from OpenOps
+- Refer to action logs in OpenOps for detailed error responses
+
+## Related Documentation
+- [Integrating Third-Party Tools](/integrations/overview)
+- [Building Workflows](/workflow-management/building-workflows)
+
+For more operational examples or troubleshooting, refer to [Snippets](/snippets).
