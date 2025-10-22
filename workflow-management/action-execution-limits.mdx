@@ -1,0 +1,55 @@
+---
+title: "Action Execution Limits"
+description: "Explanation of action execution limits, their enforcement, and handling in OpenOps workflows."
+icon: "⏳"
+iconType: "emoji"
+tags: ["workflows", "limits", "execution"]
+draft: false
+sidebar_order: 40
+---
+
+Action execution limits are enforced to prevent excessive or unintended usage of workflow steps in OpenOps. When a workflow step exceeds its allowed number of executions, OpenOps will immediately stop further processing, and the affected step will be marked with the `EXECUTION_LIMIT_REACHED` status.
+
+## Purpose
+This page explains how execution limits work in OpenOps workflows and how to interpret the `EXECUTION_LIMIT_REACHED` status, with guidance on handling workflows that reach these constraints.
+
+## How Execution Limits Work
+- Each action within a workflow may have a pre-defined execution limit set by the platform or configured per workflow.
+- If a workflow step exceeds its allowed execution attempts (for example, due to retries, looping, or repeated triggers), OpenOps halts workflow progression at that step.
+- The workflow step status will become `EXECUTION_LIMIT_REACHED`.
+- No further actions will execute in that workflow run after the limit is reached.
+
+## Step Status: `EXECUTION_LIMIT_REACHED`
+When you observe the `EXECUTION_LIMIT_REACHED` status on a workflow step:
+- The step attempted to run more times than allowed.
+- The workflow was halted at this point; no downstream actions were processed.
+- This status is visible in workflow run details and logs.
+
+## Example
+Suppose you have an action set to execute a maximum of 3 times. If logic in your workflow causes this action to run a 4th time, execution will stop, and the affected step will show:
+
+```json
+{
+  "status": "EXECUTION_LIMIT_REACHED",
+  "action": "scale-down-resources",
+  "attempts": 4,
+  "limit": 3
+}
+```
+
+## What to Do When a Limit is Reached
+- Review the workflow logic for excessive retries or loops.
+- Adjust the action's configuration or execution limit if appropriate.
+- Rerun the workflow only after addressing the root cause.
+- If you require higher execution thresholds, contact your OpenOps administrator to request a policy update.
+
+## Troubleshooting
+- Check the workflow execution logs for detailed step counts.
+- Inspect conditions, loops, and retries that may contribute to rapid step execution.
+- Ensure that limit values align with organizational policies.
+
+## Related Documentation
+- [Investigating Workflow Runs](/workflow-management/investigate-workflow-run)
+- [Building Workflows](/workflow-management/building-workflows)
+
+If you see persistent execution limits in a routine workflow, review your automation design for optimization opportunities or contact the OpenOps support team for advice.
