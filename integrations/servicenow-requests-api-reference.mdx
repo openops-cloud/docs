@@ -1,0 +1,182 @@
+---
+title: "ServiceNow Request Actions API Reference"
+description: "Reference guide for ServiceNow request actions: get_requests, upsert_request, and delete_request in OpenOps workflows."
+icon: "🧭"
+iconType: "emoji"
+slug: "/integrations/servicenow-requests-api-reference"
+tags: ["api", "integration", "servicenow"]
+draft: false
+sidebar_order: 30
+hide_toc: false
+---
+
+This page documents the available ServiceNow request actions for use in OpenOps workflows. Use these endpoints to automate ServiceNow ticket management as part of your cost-saving or operational workflows.
+
+## Actions Covered
+- `get_requests`: Retrieve ServiceNow requests (tickets)
+- `upsert_request`: Create or update ServiceNow requests
+- `delete_request`: Delete ServiceNow requests
+
+## Prerequisites
+- Valid ServiceNow integration configured in OpenOps ([see Integration Setup](/integrations/servicenow))
+- Appropriate API credentials with ServiceNow permissions
+- Workflow role permissions to access external integrations
+
+---
+
+## get_requests
+Retrieve a list of ServiceNow requests based on filter criteria.
+
+**Method:** `POST`
+
+### Input Parameters
+| Name        | Type     | Required | Description                                 |
+|-------------|----------|----------|---------------------------------------------|
+| `filters`   | object   | No       | Optional request fields to filter results   |
+| `limit`     | integer  | No       | Maximum number of requests to return        |
+| `fields`    | array    | No       | List of ServiceNow request fields to return |
+
+### Sample Request
+```json
+{
+  "filters": {"state": "open", "priority": 2},
+  "limit": 5,
+  "fields": ["number", "short_description", "state"]
+}
+```
+
+### Example: Curl
+```bash
+curl -X POST "https://api.openops.example/v1/integrations/servicenow/get_requests" \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"filters": {"state": "open"}, "limit": 2}'
+```
+
+### Success Response (200)
+```json
+{
+  "requests": [
+    {
+      "number": "REQ0001234",
+      "short_description": "Cloud quota increase",
+      "state": "open"
+    },
+    {
+      "number": "REQ0001235",
+      "short_description": "Access change request",
+      "state": "open"
+    }
+  ]
+}
+```
+
+### Errors & Troubleshooting
+- **401 Unauthorized:** Ensure your ServiceNow integration and credentials are current.
+- **400 Bad Request:** Check filter syntax and field names.
+
+---
+
+## upsert_request
+Create a new ServiceNow request or update an existing one.
+
+**Method:** `POST`
+
+### Input Parameters
+| Name              | Type     | Required | Description                                            |
+|-------------------|----------|----------|--------------------------------------------------------|
+| `request_id`      | string   | No       | If updating, provide the ServiceNow request ID         |
+| `fields`          | object   | Yes      | Field names and values to create/update on the request |
+
+### Create Example
+```json
+{
+  "fields": {
+    "short_description": "Provision new VM",
+    "state": "open",
+    "priority": 3
+  }
+}
+```
+
+### Update Example
+```json
+{
+  "request_id": "REQ0001234",
+  "fields": {
+    "state": "closed",
+    "close_notes": "Request fulfilled successfully"
+  }
+}
+```
+
+### Curl (Create)
+```bash
+curl -X POST "https://api.openops.example/v1/integrations/servicenow/upsert_request" \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"fields": {"short_description": "Provision new VM", "state": "open"}}'
+```
+
+### Success Response (201/200)
+```json
+{
+  "request": {
+    "number": "REQ0001238",
+    "short_description": "Provision new VM",
+    "state": "open",
+    "priority": 3
+  }
+}
+```
+
+### Errors & Troubleshooting
+- **404 Not Found (on update):** Double check the `request_id` provided
+- **400 Bad Request:** Field names or values invalid for your ServiceNow schema
+
+---
+
+## delete_request
+Delete a specific ServiceNow request by ID.
+
+**Method:** `POST`
+
+### Input Parameters
+| Name         | Type   | Required | Description                       |
+|--------------|--------|----------|-----------------------------------|
+| `request_id` | string | Yes      | The ServiceNow request ID to delete |
+
+### Example
+```json
+{
+  "request_id": "REQ0001234"
+}
+```
+
+### Curl
+```bash
+curl -X POST "https://api.openops.example/v1/integrations/servicenow/delete_request" \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"request_id": "REQ0001234"}'
+```
+
+### Success Response (200)
+```json
+{
+  "result": "success",
+  "deleted": true
+}
+```
+
+### Errors & Troubleshooting
+- **404 Not Found:** Provided request ID does not exist
+- **403 Forbidden:** Insufficient permissions on ServiceNow instance
+
+---
+
+## Related Documentation
+- [Integration Setup: ServiceNow](/integrations/servicenow)
+- [Workflow Automation Guide](/workflow-management/building-workflows)
+
+For additional troubleshooting, contact your OpenOps administrator or visit [Quick Start Guide](/getting-started/quick-start-guide).
