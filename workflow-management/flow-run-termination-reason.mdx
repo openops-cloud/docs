@@ -1,0 +1,54 @@
+---
+title: "Flow Run Termination Reason"
+description: "Describes the 'terminationReason' field for flow executions and how to interpret termination states in OpenOps workflows."
+icon: "💡"
+iconType: "emoji"
+tag: ["api", "workflow", "termination"]
+sidebar_order: 50
+---
+
+OpenOps provides detailed termination and error context for every workflow execution using the `terminationReason` field. This guide explains where and how to use this field in flow run APIs and error handling logic.
+
+## Purpose
+The `terminationReason` field allows users and integrators to understand why a workflow execution ended, whether completed successfully, failed with an error, or was terminated for another reason.
+
+## Where to Find `terminationReason`
+
+- **Flow (Workflow) Execution Context:**
+  - Present in backend models representing the status of a run
+- **API Responses:**
+  - Returned in results when querying a single run or list of runs, e.g. `/api/v1/flow-runs/:id`, `/api/v1/flow-runs`
+- **Service and Executor Layers:**
+  - Used for logging and tracking run outcomes programmatically
+
+### Example API Response
+
+```json
+{
+  "id": "run-12345",
+  "status": "failed",
+  "terminationReason": "step_error:timeout_on_resource_scan",
+  "startedAt": "2025-10-15T07:24:00Z",
+  "endedAt": "2025-10-15T07:24:40Z"
+}
+```
+
+## Possible Values
+- `null` or empty when the run has not terminated
+- Short string describing the termination reason (e.g., `completed`, `cancelled_by_user`, `step_error:timeout_on_resource_scan`, `dependency_failure`, etc.)
+
+## Usage
+- **Diagnostics and Troubleshooting:** Use the `terminationReason` field when investigating run failures or unexpected behavior
+- **Automation:** Filter or branch flows based on `terminationReason` in scripts or programmatic integrations
+
+## Best Practices
+- Display or log `terminationReason` alongside status in custom dashboards or notification systems
+- Refer to it directly when responding to support incidents or analyzing workflow health
+
+## Troubleshooting Tips
+- If `terminationReason` indicates a system or step error, refer to [Investigate Workflow Run](/workflow-management/investigate-workflow-run) for step-by-step debugging guidance
+- Cross-reference the reason string with workflow definition and step configuration for root cause analysis
+
+## Related Documentation
+- [Investigate Workflow Run](/workflow-management/investigate-workflow-run)
+- [Workflow Version History & Lifecycle](/workflow-management/workflow-version-history-lifecycle)
