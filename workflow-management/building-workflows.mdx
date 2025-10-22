@@ -179,7 +179,16 @@ If some of the steps aren't complete, you'll see the **Complete _n_ steps** butt
 
 Click **Complete _n_ steps** to navigate to the first incomplete step in your workflow. Locate the remaining incomplete steps by the yellow warning icons next to them.
 
-As soon as you've made sure that all individual steps are complete, go back to the top of the workflow editor and press **Test Workflow**. Note that when you test the entire workflow, OpenOps will ignore any sample output data you may have provided for individual actions. Instead, it will run all actions in the workflow against their respective live systems.
+As soon as you've made sure that all individual steps are complete, the **Test Workflow** button at the top of the workflow editor becomes active.
+
+Before you click the button, there's one more consideration to make. "Testing" the workflow in OpenOps means running all actions in the workflow against their respective live systems. If your workflow contains loops, and actions in your loops update the live systems, you may want to set execution limits for each of these actions. To do this, click the **Settings** icon to the right of the **Test Workflow** button. This brings up the **Set Action Limits** dialog:
+![Set Action Limits dialog](/images/workflow-editor-set-action-limits.png)
+
+In the **Set Action Limits** dialog, OpenOps lists all write actions found inside loops in your workflow. For each action, you can set a maximum number of times the action can be executed during workflow testing, or accept the default value of 10 times.
+
+After setting and saving the execution limits, click **Test Workflow** to start testing.
+
+Note that when you test the entire workflow, OpenOps will ignore any sample output data you may have provided for individual actions. Instead, it will run all actions in the workflow against their respective live systems.
 
 After performing a test run of the workflow, OpenOps will show the results of the run in the **Run Details** pane to the left of the editor, indicating the status of each step, as well as its inputs and outputs:
 ![Run details after testing the entire workflow](/images/workflow-editor-run-details.png)
