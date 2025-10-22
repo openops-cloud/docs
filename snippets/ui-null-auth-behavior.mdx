@@ -1,0 +1,38 @@
+---
+title: "User Interface: Null Authentication Behavior"
+description: "OpenOps application UI behavior when authentication is optional or not required."
+icon: "🔑"
+iconType: "emoji"
+tags: ["user-interface", "authentication", "snippets"]
+draft: false
+sidebar_order: 31
+---
+
+This page explains how the OpenOps UI handles authentication when it is not required by the application.
+
+## Summary
+When authentication is optional or explicitly not required, the OpenOps user interface allows users to access permitted features without prompting for sign-in. This behavior improves usability for public or low-security deployments while maintaining clear boundaries for protected features.
+
+## Behavior Details
+- If authentication is set to `null` or not configured, UI protected routes or components will check for this condition and will not require login for access.
+- Features that do not require authentication are fully accessible without user credentials.
+- Features that are sensitive or require authentication will still enforce login, regardless of global auth settings.
+
+## Example Scenario
+Suppose you run OpenOps in a test environment with authentication disabled:
+
+- The home dashboard, read-only data tables, and public reports remain accessible to all users.
+- Creating new workflows or modifying cloud integrations (protected actions) will continue to prompt for authentication if required by site policy.
+
+## Troubleshooting
+If a user-facing component incorrectly requests authentication when it's optional:
+- Ensure `auth` configuration is explicitly set to `null` or omitted.
+- Confirm you are using a compatible version of OpenOps (see [System Requirements](/getting-started/system-requirements)).
+- Review application logs for authentication middleware overrides.
+
+## Related Documentation
+- [User Management](/getting-started/user-management)
+- [System Requirements](/getting-started/system-requirements)
+- [Quick Start Guide](/getting-started/quick-start-guide)
+
+For repository structure, see the [README](/README.md).
