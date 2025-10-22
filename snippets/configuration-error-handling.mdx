@@ -1,0 +1,63 @@
+---
+title: "Configuration Error Handling"
+description: "Identify and resolve common configuration errors in OpenOps."
+icon: "🛠️"
+iconType: "emoji"
+tags: ["troubleshooting", "configuration", "errors"]
+draft: false
+sidebar_order: 30
+---
+
+OpenOps users may occasionally encounter configuration errors when setting up workflows, integrations, or cloud access. This page summarizes how to recognize, diagnose, and resolve common configuration issues.
+
+## Purpose
+This guide helps practitioners detect and fix configuration problems across OpenOps deployments.
+
+## Common Configuration Errors
+- Missing or invalid API keys (`Missing API key: Set OPENOPS_API_KEY in your environment`)
+- Incorrect cloud provider credentials (`AccessDenied: Not authorized to perform action`)
+- Workflow references to undefined connections or resources
+- Syntax mistakes in YAML or JSON configuration files
+- Invalid field names, types, or missing required options
+- Outdated templates referencing deprecated actions or APIs
+
+## Troubleshooting Steps
+1. **Validate Inputs**
+   - Check that all required fields are defined and correctly typed.
+   - Review environment variables such as `OPENOPS_API_KEY`, `AWS_ACCESS_KEY_ID`, and connection IDs.
+2. **Check Error Messages**
+   - Carefully read the full error output. Key details usually appear near the start or after a failed step.
+3. **Review Logs**
+   - Use the workflow run viewer in OpenOps to inspect logs for failed steps and trace configuration paths.
+4. **Confirm Permissions**
+   - Ensure your cloud/user credentials have adequate permissions for all required actions (see [Access Levels & Permissions](/cloud-access/access-levels-permissions)).
+5. **Update Outdated Resources**
+   - Replace any deprecated actions or API fields referenced in your workflow configuration.
+   - Refer to the release notes before upgrading OpenOps.
+6. **Validate Configuration Files**
+   - Use a linter or validator for YAML/JSON, or leverage IDE syntax checking features.
+
+## Example: Invalid API Key
+
+**Symptom:**
+```
+Error: Missing API key: Set OPENOPS_API_KEY in your environment
+```
+**Solution:**
+- Export your API key in the shell before running OpenOps:
+```bash
+export OPENOPS_API_KEY="<YOUR_API_KEY>"
+```
+- Or, add it to your environment variable configuration file (e.g., `.env`).
+
+## Validation
+- After correcting configuration issues, rerun the operation to confirm resolution.
+- Check workflow status and ensure all steps complete without error.
+
+## Related Documentation
+- [README](/README.md)
+- [Access Levels & Permissions](/cloud-access/access-levels-permissions)
+- [Workflow Version History & Lifecycle](/workflow-management/workflow-version-history-lifecycle)
+
+## Troubleshooting
+If errors persist after checking configurations, consult full logs and verify environment settings. For advanced debugging, review OpenOps version compatibility and update dependencies as required.
