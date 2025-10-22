@@ -1,0 +1,55 @@
+---
+title: "Action Limit Error Handling"
+description: "How OpenOps alerts users when a workflow action limit is reached and troubleshooting steps."
+icon: "⚠️"
+iconType: "emoji"
+tag: ["error handling", "workflow", "limits"]
+draft: false
+sidebar_order: 70
+hide_toc: false
+---
+
+This page describes how OpenOps (Beta) handles and notifies you when a workflow run exceeds the configured action limit, including error alerts and next steps for troubleshooting by practitioners and platform administrators.
+
+## Background
+
+OpenOps enforces a limit on the number of actions that can execute in a single workflow run. This helps ensure platform stability and prevents runaway automations. When a workflow exceeds this configured limit, an error is triggered and surfaced in the user interface.
+
+## How the Error Appears
+
+When the action execution limit is reached:
+
+- The workflow halts further execution immediately
+- The UI displays a prominent alert message using the `TestRunActionLimitReachedPlate` component
+- The alert message describes that the maximum allowed number of actions for a single workflow run has been reached
+- The alert typically includes:
+  - Reference to the configured action limit
+  - Suggestion to review step logic or contact an administrator to raise the threshold
+  - Link or label to configure the limit ("Configure limit") if permitted by user role
+
+**Example UI Alert:**
+
+```
+⚠️ Action limit reached
+This workflow run has reached the maximum number of allowed actions (e.g., 100). No further actions will be executed. To raise this limit, contact your administrator or adjust the configuration.
+```
+
+## User Actions
+
+If you encounter this error as a workflow user:
+
+1. Review your workflow for loops or excessive parallel branches that may exceed the expected number of steps.
+2. If the limit is too low for your use case, contact your OpenOps administrator to change the configuration.
+3. Use the "Configure limit" interface (when visible) to request or suggest a new limit.
+
+## Troubleshooting
+
+- **Expected outcome**: The platform blocks any further action execution and surfaces a clear, dismissible alert.
+- **If the alert does not appear**: Refresh the page or check workflow logs for error details.
+- **If you need to raise the limit**: Only users with administrative permissions can adjust action limits. See your organization's OpenOps admin or [User Management](/getting-started/user-management).
+
+## Related Topics
+
+- [User Management](/getting-started/user-management)
+- [Building Workflows](/workflow-management/building-workflows)
+- [Troubleshooting](/workflow-management/investigate-workflow-run)
