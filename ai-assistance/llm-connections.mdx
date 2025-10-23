@@ -21,7 +21,7 @@ To enable AI and configure an LLM connection:
 9. (Optional) Enter a **Base URL** for the selected model. This is useful if you want to use a proxy or if your LLM provider does not use the default base URL. If you selected _OpenAI Compatible_ as the provider, then you are required to enter the base URL.
 10. (Optional) Use the **Provider settings** and **Model settings** fields to specify custom parameters as JSON. The JSON schema varies depending on the chosen provider and model. For example, if you've selected OpenAI, you can use **Provider settings** for JSON that you'd normally pass to the `createOpenAI` function, and **Model settings** for JSON that you'd normally pass to the `streamText` function. For more details, see the [OpenAI documentation](https://platform.openai.com/docs/api-reference).
 11. Click **Save** to apply your changes in the **Create AI Connection** view.
-12. (Optional) Back in the **AI providers** section, if you're working with AWS and you want your AI connection to have access to the AWS Cost MCP server, click **AWS Cost** in the **MCP** section, and select an [AWS connection](/cloud-access/access-levels-permissions#aws-connections) to use for the MCP server.
+12. (Optional) Back in the **AI providers** section, if you're working with AWS and you want your AI connection to have access to AWS MCP servers, click **AWS Cost** in the **MCP** section, and select an [AWS connection](/cloud-access/access-levels-permissions#aws-connections) to use. This enables access to AWS Cost Explorer MCP Server, AWS Pricing MCP Server, and AWS Billing and Cost Management MCP Server.
 ![AWS Cost MCP connection](/images/access-llm-mcp.png)
 13. Click **Save** to apply your changes in the **AI providers** section.
 
