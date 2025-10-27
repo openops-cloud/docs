@@ -13,8 +13,9 @@ While CloudHealth is great for analysis and reporting, it's not really built to 
 ## What this tutorial will cover
 
 This tutorial guides you step by step to create two workflows in OpenOps:
-1. The first workflow, *Fill the Project-Owner mapping table*, fetches all project names from AWS instance metadata stored in CloudHealth and writes them to an OpenOps table. This assumes that, in your organization, cloud resource ownership is allocated on a per-project basis.
-2. The second workflow, *CloudHealth Rightsizing Recommendations*, fetches AWS EC2 rightsizing recommendations from CloudHealth, looks up owners of the projects they fall into, notifies owners via Slack, and implements resolutions from owners by creating Jira tickets, snoozing, or dismissing recommendations.
+1. The first workflow, *Fill the Project-Owner mapping table*, fetches all project names from AWS instance metadata stored in CloudHealth and writes them to an OpenOps table. This assumes that, in your organization, cloud resource ownership is allocated on a per-project basis. The finished workflow is [available here](https://docs.openops.com/workflows/fill-project-owner-mapping-table.json).
+2. The second workflow, *CloudHealth Rightsizing Recommendations*, fetches AWS EC2 rightsizing recommendations from CloudHealth, looks up owners of the projects they fall into, notifies owners via Slack, and implements resolutions from owners by creating Jira tickets, snoozing, or dismissing recommendations. The finished workflow is [available here](https://docs.openops.com/workflows/cloudhealth-rightsizing-recommendations.json).
+
 
 ## Prerequisites
 
@@ -76,6 +77,10 @@ You can now proceed to creating the actual workflows.
 ## Creating a workflow to fill the project-owner mapping table
 
 The first workflow you're going to build will help track resource ownership by project. For this workflow to operate, it needs an OpenOps table to store project information. Let's create the table first.
+
+<Note>
+If you don't want to follow this section step by step, you can [download the finished workflow](https://docs.openops.com/workflows/fill-project-owner-mapping-table.json) and [import](/workflow-management/import-export/#importing-workflows) it.
+</Note>
 
 ### Create a project-owner mapping table
 
@@ -361,6 +366,11 @@ At this point, you have everything you need to begin building the second workflo
 ## Creating a workflow to process CloudHealth rightsizing recommendations
 
 Now let's create another workflow — this one will process CloudHealth EC2 rightsizing recommendations.
+
+<Note>
+If you don't want to follow this section step by step, you can [download the finished workflow](https://docs.openops.com/workflows/cloudhealth-rightsizing-recommendations.json) and [import](/workflow-management/import-export/#importing-workflows) it.
+</Note>
+
 
 ### Create a new workflow
 
