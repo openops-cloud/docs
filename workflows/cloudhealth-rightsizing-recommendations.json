@@ -1,0 +1,1015 @@
+{
+  "created": "1761575212451",
+  "updated": "1761575212451",
+  "name": "CloudHealth Rightsizing Recommendations",
+  "tags": [],
+  "services": [],
+  "domains": [],
+  "template": {
+    "displayName": "CloudHealth Rightsizing Recommendations",
+    "trigger": {
+      "name": "trigger",
+      "valid": true,
+      "displayName": "Every Day",
+      "type": "TRIGGER",
+      "settings": {
+        "blockName": "@openops/block-schedule",
+        "blockVersion": "0.1.5",
+        "blockType": "OFFICIAL",
+        "packageType": "REGISTRY",
+        "input": {
+          "timezone": "UTC",
+          "hour_of_the_day": 1,
+          "run_on_weekends": false
+        },
+        "inputUiInfo": {
+          "customizedInputs": {}
+        },
+        "triggerName": "every_day"
+      },
+      "nextAction": {
+        "id": "jBtRrbXaQkZy8xT4AsoFD",
+        "name": "step_1",
+        "type": "BLOCK",
+        "valid": true,
+        "settings": {
+          "input": {
+            "auth": "{{connections['cloudhealth']}}",
+            "limit": "5",
+            "evaluationDuration": "LAST_7_DAYS",
+            "recommendationType": "AWS_EC2"
+          },
+          "blockName": "@openops/block-cloudhealth",
+          "blockType": "OFFICIAL",
+          "actionName": "cloudhealth_get_recommendations",
+          "inputUiInfo": {
+            "customizedInputs": {}
+          },
+          "packageType": "REGISTRY",
+          "blockVersion": "0.0.1",
+          "errorHandlingOptions": {
+            "retryOnFailure": {
+              "value": false
+            },
+            "continueOnFailure": {
+              "value": false
+            }
+          }
+        },
+        "nextAction": {
+          "id": "XG0nOkPiGxGJAVLOxEnj8",
+          "name": "step_2",
+          "type": "LOOP_ON_ITEMS",
+          "valid": true,
+          "settings": {
+            "items": "{{step_1['rightsizingRecommendations']['edges']}}",
+            "inputUiInfo": {
+              "customizedInputs": {}
+            }
+          },
+          "displayName": "For each recommendation",
+          "firstLoopAction": {
+            "id": "i4Dp1amvMZb0RJgsoiX0X",
+            "name": "step_3",
+            "type": "BLOCK",
+            "valid": true,
+            "settings": {
+              "input": {
+                "texts": [
+                  "{{step_2['item']['node']['targetAsset']['id']}}",
+                  "{{step_2['item']['node']['targetAsset']['awsInstanceId']}}"
+                ],
+                "separator": null
+              },
+              "blockName": "@openops/block-text-helper",
+              "blockType": "OFFICIAL",
+              "actionName": "concat",
+              "inputUiInfo": {
+                "customizedInputs": {}
+              },
+              "packageType": "REGISTRY",
+              "blockVersion": "0.2.2",
+              "errorHandlingOptions": {
+                "retryOnFailure": {
+                  "value": false
+                },
+                "continueOnFailure": {
+                  "value": false
+                }
+              }
+            },
+            "nextAction": {
+              "id": "lZQ35a9tgzqmkL1zGaiCK",
+              "name": "step_4",
+              "type": "BLOCK",
+              "valid": true,
+              "settings": {
+                "input": {
+                  "filters": {
+                    "filters": [
+                      {
+                        "value": {
+                          "value": "{{step_3}}"
+                        },
+                        "fieldName": "External Opportunity Id",
+                        "filterType": "Is equal"
+                      }
+                    ]
+                  },
+                  "tableName": "Opportunities",
+                  "filterType": "AND"
+                },
+                "blockName": "@openops/block-openops-tables",
+                "blockType": "OFFICIAL",
+                "actionName": "get_records",
+                "inputUiInfo": {
+                  "customizedInputs": {}
+                },
+                "packageType": "REGISTRY",
+                "blockVersion": "0.0.1",
+                "errorHandlingOptions": {
+                  "retryOnFailure": {
+                    "value": false
+                  },
+                  "continueOnFailure": {
+                    "value": false
+                  }
+                }
+              },
+              "nextAction": {
+                "id": "TS1QazjLIoDGjWI1ixKgs",
+                "name": "step_5",
+                "type": "BLOCK",
+                "valid": true,
+                "settings": {
+                  "input": {
+                    "key": "{{step_3}}",
+                    "value": "{{step_4['items'][0]['ID']}}",
+                    "store_scope": "RUN"
+                  },
+                  "blockName": "@openops/block-store",
+                  "blockType": "OFFICIAL",
+                  "actionName": "put",
+                  "inputUiInfo": {
+                    "customizedInputs": {}
+                  },
+                  "packageType": "REGISTRY",
+                  "blockVersion": "0.5.1",
+                  "errorHandlingOptions": {
+                    "retryOnFailure": {
+                      "value": false
+                    },
+                    "continueOnFailure": {
+                      "value": false
+                    }
+                  }
+                },
+                "nextAction": {
+                  "id": "miPGuXoSlTiHZ9Oey5ITY",
+                  "name": "step_6",
+                  "type": "BRANCH",
+                  "valid": true,
+                  "settings": {
+                    "conditions": [
+                      [
+                        {
+                          "operator": "NUMBER_IS_LESS_THAN",
+                          "firstValue": "{{step_4['count']}}",
+                          "secondValue": "1",
+                          "caseSensitive": false
+                        }
+                      ]
+                    ],
+                    "inputUiInfo": {
+                      "customizedInputs": {}
+                    }
+                  },
+                  "nextAction": {
+                    "id": "dJHIUXNcJpK0yWkdxLVaR",
+                    "name": "step_11",
+                    "type": "BLOCK",
+                    "valid": true,
+                    "settings": {
+                      "input": {
+                        "timeZone": "UTC",
+                        "timeFormat": "YYYY-MM-DD"
+                      },
+                      "blockName": "@openops/block-date-helper",
+                      "blockType": "OFFICIAL",
+                      "actionName": "get_current_date",
+                      "inputUiInfo": {
+                        "customizedInputs": {}
+                      },
+                      "packageType": "REGISTRY",
+                      "blockVersion": "0.0.7",
+                      "errorHandlingOptions": {
+                        "retryOnFailure": {
+                          "value": false
+                        },
+                        "continueOnFailure": {
+                          "value": false
+                        }
+                      }
+                    },
+                    "nextAction": {
+                      "id": "yX2IVaZvJFwQSRFBKIn3l",
+                      "name": "step_12",
+                      "type": "BLOCK",
+                      "valid": true,
+                      "settings": {
+                        "input": {
+                          "key": "{{step_3}}",
+                          "store_scope": "RUN",
+                          "defaultValue": null
+                        },
+                        "blockName": "@openops/block-store",
+                        "blockType": "OFFICIAL",
+                        "actionName": "get",
+                        "inputUiInfo": {
+                          "customizedInputs": {}
+                        },
+                        "packageType": "REGISTRY",
+                        "blockVersion": "0.5.1",
+                        "errorHandlingOptions": {
+                          "retryOnFailure": {
+                            "value": false
+                          },
+                          "continueOnFailure": {
+                            "value": false
+                          }
+                        }
+                      },
+                      "nextAction": {
+                        "id": "MMdUkOy7nAqt1TxCe88f1",
+                        "name": "step_13",
+                        "type": "BLOCK",
+                        "valid": true,
+                        "settings": {
+                          "input": {
+                            "filters": {
+                              "filters": [
+                                {
+                                  "value": {
+                                    "value": "{{step_12}}"
+                                  },
+                                  "fieldName": "ID",
+                                  "filterType": "Is equal"
+                                }
+                              ]
+                            },
+                            "tableName": "Opportunities",
+                            "filterType": "AND"
+                          },
+                          "blockName": "@openops/block-openops-tables",
+                          "blockType": "OFFICIAL",
+                          "actionName": "get_records",
+                          "inputUiInfo": {
+                            "customizedInputs": {}
+                          },
+                          "packageType": "REGISTRY",
+                          "blockVersion": "0.0.1",
+                          "errorHandlingOptions": {
+                            "retryOnFailure": {
+                              "value": false
+                            },
+                            "continueOnFailure": {
+                              "value": false
+                            }
+                          }
+                        },
+                        "nextAction": {
+                          "id": "Mfel7zkVzHRY2bJYDIPgD",
+                          "name": "step_14",
+                          "type": "BRANCH",
+                          "valid": true,
+                          "settings": {
+                            "conditions": [
+                              [
+                                {
+                                  "operator": "TEXT_EXACTLY_MATCHES",
+                                  "firstValue": "{{step_13['items'][0]['Status']['value']}}",
+                                  "secondValue": "Created",
+                                  "caseSensitive": false
+                                }
+                              ],
+                              [
+                                {
+                                  "operator": "DATE_IS_BEFORE",
+                                  "firstValue": "{{step_13['items'][0]['Snoozed until']}}",
+                                  "secondValue": "{{step_11}}",
+                                  "caseSensitive": false
+                                }
+                              ]
+                            ],
+                            "inputUiInfo": {
+                              "customizedInputs": {}
+                            }
+                          },
+                          "displayName": "Skip or notify?",
+                          "onSuccessAction": {
+                            "id": "aTjrLHVtNkAWk7pPQ7qAo",
+                            "name": "step_15",
+                            "type": "BLOCK",
+                            "valid": true,
+                            "settings": {
+                              "input": {
+                                "auth": "{{connections['cloudhealth']}}",
+                                "fields": {
+                                  "fields": [
+                                    {
+                                      "value": "{{step_2['item']['node']['targetAsset']['awsInstanceId']}}",
+                                      "fieldName": "instance_id"
+                                    }
+                                  ]
+                                },
+                                "assetType": "AwsInstance"
+                              },
+                              "blockName": "@openops/block-cloudhealth",
+                              "blockType": "OFFICIAL",
+                              "actionName": "cloudhealth_get_asset_perspectives",
+                              "inputUiInfo": {
+                                "customizedInputs": {}
+                              },
+                              "packageType": "REGISTRY",
+                              "blockVersion": "0.0.1",
+                              "errorHandlingOptions": {
+                                "retryOnFailure": {
+                                  "value": false
+                                },
+                                "continueOnFailure": {
+                                  "value": false
+                                }
+                              }
+                            },
+                            "nextAction": {
+                              "id": "POeYNvU9EHsPIS5hd4YN3",
+                              "name": "step_16",
+                              "type": "BLOCK",
+                              "valid": true,
+                              "settings": {
+                                "input": {
+                                  "filters": {
+                                    "filters": [
+                                      {
+                                        "value": {
+                                          "value": "{{step_15[0]['perspectives']['Project']}}"
+                                        },
+                                        "fieldName": "CloudHealth project",
+                                        "filterType": "Is equal"
+                                      }
+                                    ]
+                                  },
+                                  "tableName": "CloudHealth project-owner mapping",
+                                  "filterType": "AND"
+                                },
+                                "blockName": "@openops/block-openops-tables",
+                                "blockType": "OFFICIAL",
+                                "actionName": "get_records",
+                                "inputUiInfo": {
+                                  "customizedInputs": {}
+                                },
+                                "packageType": "REGISTRY",
+                                "blockVersion": "0.0.1",
+                                "errorHandlingOptions": {
+                                  "retryOnFailure": {
+                                    "value": false
+                                  },
+                                  "continueOnFailure": {
+                                    "value": false
+                                  }
+                                }
+                              },
+                              "nextAction": {
+                                "id": "6qAX1KefS72pwzXeadDzr",
+                                "name": "step_17",
+                                "type": "BLOCK",
+                                "valid": true,
+                                "settings": {
+                                  "input": {
+                                    "number": "{{step_2['item']['node']['projectedMonthlySavings']}}",
+                                    "numberOfDecimalPlaces": "2"
+                                  },
+                                  "blockName": "@openops/block-math-helper",
+                                  "blockType": "OFFICIAL",
+                                  "actionName": "truncate_math",
+                                  "inputUiInfo": {
+                                    "customizedInputs": {}
+                                  },
+                                  "packageType": "REGISTRY",
+                                  "blockVersion": "0.0.8",
+                                  "errorHandlingOptions": {
+                                    "retryOnFailure": {
+                                      "value": false
+                                    },
+                                    "continueOnFailure": {
+                                      "value": false
+                                    }
+                                  }
+                                },
+                                "nextAction": {
+                                  "id": "3CkOsdQwU9oDtS1VrR3Rs",
+                                  "name": "step_18",
+                                  "type": "BLOCK",
+                                  "valid": true,
+                                  "settings": {
+                                    "input": {
+                                      "key": "{{step_2['item']['node']['targetAsset']['id']}}",
+                                      "value": "Account: {{step_2['item']['node']['targetAsset']['account']['name']}}\nInstance ID: {{step_2['item']['node']['targetAsset']['awsInstanceId']}}\nInstance name: {{step_2['item']['node']['targetAsset']['name']}}\nProjected monthly savings: ${{step_17}}",
+                                      "store_scope": "RUN"
+                                    },
+                                    "blockName": "@openops/block-store",
+                                    "blockType": "OFFICIAL",
+                                    "actionName": "put",
+                                    "inputUiInfo": {
+                                      "customizedInputs": {}
+                                    },
+                                    "packageType": "REGISTRY",
+                                    "blockVersion": "0.5.1",
+                                    "errorHandlingOptions": {
+                                      "retryOnFailure": {
+                                        "value": false
+                                      },
+                                      "continueOnFailure": {
+                                        "value": false
+                                      }
+                                    }
+                                  },
+                                  "nextAction": {
+                                    "id": "MV5SvmYk0jd3EuYgYNLZ2",
+                                    "name": "step_19",
+                                    "type": "BLOCK",
+                                    "valid": true,
+                                    "settings": {
+                                      "input": {
+                                        "key": "{{step_3}}",
+                                        "store_scope": "RUN",
+                                        "defaultValue": null
+                                      },
+                                      "blockName": "@openops/block-store",
+                                      "blockType": "OFFICIAL",
+                                      "actionName": "get",
+                                      "inputUiInfo": {
+                                        "customizedInputs": {}
+                                      },
+                                      "packageType": "REGISTRY",
+                                      "blockVersion": "0.5.1",
+                                      "errorHandlingOptions": {
+                                        "retryOnFailure": {
+                                          "value": false
+                                        },
+                                        "continueOnFailure": {
+                                          "value": false
+                                        }
+                                      }
+                                    },
+                                    "nextAction": {
+                                      "id": "74NqNC5L0YnQqU7w6owf2",
+                                      "name": "step_20",
+                                      "type": "BLOCK",
+                                      "valid": true,
+                                      "settings": {
+                                        "input": {
+                                          "auth": "{{connections['Slack']}}",
+                                          "text": ":moneybag: *CloudHealth has identified an opportunity to rightsize an EC2 instance*\n\n{{step_18}}\n\nWould you like to open a Jira ticket to investigate it?",
+                                          "actions": [
+                                            {
+                                              "buttonText": ":ticket: Open a Jira ticket",
+                                              "buttonStyle": "primary",
+                                              "confirmationPrompt": true,
+                                              "confirmationPromptText": "Are you sure you want to create a new Jira ticket?"
+                                            },
+                                            {
+                                              "buttonText": ":zzz: Snooze for 7 days",
+                                              "buttonStyle": "",
+                                              "confirmationPrompt": false
+                                            },
+                                            {
+                                              "buttonText": ":no_entry_sign: Dismiss",
+                                              "buttonStyle": "danger",
+                                              "confirmationPrompt": true,
+                                              "confirmationPromptText": "Are you sure you want to dismiss this opportunity?"
+                                            }
+                                          ],
+                                          "username": null,
+                                          "headerText": "New CloudHealth savings opportunity",
+                                          "timeoutInDays": "1",
+                                          "conversationId": "{{step_16['items'][0]['Owner email']}}"
+                                        },
+                                        "blockName": "@openops/block-slack",
+                                        "blockType": "OFFICIAL",
+                                        "actionName": "request_action_message",
+                                        "inputUiInfo": {
+                                          "customizedInputs": {
+                                            "settings": {
+                                              "input": {
+                                                "conversationId": true
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "packageType": "REGISTRY",
+                                        "blockVersion": "0.5.2",
+                                        "errorHandlingOptions": {
+                                          "retryOnFailure": {
+                                            "value": false
+                                          },
+                                          "continueOnFailure": {
+                                            "value": false
+                                          }
+                                        }
+                                      },
+                                      "nextAction": {
+                                        "id": "WuRpEeGZGT62AiVnkcDTM",
+                                        "name": "step_21",
+                                        "type": "SPLIT",
+                                        "valid": true,
+                                        "branches": [
+                                          {
+                                            "optionId": "oscE7ZCD8b8PJ_74JkUP2",
+                                            "nextAction": {
+                                              "id": "IpXK5R6Uv3gQT9tSfyCNt",
+                                              "name": "step_22",
+                                              "type": "BLOCK",
+                                              "valid": true,
+                                              "settings": {
+                                                "input": {
+                                                  "auth": "{{connections['Jira']}}",
+                                                  "labels": [],
+                                                  "summary": "[Investigate EC2 Rightsizing Opportunity] {{step_2['item']['node']['targetAsset']['awsInstanceId']}}",
+                                                  "assignee": null,
+                                                  "priority": null,
+                                                  "parentKey": null,
+                                                  "projectId": "10001",
+                                                  "description": "{{step_18}}",
+                                                  "issueTypeId": "10005"
+                                                },
+                                                "blockName": "@openops/block-jira-cloud",
+                                                "blockType": "OFFICIAL",
+                                                "actionName": "create_issue",
+                                                "inputUiInfo": {
+                                                  "customizedInputs": {}
+                                                },
+                                                "packageType": "REGISTRY",
+                                                "blockVersion": "0.0.7",
+                                                "errorHandlingOptions": {
+                                                  "retryOnFailure": {
+                                                    "value": false
+                                                  },
+                                                  "continueOnFailure": {
+                                                    "value": false
+                                                  }
+                                                }
+                                              },
+                                              "nextAction": {
+                                                "id": "Uc4gkL20LdldCD3ELHGlf",
+                                                "name": "step_23",
+                                                "type": "BLOCK",
+                                                "valid": true,
+                                                "settings": {
+                                                  "input": {
+                                                    "tableName": "Opportunities",
+                                                    "rowPrimaryKey": {
+                                                      "rowPrimaryKey": "{{step_19}}"
+                                                    },
+                                                    "fieldsProperties": {
+                                                      "fieldsProperties": [
+                                                        {
+                                                          "fieldName": "Status",
+                                                          "newFieldValue": {
+                                                            "newFieldValue": "Approved"
+                                                          }
+                                                        }
+                                                      ]
+                                                    },
+                                                    "roundToFieldPrecision": false
+                                                  },
+                                                  "blockName": "@openops/block-openops-tables",
+                                                  "blockType": "OFFICIAL",
+                                                  "actionName": "update_record",
+                                                  "inputUiInfo": {
+                                                    "customizedInputs": {}
+                                                  },
+                                                  "packageType": "REGISTRY",
+                                                  "blockVersion": "0.0.1",
+                                                  "errorHandlingOptions": {
+                                                    "retryOnFailure": {
+                                                      "value": false
+                                                    },
+                                                    "continueOnFailure": {
+                                                      "value": false
+                                                    }
+                                                  }
+                                                },
+                                                "nextAction": {
+                                                  "id": "Y6f0RK3vwc00FVEgrSR7K",
+                                                  "name": "step_24",
+                                                  "type": "BLOCK",
+                                                  "valid": true,
+                                                  "settings": {
+                                                    "input": {
+                                                      "auth": "{{connections['Slack']}}",
+                                                      "file": null,
+                                                      "text": {
+                                                        "text": "✅ Issue created successfully: {{step_22['htmlUrl']}}"
+                                                      },
+                                                      "blocks": {},
+                                                      "threadTs": null,
+                                                      "username": null,
+                                                      "headerText": {
+                                                        "headerText": null
+                                                      },
+                                                      "conversationId": "{{step_16['items'][0]['Owner email']}}",
+                                                      "blockKitEnabled": false
+                                                    },
+                                                    "blockName": "@openops/block-slack",
+                                                    "blockType": "OFFICIAL",
+                                                    "actionName": "send_slack_message",
+                                                    "inputUiInfo": {
+                                                      "customizedInputs": {
+                                                        "settings": {
+                                                          "input": {
+                                                            "conversationId": true
+                                                          }
+                                                        }
+                                                      }
+                                                    },
+                                                    "packageType": "REGISTRY",
+                                                    "blockVersion": "0.5.2",
+                                                    "errorHandlingOptions": {
+                                                      "retryOnFailure": {
+                                                        "value": false
+                                                      },
+                                                      "continueOnFailure": {
+                                                        "value": false
+                                                      }
+                                                    }
+                                                  },
+                                                  "displayName": "Send confirmation on Slack"
+                                                },
+                                                "displayName": "Set to Approved"
+                                              },
+                                              "displayName": "Create Jira issue to investigate opportunity"
+                                            }
+                                          },
+                                          {
+                                            "optionId": "8Qe-6Uvb-GXX52O9W2gYr",
+                                            "nextAction": {
+                                              "id": "LIXuaumvDzYkKhYKCli0Z",
+                                              "name": "step_25",
+                                              "type": "BLOCK",
+                                              "valid": true,
+                                              "settings": {
+                                                "input": {
+                                                  "inputDate": "{{step_11}}",
+                                                  "expression": "+ 7 day",
+                                                  "outputFormat": "YYYY-MM-DD",
+                                                  "inputDateFormat": "YYYY-MM-DD"
+                                                },
+                                                "blockName": "@openops/block-date-helper",
+                                                "blockType": "OFFICIAL",
+                                                "actionName": "add_subtract_date",
+                                                "inputUiInfo": {
+                                                  "customizedInputs": {}
+                                                },
+                                                "packageType": "REGISTRY",
+                                                "blockVersion": "0.0.7",
+                                                "errorHandlingOptions": {
+                                                  "retryOnFailure": {
+                                                    "value": false
+                                                  },
+                                                  "continueOnFailure": {
+                                                    "value": false
+                                                  }
+                                                }
+                                              },
+                                              "nextAction": {
+                                                "id": "6VXGHnOqtWrcCpzQ4oNkC",
+                                                "name": "step_26",
+                                                "type": "BLOCK",
+                                                "valid": true,
+                                                "settings": {
+                                                  "input": {
+                                                    "tableName": "Opportunities",
+                                                    "rowPrimaryKey": {
+                                                      "rowPrimaryKey": "{{step_19}}"
+                                                    },
+                                                    "fieldsProperties": {
+                                                      "fieldsProperties": [
+                                                        {
+                                                          "fieldName": "Status",
+                                                          "newFieldValue": {
+                                                            "newFieldValue": "Snoozed"
+                                                          }
+                                                        },
+                                                        {
+                                                          "fieldName": "Snoozed until",
+                                                          "newFieldValue": {
+                                                            "newFieldValue": "{{step_25}}"
+                                                          }
+                                                        }
+                                                      ]
+                                                    },
+                                                    "roundToFieldPrecision": false
+                                                  },
+                                                  "blockName": "@openops/block-openops-tables",
+                                                  "blockType": "OFFICIAL",
+                                                  "actionName": "update_record",
+                                                  "inputUiInfo": {
+                                                    "customizedInputs": {}
+                                                  },
+                                                  "packageType": "REGISTRY",
+                                                  "blockVersion": "0.0.1",
+                                                  "errorHandlingOptions": {
+                                                    "retryOnFailure": {
+                                                      "value": false
+                                                    },
+                                                    "continueOnFailure": {
+                                                      "value": false
+                                                    }
+                                                  }
+                                                },
+                                                "displayName": "Snooze for a week"
+                                              },
+                                              "displayName": "Date a week from now"
+                                            }
+                                          },
+                                          {
+                                            "optionId": "zWwTvxqpQI6HsAXlM3lcg",
+                                            "nextAction": {
+                                              "id": "FyE4T9dsWaaITy8QSqTTE",
+                                              "name": "step_27",
+                                              "type": "BLOCK",
+                                              "valid": true,
+                                              "settings": {
+                                                "input": {
+                                                  "tableName": "Opportunities",
+                                                  "rowPrimaryKey": {
+                                                    "rowPrimaryKey": "{{step_19}}"
+                                                  },
+                                                  "fieldsProperties": {
+                                                    "fieldsProperties": [
+                                                      {
+                                                        "fieldName": "Status",
+                                                        "newFieldValue": {
+                                                          "newFieldValue": "Dismissed"
+                                                        }
+                                                      }
+                                                    ]
+                                                  },
+                                                  "roundToFieldPrecision": false
+                                                },
+                                                "blockName": "@openops/block-openops-tables",
+                                                "blockType": "OFFICIAL",
+                                                "actionName": "update_record",
+                                                "inputUiInfo": {
+                                                  "customizedInputs": {}
+                                                },
+                                                "packageType": "REGISTRY",
+                                                "blockVersion": "0.0.1",
+                                                "errorHandlingOptions": {
+                                                  "retryOnFailure": {
+                                                    "value": false
+                                                  },
+                                                  "continueOnFailure": {
+                                                    "value": false
+                                                  }
+                                                }
+                                              },
+                                              "displayName": "Set to Dismissed"
+                                            }
+                                          }
+                                        ],
+                                        "settings": {
+                                          "options": [
+                                            {
+                                              "id": "oscE7ZCD8b8PJ_74JkUP2",
+                                              "name": "Jira",
+                                              "conditions": [
+                                                []
+                                              ]
+                                            },
+                                            {
+                                              "id": "8Qe-6Uvb-GXX52O9W2gYr",
+                                              "name": "Snooze",
+                                              "conditions": [
+                                                [
+                                                  {
+                                                    "operator": "TEXT_CONTAINS",
+                                                    "firstValue": "{{step_20['action']}}",
+                                                    "secondValue": "Snooze",
+                                                    "caseSensitive": false
+                                                  }
+                                                ]
+                                              ]
+                                            },
+                                            {
+                                              "id": "zWwTvxqpQI6HsAXlM3lcg",
+                                              "name": "Dismiss",
+                                              "conditions": [
+                                                [
+                                                  {
+                                                    "operator": "TEXT_CONTAINS",
+                                                    "firstValue": "{{step_20['action']}}",
+                                                    "secondValue": "Dismiss",
+                                                    "caseSensitive": false
+                                                  }
+                                                ]
+                                              ]
+                                            }
+                                          ],
+                                          "inputUiInfo": {
+                                            "customizedInputs": {}
+                                          },
+                                          "defaultBranch": "oscE7ZCD8b8PJ_74JkUP2"
+                                        },
+                                        "displayName": "Split"
+                                      },
+                                      "displayName": "Request Action"
+                                    },
+                                    "displayName": "Get table record ID from storage"
+                                  },
+                                  "displayName": "Opportunity description"
+                                },
+                                "displayName": "Format monthly savings"
+                              },
+                              "displayName": "Get owner by project"
+                            },
+                            "displayName": "Get project and more perspectives"
+                          }
+                        },
+                        "displayName": "Get table entry for opportunity"
+                      },
+                      "displayName": "Get table ID for opportunity"
+                    },
+                    "displayName": "Get Current Date"
+                  },
+                  "displayName": "If no table entry for opportunity",
+                  "onFailureAction": {
+                    "id": "2VSOqUSDT7OdRW0TIaOf1",
+                    "name": "step_9",
+                    "type": "BRANCH",
+                    "valid": true,
+                    "settings": {
+                      "conditions": [
+                        [
+                          {
+                            "operator": "TEXT_EXACTLY_MATCHES",
+                            "firstValue": "{{step_4['items'][0]['Status']['value']}}",
+                            "secondValue": "Created",
+                            "caseSensitive": false
+                          }
+                        ]
+                      ],
+                      "inputUiInfo": {
+                        "customizedInputs": {}
+                      }
+                    },
+                    "displayName": "Table entry exists but opportunity is marked as new",
+                    "onSuccessAction": {
+                      "id": "iUqRscWdJdsZ8wNLOQOUl",
+                      "name": "step_10",
+                      "type": "BLOCK",
+                      "valid": true,
+                      "settings": {
+                        "input": {
+                          "tableName": "Opportunities",
+                          "rowPrimaryKey": {
+                            "rowPrimaryKey": "{{step_4['items'][0]['ID']}}"
+                          },
+                          "fieldsProperties": {
+                            "fieldsProperties": [
+                              {
+                                "fieldName": "Status",
+                                "newFieldValue": {
+                                  "newFieldValue": "Under review"
+                                }
+                              }
+                            ]
+                          },
+                          "roundToFieldPrecision": false
+                        },
+                        "blockName": "@openops/block-openops-tables",
+                        "blockType": "OFFICIAL",
+                        "actionName": "update_record",
+                        "inputUiInfo": {
+                          "customizedInputs": {}
+                        },
+                        "packageType": "REGISTRY",
+                        "blockVersion": "0.0.1",
+                        "errorHandlingOptions": {
+                          "retryOnFailure": {
+                            "value": false
+                          },
+                          "continueOnFailure": {
+                            "value": false
+                          }
+                        }
+                      },
+                      "displayName": "Change status of existing opportunity"
+                    }
+                  },
+                  "onSuccessAction": {
+                    "id": "9gPl2aj8EBap2FxCU936o",
+                    "name": "step_7",
+                    "type": "BLOCK",
+                    "valid": true,
+                    "settings": {
+                      "input": {
+                        "tableName": "Opportunities",
+                        "rowPrimaryKey": {
+                          "rowPrimaryKey": null
+                        },
+                        "fieldsProperties": {
+                          "fieldsProperties": [
+                            {
+                              "fieldName": "External Opportunity Id",
+                              "newFieldValue": {
+                                "newFieldValue": "{{step_3}}"
+                              }
+                            },
+                            {
+                              "fieldName": "Status",
+                              "newFieldValue": {
+                                "newFieldValue": "Created"
+                              }
+                            }
+                          ]
+                        },
+                        "roundToFieldPrecision": false
+                      },
+                      "blockName": "@openops/block-openops-tables",
+                      "blockType": "OFFICIAL",
+                      "actionName": "update_record",
+                      "inputUiInfo": {
+                        "customizedInputs": {}
+                      },
+                      "packageType": "REGISTRY",
+                      "blockVersion": "0.0.1",
+                      "errorHandlingOptions": {
+                        "retryOnFailure": {
+                          "value": false
+                        },
+                        "continueOnFailure": {
+                          "value": false
+                        }
+                      }
+                    },
+                    "nextAction": {
+                      "id": "vJst9R72FnNyjw5R0CeDQ",
+                      "name": "step_8",
+                      "type": "BLOCK",
+                      "valid": true,
+                      "settings": {
+                        "input": {
+                          "key": "{{step_3}}",
+                          "value": "{{step_7['ID']}}",
+                          "store_scope": "RUN"
+                        },
+                        "blockName": "@openops/block-store",
+                        "blockType": "OFFICIAL",
+                        "actionName": "put",
+                        "inputUiInfo": {
+                          "customizedInputs": {}
+                        },
+                        "packageType": "REGISTRY",
+                        "blockVersion": "0.5.1",
+                        "errorHandlingOptions": {
+                          "retryOnFailure": {
+                            "value": false
+                          },
+                          "continueOnFailure": {
+                            "value": false
+                          }
+                        }
+                      },
+                      "displayName": "Update table record ID in storage"
+                    },
+                    "displayName": "Add table entry for opportunity"
+                  }
+                },
+                "displayName": "Save table record ID to storage"
+              },
+              "displayName": "Find table entry for opportunity"
+            },
+            "displayName": "Opportunity ID"
+          }
+        },
+        "displayName": "Get EC2 rightsizing recommendations"
+      }
+    },
+    "valid": true,
+    "description": ""
+  },
+  "blocks": [
+    "@openops/block-schedule",
+    "@openops/block-cloudhealth",
+    "@openops/block-text-helper",
+    "@openops/block-openops-tables",
+    "@openops/block-store",
+    "@openops/block-date-helper",
+    "@openops/block-math-helper",
+    "@openops/block-slack",
+    "@openops/block-jira-cloud"
+  ],
+  "categories": []
+}
