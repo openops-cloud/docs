@@ -36,8 +36,10 @@ When the OpenOps frontend opens, log in with the following credentials:
 * Username: `Dev@openops.com`
 * Password: `12345678`
 
+<Warning>
 When developing on Codespaces, keep in mind the following:
 * GitHub limits Codespaces usage for free accounts when working on a personal fork. To access more Codespaces hours, consider forking to an organization.
 * After extended inactivity, Codespaces may lose connectivity between ports used by OpenOps components. To fix this, do one of the following:
   * Run `sh .devcontainer/codespaces.sh` in the terminal.
   * In the **Ports** tab, make the following ports public: `3000`, `3001`, `3005`, `4200`.
+</Warning>

@@ -64,11 +64,12 @@ Now let's create the first action, which will make a simple GET request to [http
 npm run cli actions create
 ```
 
-You will be asked three questions to define your new action:
+You will be asked four questions to define your new action:
 
 1. `Enter the block folder name`: enter the folder of the block you've just created: `my-unique-block`.
 2. `Enter the action display name`: enter the name of the action that users see in the OpenOps UI. This is also used as the base for the name of the file for the action. For this exercise, enter `My first action`.
 3. `Enter the action description`: this should be a brief but informative text in the UI, explaining the action's function and purpose. For this exercise, it's OK to enter `What this action does`.
+4. `Does this action modify data or state (e.g., create, update, delete)?`: enter `n` for "No".
 
 If the action display name is `My first action`, the CLI will create a new file named `my-first-action.ts` in the `packages/blocks/<your-block-name>/src/lib/actions` directory. The file should look like this:
 
@@ -76,7 +77,7 @@ If the action display name is `My first action`, the CLI will create a new file 
 import { createAction, Property } from '@openops/blocks-framework';
 
 export const myFirstAction = createAction({
-  requireToolApproval: false,
+  isWriteAction: false,
   name: 'myFirstAction',
   displayName: 'My first action',
   description: 'What this action does',
@@ -94,7 +95,7 @@ import { createAction, Property } from '@openops/blocks-framework';
 import { httpClient, HttpMethod } from '@openops/blocks-common';
 
 export const myFirstAction = createAction({
-  requireToolApproval: false,
+  isWriteAction: false,
   name: 'myFirstAction',
   displayName: 'My first action',
   description: 'What this action does',

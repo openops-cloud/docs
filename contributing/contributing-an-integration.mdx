@@ -278,13 +278,32 @@ Scaffolding generates three TypeScript configuration files: `tsconfig.json`, `ts
 
 OpenOps may alter the spelling of your block's display name during scaffolding, so review this and run search and replace if needed. For example, with YouTrack it didn't use the proper casing for the product name, generating "Youtrack" instead of "YouTrack".
 
-OpenOps also generates a stub logo URL at the `static.openops.com` domain, which doesn't exist. To see your product's logo in the OpenOps UI during development, replace the stub logo URL with a URL you control. For example, for YouTrack, the stub URL `https://static.openops.com/blocks/youtrack.png` can be replaced with a [live YouTrack logo URL](https://resources.jetbrains.com/storage/products/company/brand/logos/YouTrack_icon.png). Alternatively, you can leave the stub as is and ask OpenOps to upload your logo when you open a PR.
+### Product logo
 
-Even this basic scaffolding introduces the new block to the OpenOps UI, though the block doesn't do much yet. Here's what you can see at this point if you run `npm run start` and open the OpenOps frontend at http://localhost:4200/ in your browser:
+OpenOps also generates a stub logo URL at the `static.openops.com` domain, which doesn't exist. To see your product's logo in the OpenOps UI during development, replace the stub logo URL with a URL you control. For example, for YouTrack, the stub URL `https://static.openops.com/blocks/youtrack.png` can be replaced with a [live YouTrack logo URL](https://resources.jetbrains.com/storage/products/company/brand/logos/YouTrack_icon.png).
+
+When you open a PR to the OpenOps repository, the OpenOps team will upload your product's logo to the OpenOps static server. Once this is done, you'll need to replace your logo URL in the PR with the OpenOps-hosted one.
+
+
+### Categories
+
+When scaffolding a block, OpenOps sets the block's `categories` property to `[BlockCategory.FINOPS]`. The `BlockCategory` enum defines the categories that a block can belong to, such as:
+* `FINOPS`: integrations with tools that recommend cloud usage optimization opportunities.
+* `CLOUD`: integrations with cloud providers.
+* `WORKFLOW`: blocks providing workflow composition logic.
+* `COLLABORATION`: integrations with project management and collaboration tools.
+* `DATA_SOURCES`: integrations with databases, data warehouses, and other data sources.
+* `DEVOPS`: integrations with version control and infrastructure-as-code (IaC) tools.
+
+When a user adds a new action to their workflow, they can apply a category filter in the pop-up menu that lists actions. Most blocks belong to one category, but some may belong to multiple.
+
+Since YouTrack is a project management and issue tracking service, the most appropriate category is `COLLABORATION`.
+
+Even basic scaffolding introduces the new block to the OpenOps UI, though the block doesn't do much yet. Here's what you can see at this point if you run `npm run start` and open the OpenOps frontend at http://localhost:4200/ in your browser:
 
 ![The scaffolded block in OpenOps UI](/images/contributing/youtrack-in-the-ui.png)
 
-## Implementing authentication (and getting a connection for free)
+## Implementing authentication
 
 Now that you have a block, you could start building its actions. However, unless your block interacts with a publicly accessible API, you need to provide the user with a way to authenticate with the API that your block is built on. How you implement authentication defines what the user sees when they try to create a new [connection](/cloud-access/access-levels-permissions) for your block.
 
@@ -323,7 +342,7 @@ The values of the `authProviderKey`, `authProviderDisplayName`, `authProviderLog
 
 ### Defining connection properties
 
-`props` defines the inputs required to authenticate with the service provider that the block integrates with. Each of these inputs is an OpenOps UI component: it can be a regular or masked input field, a checkbox, a dropdown, and more. To learn more about the component library, see the [Activepieces documentation](https://www.activepieces.com/docs/developers/piece-reference/properties). This component library is used not only for defining connections but also for defining the actions that a block exposes.
+`props` defines the inputs required to authenticate with the service provider that the block integrates with. Each of these inputs is an OpenOps UI component: it can be a regular or masked input field, a checkbox, a dropdown, and more. This component library is used not only for defining connections but also for defining the actions that a block exposes.
 
 The first property, `apiKey`, is for the user to provide a YouTrack API key (a.k.a. permanent token). The scaffolded version of this property uses the `SecretText` property type, which is a masked input field, and it's exactly what we need for this kind of data. Let's expand the scaffolded version of the property to include a description:
 
@@ -511,7 +530,7 @@ export const youtrack = createBlock({
   logoUrl:
     'https://resources.jetbrains.com/storage/products/company/brand/logos/YouTrack_icon.png',
   authors: [],
-  categories: [BlockCategory.FINOPS],
+  categories: [BlockCategory.COLLABORATION],
   actions: [],
   triggers: [],
 });
@@ -527,11 +546,12 @@ OpenOps provides scaffolding for actions as well, so let's run this in the termi
 npm run cli actions create
 ```
 
-The CLI asks three questions to define the new action:
+The CLI asks four questions to define the new action:
 
 1. `Enter the block folder name`: the folder where the block for the new action resides. For the existing YouTrack block, the value should be `youtrack`.
 2. `Enter the action display name`: a human-readable name for the action that users will see in the UI. It's also used to name the action's file. In this case, we want an action that lists issues in a YouTrack instance, so let's call it `Get all issues`.
 3. `Enter the action description`: a brief, informative text shown in the UI to explain the action's function and purpose. Let's enter `Retrieves all issues from a YouTrack instance`.
+4. `Does this action modify data or state (e.g., create, update, delete)?`: enter `n` for "No" as this is a read-only action.
 
 With these values, the CLI scaffolds the action in a new file named `get-all-issues.ts` in the YouTrack block's `/src/lib/actions` directory. The file initially looks like this:
 
@@ -539,7 +559,7 @@ With these values, the CLI scaffolds the action in a new file named `get-all-iss
 import { createAction, Property } from '@openops/blocks-framework';
 
 export const getAllIssues = createAction({
-  requireToolApproval: false,
+  isWriteAction: false,
   name: 'getAllIssues',
   displayName: 'Get all issues',
   description: 'Retrieves all issues from a YouTrack instance',
@@ -568,7 +588,7 @@ import { createAction } from '@openops/blocks-framework';
 import { youtrackAuth, YouTrackAuth } from '../auth';
 
 export const getAllIssues = createAction({
-  requireToolApproval: false,
+  isWriteAction: false,
   name: 'getAllIssues',
   displayName: 'Get all issues',
   description: 'Retrieves all issues from a YouTrack instance',
@@ -629,7 +649,7 @@ export const youtrack = createBlock({
   logoUrl:
     'https://resources.jetbrains.com/storage/products/company/brand/logos/YouTrack_icon.png',
   authors: [],
-  categories: [BlockCategory.FINOPS],
+  categories: [BlockCategory.COLLABORATION],
   actions: [getAllIssues],
   triggers: [],
 });
@@ -670,6 +690,7 @@ The values to provide to the CLI are as follows:
 1. `Enter the block folder name`: as before, this should be `youtrack`.
 2. `Enter the action display name`: let's call the new action `Change issue status`.
 3. `Enter the action description`: let's describe the action as `Updates the status of a given issue`.
+4. `Does this action modify data or state (e.g., create, update, delete)?`: it's `Y` for "Yes" as this action does update the state of an external system.
 
 With these values, the CLI scaffolds the action in a new file named `change-issue-status.ts` in the YouTrack block's `/src/lib/actions` directory:
 
@@ -677,7 +698,7 @@ With these values, the CLI scaffolds the action in a new file named `change-issu
 import { createAction, Property } from '@openops/blocks-framework';
 
 export const changeIssueStatus = createAction({
-  requireToolApproval: false,
+  isWriteAction: false,
   name: 'changeIssueStatus',
   displayName: 'Change issue status',
   description: 'Updates the status of a given issue',
@@ -706,7 +727,7 @@ export const youtrack = createBlock({
   logoUrl:
     'https://resources.jetbrains.com/storage/products/company/brand/logos/YouTrack_icon.png',
   authors: [],
-  categories: [BlockCategory.FINOPS],
+  categories: [BlockCategory.COLLABORATION],
   actions: [getAllIssues, changeIssueStatus],
   triggers: [],
 });
@@ -723,7 +744,7 @@ import { YouTrackAuth, youtrackAuth } from '../auth';
 
 export const changeIssueStatus = createAction({
   auth: youtrackAuth,
-  requireToolApproval: false,
+  isWriteAction: false,
   name: 'changeIssueStatus',
   displayName: 'Change issue status',
   description: 'Updates the status of a given issue',
@@ -997,7 +1018,7 @@ import { YouTrackAuth, youtrackAuth } from '../auth';
 
 export const changeIssueStatus = createAction({
   auth: youtrackAuth,
-  requireToolApproval: false,
+  isWriteAction: false,
   name: 'changeIssueStatus',
   displayName: 'Change issue status',
   description: 'Updates the status of a given issue',
