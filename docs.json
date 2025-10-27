@@ -45,6 +45,7 @@
         "pages": [
           "workflow-management/workflow-templates",
           "workflow-management/building-workflows",
+          "workflow-management/import-export",
           "workflow-management/actions",
           "workflow-management/scheduling",
           "workflow-management/passing-data",
