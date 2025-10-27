@@ -1,0 +1,216 @@
+{
+  "created": "1761575286562",
+  "updated": "1761575286562",
+  "name": "Fill the Project-Owner mapping table",
+  "tags": [],
+  "services": [],
+  "domains": [],
+  "template": {
+    "displayName": "Fill the Project-Owner mapping table",
+    "trigger": {
+      "name": "trigger",
+      "valid": true,
+      "displayName": "Every Week",
+      "type": "TRIGGER",
+      "settings": {
+        "blockName": "@openops/block-schedule",
+        "blockVersion": "~0.1.5",
+        "blockType": "OFFICIAL",
+        "packageType": "REGISTRY",
+        "input": {
+          "timezone": "UTC",
+          "day_of_the_week": 1,
+          "hour_of_the_day": 1
+        },
+        "inputUiInfo": {
+          "customizedInputs": {}
+        },
+        "triggerName": "every_week"
+      },
+      "nextAction": {
+        "id": "xj3q0PoSdQ9saGL7c0mH5",
+        "name": "step_1",
+        "type": "BLOCK",
+        "valid": true,
+        "settings": {
+          "input": {
+            "auth": "{{connections['cloudhealth']}}",
+            "fields": {
+              "fields": []
+            },
+            "assetType": "AwsInstance"
+          },
+          "blockName": "@openops/block-cloudhealth",
+          "blockType": "OFFICIAL",
+          "actionName": "cloudhealth_search_assets",
+          "inputUiInfo": {
+            "customizedInputs": {}
+          },
+          "packageType": "REGISTRY",
+          "blockVersion": "~0.0.1",
+          "errorHandlingOptions": {
+            "retryOnFailure": {
+              "value": false
+            },
+            "continueOnFailure": {
+              "value": false
+            }
+          }
+        },
+        "nextAction": {
+          "id": "ao7FuGKjBkS2GZTkImJu6",
+          "name": "step_2",
+          "type": "CODE",
+          "valid": true,
+          "settings": {
+            "input": {
+              "instances": "{{step_1}}"
+            },
+            "sourceCode": {
+              "code": "export const code = async (inputs) => {\n    const projectsOnly = inputs.instances.map(item => {\n        const match = item.groups.match(/Project:\\s*([^,]+)/);\n        const project = match ? match[1].trim() : null;\n        return project;\n    })\n    return [...new Set(projectsOnly)];\n};",
+              "packageJson": "{}"
+            },
+            "inputUiInfo": {
+              "customizedInputs": {}
+            },
+            "errorHandlingOptions": {
+              "retryOnFailure": {
+                "value": false
+              },
+              "continueOnFailure": {
+                "value": false
+              }
+            }
+          },
+          "nextAction": {
+            "id": "LVg1LSzjLMY2flNbR4kwG",
+            "name": "step_3",
+            "type": "LOOP_ON_ITEMS",
+            "valid": true,
+            "settings": {
+              "items": "{{step_2}}",
+              "inputUiInfo": {
+                "customizedInputs": {}
+              }
+            },
+            "displayName": "For each project name",
+            "firstLoopAction": {
+              "id": "I3qZfALn1Qm3hrlQiqgcy",
+              "name": "step_4",
+              "type": "BLOCK",
+              "valid": true,
+              "settings": {
+                "input": {
+                  "filters": {
+                    "filters": [
+                      {
+                        "value": {
+                          "value": "{{step_3['item']}}"
+                        },
+                        "fieldName": "CloudHealth project",
+                        "filterType": "Is equal"
+                      }
+                    ]
+                  },
+                  "tableName": "CloudHealth project-owner mapping",
+                  "filterType": "AND"
+                },
+                "blockName": "@openops/block-openops-tables",
+                "blockType": "OFFICIAL",
+                "actionName": "get_records",
+                "inputUiInfo": {
+                  "customizedInputs": {}
+                },
+                "packageType": "REGISTRY",
+                "blockVersion": "~0.0.1",
+                "errorHandlingOptions": {
+                  "retryOnFailure": {
+                    "value": false
+                  },
+                  "continueOnFailure": {
+                    "value": false
+                  }
+                }
+              },
+              "nextAction": {
+                "id": "Fu1vMmBcuoTZhNAC25vSa",
+                "name": "step_5",
+                "type": "BRANCH",
+                "valid": true,
+                "settings": {
+                  "conditions": [
+                    [
+                      {
+                        "operator": "EXISTS",
+                        "firstValue": "{{step_4['items'][0]['Owner email']}}",
+                        "secondValue": "",
+                        "caseSensitive": false
+                      }
+                    ]
+                  ],
+                  "inputUiInfo": {
+                    "customizedInputs": {}
+                  }
+                },
+                "displayName": "Is email already defined?",
+                "onFailureAction": {
+                  "id": "JaPLXbHMBGz6Qd3AlAEPu",
+                  "name": "step_6",
+                  "type": "BLOCK",
+                  "valid": true,
+                  "settings": {
+                    "input": {
+                      "tableName": "CloudHealth project-owner mapping",
+                      "rowPrimaryKey": {
+                        "rowPrimaryKey": "{{step_3['item']}}"
+                      },
+                      "fieldsProperties": {
+                        "fieldsProperties": [
+                          {
+                            "fieldName": "Owner email",
+                            "newFieldValue": {
+                              "newFieldValue": "your@email.here"
+                            }
+                          }
+                        ]
+                      },
+                      "roundToFieldPrecision": false
+                    },
+                    "blockName": "@openops/block-openops-tables",
+                    "blockType": "OFFICIAL",
+                    "actionName": "update_record",
+                    "inputUiInfo": {
+                      "customizedInputs": {}
+                    },
+                    "packageType": "REGISTRY",
+                    "blockVersion": "~0.0.1",
+                    "errorHandlingOptions": {
+                      "retryOnFailure": {
+                        "value": false
+                      },
+                      "continueOnFailure": {
+                        "value": false
+                      }
+                    }
+                  },
+                  "displayName": "Add project to mapping table"
+                }
+              },
+              "displayName": "Get project record"
+            }
+          },
+          "displayName": "Extract distinct project names"
+        },
+        "displayName": "Get all AWS instances"
+      }
+    },
+    "valid": true,
+    "description": ""
+  },
+  "blocks": [
+    "@openops/block-schedule",
+    "@openops/block-cloudhealth",
+    "@openops/block-openops-tables"
+  ],
+  "categories": []
+}
