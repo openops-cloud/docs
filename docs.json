@@ -82,6 +82,16 @@
         "pages": [
           "integrations/cloudhealth"
         ]
+      },
+      {
+        "group": "Contributing to OpenOps",
+        "pages": [
+          "contributing/index",
+          "contributing/development-environment",
+          "contributing/creating-a-minimal-block",
+          "contributing/contributing-an-integration",
+          "contributing/authentication"
+        ]
       }
     ]
   },

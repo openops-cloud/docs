@@ -1,0 +1,31 @@
+---
+title: 'Overview'
+description: 'How to contribute to OpenOps'
+icon: 'code'
+---
+
+OpenOps is an [open-source project](https://github.com/openops-cloud/openops) that welcomes external contributions. Extending OpenOps is fairly straightforward, and this section explains what you need to know to get started.
+
+## How to contribute
+
+The general process of contributing to OpenOps consists of:
+* Setting up your [development environment](/contributing/development-environment/).
+* Scaffolding a new block. The block serves as a container for [actions](/workflow-management/actions/) that users can add to their workflows as steps.
+* Implementing authentication for the block. Most non-core OpenOps blocks integrate with third-party services via their APIs, and most APIs require authentication. Implemented authentication allows users to set up [connections](/cloud-access/access-levels-permissions/) and access whatever API your block is built around.
+* Scaffolding one or more actions.
+* Implementing properties: the configuration settings available to users in the properties pane. Some actions don't have properties, but most do.
+* Implementing the logic of the actions: what exactly they execute once all properties are configured.
+* Testing the block.
+* [Submitting a pull request](https://github.com/openops-cloud/openops/blob/main/CONTRIBUTING.md) to the main OpenOps repository. When you submit a PR, include a link to a square logo of the service your block integrates with, ensuring that it's cleared for public use. Once the OpenOps team uploads the logo to the OpenOps static server, replace the original logo link in the PR with the OpenOps-hosted one.
+
+To learn how to quickly create a block that appears in the OpenOps UI and executes a minimal workload, see [Creating a Minimal Block](/contributing/creating-a-minimal-block/).
+
+To learn how to develop a more advanced block that provides full-fledged integration with a third-party service, see [Contributing an Integration](/contributing/contributing-an-integration/).
+
+## Examples of contributions
+
+For reference, here are examples of past pull requests that contributed new blocks to OpenOps:
+* [Ternary integration](https://github.com/openops-cloud/openops/pull/326)
+* [Databricks integration](https://github.com/openops-cloud/openops/pull/434)
+* [ServiceNow integration](https://github.com/openops-cloud/openops/pull/1078)
+* [nOps.io integration](https://github.com/openops-cloud/openops/pull/1403)
