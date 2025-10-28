@@ -143,7 +143,7 @@ OpenOps uses [Nx](https://nx.dev/) as its build system. The `project.json` file 
 }
 ```
 
-`package.json` is a minimal metadata file that declares the block's name and version within the Nx workspace. Unlike typical npm packages — and unlike the Activepieces extension practices — this file isn't meant for publication to the npm registry. Instead, it helps Nx identify the project and marks the block as a versioned unit within the larger repository.
+`package.json` is a minimal metadata file that declares the block's name and version within the Nx workspace. Unlike typical npm packages, this file isn't meant for publication to the npm registry. Instead, it helps Nx identify the project and marks the block as a versioned unit within the larger repository.
 
 ```json
 {
@@ -1193,7 +1193,7 @@ interface YouTrackProject {
 
 This guide walked you through creating a fully functional third-party integration for OpenOps by building a JetBrains YouTrack block with two actions. Along the way, you learned techniques involved in developing OpenOps blocks, including:
 * Implementing custom authentication that requires specifying an API key and a base URL. To learn more about authentication types that OpenOps supports, see [Authentication](/contributing/authentication/).
-* Adding configuration properties to actions, including dynamic, interdependent properties. To learn more about property types that OpenOps supports, see [Props](https://www.activepieces.com/docs/developers/piece-reference/properties) in the Activepieces documentation.
+* Adding configuration properties to actions, including dynamic, interdependent properties.
 * Using values returned by properties in other properties, as well as in the action's execution logic.
 
 To dive deeper into the internals of OpenOps blocks, explore the [code of existing blocks](https://github.com/openops-cloud/openops/tree/main/packages/blocks) or review past pull requests that added new blocks, such as [Ternary](https://github.com/openops-cloud/openops/pull/326), [ServiceNow](https://github.com/openops-cloud/openops/pull/1078), and [nOps.io](https://github.com/openops-cloud/openops/pull/1403).
