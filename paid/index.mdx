@@ -32,11 +32,25 @@ There are two ways to create a template:
 
 ## Editing a template
 
-The template editor mostly behaves the same way as the [workflow editor](/workflow-management/building-workflows/): you can add and remove steps, edit step properties, test individual steps and the entire template. There are only a few differences:
-* "Template editing" badge with a "View in Catalog" action
-* Can't move, import, export.
-* The Notes section is used to summarize the template. The summary is shown in the template catalog.
+The template editor mostly behaves the same way as the [workflow editor](/workflow-management/building-workflows/): you can add and remove steps, edit step properties, test individual steps and the entire template.
 
 ![Editing a template](/images/paid/template-editor.png)
 
-## Publishing a template
+There are only a few differences from the workflow editor:
+* At the top, there's a **Template editing** header that helps quickly visually distinguish the template editor from the workflow editor.
+* The header contains a **View in Catalog** action that previews the last saved version of the template's entry in the template catalog, even if it's not published yet.
+* The **Notes** section in the template editor is used as a summary of the template and is displayed in the private template catalog.
+* You can't move templates between folders. As opposed to workflows, templates are always in the root folder.
+* You can't import and export templates.
+
+## Listing a template in the private catalog
+
+While you're editing the template, its current draft is listed in the **Templates** view.
+
+When you click **Publish** in the template editor, the template is made available in the private template catalog.
+
+## Delisting a template from the private catalog
+
+If you need to delist the template from the private catalog while keeping it in the **Templates** view, do one of the following:
+1. In the template's entry in the **Templates** view, click the toggle in the **Visible in catalog** column.
+2. In the template editor, click the toggle to the left of the **Publish** button.
