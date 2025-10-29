@@ -4,15 +4,19 @@ description: 'OpenOps features that are only available in paid editions'
 icon: 'sack-dollar'
 ---
 
+TODO rename to "Private Template Catalog"; there's currently no need for an overview page in this section
+
 Most OpenOps features are available in the Community edition, but some only come with the [paid editions](https://www.openops.com/pricing/).
 
-One feature that is only available in the Enterprise edition is the **private Templates Catalog**.
+One feature that is only available in the Enterprise edition is the **private template catalog**.
 
-Community and Professional editions come with a [Templates Catalog](/workflow-management/workflow-templates/) that is curated by the OpenOps team. Enterprise Edition enables you to publish your own templates in the private section of the Templates Catalog called **My Organization Templates**.
+Community and Professional editions come with a [template catalog](/workflow-management/workflow-templates/) that is curated by the OpenOps team. Enterprise Edition enables you to publish your own templates in the private section of the Template Catalog called **My Organization Templates**.
+
+![My Organization Templates](/images/paid/my-organization-templates.png)
 
 In larger organizations, this enables central FinOps teams to create templates reflecting corporate best practices (such as snooze or escalation policies), then publish them in the private catalog for business units to easily create workflows based on them.
 
-For managed service providers (MSPs), the private Templates Catalog helps define a standard set of templates that can be used to create workflows for new customers.
+For managed service providers (MSPs), the private template catalog helps define a standard set of templates that can be used to create workflows for new customers.
 
 ## Creating a template
 
@@ -21,17 +25,17 @@ Enterprise edition contains a dedicated **Templates** view in the OpenOps main m
 ![Templates view in Enterprise edition](/images/paid/templates-view.png)
 
 There are two ways to create a template:
-* **New template** in the templates view.
-* From an existing workflow.
-
-![Creating a template from workflow](/images/paid/create-template-from-workflow.png)
+* By clicking **New template** in the top right of the **Templates** view. This opens the template editor, letting you create a template from scratch.
+* **From an existing workflow**. When you click the arrow to the right of the workflow name in the workflow editor, a menu displays that contains a **Create template** command:
+    ![Creating a template from workflow](/images/paid/create-template-from-workflow.png)
+    Clicking **Create template** duplicates the workflow as a template and opens the resulting template in the template editor.
 
 ## Editing a template
 
 The template editor mostly behaves the same way as the [workflow editor](/workflow-management/building-workflows/): you can add and remove steps, edit step properties, test individual steps and the entire template. There are only a few differences:
 * "Template editing" badge with a "View in Catalog" action
 * Can't move, import, export.
-* The Notes section is used to summarize the template. The summary is shown in the Templates Catalog.
+* The Notes section is used to summarize the template. The summary is shown in the template catalog.
 
 ![Editing a template](/images/paid/template-editor.png)
 
