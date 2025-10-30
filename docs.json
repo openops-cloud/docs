@@ -78,6 +78,12 @@
         ]
       },
       {
+        "group": "Paid Features",
+        "pages": [
+          "paid/organization-template-catalog"
+        ]
+      },
+      {
         "group": "Integrations",
         "pages": [
           "integrations/cloudhealth"

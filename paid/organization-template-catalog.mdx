@@ -1,0 +1,54 @@
+---
+title: 'Organization Template Catalog'
+description: "How to create your company's own workflow templates"
+icon: 'grid'
+---
+
+Most OpenOps features are available in the Community edition, but some are exclusive to the [paid editions](https://www.openops.com/pricing/).
+
+One such feature, available only in the Enterprise edition, is the **organization template catalog**.
+
+Community and Professional editions include a [template catalog](/workflow-management/workflow-templates/) curated by the OpenOps team. The Enterprise edition lets you publish your own templates in a private section of the template catalog called **My Organization Templates**.
+
+![My Organization Templates](/images/paid/my-organization-templates.png)
+
+In larger organizations, this enables central FinOps teams to create templates that reflect corporate FinOps best practices and are aligned with organizational standards and policies. The central teams can publish them in the organization catalog, allowing business units to easily create workflows based on them.
+
+For managed service providers (MSPs), the organization template catalog helps define a standard set of templates that can be used to create workflows for customers.
+
+The Enterprise edition also includes a dedicated **Templates** view in the OpenOps main menu:
+
+![Templates view in Enterprise edition](/images/paid/templates-view.png)
+
+## Creating a template
+
+There are two ways to create a template:
+* By clicking **New template** in the top right of the **Templates** view. This opens the template editor, allowing you to create a template from scratch.
+* **From an existing workflow**. Click the arrow next to the workflow name in the workflow editor to open a menu that contains a **Create template** command:
+    ![Creating a template from workflow](/images/paid/create-template-from-workflow.png)
+    Clicking **Create template** duplicates the workflow as a template and opens it in the template editor.
+
+## Editing a template
+
+The template editor mostly behaves the same way as the [workflow editor](/workflow-management/building-workflows/): you can add and remove steps, edit step properties, and test individual steps or the entire template.
+
+![Editing a template](/images/paid/template-editor.png)
+
+There are only a few differences from the workflow editor:
+* At the top, there's a **Template editing** header that helps visually distinguish the template editor from the workflow editor.
+* The header contains a **View in Catalog** action that opens the template entry as published in the organization template catalog.
+* Text entered in the **Notes** pane of the template editor is used as the template summary and is displayed in the organization template catalog.
+* You can't move templates between folders — unlike workflows, templates always reside in the root folder.
+* You can't import or export templates.
+
+## Listing a template in the organization catalog
+
+While you're editing a template, its current draft appears in the **Templates** view.
+
+When you click **Publish** in the template editor, the template becomes available in the organization template catalog.
+
+## Delisting a template from the organization catalog
+
+If you need to delist a template from the organization catalog while keeping it in the **Templates** view, do one of the following:
+1. In the template's entry in the **Templates** view, toggle the switch in the **Visible in catalog** column.
+2. In the template editor, toggle the switch next to the **Publish** button.
