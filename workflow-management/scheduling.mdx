@@ -48,3 +48,7 @@ What if you're based in a country that rests on Fridays but works on Sundays, an
 ```
 
 Note that since the properties of this trigger accept exactly one cron expression, you can't create schedules that are defined with two or more expressions, such as scheduling every 1 hour and 30 minutes.
+
+## Trigger outputs
+
+All schedule triggers expose a startDate value in their output when you test or run the workflow. Use this timestamp in downstream steps for logging, filtering, or time-based calculations (for example, to align queries to the exact run start).
