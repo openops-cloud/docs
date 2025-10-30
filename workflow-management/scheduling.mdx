@@ -48,3 +48,14 @@ What if you're based in a country that rests on Fridays but works on Sundays, an
 ```
 
 Note that since the properties of this trigger accept exactly one cron expression, you can't create schedules that are defined with two or more expressions, such as scheduling every 1 hour and 30 minutes.
+
+## Trigger outputs
+When a schedule trigger runs, it returns output fields you can pass to later steps. All schedule triggers include:
+
+- startDate: the start time of the current run (Date)
+
+Use startDate instead of adding a Get Current Date step. For example, to format the run start time:
+
+1. Add a Date operations action after the trigger.
+2. In the action's input, use Data Selector to pick Trigger > startDate.
+3. Choose Format date and your desired pattern/timezone.
