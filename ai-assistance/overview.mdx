@@ -44,6 +44,8 @@ To provide in-depth answers about your OpenOps installation, the AI assistant ta
 
 It can also work with Amazon MCP servers, namely AWS Cost Explorer MCP Server, AWS Pricing MCP Server, and AWS Billing and Cost Management MCP Server. Connecting to these servers enables you to ask questions about your AWS expenses like "How much did I spend on EC2 last month?". However, you need to explicitly enable OpenOps to access the MCP servers. See [LLM Connections](/ai-assistance/llm-connections) for how to connect.
 
+When available, the AI assistant includes reasoning in its replies, showing which tools (such as MCP servers) it used, displaying the raw data retrieved from those tools, and outlining next steps in plain language.
+
 ### Ask AI action
 
 The **Ask AI** action lets you run AI prompts in a separate step in your workflow, using outputs of its previous steps as context.
