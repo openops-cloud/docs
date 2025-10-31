@@ -90,6 +90,12 @@
         ]
       },
       {
+        "group": "Cookbook",
+        "pages": [
+          "cookbook/iterate-over-multiple-accounts"
+        ]
+      },
+      {
         "group": "Contributing to OpenOps",
         "pages": [
           "contributing/index",
