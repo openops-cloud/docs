@@ -3,3 +3,17 @@ title: 'Iterating Over Multiple Accounts'
 description: 'How to iterate over multiple AWS accounts'
 icon: 'repeat'
 ---
+
+## AWS accounts
+
+If you want to build a workflow that works across multiple AWS accounts instead of just one, this is possible, but there's a quirk. AWS actions in OpenOps differ in the way they support multiple accounts:
+* Some actions have built-in support for multiple AWS accounts via a multi-select dropdown:
+    ![An action that supports multiple AWS accounts](/images/cookbook/aws-ebs-get-snapshots.png)
+    In the *AWS* block, these actions are *Get Account IDs*, *EBS Get Volumes*, *EBS Get Snapshots*, *EC2 Get Instances*, *RDS Get Instances*, and *RDS Get Snapshots*. In addition, all actions in the *AWS Compute Optimizer* block support multiple accounts.
+* All other actions in AWS-related blocks only support a single account.
+
+This means that if your workflow contains at least one action that only supports a single AWS account, you need to first get a list of accounts, then introduce a loop step to iterate through them.
+
+## Azure subscriptions
+
+## GCP projects
