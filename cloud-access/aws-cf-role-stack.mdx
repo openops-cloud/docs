@@ -13,12 +13,12 @@ When creating the stack, you have the option to enable or disable certain permis
 1. Navigate to CloudFormation on your AWS account, in the North Virginia (`us-east-1`) region. You can do so [by clicking here](https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1). The stack **must** be created in the `us-east-1` region.
 2. Click **Create stack**, then select **With new resources**:
     ![Creating a new stack](/images/cloud-cf-roles-create-stack.png)
-3. Under **Amazon S3 URL**, insert the following URL: `https://openops.s3.us-east-2.amazonaws.com/OpenOpsAppRoleStack.yml`, then click **Next**.
+3. In the **Amazon S3 URL** field, insert the following URL: `https://openops.s3.us-east-2.amazonaws.com/OpenOpsAppRoleStack.yml`, then click **Next**.
     ![Specifying a template](/images/cloud-cf-roles-template.png)
 4. Give a name to the stack, such as `OpenOpsApp`. Enter an AWS account ID that you want OpenOps to use. Modify the permission sets if you like, then click **Next**.
-5. Acknowledge the creation of the necessary IAM roles, then click **Next**:
+5. Scroll down to the **Capabilities** section, acknowledge the creation of the necessary IAM roles, then click **Next**:
     ![Capabilities](/images/cloud-cf-roles-capabilities.png)
-6. Click **Submit**. The stack will be created, including the `OpenOpsApp` role and the requested permissions.
+6. In the **Review and create** view, scroll down and click **Submit**. The stack will be created, including the `OpenOpsApp` role and the requested permissions.
 
 ## Modification
 
