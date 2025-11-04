@@ -1,0 +1,182 @@
+{
+  "created": "1762281550207",
+  "updated": "1762281550207",
+  "name": "Multiple AWS accounts",
+  "tags": [],
+  "services": [],
+  "domains": [],
+  "template": {
+    "displayName": "Multiple AWS accounts",
+    "trigger": {
+      "name": "trigger",
+      "valid": true,
+      "displayName": "Every Day",
+      "type": "TRIGGER",
+      "settings": {
+        "blockName": "@openops/block-schedule",
+        "blockVersion": "~0.1.5",
+        "blockType": "OFFICIAL",
+        "packageType": "REGISTRY",
+        "input": {
+          "timezone": "UTC",
+          "hour_of_the_day": 0,
+          "run_on_weekends": false
+        },
+        "inputUiInfo": {
+          "customizedInputs": {}
+        },
+        "triggerName": "every_day"
+      },
+      "stepIndex": 1,
+      "nextAction": {
+        "id": "4aEl2ao10RQC2rzglNc5C",
+        "name": "step_1",
+        "type": "BLOCK",
+        "valid": true,
+        "settings": {
+          "input": {
+            "auth": "{{connections['aws-compute-optimizer-WithRoles']}}",
+            "accounts": {
+              "accounts": [
+                "295012473647",
+                "586998899304"
+              ]
+            }
+          },
+          "blockName": "@openops/block-aws",
+          "blockType": "OFFICIAL",
+          "actionName": "get_account_id",
+          "inputUiInfo": {
+            "customizedInputs": {}
+          },
+          "packageType": "REGISTRY",
+          "blockVersion": "~0.0.3",
+          "errorHandlingOptions": {
+            "retryOnFailure": {
+              "value": false
+            },
+            "continueOnFailure": {
+              "value": false
+            }
+          }
+        },
+        "nextAction": {
+          "id": "OdqTgDjgSCVUbTTVJ12jT",
+          "name": "step_2",
+          "type": "LOOP_ON_ITEMS",
+          "valid": true,
+          "settings": {
+            "items": "{{step_1}}",
+            "inputUiInfo": {
+              "customizedInputs": {}
+            }
+          },
+          "displayName": "Loop on Items",
+          "firstLoopAction": {
+            "id": "feF3Vh8A2Lrii1PayZ2I0",
+            "name": "step_3",
+            "type": "BLOCK",
+            "valid": true,
+            "settings": {
+              "input": {
+                "auth": "{{connections['aws-compute-optimizer-WithRoles']}}",
+                "dryRun": false,
+                "account": {
+                  "accounts": "{{step_2['item']['accountId']}}"
+                },
+                "commandToRun": "aws ec2 describe-instances"
+              },
+              "blockName": "@openops/block-aws",
+              "blockType": "OFFICIAL",
+              "actionName": "aws_cli",
+              "inputUiInfo": {
+                "customizedInputs": {
+                  "settings": {
+                    "input": {
+                      "account": {
+                        "accounts": true
+                      }
+                    }
+                  }
+                }
+              },
+              "packageType": "REGISTRY",
+              "blockVersion": "~0.0.3",
+              "errorHandlingOptions": {
+                "retryOnFailure": {
+                  "value": false
+                },
+                "continueOnFailure": {
+                  "value": false
+                }
+              }
+            },
+            "nextAction": {
+              "id": "SjysY3pxyo7w6PkA86l41",
+              "name": "step_4",
+              "type": "BLOCK",
+              "valid": true,
+              "settings": {
+                "input": {
+                  "auth": "{{connections['aws-compute-optimizer-WithRoles']}}",
+                  "tags": [],
+                  "dryRun": false,
+                  "accounts": {
+                    "accounts": "{{step_2['item']['accountId']}}"
+                  },
+                  "condition": "AND",
+                  "volumeTypes": [],
+                  "filterByARNs": false,
+                  "filterProperty": {
+                    "regions": [
+                      "us-east-2"
+                    ]
+                  },
+                  "shouldQueryOnlyUnattached": false
+                },
+                "blockName": "@openops/block-aws",
+                "blockType": "OFFICIAL",
+                "actionName": "ebs_get_volumes",
+                "inputUiInfo": {
+                  "customizedInputs": {
+                    "settings": {
+                      "input": {
+                        "accounts": {
+                          "accounts": true
+                        }
+                      }
+                    }
+                  }
+                },
+                "packageType": "REGISTRY",
+                "blockVersion": "~0.0.3",
+                "errorHandlingOptions": {
+                  "retryOnFailure": {
+                    "value": false
+                  },
+                  "continueOnFailure": {
+                    "value": false
+                  }
+                }
+              },
+              "displayName": "EBS Get Volumes",
+              "stepIndex": 5
+            },
+            "displayName": "AWS CLI",
+            "stepIndex": 4
+          },
+          "stepIndex": 3
+        },
+        "displayName": "Get Account IDs",
+        "stepIndex": 2
+      }
+    },
+    "valid": true,
+    "description": ""
+  },
+  "blocks": [
+    "@openops/block-schedule",
+    "@openops/block-aws"
+  ],
+  "categories": []
+}
