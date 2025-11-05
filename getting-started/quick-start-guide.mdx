@@ -88,7 +88,7 @@ The first step is a trigger: a schedule or event that initiates the workflow exe
 All other steps are actions, and each action represents some kind of automation that the workflow performs.
 
 Feel free to click **Tree view** and **Notes** in the top menu bar to display a compact view of the workflow and a detailed description of what it does:
-![Tree view and notes](/images/qgs-aws-tree-view-and-notes.png)
+![Tree view and notes](/images/qsg-aws-tree-view-and-notes.png)
 
 Explore the workflow by clicking on blocks that represent its steps. This will display properties of each step in the right pane of the workflow editor:
 ![Step properties in the workflow editor](/images/qsg-aws-step-properties.png)
@@ -98,7 +98,7 @@ Explore the workflow by clicking on blocks that represent its steps. This will d
 Before your workflow goes live, you need to test it. Testing the workflow runs it in full, so you can treat it as an on-demand run in addition to its scheduled runs.
 
 At the top of the workflow editor, above the trigger, there's a **Test workflow** button. However, right now it's grayed out, and if you hover over it, OpenOps will ask you to test your trigger first:
-![Test the trigger first](/images/qgs-aws-test-the-trigger-first.png)
+![Test the trigger first](/images/qsg-aws-test-the-trigger-first.png)
 
 To test the trigger, click on its block in the workflow graph. In the trigger's properties pane, click the **Test** tab, then click **Load Data** in the **Step output** section. As soon as you do, OpenOps will display test results. It looks like it's all good so far:
 ![Trigger test success](/images/qsg-aws-trigger-tested.png)
@@ -116,7 +116,7 @@ To start running the workflow on schedule, you need to publish it.
 
 When testing, the workflow editor switches to read-only mode. To get back to editing mode, click **Edit** on the top right.
 
-Once back in the editing mode, the top-right button is now called **Publish**. Click it, and as soon as you do, your workflow is live! It will now run periodically on the schedule defined by its trigger.
+Once back in the editing mode, one of the top-right buttons is now called **Publish**. Click it, and as soon as you do, your workflow is live! It will now run periodically on the schedule defined by its trigger.
 
 ### See the results of your test run
 
