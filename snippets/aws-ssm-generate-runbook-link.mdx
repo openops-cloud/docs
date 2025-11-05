@@ -1,0 +1,26 @@
+## Generate an AWS SSM Runbook execution link
+
+Use the AWS action Generate Runbook Execution Link to build a one-click Console URL for running an SSM Automation runbook.
+
+Prerequisites
+- An AWS connection with a default region
+
+Steps
+1) Add an AWS action to your workflow and choose Generate Runbook Execution Link
+2) Fill the fields:
+   - Region: optional. If empty, OpenOps uses the AWS connection’s default region
+   - Owner: source of the document (e.g., Owned by Amazon, Owned by me)
+   - Runbook: pick an SSM Automation document name
+   - Runbook version: optional specific document version
+   - Parameters: dynamic fields based on the selected runbook; arrays and objects are supported
+3) Run the step or the workflow to produce the link output
+
+Output
+- The action returns an object with a link property. Example formats:
+  - https://us-west-2.console.aws.amazon.com/systems-manager/automation/execute/AWS-RunShellScript?region=us-west-2
+  - https://eu-central-1.console.aws.amazon.com/systems-manager/automation/execute/My-Runbook?region=eu-central-1#documentVersion=3&InstanceIds=i-1%2C%20i-2
+
+Notes
+- Keys and values are URL-encoded
+- Arrays of primitives are encoded as a comma+space separated list
+- Arrays or objects are encoded as JSON, then URL-encoded
