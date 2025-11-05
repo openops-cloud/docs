@@ -1,0 +1,15 @@
+## Generating an AWS SSM runbook execution link
+
+Use the AWS action Generate Runbook Execution Link to build a Console URL you can share or open:
+
+1. Add the AWS action Generate Runbook Execution Link
+2. Region is optional. If empty, it uses the region from your AWS connection
+3. Choose Owner to filter runbooks (Amazon, Self, Private, Public, Third Party, or All)
+4. Pick Runbook. The list is loaded from AWS Systems Manager for the selected owner/region
+5. Optionally select Version. If empty, the default document version is used
+6. Fill Parameters. The form adapts to the selected runbook’s schema
+7. Test the step. The output contains a link field you can pass to Slack or open in a browser
+
+Example output link:
+
+https://us-east-1.console.aws.amazon.com/systems-manager/automation/execute/AWS-RestartEC2Instance?region=us-east-1&documentVersion=1#InstanceId=i-1234567890abcdef
