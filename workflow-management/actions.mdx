@@ -57,7 +57,7 @@ These actions help you retrieve data from cloud resources, third-party services,
 * **Snowflake**: run individual or batch Snowflake queries.
 * **Databricks**: run SQL queries in Databricks workspaces and trigger existing jobs.
 * **File operations**: create or read files in OpenOps storage.
-* **HTTP**: send HTTP requests to any API or respond to HTTP requests.
+* **HTTP**: send HTTP requests to any API or respond to HTTP requests. You can add reusable auth headers to your HTTP connection (for example, Authorization). Per‑step headers in the action override headers defined on the connection when keys match.
 
 Many actions in this group involve writing CLI commands (AWS CLI, Azure CLI, Google Cloud CLI) or SQL queries (AWS Athena, Snowflake, Databricks, BigQuery). The OpenOps workflow editor provides [AI assistance](/ai-assistance/overview/) to generate such commands and queries, making it less overwhelming for occasional and less technical users. AI assistance works [using your own API keys](/ai-assistance/llm-connections/) with an LLM provider of your choice. OpenAI, Anthropic, Perplexity, and a dozen other LLM providers are supported.
 
