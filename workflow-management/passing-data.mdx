@@ -22,6 +22,10 @@ There are certain nuances when it comes to accessing data from loops and conditi
 1. If there was a conditional statement, such as **Condition** or **Split**, before your current action, then your current action will not have access to the outputs of any actions inside the branches of the conditional statement. If you need the output of actions in these branches to be available after the conditional statement completes, make sure to save it elsewhere, such as in OpenOps’ internal storage using the **Put** action in the **Storage** group. You can then retrieve it from storage using the **Get** action in the same group.
 2. This is also true for loops: the output of actions that occur inside a loop is not available outside the loop. If you need any data from the loop after it completes, make sure to save the data to storage while still inside the loop.
 
+<Info>
+Each step’s output includes a stepIndex that matches the number shown on the step in the editor. You can reference stepIndex in conditions or logging to make flows easier to read.
+</Info>
+
 ## Selecting data from prior steps
 
 When you create a new action step, chances are that its properties pane contains one or more data fields that accept data from previous steps. When you click in a data field, it opens the **Data Selector** pane, which helps you select a piece of data produced by previous steps as the input for the current step.
