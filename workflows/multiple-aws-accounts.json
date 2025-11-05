@@ -1,6 +1,6 @@
 {
-  "created": "1762281550207",
-  "updated": "1762281550207",
+  "created": "1762335773992",
+  "updated": "1762335773992",
   "name": "Multiple AWS accounts",
   "tags": [],
   "services": [],
@@ -14,7 +14,7 @@
       "type": "TRIGGER",
       "settings": {
         "blockName": "@openops/block-schedule",
-        "blockVersion": "~0.1.5",
+        "blockVersion": "0.1.5",
         "blockType": "OFFICIAL",
         "packageType": "REGISTRY",
         "input": {
@@ -50,7 +50,7 @@
             "customizedInputs": {}
           },
           "packageType": "REGISTRY",
-          "blockVersion": "~0.0.3",
+          "blockVersion": "0.0.3",
           "errorHandlingOptions": {
             "retryOnFailure": {
               "value": false
@@ -101,7 +101,7 @@
                 }
               },
               "packageType": "REGISTRY",
-              "blockVersion": "~0.0.3",
+              "blockVersion": "0.0.3",
               "errorHandlingOptions": {
                 "retryOnFailure": {
                   "value": false
@@ -110,57 +110,6 @@
                   "value": false
                 }
               }
-            },
-            "nextAction": {
-              "id": "SjysY3pxyo7w6PkA86l41",
-              "name": "step_4",
-              "type": "BLOCK",
-              "valid": true,
-              "settings": {
-                "input": {
-                  "auth": "{{connections['aws-compute-optimizer-WithRoles']}}",
-                  "tags": [],
-                  "dryRun": false,
-                  "accounts": {
-                    "accounts": "{{step_2['item']['accountId']}}"
-                  },
-                  "condition": "AND",
-                  "volumeTypes": [],
-                  "filterByARNs": false,
-                  "filterProperty": {
-                    "regions": [
-                      "us-east-2"
-                    ]
-                  },
-                  "shouldQueryOnlyUnattached": false
-                },
-                "blockName": "@openops/block-aws",
-                "blockType": "OFFICIAL",
-                "actionName": "ebs_get_volumes",
-                "inputUiInfo": {
-                  "customizedInputs": {
-                    "settings": {
-                      "input": {
-                        "accounts": {
-                          "accounts": true
-                        }
-                      }
-                    }
-                  }
-                },
-                "packageType": "REGISTRY",
-                "blockVersion": "~0.0.3",
-                "errorHandlingOptions": {
-                  "retryOnFailure": {
-                    "value": false
-                  },
-                  "continueOnFailure": {
-                    "value": false
-                  }
-                }
-              },
-              "displayName": "EBS Get Volumes",
-              "stepIndex": 5
             },
             "displayName": "AWS CLI",
             "stepIndex": 4
