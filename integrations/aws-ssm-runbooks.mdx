@@ -1,0 +1,54 @@
+---
+title: 'Generate an AWS SSM Runbook Execution Link'
+description: 'Use the AWS block to create a Console link that opens a specific SSM Automation runbook pre-filled with parameters.'
+icon: 'aws'
+---
+
+This guide shows how to generate an AWS Console link that opens an SSM Automation runbook (document) with optional version and parameters pre-filled. You can share this link in approvals or notifications (for example, Slack) so operators can execute the runbook in the AWS Console.
+
+Prerequisites
+
+- An AWS connection in OpenOps.
+- The name of the SSM Automation runbook (document) you want to open.
+
+Steps
+
+1) Add the action
+- In the workflow editor, add a new step and choose AWS.
+- Select Generate Runbook Execution Link.
+
+2) Configure properties
+- Region (optional): If left empty, uses the region from your AWS connection.
+- Owner (required): Select where the runbook is owned (Amazon, Owned by me, Shared with me, Public, Third Party, or All runbooks). This helps you find the document by source.
+- Runbook: Enter the runbook name (for example, AWS-RestartEC2Instance).
+- Version (optional): Specify a document version (for example, 3).
+- Parameters (optional): Provide key-value pairs for the runbook inputs. Values may be strings, numbers, booleans, arrays, or objects.
+
+3) Use the output
+- The action returns an object with a link field. Use this URL in follow-up steps (for example, include it in a Slack message).
+
+Behavior details
+
+- Link format: https://{region}.console.aws.amazon.com/systems-manager/automation/execute/{runbook}?region={region}# ...
+- Document version: When provided, the link includes #documentVersion={version}& so that additional parameters can follow.
+- Parameters encoding:
+  - Empty, null, or blank values are omitted.
+  - Arrays of primitives are joined with a comma and space, then URL-encoded.
+  - Objects or arrays with objects are JSON-serialized and URL-encoded.
+  - Parameter names and values are URL-encoded.
+
+Examples
+
+- Only region and runbook:
+  - Output link: https://us-west-2.console.aws.amazon.com/systems-manager/automation/execute/AWS-RestartEC2Instance?region=us-west-2#
+
+- With version:
+  - Output link: https://ap-south-1.console.aws.amazon.com/systems-manager/automation/execute/My-Runbook?region=ap-south-1#documentVersion=3&
+
+- With parameters (special characters encoded):
+  - Output link: https://eu-west-3.console.aws.amazon.com/systems-manager/automation/execute/RB?region=eu-west-3#key%20with%20space=value%2Fwith%3Fspecial%26chars
+
+Tips
+
+- Combine this action with Slack Request Action to guide an operator to the Console and capture their response.
+- Use dynamic values for Parameters to pass context from earlier steps (for example, instance IDs).
