@@ -4,6 +4,8 @@ description: 'Hardware and software requirements for deploying OpenOps on-premis
 icon: 'server'
 ---
 
+import OpenOpsCloudLimitations from '/snippets/openops-cloud-limitations.mdx'
+
 The open source version of OpenOps is meant to be deployed on-premises and is distributed as a Docker Compose specification.
 
 ## Hardware
@@ -29,3 +31,9 @@ OpenOps is distributed as a Docker Compose file. Here are Docker version require
 * On Windows: **Docker Desktop 4.11 or later**. In your Docker Desktop settings, in the *General* tab, enable the *Use the WSL 2 based engine* option.
 
 If you're using an alternative Docker client such as OrbStack or Colima, make sure that the version of your Docker client includes Docker Engine v20.10+ and Docker Compose v2.x.
+
+## Browser
+
+You can access OpenOps using any modern browser. However, viewing the full set of workflow templates in the OpenOps [template catalog](/workflow-management/workflow-templates/) requires signing in to OpenOps Cloud, which comes with additional requirements.
+
+<OpenOpsCloudLimitations />
