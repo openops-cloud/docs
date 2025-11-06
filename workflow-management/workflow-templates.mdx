@@ -4,6 +4,8 @@ description: 'How to create automations from a library of pre-configured workflo
 icon: 'puzzle-piece'
 ---
 
+import OpenOpsCloudLimitations from '/snippets/openops-cloud-limitations.mdx'
+
 OpenOps provides a pre-made library of FinOps best-practice workflows, based on research and input from FinOps leaders across industries and verticals.
 
 The library, referred to as the **template catalog**, contains dozens of templates that provide ready-to-use recipes for anomaly management, workload and rate optimization across the following cloud services:
@@ -19,14 +21,12 @@ To view the catalog, click **Explore templates** in the top-right menu bar in th
 The catalog will open in an overlay:
 ![OpenOps template catalog before signing up with OpenOps Cloud](/images/template-catalog.png)
 
-By default, the catalog contains six templates. To view more, click **Explore more** and sign up for a free OpenOps Cloud account. As a result, the **template catalog** in your OpenOps installation will be extended to show all available templates:
-![OpenOps template catalog after signing up with OpenOps Cloud](/images/template-catalog-all-templates.png)
+By default, the catalog contains six templates. To view more, click **Explore more** and sign up for a free OpenOps Cloud account.
 
-<Note>
-You may not be able to connect to OpenOps Cloud and see additional templates if:
-* Your browser is configured to block third-party cookies. Allow third-party cookies ([Chrome](https://support.google.com/chrome/answer/95647), [Safari](https://help.apple.com/safari/mac/8.0/en.lproj/sfri11471.html), [Firefox](http://support.mozilla.org/en-US/kb/third-party-cookies-firefox-tracking-protection)) for your OpenOps installation’s URL.
-* You're using an OpenOps installation served over HTTP in Safari. Consider enabling HTTPS for your installation by following the instructions for [AWS](/getting-started/deployment/aws-ec2#enabling-tls), [Azure](/getting-started/deployment/azure-vm#enabling-tls), or [GCP](/getting-started/deployment/gcp-vm#enabling-tls) deployments.
-</Note>
+<OpenOpsCloudLimitations/>
+
+As soon as you sign up, the **template catalog** in your OpenOps installation is extended to show all available templates:
+![OpenOps template catalog after signing up with OpenOps Cloud](/images/template-catalog-all-templates.png)
 
 ## Creating workflows based on templates
 
