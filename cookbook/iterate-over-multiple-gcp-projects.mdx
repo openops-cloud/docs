@@ -55,3 +55,31 @@ When you test this action, you'll see that it returns an array of objects where 
   }
 ]
 ```
+
+## 3. Iterate over projects
+
+Add a **Loop on Items** step to your workflow.
+
+In the **Items** property, use the **Data Selector** view to select the entire output of the previous step:
+
+![A Loop on Items step](/images/cookbook/gcp-loop-on-items.png)
+
+## 4. Add a Google Cloud step inside the loop and use the project ID in the command
+
+Inside the loop, add a Google Cloud action that you want to perform for each project — for example, another **Google Cloud CLI** action.
+
+In the action's properties, select the connection that enables access to multiple projects. Select any project in the **Default Project** dropdown. In the **Command** field, enter a command that you want to run. For example, if you want to list active Compute Engine instances in each project, enter the following:
+
+```shell
+gcloud compute instances list --project= --format=json
+```
+
+Set the caret after the `--project=` flag. Use **Data Selector** to expand **Loop on Items**, then **item**, then click **Insert** alongside the **projectId** property:
+
+![Selecting an accountId](/images/cookbook/gcp-data-selector-projectid.png)
+
+The resulting command in the properties pane will look like this, injecting the current project ID into the command template:
+
+![A command with a dynamic project ID](/images/cookbook/gcp-command-inside-loop.png)
+
+In a similar manner, you can inject the project ID using **Data Selector** in other Google Cloud actions that you insert inside the loop.
