@@ -1,14 +1,14 @@
 ---
-title: 'Iterating Over Multiple GCP Projects'
-description: 'How to configure build a workflow to work with multiple Google Cloud Platform projects'
+title: 'Iterating Over Multiple Google Cloud Projects'
+description: 'How to build a workflow to perform actions across multiple Google Cloud Platform projects'
 icon: 'repeat'
 ---
 
-You can build workflows that retrieve the list of your GCP projects and iterate over them.
+You can build workflows that retrieve the list of your Google Cloud projects and iterate over them.
 
 Here's how you could do this.
 
-## 1. Create a Google Cloud connection that enables access to multiple accounts
+## 1. Create a Google Cloud connection that enables access to multiple projects
 
 First, create a [Google Cloud connection](/cloud-access/access-levels-permissions#google-cloud-connections) if you don't already have one.
 
@@ -23,17 +23,21 @@ If your connection uses a **service account JSON key**:
 
 If your connection uses **local Google Cloud CLI credentials**, OpenOps will use the same identity as your local `gcloud` session (the user or service account you are logged in as). Multi-project access works automatically if that identity already has IAM roles in multiple projects. If not, grant the same user or service account the necessary roles in each target project's IAM settings.
 
-## 2. Get the list of accounts
+## 2. Get the list of projects
 
 In your workflow, add a **Google Cloud CLI** action.
 
-In the action's properties, select the connection that enables access to multiple projects. Select any project in the **Default Project** dropdown. In the **Command** field, enter the following:
+In the action's properties, select the connection that enables access to multiple projects.
+
+Select any project in the **Default Project** dropdown.
+
+In the **Command** field, enter the following:
 
 ```shell
 gcloud projects list --format=json
 ```
 
-![A GCP CLI action to get the list of projects](/images/cookbook/gcp-list-projects-properties.png)
+![A Google Cloud CLI action to get the list of projects](/images/cookbook/gcp-list-projects-properties.png)
 
 When you test this action, you'll see that it returns an array of objects where each object contains the project ID and other metadata:
 
@@ -64,11 +68,15 @@ In the **Items** property, use the **Data Selector** view to select the entire o
 
 ![A Loop on Items step](/images/cookbook/gcp-loop-on-items.png)
 
-## 4. Add a Google Cloud step inside the loop and use the project ID in the command
+## 4. Add a Google Cloud step inside the loop and inject the project ID into the command
 
 Inside the loop, add a Google Cloud action that you want to perform for each project — for example, another **Google Cloud CLI** action.
 
-In the action's properties, select the connection that enables access to multiple projects. Select any project in the **Default Project** dropdown. In the **Command** field, enter a command that you want to run. For example, if you want to list active Compute Engine instances in each project, enter the following:
+In the action's properties, select the connection that enables access to multiple projects.
+
+Select any project in the **Default Project** dropdown.
+
+In the **Command** field, enter a command that you want to run. For example, if you want to list active Compute Engine instances in each project, enter the following:
 
 ```shell
 gcloud compute instances list --project= --format=json
@@ -76,7 +84,7 @@ gcloud compute instances list --project= --format=json
 
 Set the caret after the `--project=` flag. Use **Data Selector** to expand **Loop on Items**, then **item**, then click **Insert** alongside the **projectId** property:
 
-![Selecting an accountId](/images/cookbook/gcp-data-selector-projectid.png)
+![Selecting a projectId](/images/cookbook/gcp-data-selector-projectid.png)
 
 The resulting command in the properties pane will look like this, injecting the current project ID into the command template:
 
