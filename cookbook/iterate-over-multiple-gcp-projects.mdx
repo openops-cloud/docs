@@ -1,12 +1,12 @@
 ---
 title: 'Iterating Over Multiple Google Cloud Projects'
-description: 'How to build a workflow to perform actions across multiple Google Cloud Platform projects'
+description: 'How to build a workflow that performs actions across multiple Google Cloud Platform projects'
 icon: 'repeat'
 ---
 
 You can build workflows that retrieve the list of your Google Cloud projects and iterate over them.
 
-Here's how you could do this.
+Here's how to do it.
 
 ## 1. Create a Google Cloud connection that enables access to multiple projects
 
@@ -39,7 +39,7 @@ gcloud projects list --format=json
 
 ![A Google Cloud CLI action to get the list of projects](/images/cookbook/gcp-list-projects-properties.png)
 
-When you test this action, you'll see that it returns an array of objects where each object contains the project ID and other metadata:
+When you test this action, it returns an array of objects, each containing the project ID and other metadata:
 
 ```json
 [
@@ -76,20 +76,20 @@ In the action's properties, select the connection that enables access to multipl
 
 Select any project in the **Default Project** dropdown.
 
-In the **Command** field, enter a command that you want to run. For example, if you want to list active Compute Engine instances in each project, enter the following:
+In the **Command** field, enter the command you want to run. For example, to list active Compute Engine instances in each project, enter:
 
 ```shell
 gcloud compute instances list --project= --format=json
 ```
 
-Set the caret after the `--project=` flag. Use **Data Selector** to expand **Loop on Items**, then **item**, then click **Insert** alongside the **projectId** property:
+Set the caret after the `--project=` flag. Use **Data Selector** to expand **Loop on Items**, then **item**, and click **Insert** next to the **projectId** property:
 
 ![Selecting a projectId](/images/cookbook/gcp-data-selector-projectid.png)
 
-The resulting command in the properties pane will look like this, injecting the current project ID into the command template:
+The resulting command in the properties pane will look like this, dynamically injecting the current project ID into the command template:
 
 ![A command with a dynamic project ID](/images/cookbook/gcp-command-inside-loop.png)
 
-In a similar manner, you can inject the project ID using **Data Selector** in other Google Cloud actions that you insert inside the loop.
+In the same way, you can use **Data Selector** to inject the project ID into other Google Cloud actions inside the loop.
 
-You can [download the workflow](https://docs.openops.com/workflows/multiple-gcp-projects.json) described above and [import](/workflow-management/import-export/#importing-workflows) it to your OpenOps instance.
+You can [download the workflow](https://docs.openops.com/workflows/multiple-gcp-projects.json) described above and [import it](/workflow-management/import-export/#importing-workflows) into your OpenOps instance.
