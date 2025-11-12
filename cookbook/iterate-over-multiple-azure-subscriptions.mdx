@@ -1,0 +1,24 @@
+---
+title: 'Iterating Over Multiple Azure Subscriptions'
+description: 'How to build a workflow that performs actions across multiple Microsoft Azure subscriptions'
+icon: 'repeat'
+---
+
+You can build workflows that retrieve the list of available Azure subscriptions and iterate over them.
+
+Here's how to do it.
+
+## 1. Create an Azure connection that enables access to multiple subscriptions
+
+First, create an [Azure connection](/cloud-access/access-levels-permissions#azure-connections) if you don't already have one.
+
+Unlike AWS connections, OpenOps doesn't provide a built-in way to enable access to multiple Azure subscriptions from connection settings.
+
+Instead, you can use a single Azure **service principal** (application) to access multiple subscriptions by assigning it roles in each of them.
+
+To do this:
+1. In your Azure Active Directory tenant, create an app registration and a corresponding service principal.
+2. Generate a client secret for the service principal. Use the service principal's **Application (client) ID**, **Client secret**, and **Directory (tenant) ID** to create an OpenOps connection.
+3. In the Azure Portal or CLI, assign the same service principal appropriate IAM roles (for example, *Reader* or *Contributor*) in each subscription that you want OpenOps to access.
+
+Once the service principal has access to multiple subscriptions, an OpenOps connection configured with its credentials can perform actions in any of those subscriptions.

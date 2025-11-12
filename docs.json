@@ -93,7 +93,8 @@
         "group": "Cookbook",
         "pages": [
           "cookbook/iterate-over-multiple-aws-accounts",
-          "cookbook/iterate-over-multiple-gcp-projects"
+          "cookbook/iterate-over-multiple-gcp-projects",
+          "cookbook/iterate-over-multiple-azure-subscriptions"
         ]
       },
       {
