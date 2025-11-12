@@ -1,0 +1,122 @@
+{
+  "created": "1762541682256",
+  "updated": "1762541682256",
+  "name": "Multiple GCP projects",
+  "tags": [],
+  "services": [],
+  "domains": [],
+  "template": {
+    "displayName": "Multiple GCP projects",
+    "trigger": {
+      "name": "trigger",
+      "valid": true,
+      "displayName": "Every Day",
+      "type": "TRIGGER",
+      "settings": {
+        "blockName": "@openops/block-schedule",
+        "blockVersion": "~0.1.5",
+        "blockType": "OFFICIAL",
+        "packageType": "REGISTRY",
+        "input": {
+          "timezone": "UTC",
+          "hour_of_the_day": 0,
+          "run_on_weekends": false
+        },
+        "inputUiInfo": {
+          "customizedInputs": {}
+        },
+        "triggerName": "every_day"
+      },
+      "nextAction": {
+        "id": "iuL4ZCYk3bLI1YdaBqrSM",
+        "name": "step_1",
+        "type": "BLOCK",
+        "valid": true,
+        "settings": {
+          "input": {
+            "auth": "{{connections['google-cloud-multiple-projects']}}",
+            "dryRun": false,
+            "project": "bigquery-351416",
+            "commandToRun": "gcloud projects list --format=json",
+            "useHostSession": {}
+          },
+          "blockName": "@openops/block-google-cloud",
+          "blockType": "OFFICIAL",
+          "actionName": "google_cloud_cli",
+          "inputUiInfo": {
+            "customizedInputs": {}
+          },
+          "packageType": "REGISTRY",
+          "blockVersion": "~0.0.1",
+          "errorHandlingOptions": {
+            "retryOnFailure": {
+              "value": false
+            },
+            "continueOnFailure": {
+              "value": false
+            }
+          }
+        },
+        "nextAction": {
+          "id": "DQftgD0UQOYa1pa4NbfpC",
+          "name": "step_2",
+          "type": "LOOP_ON_ITEMS",
+          "valid": true,
+          "settings": {
+            "items": "{{step_1}}",
+            "inputUiInfo": {
+              "customizedInputs": {}
+            }
+          },
+          "displayName": "Loop on Items",
+          "firstLoopAction": {
+            "id": "SuuIkr5EQZoN3QI0drjTv",
+            "name": "step_3",
+            "type": "BLOCK",
+            "valid": true,
+            "settings": {
+              "input": {
+                "auth": "{{connections['google-cloud-multiple-projects']}}",
+                "dryRun": false,
+                "project": "bigquery-351416",
+                "commandToRun": "gcloud compute instances list --project={{step_2['item']['projectId']}} --format=json\n",
+                "useHostSession": {}
+              },
+              "blockName": "@openops/block-google-cloud",
+              "blockType": "OFFICIAL",
+              "actionName": "google_cloud_cli",
+              "inputUiInfo": {
+                "customizedInputs": {
+                  "settings": {
+                    "input": {
+                      "dryRun": false
+                    }
+                  }
+                }
+              },
+              "packageType": "REGISTRY",
+              "blockVersion": "~0.0.1",
+              "errorHandlingOptions": {
+                "retryOnFailure": {
+                  "value": false
+                },
+                "continueOnFailure": {
+                  "value": false
+                }
+              }
+            },
+            "displayName": "List instances"
+          }
+        },
+        "displayName": "List projects"
+      }
+    },
+    "valid": true,
+    "description": ""
+  },
+  "blocks": [
+    "@openops/block-schedule",
+    "@openops/block-google-cloud"
+  ],
+  "categories": []
+}
