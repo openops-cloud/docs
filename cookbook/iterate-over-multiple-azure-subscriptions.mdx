@@ -6,20 +6,20 @@ icon: 'repeat'
 
 You can build workflows that retrieve the list of available Azure subscriptions and iterate over them.
 
-Here's how to do it.
+Here's how to proceed.
 
 ## 1. Create an Azure connection that enables access to multiple subscriptions
 
 First, create an [Azure connection](/cloud-access/access-levels-permissions#azure-connections) if you don't already have one.
 
-Unlike AWS connections, OpenOps doesn't provide a built-in way to enable access to multiple Azure subscriptions from connection settings.
+Unlike AWS connections, OpenOps doesn't provide a built-in way to grant access to multiple Azure subscriptions from connection settings.
 
 Instead, you can use a single Azure **service principal** (application) to access multiple subscriptions by assigning it roles in each of them.
 
 To do this:
 1. In your Azure Active Directory tenant, create an app registration and a corresponding service principal.
 2. Generate a client secret for the service principal. Use the service principal's **Application (client) ID**, **Client secret**, and **Directory (tenant) ID** to create an OpenOps connection.
-3. In the Azure Portal or CLI, assign the same service principal appropriate IAM roles (for example, *Reader* or *Contributor*) in each subscription that you want OpenOps to access.
+3. In the Azure Portal or CLI, assign the same service principal appropriate IAM roles (for example, *Reader* or *Contributor*) in each subscription you want OpenOps to access.
 
 Once the service principal has access to multiple subscriptions, an OpenOps connection configured with its credentials can perform actions in any of those subscriptions.
 
@@ -39,7 +39,7 @@ az account list --output json
 
 ![An Azure CLI action to get the list of subscriptions](/images/cookbook/azure-list-subscriptions-properties.png)
 
-When you test this action, it returns an array of objects, each containing the subscription ID and other metadata:
+When you test this action, it returns an array of objects, where each object includes the subscription ID and related metadata:
 
 ```json
 [
@@ -90,7 +90,7 @@ In the action's properties, select the connection that enables access to multipl
 
 Select any subscription in the **Subscriptions** dropdown.
 
-In the **Command** field, enter the command you want to run. For example, to list running VMs in each subscription, enter:
+In the **Command** field, enter the command you want to run. For example, to list active VMs in each subscription, enter:
 
 ```shell
 az vm list --subscription= --show-details --output json
@@ -100,10 +100,10 @@ Set the caret after the `--subscription=` flag. Use **Data Selector** to expand 
 
 ![Selecting a subscription ID](/images/cookbook/azure-data-selector-id.png)
 
-The resulting command in the properties pane will look like this, dynamically injecting the current subscription ID into the command template:
+The resulting command in the properties pane will look like this, dynamically inserting the current subscription ID into the command template:
 
 ![A command with a dynamic subscription ID](/images/cookbook/azure-command-inside-loop.png)
 
-In the same way, you can use **Data Selector** to inject the subscription ID into other Azure actions inside the loop.
+Similarly, you can use **Data Selector** to inject the subscription ID into other Azure actions inside the loop.
 
 You can [download the workflow](https://docs.openops.com/workflows/multiple-azure-subscriptions.json) described above and [import it](/workflow-management/import-export/#importing-workflows) into your OpenOps instance.
