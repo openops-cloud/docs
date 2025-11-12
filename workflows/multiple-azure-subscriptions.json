@@ -1,0 +1,124 @@
+{
+  "created": "1762966805187",
+  "updated": "1762966805187",
+  "name": "Multliple Azure subscriptions",
+  "tags": [],
+  "services": [],
+  "domains": [],
+  "template": {
+    "displayName": "Multliple Azure subscriptions",
+    "trigger": {
+      "name": "trigger",
+      "valid": true,
+      "displayName": "Every Day",
+      "type": "TRIGGER",
+      "settings": {
+        "blockName": "@openops/block-schedule",
+        "blockVersion": "~0.1.5",
+        "blockType": "OFFICIAL",
+        "packageType": "REGISTRY",
+        "input": {
+          "timezone": "UTC",
+          "hour_of_the_day": 0,
+          "run_on_weekends": false
+        },
+        "inputUiInfo": {
+          "customizedInputs": {}
+        },
+        "triggerName": "every_day"
+      },
+      "stepIndex": 1,
+      "nextAction": {
+        "id": "XzjW6heLMNq3zyIBlmruu",
+        "name": "step_1",
+        "type": "BLOCK",
+        "valid": true,
+        "settings": {
+          "input": {
+            "auth": "{{connections['azure']}}",
+            "dryRun": false,
+            "commandToRun": "az account list --output json",
+            "subscriptions": {
+              "subDropdown": "85ec64cc-2107-4774-a848-87a92543bacd"
+            },
+            "useHostSession": {}
+          },
+          "blockName": "@openops/block-azure",
+          "blockType": "OFFICIAL",
+          "actionName": "azure_cli",
+          "inputUiInfo": {
+            "customizedInputs": {}
+          },
+          "packageType": "REGISTRY",
+          "blockVersion": "~0.0.1",
+          "errorHandlingOptions": {
+            "retryOnFailure": {
+              "value": false
+            },
+            "continueOnFailure": {
+              "value": false
+            }
+          }
+        },
+        "nextAction": {
+          "id": "C5mQozruGlcKBQShn5sF1",
+          "name": "step_2",
+          "type": "LOOP_ON_ITEMS",
+          "valid": true,
+          "settings": {
+            "items": "{{step_1}}",
+            "inputUiInfo": {
+              "customizedInputs": {}
+            }
+          },
+          "displayName": "Loop on Items",
+          "firstLoopAction": {
+            "id": "B4GDuXMv5ZoOF9TkigyqI",
+            "name": "step_3",
+            "type": "BLOCK",
+            "valid": true,
+            "settings": {
+              "input": {
+                "auth": "{{connections['azure']}}",
+                "dryRun": false,
+                "commandToRun": "az vm list --subscription={{step_2['item']['id']}} --show-details --output json",
+                "subscriptions": {
+                  "subDropdown": "85ec64cc-2107-4774-a848-87a92543bacd"
+                },
+                "useHostSession": {}
+              },
+              "blockName": "@openops/block-azure",
+              "blockType": "OFFICIAL",
+              "actionName": "azure_cli",
+              "inputUiInfo": {
+                "customizedInputs": {}
+              },
+              "packageType": "REGISTRY",
+              "blockVersion": "~0.0.1",
+              "errorHandlingOptions": {
+                "retryOnFailure": {
+                  "value": false
+                },
+                "continueOnFailure": {
+                  "value": false
+                }
+              }
+            },
+            "displayName": "List VMs",
+            "stepIndex": 4
+          },
+          "stepIndex": 3
+        },
+        "displayName": "List subscriptions",
+        "stepIndex": 2
+      }
+    },
+    "valid": true,
+    "description": ""
+  },
+  "blocks": [
+    "@openops/block-schedule",
+    "@openops/block-azure"
+  ],
+  "categories": []
+}
