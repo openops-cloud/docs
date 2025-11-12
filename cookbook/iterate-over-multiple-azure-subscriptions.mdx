@@ -19,7 +19,7 @@ Instead, you can use a single Azure **service principal** (application) to acces
 To do this:
 1. In your Azure Active Directory tenant, create an app registration and a corresponding service principal.
 2. Generate a client secret for the service principal. Use the service principal's **Application (client) ID**, **Client secret**, and **Directory (tenant) ID** to create an OpenOps connection.
-3. In the Azure Portal or CLI, assign the same service principal appropriate IAM roles (for example, *Reader* or *Contributor*) in each subscription you want OpenOps to access.
+3. In the Azure Portal or CLI, assign the same service principal appropriate RBAC roles (for example, *Reader* or *Contributor*) in each subscription you want OpenOps to access.
 
 Once the service principal has access to multiple subscriptions, an OpenOps connection configured with its credentials can perform actions in any of those subscriptions.
 
