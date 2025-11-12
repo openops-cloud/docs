@@ -22,3 +22,55 @@ To do this:
 3. In the Azure Portal or CLI, assign the same service principal appropriate IAM roles (for example, *Reader* or *Contributor*) in each subscription that you want OpenOps to access.
 
 Once the service principal has access to multiple subscriptions, an OpenOps connection configured with its credentials can perform actions in any of those subscriptions.
+
+## 2. Get the list of subscriptions
+
+In your workflow, add an **Azure CLI** action.
+
+In the action's properties, select the connection that enables access to multiple subscriptions.
+
+Select any subscription in the **Subscriptions** dropdown.
+
+In the **Command** field, enter the following:
+
+```shell
+az account list --output json
+```
+
+![An Azure CLI action to get the list of subscriptions](/images/cookbook/azure-list-subscriptions-properties.png)
+
+When you test this action, it returns an array of objects, each containing the subscription ID and other metadata:
+
+```json
+[
+  {
+    "cloudName": "AzureCloud",
+    "homeTenantId": "536df0a4-c5d9-4a38-adfa-3a81dcc81a33",
+    "id": "85ec64cc-2107-4774-a848-87a92543bacd",
+    "isDefault": true,
+    "managedByTenants": [],
+    "name": "Microsoft Azure Sponsorship",
+    "state": "Enabled",
+    "tenantId": "536df0a4-c5d9-4a38-adfa-3a81dcc81a33",
+    "user": {
+      "name": "2008127b-13d0-41e4-ad41-d8f2b2de6c92",
+      "type": "servicePrincipal"
+    }
+  },
+  {
+    "cloudName": "AzureCloud",
+    "homeTenantId": "536df0a4-c5d9-4a38-adfa-3a81dcc81a33",
+    "id": "2c4a9e11-7f21-4e5a-bdfb-83e4c3a951d0",
+    "isDefault": false,
+    "managedByTenants": [],
+    "name": "Development Sandbox",
+    "state": "Enabled",
+    "tenantId": "536df0a4-c5d9-4a38-adfa-3a81dcc81a33",
+    "user": {
+      "name": "2008127b-13d0-41e4-ad41-d8f2b2de6c92",
+      "type": "servicePrincipal"
+    }
+  }
+]
+```
+
