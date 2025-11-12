@@ -74,7 +74,7 @@
         "group": "Reporting and Analytics",
         "pages": [
           "reporting-analytics/tables",
-          "reporting-analytics/data-visualization"
+          "reporting-analytics/analytics"
         ]
       },
       {
@@ -129,6 +129,10 @@
   {
     "source": "cloud-access/llm-connections",
     "destination": "ai-assistance/llm-connections"
+  },
+  {
+    "source": "reporting-analytics/data-visualization",
+    "destination": "reporting-analytics/analytics"
   }
 ]
 }
