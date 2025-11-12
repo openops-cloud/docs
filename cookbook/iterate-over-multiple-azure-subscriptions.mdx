@@ -74,3 +74,34 @@ When you test this action, it returns an array of objects, each containing the s
 ]
 ```
 
+## 3. Iterate over subscriptions
+
+Add a **Loop on Items** step to your workflow.
+
+In the **Items** property, use the **Data Selector** view to select the entire output of the previous step:
+
+![A Loop on Items step](/images/cookbook/azure-loop-on-items.png)
+
+## 4. Add an Azure step inside the loop and inject the subscription ID into the command
+
+Inside the loop, add an Azure action that you want to perform for each subscription — for example, another **Azure CLI** action.
+
+In the action's properties, select the connection that enables access to multiple subscriptions.
+
+Select any subscription in the **Subscriptions** dropdown.
+
+In the **Command** field, enter the command you want to run. For example, to list running VMs in each subscription, enter:
+
+```shell
+az vm list --subscription= --show-details --output json
+```
+
+Set the caret after the `--subscription=` flag. Use **Data Selector** to expand **Loop on Items**, then **item**, and click **Insert** next to the **id** property:
+
+![Selecting a subscription ID](/images/cookbook/azure-data-selector-id.png)
+
+The resulting command in the properties pane will look like this, dynamically injecting the current subscription ID into the command template:
+
+![A command with a dynamic subscription ID](/images/cookbook/azure-command-inside-loop.png)
+
+In the same way, you can use **Data Selector** to inject the subscription ID into other Azure actions inside the loop.
