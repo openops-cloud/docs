@@ -106,22 +106,4 @@ The resulting command in the properties pane will look like this, dynamically in
 
 Similarly, you can use **Data Selector** to inject the subscription ID into other Azure actions inside the loop.
 
-
-### Alternative: query multiple subscriptions with Azure Resource Graph
-
-For cross-subscription inventory queries, use the **Azure Resource Graph Query** action. It runs KQL (Kusto Query Language) against Azure Resource Graph and can query across multiple subscriptions in one step.
-
-- Query Subscriptions: pick one or more subscriptions with the multi-select dropdown.
-- KQL Query: enter a KQL query such as:
-
-```kusto
-resources
-| where type =~ "microsoft.compute/virtualmachines"
-| project id, name, location, resourceGroup, subscriptionId
-```
-
-- Maximum Results (optional): limit the number of returned rows.
-
-The action returns a list of records you can pass to downstream steps without looping.
-
 You can [download the workflow](https://docs.openops.com/workflows/multiple-azure-subscriptions.json) described above and [import it](/workflow-management/import-export/#importing-workflows) into your OpenOps instance.
