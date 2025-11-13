@@ -44,8 +44,8 @@ To update the workflow to address the error, click **Edit** in the top-right cor
 
 ## Changing the default timeout
 
-By default, OpenOps times out if a workflow runs for 10 minutes. This applies both to scheduled runs and test runs.
+By default, OpenOps times out if a workflow runs for more than 10 minutes. This applies to both scheduled runs and test runs.
 
-If you build long-running workflows, you may want to extend the default timeout. To do this, open the `.env` file in your OpenOps installation directory and add a new environment variable called `OPS_FLOW_TIMEOUT_SECONDS`. Set the value to a higher timeout in seconds: for example, `900` for 15 minutes, `3600` for 1 hour, etc.
+If you build long-running workflows, you may want to extend the default timeout. To do this, open the `.env` file in your OpenOps installation directory and add a new environment variable named `OPS_FLOW_TIMEOUT_SECONDS`. Set its value to the desired timeout in seconds — for example, `900` for 15 minutes or `3600` for 1 hour.
 
 <RestartContainers/>
