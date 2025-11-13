@@ -4,6 +4,8 @@ description: 'How to troubleshoot and debug workflow runs'
 icon: 'magnifying-glass'
 ---
 
+import RestartContainers from '/snippets/restart-containers.mdx'
+
 If a workflow didn't execute the way you expected it to, you can investigate what went wrong by viewing the history of workflow runs. You can do this [from the **Runs** view](#finding-a-run-from-the-runs-view) or directly [from the workflow editor](#finding-a-run-from-the-workflow-editor).
 
 ## Finding a run from the Runs view
@@ -39,3 +41,11 @@ Click on a failed step to see its inputs and outputs. Explore the outputs to vie
 ![Workflow runs with filters applied](/images/run-details-error.png)
 
 To update the workflow to address the error, click **Edit** in the top-right corner of the workflow editor. This switches the editor from view-only mode, enabling you to select the problematic step and modify its properties.
+
+## Changing the default timeout
+
+By default, OpenOps times out if a workflow runs for 10 minutes. This applies both to scheduled runs and test runs.
+
+If you build long-running workflows, you may want to extend the default timeout. To do this, open the `.env` file in your OpenOps installation directory and add a new environment variable called `OPS_FLOW_TIMEOUT_SECONDS`. Set the value to a higher timeout in seconds: for example, `900` for 15 minutes, `3600` for 1 hour, etc.
+
+<RestartContainers/>
