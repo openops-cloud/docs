@@ -22,7 +22,7 @@ These actions help control the sequence of operations in your workflow and make 
 
 * **Condition**: split the workflow into exactly two branches based on a [condition](/workflow-management/conditional-branching/).
 * **Split**: split the workflow into multiple branches based on a [condition](/workflow-management/conditional-branching/).
-* **Loop on Items**: iterates sequentially over a list. Each iteration runs independently and may finish, fail, or pause, but the loop continues with the next item. After all iterations, the loop's final state reflects the outcomes: if any iterations fail, the loop fails; if any pause, the loop pauses until they resume. Workflow-wide limits (timeouts or size limits) can also halt execution.
+* **Loop on Items**: iterates sequentially over a list. Each iteration runs independently and may finish, fail, or pause, but the loop continues with the next item. After all iterations, the loop's final state reflects the outcomes: if any iterations fail, the loop fails; if any pause, the loop pauses until they resume. Workflow-wide limits ([timeouts](/workflow-management/investigate-workflow-run#changing-the-default-timeout) or size limits) can also halt execution.
 * **Delay**: pause workflow execution for a specified time period or until a specific time.
 * **Stop Execution**: stops the execution of the current scope. When used inside a loop, this action skips to the next iteration; otherwise, it ends the entire workflow. This is useful in [conditional branching](/workflow-management/conditional-branching/) when a branch represents a condition that ends the workflow early.
 
@@ -46,6 +46,7 @@ These actions help you retrieve data from cloud resources, third-party services,
     * **[Flexera](https://www.flexera.com/)**: retrieve active recommendations and incidents.
     * **[Flexera Spot](https://spot.io/solutions/finops/)**: fetch clusters and make custom API calls.
     * **Google Cloud**: get recommendations from selected Google Cloud recommenders.
+    * **[Hyperglance](https://www.hyperglance.com/)**: get recommendations, view tracked cloud resources, check the status and statistics of cloud credentials.
     * **[Kion](https://kion.io/)**: perform API calls to manage billing sources and cloud rules, get reports, and more.
     * **[nOps](https://www.nops.io/)**: get organization accounts, retrieve cost summary data, make custom REST API calls.
     * **[Pelanor](https://www.pelanor.io/)**: perform API calls to fetch reports, apply dimensions, monitor anomalies, and more.
@@ -91,7 +92,7 @@ These actions implement [Human-in-the-Loop](/workflow-management/human-in-the-lo
 These are integration actions that provide various ways to make and request changes to your cloud resources via cloud provider APIs, infrastructure-as-code (IaC) tools, or pull requests.
 
 * Cloud provider integrations:
-    * **AWS**: multiple actions related to AWS resources such as EC2, EBS, and RDS, as well as an AWS CLI action to execute any command.
+    * **AWS**: multiple actions related to AWS resources such as EC2, EBS, and RDS, an action to prefill AWS Systems Manager runbooks and generate execution links, as well as an AWS CLI action to execute any command.
     * **Azure**: execute Azure CLI commands and make REST API calls.
     * **Google Cloud**: execute Google Cloud CLI commands and make REST API calls.
 * IaC integrations:

@@ -74,7 +74,7 @@
         "group": "Reporting and Analytics",
         "pages": [
           "reporting-analytics/tables",
-          "reporting-analytics/data-visualization"
+          "reporting-analytics/analytics"
         ]
       },
       {
@@ -87,6 +87,14 @@
         "group": "Integrations",
         "pages": [
           "integrations/cloudhealth"
+        ]
+      },
+      {
+        "group": "Cookbook",
+        "pages": [
+          "cookbook/iterate-over-multiple-aws-accounts",
+          "cookbook/iterate-over-multiple-gcp-projects",
+          "cookbook/iterate-over-multiple-azure-subscriptions"
         ]
       },
       {
@@ -129,6 +137,10 @@
   {
     "source": "cloud-access/llm-connections",
     "destination": "ai-assistance/llm-connections"
+  },
+  {
+    "source": "reporting-analytics/data-visualization",
+    "destination": "reporting-analytics/analytics"
   }
 ]
 }

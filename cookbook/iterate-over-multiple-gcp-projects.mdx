@@ -1,0 +1,95 @@
+---
+title: 'Iterating Over Multiple Google Cloud Projects'
+description: 'How to build a workflow that performs actions across multiple Google Cloud Platform projects'
+icon: 'shuffle'
+---
+
+You can build workflows that retrieve the list of your Google Cloud projects and iterate over them.
+
+Here's how to do it.
+
+## 1. Create a Google Cloud connection that enables access to multiple projects
+
+First, create a [Google Cloud connection](/cloud-access/access-levels-permissions#google-cloud-connections) if you don't already have one.
+
+Unlike AWS connections, OpenOps doesn't provide a built-in way to enable access to multiple Google Cloud projects from connection settings.
+
+How you enable multi-project access depends on the type of connection you use.
+
+If your connection uses a **service account JSON key**:
+1. Create a service account in one of your Google Cloud projects.
+2. Create an OpenOps connection using that service account.
+3. In each additional project that you want OpenOps to access, grant the same service account appropriate IAM roles (for example, *Viewer* or *Editor*) in that project's IAM settings.
+
+If your connection uses **local Google Cloud CLI credentials**, OpenOps will use the same identity as your local `gcloud` session (the user or service account you are logged in as). Multi-project access works automatically if that identity already has IAM roles in multiple projects. If not, grant the same user or service account the necessary roles in each target project's IAM settings.
+
+## 2. Get the list of projects
+
+In your workflow, add a **Google Cloud CLI** action.
+
+In the action's properties, select the connection that enables access to multiple projects.
+
+Select any project in the **Default Project** dropdown.
+
+In the **Command** field, enter the following:
+
+```shell
+gcloud projects list --format=json
+```
+
+![A Google Cloud CLI action to get the list of projects](/images/cookbook/gcp-list-projects-properties.png)
+
+When you test this action, it returns an array of objects, each containing the project ID and other metadata:
+
+```json
+[
+  {
+    "createTime": "2023-01-29T11:04:39.918Z",
+    "lifecycleState": "ACTIVE",
+    "name": "Unmeet",
+    "projectId": "unmeet-476981",
+    "projectNumber": "8310764926267"
+  },
+  {
+    "createTime": "2022-05-26T16:42:52.982Z",
+    "lifecycleState": "ACTIVE",
+    "name": "BigQuery",
+    "projectId": "bigquery-451001",
+    "projectNumber": "456972339442"
+  }
+]
+```
+
+## 3. Iterate over projects
+
+Add a **Loop on Items** step to your workflow.
+
+In the **Items** property, use the **Data Selector** view to select the entire output of the previous step:
+
+![A Loop on Items step](/images/cookbook/gcp-loop-on-items.png)
+
+## 4. Add a Google Cloud step inside the loop and inject the project ID into the command
+
+Inside the loop, add a Google Cloud action that you want to perform for each project — for example, another **Google Cloud CLI** action.
+
+In the action's properties, select the connection that enables access to multiple projects.
+
+Select any project in the **Default Project** dropdown.
+
+In the **Command** field, enter the command you want to run. For example, to list active Compute Engine instances in each project, enter:
+
+```shell
+gcloud compute instances list --project= --format=json
+```
+
+Set the caret after the `--project=` flag. Use **Data Selector** to expand **Loop on Items**, then **item**, and click **Insert** next to the **projectId** property:
+
+![Selecting a projectId](/images/cookbook/gcp-data-selector-projectid.png)
+
+The resulting command in the properties pane will look like this, dynamically injecting the current project ID into the command template:
+
+![A command with a dynamic project ID](/images/cookbook/gcp-command-inside-loop.png)
+
+In the same way, you can use **Data Selector** to inject the project ID into other Google Cloud actions inside the loop.
+
+You can [download the workflow](https://docs.openops.com/workflows/multiple-gcp-projects.json) described above and [import it](/workflow-management/import-export/#importing-workflows) into your OpenOps instance.
