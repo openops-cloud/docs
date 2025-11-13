@@ -62,7 +62,50 @@ These actions help you retrieve data from cloud resources, third-party services,
 
 Many actions in this group involve writing CLI commands (AWS CLI, Azure CLI, Google Cloud CLI) or SQL queries (AWS Athena, Snowflake, Databricks, BigQuery). The OpenOps workflow editor provides [AI assistance](/ai-assistance/overview/) to generate such commands and queries, making it less overwhelming for occasional and less technical users. AI assistance works [using your own API keys](/ai-assistance/llm-connections/) with an LLM provider of your choice. OpenAI, Anthropic, Perplexity, and a dozen other LLM providers are supported.
 
-## Process data
+
+### Azure Resource Graph Query
+
+Use this action to query Azure Resource Graph with KQL across one or more subscriptions.
+
+Prerequisites
+- An Azure connection with at least Reader permission on the target subscriptions, or enable Use host session and run az login on the host
+- Resource Graph must be available for the selected subscriptions
+
+Properties
+- KQL Query: the query to execute
+- Query Subscriptions: select one or more subscriptions to query (multi-select)
+- Maximum Results: optional hard limit on returned rows
+- API Version: API version to use, default 2024-04-01
+- Use host session: use the host machine Azure CLI session instead of the connection
+
+Steps
+1. Add the Azure Resource Graph Query action under Azure
+2. Select your Azure connection, or enable Use host session if you want to reuse az login from the host
+3. Choose Query Subscriptions, or keep the default selection
+4. Enter your KQL in KQL Query
+5. Optionally set Maximum Results and API Version
+6. Run the step and inspect the output
+
+Example queries
+```kusto
+resources | project name, type, subscriptionId | take 5
+```
+
+```kusto
+Resources
+| where type startswith 'microsoft.compute/virtualmachines'
+| project name, location, resourceGroup
+| take 20
+```
+
+Validation
+- The step output includes totalRecords and data
+- Verify that data length matches Maximum Results when set
+
+Troubleshooting
+- If you get authorization errors, confirm the connection or host session has access to each selected subscription
+- If no rows return, simplify the query to resources | take 1 to validate connectivity
+
 
 These actions allow you to apply various transformations to data received from previous workflow steps.
 
