@@ -139,6 +139,22 @@ sudo az login
 
 <RestartContainers/>
 
+### Azure CLI extensions
+
+OpenOps images and the development container preinstall common Azure CLI extensions and enable dynamic install without prompts. Extensions are stored in `/opt/azure/config/cliextensions`.
+
+Installed by default
+- reservation
+- resource-graph
+- costmanagement
+- billing-benefits
+- quotas
+- ssh
+
+Notes
+- You can still add other extensions as needed with `az extension add --name <ext>`
+- Dynamic install is set via `az config set extension.use_dynamic_install=yes_without_prompt`
+
 ## Google Cloud connections
 
 There are two ways to connect to Google Cloud Platform (GCP) from OpenOps:
