@@ -1,6 +1,8 @@
 ## Enabling TLS
 
-For production usage, it’s recommended to enable TLS (HTTPS). In addition to the security aspect, this also ensures that [workflow templates](/workflow-management/workflow-templates/) load properly in all browsers.
+For production usage, it's recommended to enable TLS (HTTPS). In addition to the security aspect, this also ensures that [workflow templates](/workflow-management/workflow-templates/) load properly in all browsers.
+
+### Automatically
 
 The easiest way to enable TLS is to use an OpenOps script that requests and sets up a TLS certificate from Let's Encrypt. Before running the script, make sure you have a domain name that points to your {target}'s external IP address. If you're configuring DNS right before running the script, you may need to wait for the DNS change to propagate.
 
@@ -14,3 +16,24 @@ The easiest way to enable TLS is to use an OpenOps script that requests and sets
 The script will use the Certbot library to request a certificate for your domain from Let's Encrypt. It receives and saves the certificate, updates the OpenOps configuration file accordingly, and restarts OpenOps.
 
 By default, the certificate expires in 3 months. See https://certbot.org/renewal-setup if you want to configure auto-renewal.
+
+### Manually
+
+While the script is offered as a convenient way to quickly set up TLS, you're more than welcome to create a certificate yourself. You can use Let's Encrypt DNS validation (rather than the HTTP validation the script is doing), or request a certificate from a different provider.
+
+To set up TLS manually:
+
+1. Obtain your TLS certificate and private key files from your certificate provider.
+2. Upload the certificate files to your OpenOps installation under the `tls` directory:
+    - `~/openops/tls/cert.pem` (certificate file)
+    - `~/openops/tls/key.pem` (private key file)
+3. Edit the `.env` file in your OpenOps installation directory and update the following variables:
+    ```shell
+    OPS_NGINX_CONFIG_FILE=nginx.gateway.tls.conf
+    OPS_PUBLIC_URL=https://openops.example.com
+    ```
+    Replace `https://openops.example.com` with your actual secure URL.
+4. Restart the Docker containers:
+    ```shell
+    sudo docker compose down && sudo docker compose up -d
+    ```
