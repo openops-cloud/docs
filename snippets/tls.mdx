@@ -1,6 +1,10 @@
+import RestartContainers from '/snippets/restart-containers.mdx'
+
 ## Enabling TLS
 
-For production usage, it’s recommended to enable TLS (HTTPS). In addition to the security aspect, this also ensures that [workflow templates](/workflow-management/workflow-templates/) load properly in all browsers.
+For production usage, it's recommended to enable TLS (HTTPS). In addition to the security aspect, this also ensures that [workflow templates](/workflow-management/workflow-templates/) load properly in all browsers.
+
+### Automatically
 
 The easiest way to enable TLS is to use an OpenOps script that requests and sets up a TLS certificate from Let's Encrypt. Before running the script, make sure you have a domain name that points to your {target}'s external IP address. If you're configuring DNS right before running the script, you may need to wait for the DNS change to propagate.
 
@@ -14,3 +18,19 @@ The easiest way to enable TLS is to use an OpenOps script that requests and sets
 The script will use the Certbot library to request a certificate for your domain from Let's Encrypt. It receives and saves the certificate, updates the OpenOps configuration file accordingly, and restarts OpenOps.
 
 By default, the certificate expires in 3 months. See https://certbot.org/renewal-setup if you want to configure auto-renewal.
+
+### Manually
+
+Alternatively, you can create a TLS certificate yourself. This lets you use DNS validation from Let's Encrypt (rather than the HTTP validation the automatic script performs) or request a certificate from a different provider.
+
+To set up TLS manually:
+
+1. Obtain certificate and private key files from your certificate provider.
+2. Upload the certificate files to your OpenOps installation under the `tls` directory:
+    * `<OpenOps installation path>/tls/cert.pem` (certificate file)
+    * `<OpenOps installation path>/tls/key.pem` (private key file)
+3. Open the `.env` file in your OpenOps installation directory and update the following variables:
+    * Set `OPS_NGINX_CONFIG_FILE` to `nginx.gateway.tls.conf`
+    * Set `OPS_PUBLIC_URL` to the secure URL of your OpenOps installation (e.g. `https://openops.example.com`)
+
+<RestartContainers />
