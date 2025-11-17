@@ -22,13 +22,13 @@ OpenOps provides several Slack-related actions:
 #### With "Request Action"
 
 One of Slack-related actions, **Request Action**, is the most straightforward way to request approval. It lets you build a Slack message with standard action buttons, send it to a chat or a public channel, and wait until the recipient clicks one of these buttons, signifying their decision:
-![Request action via Slack](/images/hitl-slack-request-action-properties.png)
+![Request action via Slack](/images/cloudhealth/slack-request-action-properties-1.png)
 
 When this action fires, the Slack user receives a message that you've defined in the action's properties. The message may look like this:
-![Slack message with an action request](/images/hitl-slack-request-action-message.png)
+![Slack message with an action request](/images/cloudhealth/slack-notification.png)
 
 As soon as the user clicks one of the buttons, your **Request Action** step receives this as the output. You can then create a [conditional branch](/workflow-management/conditional-branching/) with the **Split** action and implement distinct steps depending on which button the user clicked:
-![Splitting based on a user action](/images/hitl-slack-request-action-split.png)
+![Splitting based on a user action](/images/cloudhealth/slack-split-added.png)
 
 #### With "Send Message" and "Wait For User Action"
 
