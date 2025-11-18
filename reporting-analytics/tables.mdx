@@ -62,7 +62,7 @@ In addition to preconfigured tables, you can create your own. This is especially
 
 To create a new table from scratch:
 
-1. Go to the **Tables** tab. In the tree view on the left, click **+ Create table** under the list of currently available tables in the **OpenOps Table** dataset:
+1. Go to the **Tables** tab. In the tree view on the left, click **+ New table** under the list of currently available tables in the **OpenOps Table** dataset:
     ![Creating a table](/images/tables-tree-create.png)
 2. In the **Create new table** popup, keep **Start with a new table** selected and click **Add table**:
     ![Create new table popup](/images/tables-create-new-table.png)
@@ -111,7 +111,7 @@ When you use the **Add or Update Record** action, its properties pane contains a
 If you want to update an existing row, you need to provide a value for the **Primary Key Value** field. Often, a workflow contains a step that creates a new row in a table and then another step that updates the same row. In this case, you can use the output of the first step as the input for the second step.
 
 To do this, click **Primary Key Value** in the action properties of the second step to show the **Data Selector** view, then expand the output of the first step that created the row, and select the row identifier field:
-![Specifying the ID from a previous step](/images/tables-actions-id-from-previous-action.png)
+![Specifying the ID from a previous step](/images/cloudhealth/nested-condition-ready.png)
 
 As a result, your second step will know to update the same row that was created in the first step.
 
