@@ -135,6 +135,20 @@ After updating your `.env` file, restart the containers:
 sudo docker compose down && docker compose up -d
 ```
 
+## Host validation
+
+Local networks often use private IPs. To allow callbacks to private hosts during local testing, you can disable host validation:
+
+```shell
+OPS_ENABLE_HOST_VALIDATION=false
+```
+
+Then restart the containers:
+
+```shell
+sudo docker compose down && docker compose up -d
+```
+
 ## Using Azure CLI in workflows: running with local credentials
 
 It is possible to share your local session with the platform for local applications.
