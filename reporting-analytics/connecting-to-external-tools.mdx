@@ -4,21 +4,155 @@ description: 'How to feed data from OpenOps to your existing analytics tools'
 icon: 'chart-area'
 ---
 
-> A: Many companies already use dedicated analytics systems, so they'd want OpenOps tables data to be used with their existing dashboards. So it's a replacement for our analytics system. The external system would connect to openops table DB
+Many organizations already use centralized BI/analytics systems and want to include OpenOps data in their existing dashboards. These tools connect directly to the PostgreSQL database that OpenOps uses internally.
 
-> B: It all comes down to finding how to connect the tool to Postgres, and then selecting the appropriate "view" in the OpenOps tables DB. The port doesn't have to be public, but it sure makes things easier. I managed to set up PowerBI with Microsoft Data Gateway, it wasn't fun.
+# Overview
 
-> B: We should detail the required changes in our side, but for the setup of PowerBI/QuickSight it should be mainly links to relevant articles. It's essentially about exposing Postgres port, which in the docker compose installation it kinda already is
+OpenOps stores all operational and analytics data in a PostgreSQL database.
+External BI tools—such as **AWS QuickSight**, **Microsoft Power BI**, or **Google Looker**—can connect to this database and query the same tables and views that power the built-in OpenOps Analytics module (including the **Opportunity** table and any **custom tables**).
 
-> B: If we assume a competent devops will work on it, then we don't need to guide them step-by-step how to open the 5432 port on their EC2 security group. Just that they should do that. Same for GCP and Azure, you need to expose the port.
-Either a public connection (not recommended) or a private one using VPC Link / Microsoft On-Premises Data Gateway.
+Connecting an external BI tool to OpenOps consists of **two parts**:
 
-> C: Explain that OpenOps can connect to external BI tools and they can use the same data as the internal Analytics module (Opportunity table + any custom tables).
-> C: Describe, at a high level, what’s required on the OpenOps side: exposing the Postgres port (via public network, not recommended; or private via VPC Link / MS Data Gateway, etc.).
-> C: Then explain that the customer must create a Postgres connection in the BI tool and point it to the relevant view.
+### **1. Preparing OpenOps to accept external connections**
+At a high level, this usually means:
+
+- Ensuring the PostgreSQL container is reachable from the BI tool
+  (either via **public exposure**, **VPC networking**, or a **secure gateway**).
+- Allowing incoming connections on the PostgreSQL port (**5432**) through your cloud provider’s networking layer (Security Groups, VPC firewall rules, etc.).
+- Optionally configuring a **read-only database user** for analytics.
+
+Depending on your environment, connectivity may be provided through:
+
+- **Direct port exposure** (simple but not recommended for production)
+- **Private VPC networking**
+- **VPN or site-to-site tunnels**
+- **AWS PrivateLink**, **Azure VNet Peering**, **GCP VPC Peering**
+- **Microsoft On-Premises Data Gateway** (for Power BI Service)
+
+OpenOps does **not** provide a separate API for BI integrations.
+External tools query the same underlying PostgreSQL tables.
+
+---
+
+### **2. Configuring the BI tool to connect to PostgreSQL**
+
+Once PostgreSQL is reachable, the customer configures the relevant BI tool with:
+
+- **Host / port** (typically the OpenOps host and port 5432)
+- **Database name** (`openops`)
+- **Authentication** (recommended: a read-only DB user)
+- **Schema / table / view selection** (choose the tables or views to visualize)
+
+Each BI product has a slightly different mechanism for connecting to an external PostgreSQL instance, described below.
+
+---
 
 ## Connecting AWS QuickSight to OpenOps
+
+AWS QuickSight is a **fully managed SaaS** analytics service.
+To connect QuickSight to OpenOps, you must make the OpenOps PostgreSQL database reachable **from your AWS account**.
+
+Typical networking options include:
+
+- **AWS Site-to-Site VPN** to your data center or VPC
+- **AWS Direct Connect**
+- **VPC Peering** if OpenOps runs inside AWS
+- **AWS PrivateLink** (if exposing PostgreSQL through a private endpoint)
+- **Public exposure** of the PostgreSQL port (simple but strongly discouraged)
+
+Once network access is available, QuickSight connects to PostgreSQL using a standard database connection.
+
+### Relevant QuickSight documentation
+
+- Connecting to PostgreSQL:
+  https://docs.aws.amazon.com/quicksight/latest/user/postgresql.html
+- Managing VPC connections for QuickSight:
+  https://docs.aws.amazon.com/quicksight/latest/user/vpc-connection.html
+- Network prerequisites for QuickSight:
+  https://docs.aws.amazon.com/quicksight/latest/user/regions-restrictions-vpc.html
+
+After establishing connectivity, the user creates a **PostgreSQL data set** in QuickSight and selects the desired tables from the OpenOps database.
+
+---
+
 ## Connecting Microsoft Power BI to OpenOps
+
+Power BI has two ways to reach on-premises or private-network databases:
+
+### **1. Power BI Service (SaaS)**
+Power BI Service cannot directly reach internal databases.
+Customers must use the **Microsoft On-Premises Data Gateway**, installed on any machine that can access the OpenOps PostgreSQL port.
+
+This gateway acts as a secure bridge between Power BI's cloud service and the local PostgreSQL database.
+
+Networking requirements:
+
+- The gateway machine must be able to reach the OpenOps Postgres host:5432
+- Firewall rules must allow outbound connections from the gateway
+- PostgreSQL must accept connections from the gateway’s IP
+
+### **2. Power BI Report Server (self-hosted)**
+If using Power BI Report Server (on-prem), it can connect directly to PostgreSQL inside the same LAN/VPC as OpenOps.
+
+### Relevant Power BI documentation
+
+- On-Premises Data Gateway overview:
+  https://learn.microsoft.com/power-bi/connect-data/service-gateway-onprem
+- PostgreSQL connector details:
+  https://learn.microsoft.com/power-query/connectors/postgresql
+- Gateway network requirements:
+  https://learn.microsoft.com/data-integration/gateway/service-gateway-proxy
+
+After connectivity is configured, the customer creates a PostgreSQL data source in Power BI (via the gateway or locally) and selects the relevant OpenOps tables.
+
+---
+
 ## Connecting Google Looker to OpenOps
 
+Google has two different analytics products:
 
+- **Looker (Looker ML platform)** — available as SaaS or **self-hosted**
+- **Looker Studio (formerly Data Studio)** — **SaaS only**
+
+### **Looker (hosted or self-hosted)**
+
+Looker supports both cloud and self-hosted deployments.
+If deployed inside the customer’s LAN or VPC, it can connect directly to OpenOps PostgreSQL.
+When using Looker SaaS, customers typically need:
+
+- **VPC Service Controls / VPC peering** (GCP)
+- **VPN or interconnect** if OpenOps runs outside GCP
+- Or a securely exposed PostgreSQL endpoint
+
+Relevant documentation:
+
+- Looker database connections:
+  https://cloud.google.com/looker/docs/connecting-to-your-database
+- Network configuration for Looker-hosted instances:
+  https://cloud.google.com/looker/docs/looker-hosted-networking
+
+### **Looker Studio**
+
+Looker Studio is SaaS-only and uses public or authorized private connectors.
+To connect to PostgreSQL:
+
+- The OpenOps database must be reachable from the public internet **or** available via a secure proxy/connector.
+- Many customers use a VPN, bastion host, or a cloud SQL proxy.
+
+Documentation:
+
+- PostgreSQL connector:
+  https://support.google.com/looker-studio/answer/7288010
+
+---
+
+# Summary
+
+All external analytics tools follow the same high-level pattern:
+
+1. **Expose OpenOps PostgreSQL** to your analytics environment (preferably privately).
+2. **Ensure network access** from the analytics tool (gateway, VPC link, VPN, etc.).
+3. **Connect using a PostgreSQL connector** in Power BI, QuickSight, or Looker.
+4. **Select the desired OpenOps tables or views**—including the Opportunity table and any custom tables.
+
+Each product section above links to the official documentation for configuring PostgreSQL connections and describes the most common networking approaches used with that platform.
