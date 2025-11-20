@@ -34,39 +34,18 @@ Available networking options include:
 Once network access is available, you can configure Quick Sight to use the OpenOps PostgreSQL database as a data source.
 
 See also:
-
 * [Creating a data source](https://docs.aws.amazon.com/quicksuite/latest/userguide/create-a-data-source.html)
 * [Configuring VPC connections in Amazon Quick Sight](https://docs.aws.amazon.com/quicksuite/latest/userguide/working-with-aws-vpc.html)
 
 ## Connecting Microsoft Power BI to OpenOps
 
-Power BI has two ways to reach on-premises or private-network databases:
+Power BI has two ways to reach on-premises or private-network databases.
 
-### **1. Power BI Service (SaaS)**
-Power BI Service cannot directly reach internal databases.
-Customers must use the **Microsoft On-Premises Data Gateway**, installed on any machine that can access the OpenOps PostgreSQL port.
+If you're using the self-hosted **Power BI Report Server**, it can connect directly to PostgreSQL inside the same LAN/VPC as OpenOps.
 
-This gateway acts as a secure bridge between Power BI's cloud service and the local PostgreSQL database.
+If you're using **Power BI Service** as SaaS, it cannot directly reach internal databases. Instead, you need to use the [Microsoft On-Premises Data Gateway](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-onprem), which should be installed on any machine that can access the OpenOps PostgreSQL port. This gateway acts as a secure bridge between Power BI's cloud service and the local PostgreSQL database.
 
-Networking requirements:
-
-- The gateway machine must be able to reach the OpenOps Postgres host:5432
-- Firewall rules must allow outbound connections from the gateway
-- PostgreSQL must accept connections from the gateway’s IP
-
-### **2. Power BI Report Server (self-hosted)**
-If using Power BI Report Server (on-prem), it can connect directly to PostgreSQL inside the same LAN/VPC as OpenOps.
-
-### Relevant Power BI documentation
-
-- On-Premises Data Gateway overview:
-  https://learn.microsoft.com/power-bi/connect-data/service-gateway-onprem
-- PostgreSQL connector details:
-  https://learn.microsoft.com/power-query/connectors/postgresql
-- Gateway network requirements:
-  https://learn.microsoft.com/data-integration/gateway/service-gateway-proxy
-
-After connectivity is configured, the customer creates a PostgreSQL data source in Power BI (via the gateway or locally) and selects the relevant OpenOps tables.
+After connectivity is configured, you create a PostgreSQL data source in Power BI (via the gateway or locally) and select the relevant OpenOps tables.
 
 ## Connecting Google Looker to OpenOps
 
