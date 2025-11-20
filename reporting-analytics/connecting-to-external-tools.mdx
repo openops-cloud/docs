@@ -10,14 +10,15 @@ OpenOps stores analytics data in a PostgreSQL database. External analytics tools
 
 Connecting any external analytics tool to OpenOps consists of two parts.
 
-First, you need to **prepare OpenOps to accept external connections**. At a high level, this usually means:
-* Ensuring the PostgreSQL container is reachable from the analytics tool.
+First, you need to **prepare OpenOps to accept external connections**. This usually means:
+* Ensuring the OpenOps PostgreSQL container is reachable from the analytics tool.
 * Allowing incoming connections on the PostgreSQL port (`5432`) through your cloud provider’s networking layer (security groups, VPC firewall rules, etc.).
 * Optionally configuring a read-only database user for analytics.
 
 Depending on your environment, connectivity may be provided through private VPC networking, VPN, or site-to-site tunnels.
 
-Second, you need to **configure your external analytics tool to connect to PostgreSQL**. This usually involves configuring the OpenOps installation's host and port, database name, authentication method, and selecting the tables or views to visualize.
+Second, you need to **configure your external analytics tool to connect to PostgreSQL**. This usually involves configuring the OpenOps installation's host and port, database name, authentication method, and selecting the tables or views to visualize. PostgreSQL views corresponding to OpenOps tables follow the naming pattern _table name \_ table id \_ userfriendly_. These are the views that you want to use when setting up connections in external analytics tools.
+
 
 A specific configuration will vary depending on the analytics tool. See the sections below detailing how to connect to OpenOps from several popular analytics products.
 
@@ -26,10 +27,10 @@ A specific configuration will vary depending on the analytics tool. See the sect
 AWS Quick Sight is a fully managed SaaS analytics service. To connect Quick Sight to OpenOps, you must make the OpenOps PostgreSQL database reachable from your AWS account.
 
 Available networking options include:
-* **AWS Site-to-Site VPN** to your data center or VPC.
-* **AWS Direct Connect**.
-* **VPC Peering** if OpenOps runs inside AWS.
-* **AWS PrivateLink** if exposing PostgreSQL through a private endpoint.
+* [AWS Site-to-Site VPN](https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html) to your data center or VPC.
+* [AWS Direct Connect](https://aws.amazon.com/directconnect/).
+* [VPC peering](https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html) if OpenOps runs inside AWS.
+* [AWS PrivateLink](https://aws.amazon.com/privatelink/) if exposing PostgreSQL through a private endpoint.
 
 Once network access is available, you can configure Quick Sight to use the OpenOps PostgreSQL database as a data source.
 
