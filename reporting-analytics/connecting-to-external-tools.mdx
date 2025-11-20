@@ -3,3 +3,22 @@ title: 'Connecting OpenOps to External Analytics Tools'
 description: 'How to feed data from OpenOps to your existing analytics tools'
 icon: 'chart-area'
 ---
+
+> A: Many companies already use dedicated analytics systems, so they'd want OpenOps tables data to be used with their existing dashboards. So it's a replacement for our analytics system. The external system would connect to openops table DB
+
+> B: It all comes down to finding how to connect the tool to Postgres, and then selecting the appropriate "view" in the OpenOps tables DB. The port doesn't have to be public, but it sure makes things easier. I managed to set up PowerBI with Microsoft Data Gateway, it wasn't fun.
+
+> B: We should detail the required changes in our side, but for the setup of PowerBI/QuickSight it should be mainly links to relevant articles. It's essentially about exposing Postgres port, which in the docker compose installation it kinda already is
+
+> B: If we assume a competent devops will work on it, then we don't need to guide them step-by-step how to open the 5432 port on their EC2 security group. Just that they should do that. Same for GCP and Azure, you need to expose the port.
+Either a public connection (not recommended) or a private one using VPC Link / Microsoft On-Premises Data Gateway.
+
+> C: Explain that OpenOps can connect to external BI tools and they can use the same data as the internal Analytics module (Opportunity table + any custom tables).
+> C: Describe, at a high level, what’s required on the OpenOps side: exposing the Postgres port (via public network, not recommended; or private via VPC Link / MS Data Gateway, etc.).
+> C: Then explain that the customer must create a Postgres connection in the BI tool and point it to the relevant view.
+
+## Connecting AWS QuickSight to OpenOps
+## Connecting Microsoft Power BI to OpenOps
+## Connecting Google Looker to OpenOps
+
+
