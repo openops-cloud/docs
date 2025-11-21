@@ -55,7 +55,7 @@ Looker is available as both a fully managed SaaS product and a self-hosted deplo
 Self-hosted Looker can run inside your LAN or VPC and connect directly to your OpenOps PostgreSQL database.
 
 For Looker SaaS to reach a private PostgreSQL instance, you typically use one of the following:
-* Allowlisting Looker's outbound IPs and exposing PostgreSQL securely to the internet (TLS, firewall restrictions).
+* Whitelisting Looker's outbound IPs and exposing PostgreSQL securely to the internet (TLS, firewall restrictions).
 * SSH tunneling, where Looker connects through a bastion host that you manage to the PostgreSQL database.
 * Private connectivity in your GCP environment, if OpenOps runs in GCP. Looker can integrate with databases inside your VPC through Google-managed networking.
 
