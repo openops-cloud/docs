@@ -14,7 +14,7 @@ import OpenOpsCloudLimitations from '/snippets/openops-cloud-limitations.mdx'
     `curl -fsS https://openops.sh/install | sh `  
 
     You can use the same command also to update, configure and run OpenOps. 
-{/* <AutoInstall/> Dajana: commented out for now, I inserted the command as plain text. Probably works when imported via Mintlify. */}
+[ <AutoInstall/> Dajana: commented out for now, I inserted the command as plain text. Probably works when imported via Mintlify. ]: #
 
 
 3. Once the installation is done, it provides you with the following:
@@ -75,8 +75,7 @@ In the top-left corner, click the **Open sidebar** icon to expand the main OpenO
     If your AWS account doesn't already have a default region, you can [set it in the AWS Management Console](https://docs.aws.amazon.com/
     awsconsolehelpdocs/latest/gsg/change-default-region.html), and then enter it in the connection form.
     When you're done, save your entries.   
-
-{/*Dajana: clarify if there is a Save button or if a user needs to click "+ Add Item". */}
+[Dajana: clarify if there is a Save button or if a user needs to click "+ Add Item".]: # 
 
 5. On the workflow summary page, now that the connection is defined, click **Create workflow**.  
 
@@ -132,9 +131,9 @@ In the top-left corner, click the **Open sidebar** icon to expand the main OpenO
 The sample AWS workflow that you've just tested and published provides just a quick glance at what OpenOps can do.
 
 In real FinOps scenarios, you would want your workflows to do more, for example:  
-    * find owners of unused resources, 
-    * request decision on whether to delete or keep resources, 
-    * if required to delete, execute IaC automations and create GitHub pull requests.  
+    * find owners of unused resources,   
+    * request decision on whether to delete or keep resources,   
+    * if required to delete, execute IaC automations and create GitHub pull requests.   
 
 Fortunately, OpenOps provides dozens of real-world FinOps templates that can serve as a base for your workflows. Just click **Overview** and  then **Explore templates** in the top-right menu bar to see the **template catalog**.  
 ![Template catalog](/images/template-catalog.png)
@@ -157,9 +156,9 @@ Building steps in OpenOps workflows is usually intuitive. Still, when you need t
 
 OpenOps lets you connect your preferred LLM provider, such as OpenAI or Anthropic, so you can generate queries, scripts, and CLI commands directly within the workflow editor.  
 
-    1. At the bottom of the sidebar, click **Settings**, then **AI**. 
-    2. Choose your LLM provider and select a model.
-    3. Enter your API key, and click **Save**.  
+    1. At the bottom of the sidebar, click **Settings**, then **AI**.   
+    2. Choose your LLM provider and select a model.  
+    3. Enter your API key, and click **Save**.   
 
 Once connected, any time you edit a step that involves a command, query, or custom code, you can click **Generate with AI** to prompt your LLM and generate it for you.  
 ![AI chat window](/images/access-llm-chat.png)
