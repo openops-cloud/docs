@@ -79,16 +79,14 @@ In the top-left corner, click the **Open sidebar** icon to expand the main OpenO
     The workflow editor displays the steps of the workflow as a block diagram.  
     ![Workflow editor](/images/qsg-aws-workflow-editor.png)  
 
-    * The first step is a trigger: a schedule or event that initiates the workflow execution. In this workflow, the trigger schedules
-    workflow to run every working day at 7AM UTC.  
+    The first step is a trigger: a schedule or event that initiates the workflow execution. In this workflow, the trigger schedules
+    workflow to run every working day at 7AM UTC. All other steps are actions, and each action represents some kind of automation that the workflow performs.  
 
-    * All other steps are actions, and each action represents some kind of automation that the workflow performs.  
+    Click **Tree view** and **Notes** in the top menu bar to get a compact view of the workflow and a detailed description of what it does.  
+    ![Tree view and notes](/images/qgs-aws-tree-view-and-notes.png)  
 
-    * Click **Tree view** and **Notes** in the top menu bar to display a compact view of the workflow and a detailed description of what it does.  
-    ![Tree view and notes](/images/qgs-aws-tree-view-and-notes.png)
-
-    * Explore the workflow by clicking on blocks that represent its steps. This shows properties of each step in the right pane of the workflow editor.  
-    ![Step properties in the workflow editor](/images/qsg-aws-step-properties.png)
+    Explore the workflow by clicking on blocks that represent its steps. This shows properties of each step in the right pane of the workflow editor.  
+    ![Step properties in the workflow editor](/images/qsg-aws-step-properties.png)  
 
 6. Test the workflow before it goes live.  
     
@@ -107,7 +105,7 @@ In the top-left corner, click the **Open sidebar** icon to expand the main OpenO
 
         This pane displays the status of each workflow step. If you click a step, you can see its inputs and outputs as JSON in the bottom of the pane. As long as the status of each step is green, your workflow is ready to go and you can publish it.
 
-7. Publish the workflow to tart running the workflow on schedule.  
+7. Publish the workflow to start running the workflow on schedule.  
 
     When testing, the workflow editor switches to read-only mode. To get back to editing mode, click **Edit** on the top right.
     Once back in the editing mode, the top-right button is now called **Publish**. Once you click it, your workflow is live. It will now run periodically on the schedule defined by its trigger.  
@@ -128,19 +126,19 @@ In the top-left corner, click the **Open sidebar** icon to expand the main OpenO
 The sample AWS workflow that you've just tested and published provides just a quick glance at what OpenOps can do.
 
 In real FinOps scenarios, you would want your workflows to do more, for example:  
-    * find owners of unused resources,   
-    * request decision on whether to delete or keep resources,   
-    * if required to delete, execute IaC automations and create GitHub pull requests.   
+    ** find owners of unused resources,   
+    ** request decision on whether to delete or keep resources,   
+    ** if required to delete, execute IaC automations and create GitHub pull requests.   
 
 Fortunately, OpenOps provides dozens of real-world FinOps templates that can serve as a base for your workflows. Just click **Overview** and  then **Explore templates** in the top-right menu bar to see the **template catalog**.  
 ![Template catalog](/images/template-catalog.png)
 
-By default, the catalog contains six templates. To view more, click **Explore more** and sign up for a free OpenOps Cloud account.  
+By default, the catalog shows six templates. To view more, click **Explore more** and sign up for a free OpenOps Cloud account.  
 
 <OpenOpsCloudLimitations/>
 
 As a result, the **template catalog** in your OpenOps installation will be extended to show all available templates.  
-![OpenOps template catalog after signing up with OpenOps Cloud](/images/template-catalog-all-templates.png)
+![OpenOps template catalog after signing up with OpenOps Cloud](/images/template-catalog-all-templates.png)  
 
 Click any template in the catalog to see its full description, a preview diagram visualizing the workflow steps defined in the template, and the integrations that the template uses.  
 ![CloudWatch log retention enforcement template](/images/template-log-retention.png)  
@@ -162,6 +160,6 @@ Once connected, any time you edit a step that involves a command, query, or cust
 
 ## Join the OpenOps community
 
-This was just a glimpse of what OpenOps can do for you to help you automate your FinOps practices.
+This was just a glimpse of what OpenOps can do for you to help you automate your FinOps practices.  
 
 As you continue to build new workflows, you might consider joining the [OpenOps community Slack](https://slack.openops.com/) to get direct support from the OpenOps team, collaborate with other FinOps professionals, and receive help in building your workflows. You're also welcome to share your feedback to help shape the future of OpenOps.
