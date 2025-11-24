@@ -74,7 +74,8 @@
         "group": "Reporting and Analytics",
         "pages": [
           "reporting-analytics/tables",
-          "reporting-analytics/analytics"
+          "reporting-analytics/analytics",
+          "reporting-analytics/connecting-to-external-tools"
         ]
       },
       {
