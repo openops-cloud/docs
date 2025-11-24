@@ -79,7 +79,7 @@ In the top-left corner, click the **Open sidebar** icon to expand the main OpenO
     The workflow editor displays the steps of the workflow as a block diagram.  
     ![Workflow editor](/images/qsg-aws-workflow-editor.png)  
 
-    The first step is a trigger: a schedule or event that initiates the workflow execution. In this workflow, the trigger schedules
+    The first step is a trigger - a schedule or event that initiates the workflow execution. In this workflow, the trigger schedules
     workflow to run every working day at 7AM UTC. All other steps are actions, and each action represents some kind of automation that the workflow performs.  
 
     Click **Tree view** and **Notes** in the top menu bar to get a compact view of the workflow and a detailed description of what it does.  
@@ -91,15 +91,15 @@ In the top-left corner, click the **Open sidebar** icon to expand the main OpenO
 6. Test the workflow before it goes live.  
     
     Testing the workflow runs it in full, so you can treat it as an on-demand run in addition to its scheduled runs.
-
     At the top of the workflow editor, there's the **Test workflow** button. However, at first it's grayed out since you have to test your trigger first.  
     ![Test the trigger first](/images/qgs-aws-test-the-trigger-first.png)
 
-    1. Click the trigger block in the workflow graph. 
+    1. Click the trigger block in the workflow graph.
     2. In the trigger's properties pane, click the **Test** tab, then click **Load Data** in the **Step output** section.
         Test results are displayed.  
         ![Trigger test success](/images/qsg-aws-trigger-tested.png)  
-    3. Now that the **Test workflow** button is active, go ahead and click it.  
+    3. Now that the **Test workflow** button is active, go ahead and click it.
+    
         OpenOps will take a few seconds to run the workflow. **Run Details** are displayed in the left pane of the workflow editor.  
         ![Run Details pane](/images/qsg-aws-run-details.png)  
 
@@ -124,7 +124,6 @@ In the top-left corner, click the **Open sidebar** icon to expand the main OpenO
 ## Get templates for your future workflows
 
 The sample AWS workflow that you've just tested and published provides just a quick glance at what OpenOps can do.
-
 In real FinOps scenarios, you would want your workflows to do more, for example:  
    - find owners of unused resources,   
    - request decision on whether to delete or keep resources,   
