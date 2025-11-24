@@ -1,9 +1,21 @@
-export const NarrowImage = ({src, alt}) => {
-    return (
-        <img
-            src={src}
-            alt={alt}
-            style={{maxWidth: '75%'}}
-        />
-    )
-}
+export const NarrowImage = ({ src, alt }) => {
+  return (
+    <>
+      <style>{`
+        .narrow-image {
+          max-width: 75%;
+        }
+        @media (max-width: 768px) {
+          .narrow-image {
+            max-width: 100%;
+          }
+        }
+      `}</style>
+
+      <img className="narrow-image"
+        src={src}
+        alt={alt}
+      />
+    </>
+  );
+};
