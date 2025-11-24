@@ -6,6 +6,7 @@ icon: 'rocket'
 
 import AutoInstall from '/snippets/auto-install.mdx'
 import OpenOpsCloudLimitations from '/snippets/openops-cloud-limitations.mdx'
+import { NarrowImage } from '/snippets/narrow-image.jsx'
 
 Here's how you can go from downloading the open source distribution of OpenOps to starting getting value out of your OpenOps deployment.
 
@@ -22,7 +23,7 @@ Wait for the installation script to complete. When it finishes, it will display 
 ## Open OpenOps in your browser
 
 Go ahead and open OpenOps in your browser:
-![First start of OpenOps](/images/qsg-first-start.png)
+<NarrowImage src="/images/qsg-first-start.png" alt="First start of OpenOps" />
 
 To log in, use the admin credentials that the installation script has displayed.
 
@@ -99,15 +100,15 @@ Explore the workflow by clicking on blocks that represent its steps. This will d
 Before your workflow goes live, you need to test it. Testing the workflow runs it in full, so you can treat it as an on-demand run in addition to its scheduled runs.
 
 At the top of the workflow editor, above the trigger, there's a **Test workflow** button. However, right now it's grayed out, and if you hover over it, OpenOps will ask you to test your trigger first:
-![Test the trigger first](/images/qsg-aws-test-the-trigger-first.png)
+<NarrowImage src="/images/qsg-aws-test-the-trigger-first.png" alt="Test the trigger first" widthPercent={50} />
 
 To test the trigger, click on its block in the workflow graph. In the trigger's properties pane, click the **Test** tab, then click **Load Data** in the **Step output** section. As soon as you do, OpenOps will display test results. It looks like it's all good so far:
-![Trigger test success](/images/qsg-aws-trigger-tested.png)
+<NarrowImage src="/images/qsg-aws-trigger-tested.png" alt="Trigger test success" />
 
 Now, if you look back at the **Test workflow** button at the top of the workflow editor, you can see that it's now active, so go ahead and click it!
 
 OpenOps will take a few seconds to run the workflow, and when it finishes, you'll see the **Run Details** pane on the left of the workflow editor:
-![Run Details pane](/images/qsg-aws-run-details.png)
+<NarrowImage src="/images/qsg-aws-run-details.png" alt="Run Details pane" />
 
 This pane displays the status of each workflow step. If you click a step, you can see its inputs and outputs as JSON in the bottom part of the pane. As long as the status of each step is green, your workflow is ready to go, and you can publish it.
 
@@ -124,7 +125,7 @@ Once back in the editing mode, one of the top-right buttons is now called **Publ
 When you tested the workflow, it was a full on-demand run. Some of the workflow steps fetched AWS Compute Optimizer recommendations for various AWS resource types, and other steps recorded these recommendations to an OpenOps table. Let's see what's been recorded to the table.
 
 Click the book icon on the top left to show the sidebar. In the sidebar, click **Tables**:
-![Tables in the sidebar](/images/qsg-sidebar-tables.png)
+<NarrowImage src="/images/qsg-sidebar-tables.png" alt="Tables in the sidebar" widthPercent={50} />
 
 You'll see a list of all predefined tables under the heading **OpenOps dataset**. Click the **Opportunities** table.
 
@@ -161,8 +162,7 @@ OpenOps lets you connect your preferred LLM provider, such as OpenAI or Anthropi
 At the bottom of the sidebar, click **Settings**, then **AI**. Choose your LLM provider, select a model, enter your API key, and click **Save**.
 
 Once connected, any time you edit a step that involves a command, query, or custom code, you can click **Generate with AI** to prompt your LLM and generate it for you:
-
-![AI chat window](/images/access-llm-chat.png)
+<NarrowImage src="/images/access-llm-chat.png" alt="AI chat window" />
 
 ## Join the OpenOps community
 

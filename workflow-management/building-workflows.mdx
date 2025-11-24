@@ -4,6 +4,8 @@ description: 'How to use the OpenOps workflow editor to create new workflows'
 icon: 'diagram-project'
 ---
 
+import { NarrowImage } from '/snippets/narrow-image.jsx'
+
 In many cases, you can apply optimizations by taking one of the pre-made [workflow templates](/workflow-management/workflow-templates), creating a workflow off of the template, and customizing it to your liking.
 
 When there's no template to bootstrap from, you can create a new workflow from scratch.
@@ -20,12 +22,10 @@ Every workflow is made of steps. There are **two types of workflow steps**: trig
 * **Actions** are all subsequent steps of your workflow that start executing once your workflow is activated by a trigger.
 
 Below is an example of a workflow that is triggered on a schedule. The first node represents the schedule trigger, and all other nodes are actions:
-
-![Workflow triggered on a schedule](/images/workflow-trigger-schedule.png)
+<NarrowImage src="/images/workflow-trigger-schedule.png" alt="Workflow triggered on a schedule" widthPercent={50} />
 
 In another example, here's a workflow that uses an update of a Jira Cloud issue as a trigger:
-
-![Workflow triggered by a Jira Cloud issue update](/images/workflow-trigger-jira.png)
+<NarrowImage src="/images/workflow-trigger-jira.png" alt="Workflow triggered by a Jira Cloud issue update" widthPercent={50} />
 
 ## Creating a new workflow
 
@@ -35,20 +35,21 @@ To create a new empty workflow, go to the **Workflows** section in your OpenOps 
 
 Let's look around and see what controls the editor provides:
 * In the top left corner, if you click the arrow next to the workflow name, you'll see a menu that lets you rename or delete the workflow, move it to a folder for better organization, or perform [export and import](/workflow-management/import-export/) operations:
-  ![Workflow editor controls](/images/workflow-editor-controls.png)
+  <NarrowImage src="/images/workflow-editor-controls.png" alt="Workflow editor controls" widthPercent={50} />
 * To the right of the workflow name, use the **Notes** button if you want to describe the intent of your workflow in detail or leave any other comments for future reference.
 * Click the three-dot menu icon to expose additional options: **Tree view**, **Version history**, and **Run logs**.
-  ![More workflow editor controls](/images/workflow-editor-controls-more.png)
+  <NarrowImage src="/images/workflow-editor-controls-more.png" alt="More workflow editor controls" />
+
 Version history and run logs become more relevant when you update or [troubleshoot](/workflow-management/investigate-workflow-run) your workflows later. You can also click **Tree view** to display a side panel showing the compact structure of your workflow, including its trigger, all actions, and any [conditions and branches](/workflow-management/conditional-branching):
-![Tree view of a workflow](/images/workflow-editor-tree-view.png)
+<NarrowImage src="/images/workflow-editor-tree-view.png" alt="Tree view of a workflow" widthPercent={50} />
 
 ## Adding a trigger
 
 When you create a new workflow, the editor creates an empty stub trigger. Click the trigger node to select a trigger group that works for you:
-![Selecting a trigger group](/images/workflow-editor-select-trigger-group.png)
+<NarrowImage src="/images/workflow-editor-select-trigger-group.png" alt="Selecting a trigger group" />
 
 After selecting a group, choose a specific trigger within that group:
-![Selecting a trigger](/images/workflow-editor-select-trigger.png)
+<NarrowImage src="/images/workflow-editor-select-trigger.png" alt="Selecting a trigger" />
 
 OpenOps provides over 10 triggers divided into several groups:
 * **Schedule**: *Every X minutes*, *Every hour*, *Every day*, *Every week*, *Every month*, *Cron expression*.
@@ -74,7 +75,7 @@ As soon as you've created a trigger, the next and all subsequent steps of your w
 ### Adding the first action
 
 Click the **+** icon under the trigger, and a pop-up menu will display a list of available action categories. Clicking a category lets you select a specific action:
-![Selecting an action](/images/workflow-editor-select-action.png)
+<NarrowImage src="/images/workflow-editor-select-action.png" alt="Selecting an action" />
 
 OpenOps provides a total of [120+ actions](/workflow-management/actions/). One way to make sense of them is to classify them by intent:
 * To **get data** for your workflow to process, look at cloud provider integration actions like **AWS**, **Azure** or **Google Cloud**, recommendation provider actions such as **Umbrella**, **Archera** and **AWS Compute Optimizer**, or generic **HTTP** actions.
@@ -105,16 +106,16 @@ If you need to reuse an action step in multiple places, you can **copy/paste** i
 There are three ways to use copy/paste actions:
 1. With the standard copy/paste keyboard shortcuts (**Ctrl+C/V** or **Cmd+C/V** on Mac). When you paste this way, the copied action is inserted after the action that is currently selected in the workflow graph.
 2. Using the right-click context menu of any action:
-    ![Copying an action via the context menu](/images/workflow-editor-action-context-menu-copy.png)
+    <NarrowImage src="/images/workflow-editor-action-context-menu-copy.png" alt="Copying an action via the context menu" />
 3. By clicking the overflow menu of any action:
-    ![Copying an action via the overflow menu](/images/workflow-editor-action-overflow-menu.png)
+    <NarrowImage src="/images/workflow-editor-action-overflow-menu.png" alt="Copying an action via the overflow menu" />
 
 There are several ways to paste the copied action:
 * Select an action after which you want to insert the copied action, then right-click and choose **Paste after**.
 * Right-click the **+** icon between two existing actions and click **Paste here**:
-    ![Pasting an action between existing actions](/images/workflow-editor-action-context-menu-paste-here.png)
+    <NarrowImage src="/images/workflow-editor-action-context-menu-paste-here.png" alt="Pasting an action between existing actions" widthPercent={50} />
 * Right-click a loop action and select **Paste inside loop**. This inserts the copied action as the first action inside the loop:
-    ![Pasting an action inside a loop](/images/workflow-editor-action-context-menu-paste-inside-loop.png)
+    <NarrowImage src="/images/workflow-editor-action-context-menu-paste-inside-loop.png" alt="Pasting an action inside a loop" />
 * To paste as the first action after a loop or condition, right-click anywhere inside the loop or condition and click **Paste after selection**.
 * To paste as the last action in the workflow, right-click anywhere outside the workflow graph and click **Paste after selection**.
 
@@ -134,12 +135,10 @@ As you add more actions to your workflow, you'll notice that the workflow graph 
 To make it easier to navigate complex workflows, you can collapse steps representing loops, [conditions](/workflow-management/conditional-branching#condition), and [split](/workflow-management/conditional-branching#split) actions.
 
 For example, in the following image, step 7 is a condition with a branch that contains another condition:
-
 ![Workflow with nested conditions](/images/workflow-editor-condition-expanded.png)
 
 If you're not currently working on this part of the workflow, you can collapse it by clicking the collapse icon to the left of step 7:
-
-![Collapsed condition step](/images/workflow-editor-condition-collapsed.png)
+<NarrowImage src="/images/workflow-editor-condition-collapsed.png" alt="Collapsed condition step" widthPercent={50} />
 
 Click the icon again to expand the condition the next time you need to work on it.
 
@@ -154,30 +153,30 @@ In the properties pane for every step, there are two tabs: **Configure** and **T
 Under **Step output**, you can click **Test Step** to test or retest the step in isolation. "Testing" in this context means running the step's action against a live system that it is configured to connect to.
 
 Sometimes, the **Test Step** button may be grayed out, like this:
-![Test button grayed out](/images/workflow-editor-action-test-fix-inputs.png)
+<NarrowImage src="/images/workflow-editor-action-test-fix-inputs.png" alt="Test button grayed out" />
 
 Your step will also have a yellow warning icon next to it. If this happens, make sure you have filled in every mandatory input field in the step's properties pane. You may need to scroll through the properties pane to see all required fields:
-![Scrolling the properties pane to reveal mandatory input fields](/images/workflow-editor-action-mandatory-fields.png)
+<NarrowImage src="/images/workflow-editor-action-mandatory-fields.png" alt="Scrolling the properties pane to reveal mandatory input fields" />
 
 Once you've filled in all mandatory fields, the **Test Step** button becomes active. Click it to run the test and view the output generated by the step:
-![Output data generated for an Umbrella integration action](/images/workflow-editor-action-generate-sample-data.png)
+<NarrowImage src="/images/workflow-editor-action-generate-sample-data.png" alt="Output data generated for an Umbrella integration action" />
 
 If you don't have a connection defined when working on a step, or if you want to avoid running the step against a live system for any other reason, open the **Sample output data** tab. Once there, paste the expected output of the step. Depending on what the step's action does, this could be the result of a math operation, a JSON response from an API call, or similar.
  Finally, click **Apply**:
-![Sample output data](/images/workflow-editor-action-sample-output-data.png)
+<NarrowImage src="/images/workflow-editor-action-sample-output-data.png" alt="Sample output data" />
 
 This lets you avoid running the step against a live system while still being able to provide input data for subsequent steps in your workflow.
 
 All steps that use sample output data have a corresponding label in the workflow graph:
-![Sample output data label in the workflow graph](/images/workflow-editor-graph-sample-output-data-label.png)
+<NarrowImage src="/images/workflow-editor-graph-sample-output-data-label.png" alt="Sample output data label in the workflow graph" widthPercent={50} />
 
 ### Testing the entire workflow
 
 As soon as you have implemented and tested all steps, including a trigger and actions, it's time to test your entire workflow. If all the steps in your workflow are complete, you'll see the **Test Workflow** button at the top of the workflow editor, right above the trigger node:
-![Testing the entire workflow](/images/workflow-editor-test-workflow.png)
+<NarrowImage src="/images/workflow-editor-test-workflow.png" alt="Testing the entire workflow" widthPercent={50} />
 
 If some of the steps aren't complete, you'll see the **Complete _n_ steps** button at the top of the workflow editor instead. Incomplete steps will also be marked with a yellow warning icon:
-![Incomplete steps detected](/images/workflow-editor-test-complete-steps.png)
+<NarrowImage src="/images/workflow-editor-test-complete-steps.png" alt="Incomplete steps detected" widthPercent={50} />
 
 Click **Complete _n_ steps** to navigate to the first incomplete step in your workflow. Locate the remaining incomplete steps by the yellow warning icons next to them.
 
@@ -193,7 +192,7 @@ After setting and saving the execution limits, click **Test Workflow** to start 
 Note that when you test the entire workflow, OpenOps will ignore any sample output data you may have provided for individual actions. Instead, it will run all actions in the workflow against their respective live systems.
 
 After performing a test run of the workflow, OpenOps will show the results of the run in the **Run Details** pane to the left of the editor, indicating the status of each step, as well as its inputs and outputs:
-![Run details after testing the entire workflow](/images/workflow-editor-run-details.png)
+<NarrowImage src="/images/workflow-editor-run-details.png" alt="Run details after testing the entire workflow" />
 
 ## Publishing a workflow
 

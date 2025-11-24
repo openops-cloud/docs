@@ -6,6 +6,7 @@ icon: 'aws'
 
 import AutoInstall from '/snippets/auto-install.mdx'
 import Disclaimer from '/snippets/non-production-disclaimer.mdx';
+import { NarrowImage } from '/snippets/narrow-image.jsx'
 import TLS from '/snippets/tls.mdx';
 import UpdateCredentials from '/snippets/env-update-credentials.mdx';
 import UpdateLink from '/snippets/update-link.mdx';
@@ -21,7 +22,7 @@ It assumes you have appropriate permissions on an existing AWS account.
 ### Create a new EC2 instance
 
 1. On the EC2 home page, click **Launch Instance**:
-    ![Launch instance](/images/deploy-aws-launch-instance.png)
+    <NarrowImage src="/images/deploy-aws-launch-instance.png" alt="Launch instance" />
 2. Choose a name for your instance and configure the following settings:
     * **Application and OS Images (Amazon Machine Image)**
         - Choose **Ubuntu** as the instance image, as it simplifies Docker installation. Ubuntu Server 24.04 LTS was the latest available version when this guide was written.
@@ -32,7 +33,7 @@ It assumes you have appropriate permissions on an existing AWS account.
       ![Network settings](/images/deploy-aws-network-settings.png)
     * **Configure storage**. Choose **50GB** to ensure you have enough space for Docker images and databases.
 3. In the **Summary** section on the right, click **Launch instance**:
-    ![Launch instance](/images/deploy-aws-launch-instance-2.png)
+    <NarrowImage src="/images/deploy-aws-launch-instance-2.png" alt="Launch instance" />
 4. Once the instance is launched, navigate to instance details by clicking the instance ID:
     ![Instance launched](/images/deploy-aws-instance-launched.png)
 5. Configure the network settings and open the necessary ports:
@@ -50,7 +51,7 @@ It assumes you have appropriate permissions on an existing AWS account.
 ### Connect to the instance with CloudShell
 
 1. Back in the instance details view of your EC2 instance, and click **Connect**.
-    ![Connect](/images/deploy-aws-connect.png)
+    <NarrowImage src="/images/deploy-aws-connect.png" alt="Connect" />
 2. In the **Connect** view, use default connection settings and click **Connect** again, then wait for CloudShell to initialize an in-browser session.
     ![Connect to instance](/images/deploy-aws-connect-to-instance.png)
 
