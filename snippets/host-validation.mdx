@@ -2,12 +2,12 @@ import RestartContainers from '/snippets/restart-containers.mdx'
 
 ## Disabling host validation
 
-By default, OpenOps does not allow workflows to call internal/private network addresses such as `127.0.0.1` or `192.168.0.0`. This affects HTTP and SMTP actions, as well as webhook triggers. Host validation protects users from creating workflows that could accidentally or maliciously access internal services, scan networks, or escalate privileges.
+By default, OpenOps does not allow workflows to call internal network addresses such as `127.0.0.1` or `192.168.0.0`. This affects HTTP and SMTP actions, as well as webhook triggers. Host validation protects users from creating workflows that could accidentally or maliciously access internal services, scan networks, or escalate privileges.
 
-You may need to disable this check in certain circumstances, such as in non-production deployments or where workflows intentionally interact with internal-only infrastructure.
+You may need to disable this check in certain circumstances, such as in non-production deployments or when workflows intentionally interact with internal-only infrastructure.
 
 To disable host validation, open the `.env` file in your installation folder and set the `OPS_ENABLE_HOST_VALIDATION` environment variable to `false`.
 
 <RestartContainers />
 
-<Warning>Disabling this check removes an important safety guard and may allow workflows to access internal infrastructure. Use caution and avoid disabling in production.</Warning>
+<Warning>Disabling this check removes an important safety guard and may allow workflows to access internal infrastructure. Use caution and avoid disabling it in production.</Warning>
