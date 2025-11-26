@@ -4,6 +4,8 @@ description: 'How to use AI assistance in OpenOps'
 icon: 'robot'
 ---
 
+import { NarrowImage } from '/snippets/narrow-image.jsx'
+
 OpenOps can use a large language model (LLM) of your choice to help you with:
 * Answering questions about OpenOps and FinOps using the AI chatbot
 * Using prompts as workflow steps based on outputs from previous steps
@@ -29,7 +31,7 @@ AI assistance in OpenOps is available in several forms:
 ### AI assistant chat
 
 Once enabled, the AI assistant chat becomes available in sidebars in every OpenOps view:
-![AI assistant](/images/access-llm-assistant.png)
+<NarrowImage src="/images/access-llm-assistant.png" alt="AI assistant" widthPercent={50} />
 
 You can use it to ask a variety of questions about OpenOps, your cloud resources, and FinOps in general, such as:
 * "What can I do in OpenOps and how do I use its [features](/introduction/features-and-benefits/)?"
@@ -51,19 +53,17 @@ When available, the AI assistant includes reasoning in its replies, showing whic
 The **Ask AI** action lets you run AI prompts in a separate step in your workflow, using outputs of its previous steps as context.
 
 You add **Ask AI** as you would [add any other action](workflow-management/building-workflows#adding-more-actions). You then specify a prompt in the **Prompt** field and any relevant outputs of previous steps in the **Additional input** section:
-
-![Ask AI](/images/access-llm-ask-ai-action.png)
+<NarrowImage src="/images/access-llm-ask-ai-action.png" alt="Ask AI" />
 
 Alternatively, you can combine prompt text and outputs from previous steps in the **Prompt** field.
 
 ### Generating commands and queries
 
 Whenever you work with an [action](/workflow-management/actions) that requires writing a CLI command or SQL query, you'll see the **Generate with AI** command next to the relevant property in the action's properties pane:
-![Generate with AI](/images/access-llm-generate-with-ai.png)
+<NarrowImage src="/images/access-llm-generate-with-ai.png" alt="Generate with AI" />
 
 When you click **Generate with AI**, use the AI chat window to describe the outcome you want the command or query to achieve, and your LLM will generate it for you:
-![AI chat window](/images/access-llm-chat.png)
-
+<NarrowImage src="/images/access-llm-chat.png" alt="AI chat window" widthPercent={50} />
 Click **Inject command** in the AI chat window to insert the generated command into the action's **Command** field.
 
 ### Generating code steps

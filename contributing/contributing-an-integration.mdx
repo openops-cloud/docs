@@ -4,6 +4,8 @@ description: 'Developing a fully working OpenOps block to integrate with a third
 icon: 'puzzle'
 ---
 
+import { NarrowImage } from '/snippets/narrow-image.jsx'
+
 [Creating a Minimal Block](/contributing/creating-a-minimal-block/) demonstrated how to use scaffolding and make a block show up in the OpenOps UI. Let's now see how you would create a fully functional integration with a third-party service.
 
 OpenOps integrates with Jira Cloud and Linear, but what if you use a different service for tracking your cloud optimization opportunities? Let's see how you would create a block that integrates with [JetBrains YouTrack](https://www.jetbrains.com/youtrack/) via its [REST API](https://www.jetbrains.com/help/youtrack/devportal/youtrack-rest-api.html).
@@ -498,7 +500,7 @@ export interface YouTrackAuth {
 
 With this code, if the user creates a new connection in OpenOps, they will see a connection type for YouTrack:
 
-![A YouTrack connection type in OpenOps UI](/images/contributing/youtrack-connection-type.png)
+<NarrowImage src="/images/contributing/youtrack-connection-type.png" alt="A YouTrack connection type in OpenOps UI" />
 
 When they click the YouTrack logo, a connection dialog appears with a properly rendered Markdown description and three input fields. The **Connection name** field is predefined and prefilled with a suggested name for the connection. The other two fields, **API key** and **Base URL**, are the properties we defined earlier:
 
@@ -665,11 +667,11 @@ First, the action is visible in the workflow editor and available for selection:
 
 In the **Configure** tab of the action's properties pane, there's a connection selector, which is provided automatically because the action requires authentication. There are also two toggles, **Continue on Failure** and **Retry on Failure**, which are available for all actions. There are no properties specific to this action since we haven't defined any.
 
-![The properties pane for Get All Issues](/images/contributing/youtrack-get-all-issues-properties-pane.png)
+<NarrowImage src="/images/contributing/youtrack-get-all-issues-properties-pane.png" alt="The properties pane for Get All Issues" />
 
 If we go to the **Test** tab and click **Test Step**, the action connects to the YouTrack instance configured in the connection and returns results in the format defined by the `return` statement in the action's `run()` function:
 
-![The output of the Get All Issues action](/images/contributing/youtrack-get-all-issues-output.png)
+<NarrowImage src="/images/contributing/youtrack-get-all-issues-output.png" alt="The output of the Get All Issues action" />
 
 ## Adding an action with properties
 
@@ -826,7 +828,7 @@ If we launch OpenOps, we can see that the new action is now available in the wor
 
 If we add the action and open the properties pane, we can see the **Project** dropdown listing the projects available in the connected YouTrack instance:
 
-![The Project dropdown](/images/contributing/youtrack-change-status-project-property.png)
+<NarrowImage src="/images/contributing/youtrack-change-status-project-property.png" alt="The Project dropdown" />
 
 ### Adding an input property for an issue ID
 
@@ -845,7 +847,7 @@ props: {
 
 In the OpenOps UI, the user can either enter the value manually or use **Data Selector** to select a value from a previous step:
 
-![The issue ID input field](/images/contributing/youtrack-change-status-id-property.png)
+<NarrowImage src="/images/contributing/youtrack-change-status-id-property.png" alt="The issue ID input field" />
 
 ### Adding a dropdown property for the new status
 
@@ -936,11 +938,11 @@ It's quite a lot of code, but most of it deals with the specifics of the YouTrac
 
 Looking at the OpenOps UI now, we can see that the **New Status** dropdown is available and lists status values for the selected project:
 
-![The New Status dropdown](/images/contributing/youtrack-change-status-status-property-1.png)
+<NarrowImage src="/images/contributing/youtrack-change-status-status-property-1.png" alt="The New Status dropdown" />
 
 If we select another project with a different set of status values, the dropdown updates accordingly:
 
-![The New Status dropdown for a different project](/images/contributing/youtrack-change-status-status-property-2.png)
+<NarrowImage src="/images/contributing/youtrack-change-status-status-property-2.png" alt="The New Status dropdown for a different project" />
 
 ### Adding action execution logic
 
@@ -1004,7 +1006,7 @@ Here's what's happening in this function:
 
 If we go to the workflow editor now and test the action, here's the kind of output we should see:
 
-![The output of the Change Issue Status action](/images/contributing/youtrack-change-status-output.png)
+<NarrowImage src="/images/contributing/youtrack-change-status-output.png" alt="The output of the Change Issue Status action" />
 
 In this case, we're simply returning the body of the response from the YouTrack API, but you could return an object with a different shape. That's entirely up to you.
 

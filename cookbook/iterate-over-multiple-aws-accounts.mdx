@@ -4,10 +4,13 @@ description: 'How to configure a connection and build a workflow to work with mu
 icon: 'repeat'
 ---
 
+import { NarrowImage } from '/snippets/narrow-image.jsx'
+
 If you want to build a workflow that works across multiple AWS accounts instead of just one, this is possible, but there's a quirk.
 
 Some AWS-related actions have built-in support for multiple AWS accounts via a multi-select dropdown:
-    ![An action that supports multiple AWS accounts](/images/cookbook/aws-ebs-get-snapshots.png)
+<NarrowImage src="/images/cookbook/aws-ebs-get-snapshots.png" alt="An action that supports multiple AWS accounts" />
+
 In the *AWS* block, these actions are *Get Account IDs*, *EBS Get Volumes*, *EBS Get Snapshots*, *EC2 Get Instances*, *RDS Get Instances*, and *RDS Get Snapshots*.
 
 In addition, all actions in the *AWS Compute Optimizer* block support multiple accounts.
@@ -65,7 +68,7 @@ To the right of the **Accounts** property label, click **Dynamic**. This will ch
 
 Inside the input field, use **Data Selector** to expand **Loop in Items**, then **item**, then click **Insert** alongside the **accountId** property:
 
-![Selecting an accountId](/images/cookbook/aws-data-selector-accountid.png)
+<NarrowImage src="/images/cookbook/aws-data-selector-accountid.png" alt="Selecting an accountId" />
 
 Proceed to setting other properties of the AWS action as needed.
 

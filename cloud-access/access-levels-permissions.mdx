@@ -5,6 +5,7 @@ icon: 'lock'
 iconType: "solid"
 ---
 
+import { NarrowImage } from '/snippets/narrow-image.jsx'
 import RestartContainers from '/snippets/restart-containers.mdx';
 
 Although some workflows can be performed without direct access to cloud resources, the power of automations that you build in OpenOps depends on the permissions that you assign. That said, you control which level of access to provide, as needed by the workflows that you build. One strategy is to start with providing OpenOps read-only permissions, and when you're ready to automate update operations, provide more permissions.
@@ -17,9 +18,9 @@ Each workflow can use one or more connections, including multiple connections pe
 
 You can set up connections in two ways:
 1. Upfront by going to the **Connections** tab and clicking **New Connection**. This opens a pop-up that lets you first select a connection type:
-    ![Connection types](/images/access-connection-types.png)
+    <NarrowImage src="/images/access-connection-types.png" alt="Connection types" />
 2. While editing the workflow, in action properties, by opening the **Connection** dropdown and clicking **Create Connection**:
-    ![Creating a connection from workflow properties](/images/access-connection-from-workflow.png)
+    <NarrowImage src="/images/access-connection-from-workflow.png" alt="Creating a connection from workflow properties" />
 
 ## AWS connections
 
@@ -34,8 +35,7 @@ Whichever approach you choose, you'll need to specify the default AWS region for
 ### Connecting using access keys
 
 This approach requires specifying your access key ID, secret access key, and the default region in the AWS connection properties:
-
-![AWS connection](/images/access-aws-connection.png)
+<NarrowImage src="/images/access-aws-connection.png" alt="AWS connection" />
 
 You can [create an IAM user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html) in the AWS Management Console. When you do, you'll get an access key ID and a secret access key to enter in the AWS connection configuration form. The specific set of permissions you assign to the user depends on what you want to do in the workflows that will use the AWS connection. For example, if you want your workflow to turn off EC2 instances, assign the `ec2:StopInstances` permission as shown in [this guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_ec2_tag-owner.html).
 
@@ -72,8 +72,7 @@ You can add multiple entries in the **Roles** section to manage many accounts. W
 ## Azure connections
 
 A connection to Azure requires specifying your application (client) ID, client secret, and directory (tenant) ID:
-
-![Azure connection](/images/access-azure-connection.png)
+<NarrowImage src="/images/access-azure-connection.png" alt="Azure connection" />
 
 If you don't already have these credentials, you can acquire them by creating an Azure service principal. There are two ways to do this: with the [Azure CLI](#creating-an-azure-service-principal-using-the-azure-cli) or the [Azure Portal](#creating-an-azure-service-principal-using-the-azure-portal).
 
@@ -117,10 +116,10 @@ Copy the values from the output into the respective fields in OpenOps connection
 3. Go to the **Certificates & Secrets** submenu and create a new secret. Copy the secret to OpenOps now, as it will only be shown once.
 4. Go to the **Subscriptions** page and select a subscription for your new application's service principal.
 5. Under the selected subscription, click **Access control (IAM)** on the left-side menu bar. In the view that opens, click **Add**, then select **Add role assignment**:
-    ![Adding a role assignment](/images/access-azure-portal-new-role-assignment.png)
+    <NarrowImage src="/images/access-azure-portal-new-role-assignment.png" alt="Adding a role assignment" />
 6. In the **Role** step, select the role that you want your Azure connection to have. For a safe testing experience, use "Reader" or another read-only role. If you want to enable OpenOps to make changes to your Azure assets, choose "Contributor" or a more privileged role.
 7. In the **Members** step, click **Select members** and specify the name of your application. If your application does not appear in the dropdown immediately, search for it by name.
-    ![Assigning members to the selected role](/images/access-azure-portal-role-access.png)
+    <NarrowImage src="/images/access-azure-portal-role-access.png" alt="Assigning members to the selected role" />
 8. Click **Review + assign**.
 
 Your service principal is now ready to be used with your Azure connection in OpenOps.
