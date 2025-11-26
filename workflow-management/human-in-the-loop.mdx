@@ -4,6 +4,8 @@ description: 'How to request human approval and intervention in your workflows'
 icon: 'user-check'
 ---
 
+import { NarrowImage } from '/snippets/narrow-image.jsx'
+
 Some workflows can run safely in unattended mode. Others, such as resource deletions, are more impactful and may require review by stakeholders before proceeding. To address this, OpenOps offers two Human-in-the-Loop mechanisms: [approvals](#requesting-approvals) and [notifications](#sending-notifications).
 
 For example, you can create a workflow that flags idle RDS instances for review, prompting human approval before any scaling down or termination actions are taken.
@@ -17,7 +19,7 @@ OpenOps offers a dedicated approval request feature for Slack, as well as a more
 ### On Slack
 
 OpenOps provides several Slack-related actions:
-![Slack actions](/images/hitl-slack-actions.png)
+<NarrowImage src="/images/hitl-slack-actions.png" alt="Slack actions" />
 
 #### With "Request Action"
 
@@ -25,7 +27,7 @@ One of Slack-related actions, **Request Action**, is the most straightforward wa
 ![Request action via Slack](/images/cloudhealth/slack-request-action-properties-1.png)
 
 When this action fires, the Slack user receives a message that you've defined in the action's properties. The message may look like this:
-![Slack message with an action request](/images/cloudhealth/slack-notification.png)
+<NarrowImage src="/images/cloudhealth/slack-notification.png" alt="Slack message with an action request" />
 
 As soon as the user clicks one of the buttons, your **Request Action** step receives this as the output. You can then create a [conditional branch](/workflow-management/conditional-branching/) with the **Split** action and implement distinct steps depending on which button the user clicked:
 ![Splitting based on a user action](/images/cloudhealth/slack-split-added.png)
@@ -41,7 +43,7 @@ However, **Send Message** doesn't wait for a reply from the recipient. Instead, 
 ### Elsewhere
 
 To request approvals through a communication channel other than Slack, use the **Approval** group of actions:
-![Approval actions](/images/hitl-approval-actions.png)
+<NarrowImage src="/images/hitl-approval-actions.png" alt="Approval actions" />
 
 In this case, here's how you can create the approval part of your workflow:
 1. Add the **Create Approval Links** action from the **Approval** group. This action generates two links: one for approval and the other for disapproval.
@@ -56,6 +58,6 @@ Besides approvals, you can also send notifications about completed workflows or 
     * **Send Message** to send a direct message or a message to a public Slack channel.
     * **Update Message** to update a message previously sent to a public Slack channel.
 * **Send Channel Message** and **Send Chat Message** under **Microsoft Teams**:
-![Microsoft Teams actions](/images/hitl-teams-actions.png)
+    <NarrowImage src="/images/hitl-teams-actions.png" alt="Microsoft Teams actions" />
 * Actions in the **Jira Cloud** group, such as **Change Issue Status** and **Add Issue Comment**.
 * Actions to send emails under **SMTP** and **Microsoft Outlook**.
