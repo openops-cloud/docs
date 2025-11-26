@@ -5,7 +5,7 @@ icon: 'robot'
 ---
 
 OpenOps can use a large language model (LLM) of your choice to help you with:
-* Answering questions about OpenOps and FinOps using the AI chatbot
+* Answering questions about OpenOps and FinOps using the AI assistant chat
 * Using prompts as workflow steps based on outputs from previous steps
 * Generating CLI commands for AWS, Azure, and GCP
 * Writing SQL queries for AWS Athena, BigQuery, Snowflake, and Databricks
@@ -17,13 +17,13 @@ You can do all this right inside the workflow editor, without switching context.
 
 OpenOps doesn't lock you into a specific AI model. Instead, you **bring your own AI keys** and [connect them to OpenOps](/ai-assistance/llm-connections).
 
-Supported LLMs include OpenAI, Anthropic, Google Generative AI, Groq, Mistral, Perplexity, xAI Grok, and more.
+Supported LLMs include OpenAI, Anthropic, Google Generative AI, Groq, Mistral, Perplexity, xAI Grok, and more. For Anthropic and Google Vertex AI providers, OpenOps also supports Claude Opus 4.5 models.
 
 ## Using AI assistance
 
 AI assistance in OpenOps is available in several forms:
 * The AI assistant chat, where you ask free-form questions
-* A standalone **Ask AI** action that lets you send prompts that use the outputs of previous workflow steps as context
+* A standalone **AI Step** action that lets you send prompts that use the outputs of previous workflow steps as context
 * The **Generate with AI** command in step properties, which helps you generate commands, queries, and code snippets
 
 ### AI assistant chat
@@ -46,11 +46,13 @@ It can also work with Amazon MCP servers, namely AWS Cost Explorer MCP Server, A
 
 When available, the AI assistant includes reasoning in its replies, showing which tools (such as MCP servers) it used, displaying the raw data retrieved from those tools, and outlining next steps in plain language.
 
-### Ask AI action
+When you open the AI assistant chat from a step settings panel, the chat header displays step context, such as the step name, block display name, and 1-based step position.
 
-The **Ask AI** action lets you run AI prompts in a separate step in your workflow, using outputs of its previous steps as context.
+### AI Step action
 
-You add **Ask AI** as you would [add any other action](workflow-management/building-workflows#adding-more-actions). You then specify a prompt in the **Prompt** field and any relevant outputs of previous steps in the **Additional input** section:
+The **AI Step** action lets you run AI prompts in a separate step in your workflow, using outputs of its previous steps as context.
+
+You add **AI Step** as you would [add any other action](workflow-management/building-workflows#adding-more-actions). You then specify a prompt in the **Prompt** field and any relevant outputs of previous steps in the **Additional input** section:
 
 ![Ask AI](/images/access-llm-ask-ai-action.png)
 
