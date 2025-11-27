@@ -6,6 +6,7 @@ icon: 'google'
 
 import AutoInstall from '/snippets/auto-install.mdx'
 import Disclaimer from '/snippets/non-production-disclaimer.mdx';
+import HostValidation from '/snippets/host-validation.mdx';
 import RestartContainers from '/snippets/restart-containers.mdx';
 import TLS from '/snippets/tls.mdx';
 import UpdateCredentials from '/snippets/env-update-credentials.mdx';
@@ -117,6 +118,8 @@ If you remove or disable the `db` profile in `.env` or in Docker Compose, that c
 <RestartContainers/>
 
 <TLS target="VM"/>
+
+<HostValidation/>
 
 <UpdateLink/>
 

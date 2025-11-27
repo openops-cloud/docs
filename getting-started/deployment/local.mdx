@@ -5,6 +5,7 @@ icon: 'laptop-code'
 ---
 
 import AutoInstall from '/snippets/auto-install.mdx'
+import HostValidation from '/snippets/host-validation.mdx';
 import UpdateCredentials from '/snippets/env-update-credentials.mdx';
 import UpdateLink from '/snippets/update-link.mdx';
 
@@ -134,6 +135,8 @@ After updating your `.env` file, restart the containers:
 ```shell
 sudo docker compose down && docker compose up -d
 ```
+
+<HostValidation/>
 
 ## Using Azure CLI in workflows: running with local credentials
 
