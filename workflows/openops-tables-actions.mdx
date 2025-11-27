@@ -1,0 +1,52 @@
+---
+title: 'OpenOps Tables actions'
+description: 'How to use the OpenOps Tables block actions to update and delete records in OpenOps Tables.'
+icon: 'table'
+---
+
+OpenOps Tables actions let you update and delete records in your OpenOps tables directly from workflows.
+
+These actions use the default OpenOps Tables user and a database token behind the scenes. You do not need to pass tokens or credentials in the block configuration.
+
+## Prerequisites
+
+Before you use OpenOps Tables actions:
+
+- Your OpenOps project has an OpenOps Tables database and tables.
+- The default project database token is configured in OpenOps. This token is used automatically by the actions.
+
+## Add or update a record
+
+Use the **Add or Update Record** action to insert a new row or update an existing row in an OpenOps table.
+
+### Properties
+
+- **Table** – Select the target table.
+- **Row Primary Key** – Primary key value of the row to update. If the row does not exist, the action creates a new row.
+- **Fields to update** – List of table fields and their new values.
+- **Round Numeric Values** – When on, numeric values are rounded to the number of decimal places defined by the destination field. When off, the action fails if a value has more decimals than allowed.
+
+### Behavior
+
+1. The action looks up the table by name and loads its fields.
+2. It validates that all selected fields exist in the table.
+3. If **Round Numeric Values** is on, it rounds numeric inputs to the allowed precision.
+4. If **Round Numeric Values** is off and a value has too many decimals, the action fails with an error.
+5. It writes the updated fields to the table using the database token.
+
+## Delete a record
+
+Use the **Delete Record** action to remove an existing row from an OpenOps table.
+
+### Properties
+
+- **Table** – Select the target table.
+- **Record Primary Key Value** – Primary key value of the row to delete.
+
+### Behavior
+
+1. The action looks up the table by name and loads its fields.
+2. It identifies the primary key field.
+3. It loads the row with the given primary key value.
+4. If no row is found, the action fails with an error.
+5. If a row is found, it deletes the row using the database token.
