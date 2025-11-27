@@ -22,11 +22,11 @@ You’ll need relevant permissions to create a new VM, edit its networking setti
 ### Create a new virtual machine
 
 1. Navigate to [Create a virtual machine](https://portal.azure.com/#create/Microsoft.VirtualMachine-ARM) in Azure.
-2. Name your machine and select the latest Ubuntu Server as the image. Choose a size with at least **2 CPUs and 8GB of RAM**. Other settings can be left as default.
+2. Name your machine and select the latest Ubuntu Server as the image. Choose a size with at least **2 CPUs and 8 GB of RAM**. Other settings can be left as default.
     ![Instance details](/images/deploy-azure-instance-details.png)
 3. Click **Review + create** at the bottom, then **Create** to create the machine. You will be asked to download the private key.
-    <Warning>You may see a warning about leaving port 22 (SSH) open. For production use, it’s recommended to open this port only to relevant IPs, depending on your network configuration. In this guide, we’re using CloudShell to connect to the machine, so the port needs to remain open.</Warning>
-4. Once the VM deployment is complete, click **Go to resource**
+    <Warning>You may see a warning about leaving port 22 (SSH) open. For production use, it's recommended to open this port only to relevant IPs, depending on your network configuration. In this guide, we're using CloudShell to connect to the machine, so the port needs to remain open.</Warning>
+4. Once the VM deployment is complete, click **Go to resource**.
 5. From the deployment overview, navigate to **Networking > Network settings**.
 6. Under **Rules**, click **Create port rule**, then select **Inbound port rule**:
     ![Creating a port rule](/images/deploy-azure-create-port-rule.png)
@@ -44,7 +44,7 @@ You’ll need relevant permissions to create a new VM, edit its networking setti
 2. In the **Connect** view, expand **More ways to connect**. In the **SSH using Azure CLI** section, click **Connect via Azure CLI**:
     <NarrowImage src="/images/deploy-azure-ssh.png" alt="SSH using Azure CLI" widthPercent={50} />
 3. In the **SSH using Azure CLI** overlay, click **Configure + check access**. Once the access check is complete, click **Connect**.
-4. Choose **Bash** as the shell type. This will open the Cloud Shell inside Azure Portal.
+4. Choose **Bash** as the shell type. This will open Cloud Shell inside the Azure Portal.
 
 ### Install OpenOps
 
