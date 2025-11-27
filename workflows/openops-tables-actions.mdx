@@ -28,11 +28,12 @@ Use the **Add or Update Record** action to insert a new row or update an existin
 
 ### Behavior
 
-1. The action looks up the table by name and loads its fields.
-2. It validates that all selected fields exist in the table.
-3. If **Round Numeric Values** is on, it rounds numeric inputs to the allowed precision.
-4. If **Round Numeric Values** is off and a value has too many decimals, the action fails with an error.
-5. It writes the updated fields to the table using the database token.
+1. The action authenticates the default OpenOps Tables user and obtains a database token.
+2. It looks up the table by name and loads its fields.
+3. It validates that all selected fields exist in the table.
+4. If **Round Numeric Values** is on, it rounds numeric inputs to the allowed precision.
+5. If **Round Numeric Values** is off and a value has too many decimals, the action fails with an error.
+6. It writes the updated fields to the table using the database token.
 
 ## Delete a record
 
@@ -45,8 +46,9 @@ Use the **Delete Record** action to remove an existing row from an OpenOps table
 
 ### Behavior
 
-1. The action looks up the table by name and loads its fields.
-2. It identifies the primary key field.
-3. It loads the row with the given primary key value.
-4. If no row is found, the action fails with an error.
-5. If a row is found, it deletes the row using the database token.
+1. The action authenticates the default OpenOps Tables user and obtains a database token.
+2. It looks up the table by name and loads its fields.
+3. It identifies the primary key field.
+4. It loads the row with the given primary key value.
+5. If no row is found, the action fails with an error.
+6. If a row is found, it deletes the row using the database token.
