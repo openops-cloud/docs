@@ -45,3 +45,15 @@ In this JSON:
 * `your-google-cloud-project-id` is the ID of the Google Cloud project where your API key was created. You can look up the ID in the Google Cloud Console by opening the project selector:
     ![Google Cloud project ID](/images/access-llm-google-project-id.png)
 * Use `global` for `location` or, if needed, specify one of the [supported locations](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/learn/locations#google_model_endpoint_locations) for your chosen model.
+
+### Azure OpenAI
+
+When configuring an AI connection where Azure OpenAI serves as the provider:
+1. In the **Model** dropdown, select **Custom**.
+2. In the **Custom model** field, enter the name of a model deployment in your Azure OpenAI resource (for example, `my-gpt-5`).
+3. In the **API Key** field, enter the API key from a service principal that has access to your Azure OpenAI resource.
+4. In the **Provider settings** field, enter the following JSON:
+    ```json
+    {"resourceName": "Azure AI resource name"}
+    ```
+    The value of `resourceName` must match the name of your Azure OpenAI resource — the same name that appears in the endpoint URL, e.g. `https://<resourceName>.openai.azure.com/` or, if you're using Azure AI Foundry, `https://<resourceName>.services.ai.azure.com/`.
