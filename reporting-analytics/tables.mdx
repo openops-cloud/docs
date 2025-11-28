@@ -4,6 +4,8 @@ description: 'Saving data into and getting data from OpenOps Tables'
 icon: 'table'
 ---
 
+import { NarrowImage } from '/snippets/narrow-image.jsx'
+
 OpenOps includes tables, a data storage mechanism based on [Baserow](https://baserow.io/user-docs/intro-to-tables). They are a hybrid of a spreadsheet and a database: think Airtable. Here are some of the things that tables help you do:
 * **Sort and filter** your data: for example, only show opportunities that are not completed or dismissed.
 * **Group** your data: for example, show opportunities by owner.
@@ -62,8 +64,8 @@ In addition to preconfigured tables, you can create your own. This is especially
 
 To create a new table from scratch:
 
-1. Go to the **Tables** tab. In the tree view on the left, click **+ Create table** under the list of currently available tables in the **OpenOps Table** dataset:
-    ![Creating a table](/images/tables-tree-create.png)
+1. Go to the **Tables** tab. In the tree view on the left, click **+ New table** under the list of currently available tables in the **OpenOps Table** dataset:
+    <NarrowImage src="/images/tables-tree-create.png" alt="Creating a table" widthPercent={50} />
 2. In the **Create new table** popup, keep **Start with a new table** selected and click **Add table**:
     ![Create new table popup](/images/tables-create-new-table.png)
 
@@ -71,12 +73,12 @@ A new table is created with three default fields:
 ![Default table](/images/tables-default.png)
 
 Feel free to remove the default fields and add new ones depending on your use case. When you click **+** in the table header to create a new field, you can choose from multiple field types:
-![Table field types](/images/tables-add-fields.png)
+<NarrowImage src="/images/tables-add-fields.png" alt="Table field types" />
 
 The first table field serves as the **row identifier**. If you intend to update rows after creating them, choose a specific type for the row identifier field — see [Creating and updating rows in tables](#creating-and-updating-rows-in-tables) below for more details.
 
 In the tree view on the left, if you click the options icon alongside your table's name, you can choose to rename, duplicate, export, or delete your table:
-![Table options](/images/tables-table-options.png)
+<NarrowImage src="/images/tables-table-options.png" alt="Table options" widthPercent={50} />
 
 ## Creating and updating rows in tables
 
@@ -91,9 +93,9 @@ The row identifier field is the first field in the table. It is used to find the
 When you create a new table, the default row identifier field, **Name**, has the type **Single line text**, which does not guarantee uniqueness of values. Here's how you can modify the row identifier field to ensure unique values:
 
 1. Click the arrow to the right of the field name in the table header and select **Edit field**:
-![Row identifier field](/images/tables-row-identifier-edit-field.png)
+    <NarrowImage src="/images/tables-row-identifier-edit-field.png" alt="Row identifier field" widthPercent={50} />
 2. In the **Edit field** popup, change the field type to **UUID**:
-![Changing the row identifier field type](/images/tables-row-identifier-uuid.png)
+    <NarrowImage src="/images/tables-row-identifier-uuid.png" alt="Changing the row identifier field type" widthPercent={50} />
 3. Change the name of the field to **ID** or **Identifier** to reflect the field's new function.
 4. Click **Save**.
 
@@ -102,7 +104,7 @@ As a result, OpenOps will generate a unique identifier for each row in the table
 ### Using the row identifier field in workflows
 
 When [building your workflows](/workflow-management/building-workflows/), you can use four table actions in your workflow steps:
-![Table actions](/images/tables-actions.png)
+<NarrowImage src="/images/tables-actions.png" alt="Table actions" />
 
 Two of these actions may require a unique row identifier: **Add or Update Record** and **Delete Record**.
 
@@ -111,7 +113,7 @@ When you use the **Add or Update Record** action, its properties pane contains a
 If you want to update an existing row, you need to provide a value for the **Primary Key Value** field. Often, a workflow contains a step that creates a new row in a table and then another step that updates the same row. In this case, you can use the output of the first step as the input for the second step.
 
 To do this, click **Primary Key Value** in the action properties of the second step to show the **Data Selector** view, then expand the output of the first step that created the row, and select the row identifier field:
-![Specifying the ID from a previous step](/images/tables-actions-id-from-previous-action.png)
+![Specifying the ID from a previous step](/images/cloudhealth/nested-condition-ready.png)
 
 As a result, your second step will know to update the same row that was created in the first step.
 

@@ -7,6 +7,7 @@ icon: 'aws'
 import AutoInstall from '/snippets/auto-install.mdx'
 import Disclaimer from '/snippets/non-production-disclaimer.mdx';
 import HostValidation from '/snippets/host-validation.mdx';
+import { NarrowImage } from '/snippets/narrow-image.jsx'
 import TLS from '/snippets/tls.mdx';
 import UpdateCredentials from '/snippets/env-update-credentials.mdx';
 import UpdateLink from '/snippets/update-link.mdx';
@@ -22,34 +23,38 @@ It assumes you have appropriate permissions on an existing AWS account.
 ### Create a new EC2 instance
 
 1. On the EC2 home page, click **Launch Instance**:
-    ![Launch instance](/images/deploy-aws-launch-instance.png)
+    <NarrowImage src="/images/deploy-aws-launch-instance.png" alt="Launch instance" />
 2. Choose a name for your instance and configure the following settings:
     * **Application and OS Images (Amazon Machine Image)**
         - Choose **Ubuntu** as the instance image, as it simplifies Docker installation. Ubuntu Server 24.04 LTS was the latest available version when this guide was written.
         - Keep **64-bit (x86)** as the instance architecture.
-    * **Instance Type**. The *t3.large* instance type provides decent performance. You can choose a different type according to your needs, but it's not recommended to select a size smaller than *t3.medium*.
-    * **Key Pair**. Creating a new SSH key pair is recommended but not mandatory.
-    * **Network Settings**. Allow SSH traffic from your own IP address:
+    * **Instance type**. The *t3.large* instance type provides decent performance. You can choose a different type according to your needs, but it's not recommended to select a size smaller than *t3.medium*.
+    * **Key pair (login)**. Creating a new SSH key pair is recommended but not mandatory.
+    * **Network settings**. Allow SSH traffic from your own IP address:
       ![Network settings](/images/deploy-aws-network-settings.png)
-    * **Configure Storage**. Choose **50GB** to ensure you have enough space for Docker images and databases.
-3. Launch the instance and navigate to it once it's created by clicking on the instance ID.
+    * **Configure storage**. Choose **50GB** to ensure you have enough space for Docker images and databases.
+3. In the **Summary** section on the right, click **Launch instance**:
+    <NarrowImage src="/images/deploy-aws-launch-instance-2.png" alt="Launch instance" />
+4. Once the instance is launched, navigate to instance details by clicking the instance ID:
     ![Instance launched](/images/deploy-aws-instance-launched.png)
-4. Configure the network settings and open the necessary ports. Under **Security**, click on the security group.
+5. Configure the network settings and open the necessary ports:
+    1. Open the **Security** tab, then click on the security group.
     ![Security tab](/images/deploy-aws-security.png)
-    Click **Edit inbound rules**, then **Add rule**, and add two rules:
-    1. In the first rule, for **Type**, choose **HTTP**, and under **Source**, select **My IP**.
-    2. In the second rule, for **Type**, choose **SSH**. Click the text box next to **Source**, and select the prefix list that contains the words “ec2-instance-connect". The full name should be similar to `com.amazonaws.us-east-1.ec2-instance-connect`, depending on your region. This allows you to connect to the instance via AWS CloudShell.
-        ![Prefix lists](/images/deploy-aws-prefix-lists.png)
-    The final rules should look like this:
-    ![New inbound rules](/images/deploy-aws-inbound-rules.png)
-5. Click **Save rules** to finish the configuration.
+    2. Click **Edit inbound rules**.
+    3. Add two new rules by clicking **Add rule** each time:
+        1. In the first rule, for **Type**, choose **HTTP**, and under **Source**, select **My IP**.
+        2. In the second rule, for **Type**, choose **SSH**. Click the text box next to **Source**, and search for `ec2-instance-connect`. Select the prefix list with the full name similar to `com.amazonaws.us-east-1.ec2-instance-connect`, depending on your region. This allows you to connect to the instance via AWS CloudShell.
+            ![Prefix lists](/images/deploy-aws-prefix-lists.png)
+        The resulting set of inbound rules should look like this:
+        ![New inbound rules](/images/deploy-aws-inbound-rules.png)
+    4. Click **Save rules** to finish the configuration.
 
 ### Connect to the instance with CloudShell
 
-1. Navigate to your EC2 instance and click **Connect** to open an in-browser CloudShell session.
-    ![Connect](/images/deploy-aws-connect.png)
+1. Back in the instance details view of your EC2 instance, and click **Connect**.
+    <NarrowImage src="/images/deploy-aws-connect.png" alt="Connect" />
+2. In the **Connect** view, use default connection settings and click **Connect** again, then wait for CloudShell to initialize an in-browser session.
     ![Connect to instance](/images/deploy-aws-connect-to-instance.png)
-2. Click **Connect** and wait for CloudShell to initialize.
 
 ### Install OpenOps
 
@@ -91,7 +96,13 @@ You can now access the OpenOps application by navigating to the public IP addres
 ## External databases
 
 To use external PostgreSQL or Redis databases, modify the relevant variables in the `.env` file. You can disable the corresponding containers by adding a profile in the `docker-compose.yml` file:
-![Disabling a profile](/images/deploy-aws-external-db.png)
+
+```yaml
+postgres:
+  profiles: ['disabled']
+  image: 'postgres:14.4'
+  container_name: 'postgres'
+```
 
 After making changes, restart the Docker Compose containers:
 ```shell

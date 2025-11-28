@@ -4,6 +4,8 @@ description: 'How to build a workflow that performs actions across multiple Goog
 icon: 'shuffle'
 ---
 
+import { NarrowImage } from '/snippets/narrow-image.jsx'
+
 You can build workflows that retrieve the list of your Google Cloud projects and iterate over them.
 
 Here's how to do it.
@@ -84,7 +86,7 @@ gcloud compute instances list --project= --format=json
 
 Set the caret after the `--project=` flag. Use **Data Selector** to expand **Loop on Items**, then **item**, and click **Insert** next to the **projectId** property:
 
-![Selecting a projectId](/images/cookbook/gcp-data-selector-projectid.png)
+<NarrowImage src="/images/cookbook/gcp-data-selector-projectid.png" alt="Selecting a projectId" widthPercent={60} />
 
 The resulting command in the properties pane will look like this, dynamically injecting the current project ID into the command template:
 

@@ -4,12 +4,14 @@ description: 'How to create decision paths in your workflows'
 icon: 'code-branch'
 ---
 
+import { NarrowImage } from '/snippets/narrow-image.jsx'
+
 Depending on data received in previous steps of your workflow, you may want to decide how to proceed further. Two actions help you split your workflow based on conditions:
 * [**Condition**](#condition) splits the workflow into exactly two branches.
 * [**Split**](#split) splits the workflow into multiple branches.
 
 You can add either of these just like you add any other action, using the **+** button in the workflow editor:
-![Selecting a condition action](/images/conditions-actions.png)
+<NarrowImage src="/images/conditions-actions.png" alt="Selecting a condition action" />
 
 ## Condition
 
@@ -36,7 +38,7 @@ The **Split** action splits the workflow into multiple branches. Each branch exe
 
 Think of this action as the equivalent of a `switch` statement in programming.
 
-![Split action](/images/conditions-split.png)
+<NarrowImage src="/images/conditions-split.png" alt="Split action" />
 
 Each condition in the **Split** properties pane has one or more data fields and a combo box to define the [operator](#operators).
 
@@ -86,11 +88,10 @@ All text operators provide a setting to toggle case sensitivity. All other opera
 If you're working with a large workflow that has many conditional branches and are having trouble navigating between them, consider collapsing steps you don't need to focus on right now, or use the **Tree view** pane.
 
 To collapse a condition, split, or loop step, click the collapse icon to the left of the node. A collapsed node can be expanded by clicking the icon again:
+<NarrowImage src="/images/workflow-editor-condition-collapsed.png" alt="Collapsed condition step" widthPercent={50} />
 
-![Collapsed condition step](/images/workflow-editor-condition-collapsed.png)
-
-Alternatively, for a bird's-eye view of the workflow, click **Tree view** in the top control pane of the workflow editor:
-![Tree View in the workflow editor control pane](/images/conditions-controls-tree-view.png)
+Alternatively, for a bird's-eye view of the workflow, open the three-dot menu in the top control pane of the workflow editor, then click **Tree view**:
+<NarrowImage src="/images/conditions-controls-tree-view.png" alt="Tree View in the workflow editor control pane" widthPercent={30} />
 
 This displays the **Tree view** pane on the left side of the editor — a great way to see a compact representation of your workflow, including conditions and branches:
-![Conditional branches in the tree view](/images/conditions-tree-view.png)
+<NarrowImage src="/images/conditions-tree-view.png" alt="Conditional branches in the tree view" />

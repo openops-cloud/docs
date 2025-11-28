@@ -4,6 +4,7 @@ description: 'How to troubleshoot and debug workflow runs'
 icon: 'magnifying-glass'
 ---
 
+import { NarrowImage } from '/snippets/narrow-image.jsx'
 import RestartContainers from '/snippets/restart-containers.mdx'
 
 If a workflow didn't execute the way you expected it to, you can investigate what went wrong by viewing the history of workflow runs. You can do this [from the **Runs** view](#finding-a-run-from-the-runs-view) or directly [from the workflow editor](#finding-a-run-from-the-workflow-editor).
@@ -26,10 +27,10 @@ Alternatively, if a run is taking longer than expected or is stuck in a paused s
 ## Finding a run from the workflow editor
 
 If the workflow you want to investigate is already open in the workflow editor, click **Run logs** in the top menu:
-![Run logs button](/images/workflow-editor-run-logs.png)
+<NarrowImage src="/images/workflow-editor-run-logs.png" alt="Run logs button" />
 
 In the **Recent Runs** pane that opens on the left, click a run that you want to investigate. Failed runs are marked with the ❌ icon:
-![Recent Runs pane](/images/workflow-editor-recent-runs.png)
+<NarrowImage src="/images/workflow-editor-recent-runs.png" alt="Recent Runs pane" widthPercent={65} />
 
 This will open the selected run in the **Run Details** pane.
 
@@ -38,7 +39,7 @@ This will open the selected run in the **Run Details** pane.
 In the **Run Details** pane, each workflow step will display a ✅ or a ❌ to indicate its execution status.
 
 Click on a failed step to see its inputs and outputs. Explore the outputs to view the error message:
-![Workflow runs with filters applied](/images/run-details-error.png)
+<NarrowImage src="/images/run-details-error.png" alt="Run Details pane with error details" widthPercent={50} />
 
 To update the workflow to address the error, click **Edit** in the top-right corner of the workflow editor. This switches the editor from view-only mode, enabling you to select the problematic step and modify its properties.
 

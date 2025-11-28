@@ -23,21 +23,22 @@ It assumes you have appropriate permissions on an existing Google Cloud Platform
 ### Create a new VM instance
 1. In the Google Cloud Console, navigate to **Compute Engine** → **VM instances**.
 2. Click **Create Instance**.
-3. Enter a name for your virtual machine.
-4. Under **Machine configuration**, configure the following:
-    - **Region and zone**: Choose a region and zone close to your users (e.g., `us-east1-b`).
+3. Under **Machine configuration**, configure the following:
+    - **Name**: Enter a name for your virtual machine.
+    - **Region**: Choose a region close to your users (e.g., `us-east1`).
+    - **Zone**: Choose a zone close to your users (e.g., `us-east1-b`), or leave the default to let Google choose one for you.
     - **Series**: Choose any recommended series (e.g., **E2**) or another family you prefer.
     - **Machine type**: Choose a machine size similar to **e2-standard-2** or larger. Avoid very small machines, as OpenOps may need additional CPU/RAM for running Docker containers smoothly.
 ![Create new instance](/images/deploy-gcp-configure-machine.png)
-5. Under **OS and storage**:
-    - Click **Change**.
-    - Select **Ubuntu** as the operating system (Ubuntu 24.04 LTS if available, or a close alternative).
-    - Increase the **Size** to at least 50GB to accommodate Docker images and databases.
-    - Click **Select**.
-![Change boot disk](/images/deploy-gcp-change-boot-disk.png)
-6. Under **Networking**, check **Allow HTTP traffic**. This will automatically create a firewall rule to open port 80.
-![Allow http traffic](/images/deploy-gcp-allow-http-traffic.png)
-7. Leave other settings as defaults (or adjust according to your preferences), then click **Create** to launch the VM.
+4. Under **OS and storage**:
+    1. Click **Change**.
+    2. Select **Ubuntu** as the operating system (Ubuntu 24.04 LTS if available, or a close alternative).
+    3. Increase **Size** to at least 50GB to accommodate Docker images and databases.
+    ![Change boot disk](/images/deploy-gcp-change-boot-disk.png)
+    4. Click **Select**.
+5. Under **Networking**, select **Allow HTTP traffic**. This will automatically create a firewall rule to open port 80.
+![Allow HTTP traffic](/images/deploy-gcp-allow-http-traffic.png)
+6. Keep defaults for other settings (or adjust according to your preferences), then click **Create** to launch the VM.
 
 ### Configure firewall for SSH and HTTP
 
@@ -51,9 +52,8 @@ Depending on your project settings, a default firewall rule might already allow 
 ### Connect to the instance
 
 1. Once your VM is running, go to the **VM instances** list.
-2. Click **SSH** next to your instance to open an in-browser terminal.
+2. Click **SSH** next to your instance, then click **Open in browser window** to launch an in-browser terminal.
 ![Connect to instance](/images/deploy-gcp-connect-to-instance.png)
-
 
 ### Install OpenOps
 

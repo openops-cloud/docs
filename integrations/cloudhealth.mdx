@@ -4,6 +4,8 @@ description: "Acting on CloudHealth's rightsizing recommendations in an OpenOps 
 icon: 'heart-pulse'
 ---
 
+import { NarrowImage } from '/snippets/narrow-image.jsx'
+
 [CloudHealth](https://www.vmware.com/products/app-platform/tanzu-cloudhealth) is a cloud cost management and optimization platform that helps companies manage their multi-cloud environments, including AWS, Azure, Google Cloud, private, and hybrid cloud setups.
 
 CloudHealth provides cost visibility, allocation, and optimization, suggesting actions such as rightsizing, reserved instance purchases, and idle resource cleanup.
@@ -48,7 +50,7 @@ Click **New Connection** in the top right, then select **Slack** from the list o
 
 Click **Connect**. This will open a pop-up window asking you to authorize OpenOps to connect to your Slack workspace:
 
-![Authorizing OpenOps to connect to Slack](/images/cloudhealth/slack-connection-authorize.png)
+<NarrowImage src="/images/cloudhealth/slack-connection-authorize.png" alt="Authorizing OpenOps to connect to Slack" />
 
 Review the permissions that OpenOps is requesting, then click **Allow**.
 
@@ -147,7 +149,7 @@ In the workflow graph, under the trigger, click **+** to add a new step.
 
 In the pop-up menu, scroll down and click **CloudHealth**. In the list of CloudHealth-related actions, select **Search Assets**:
 
-![Selecting a CloudHealth action](/images/cloudhealth/selecting-cloudhealth-action.png)
+<NarrowImage src="/images/cloudhealth/selecting-cloudhealth-action.png" alt="Selecting a CloudHealth action" />
 
 This adds a new step to the workflow graph and displays the action's properties pane on the right. You'll now need to configure the action.
 
@@ -198,7 +200,7 @@ This is what the **Configure** tab in the properties pane should now look like:
 
 Click the **Test** tab in the properties pane. Under **Step output**, click **Test Step**. After testing, you should see an array containing all project names in the **Output** area:
 
-![Testing the custom code step](/images/cloudhealth/project-owner-mapping/code-block-testing.png)
+<NarrowImage src="/images/cloudhealth/project-owner-mapping/code-block-testing.png" alt="Testing the custom code step" />
 
 ### Iterate over project names
 
@@ -233,7 +235,7 @@ First, let's see if the project name is already in the table.
 
 In the workflow editor, click the **+** button *inside* the loop:
 
-![Creating a step inside a loop](/images/cloudhealth/project-owner-mapping/new-step-inside-loop.png)
+<NarrowImage src="/images/cloudhealth/project-owner-mapping/new-step-inside-loop.png" alt="Creating a step inside a loop" widthPercent={60} />
 
 In the pop-up menu, select **OpenOps Tables** in the left pane, then click **Get Records** in the right pane.
 
@@ -245,7 +247,7 @@ Under **Fields to filter by**, click **Add Item**. This will open a new area to 
 * In the **Field name** dropdown, select **CloudHealth project**.
 * In the **Filter type** dropdown, select **Is equal**.
 * In the **CloudHealth project** field, use **Data Selector** to expand the **4. For each project name** entry from the previous step, then click **Insert** alongside the **item** entry:
-    ![Selecting a project name](/images/cloudhealth/project-owner-mapping/table-pkv-data-selector.png)
+    <NarrowImage src="/images/cloudhealth/project-owner-mapping/table-pkv-data-selector.png" alt="Selecting a project name" />
 
 Here's what the new step in the workflow graph and the **Configure** tab in its properties pane should now look like:
 
@@ -288,7 +290,7 @@ At the top of the properties pane, click **Edit Step Name** and rename the step 
 
 Under **Continue If**, click the left field with the placeholder text *First value*. In **Data Selector**, expand **5. Get project record**, then **items**, then **items[1]**. Click **Insert** alongside the **Owner email** entry:
 
-![Selecting the owner email](/images/cloudhealth/project-owner-mapping/select-owner-email.png)
+<NarrowImage src="/images/cloudhealth/project-owner-mapping/select-owner-email.png" alt="Selecting the owner email" />
 
 In the dropdown between the two fields, select **Exists**.
 
@@ -343,7 +345,7 @@ You now have all the steps needed to populate the project-owner mapping table. T
 
 To test the workflow, scroll to the top of the workflow graph and click the **Test Workflow** button above the trigger:
 
-![Test workflow](/images/cloudhealth/project-owner-mapping/test-workflow.png)
+<NarrowImage src="/images/cloudhealth/project-owner-mapping/test-workflow.png" alt="Test workflow" />
 
 Although this is called "testing", OpenOps will actually run the entire workflow, performing all actions as if it were running on its defined schedule. Once the run completes, you should see green checkmarks next to each step in the **Run Details** pane on the right, along with a **Run Succeeded** status message at the bottom:
 
@@ -396,7 +398,7 @@ In the workflow graph, under the trigger, click the **+** button to add a new st
 
 In the pop-up menu, scroll down and click **CloudHealth**. From the list of available CloudHealth actions, select **Get Recommendations**:
 
-![Selecting a CloudHealth action](/images/cloudhealth/selecting-cloudhealth-action.png)
+<NarrowImage src="/images/cloudhealth/selecting-cloudhealth-action.png" alt="Selecting a CloudHealth action" />
 
 At the top of the new step's properties pane, click **Edit Step Name** and rename the step *Get EC2 rightsizing recommendations*.
 
@@ -507,7 +509,7 @@ In the properties pane, under **Texts**, click **Add Item**. Click the new field
 
 Next, under **Texts**, click **Add Item** again to add another field. Open the **Data Selector** view once more, expand **3. For each recommendation**, then **item**, then **node**, then **targetAsset**, and click **Insert** alongside the **awsInstanceId** entry:
 
-![Selecting a targetAsset AWS instance ID](/images/cloudhealth/opportunity-id-awsInstanceId.png)
+<NarrowImage src="/images/cloudhealth/opportunity-id-awsInstanceId.png" alt="Selecting a targetAsset AWS instance ID" />
 
 Your new step in the workflow graph and the **Configure** tab in its properties pane should now look like this:
 
@@ -720,7 +722,7 @@ In the **Key** field, use **Data Selector** to select **4. Opportunity ID**.
 
 In the **Value** field, open **Data Selector**, expand **8. Add table entry for opportunity**, then click **Insert** alongside the uppercase **ID** entry:
 
-![Selecting the uppercase ID](/images/cloudhealth/selecting-uppercase-id.png)
+<NarrowImage src="/images/cloudhealth/selecting-uppercase-id.png" alt="Selecting the uppercase ID" />
 
 Here's what the **Configure** tab in the properties pane should now look like:
 
@@ -748,7 +750,7 @@ At the top of the new step's properties pane, click **Edit Step Name** and renam
 
 Under **Continue If**, click the left field. In the **Data Selector** view, expand **5. Find table entry for opportunity**, then **items**, then **items[1]**, then **Status**. Click **Insert** alongside the **value** entry:
 
-![Selecting a status value](/images/cloudhealth/data-selector-status-value.png)
+<NarrowImage src="/images/cloudhealth/data-selector-status-value.png" alt="Selecting a status value" />
 
 In the dropdown between the two fields, select **(Text) Is**.
 
@@ -931,7 +933,7 @@ Under **Asset Type**, select **AwsInstance**.
 Under **Fields to filter by**, click **Add Item**. In the new area:
 * Under **Field name**, select **instance_id**.
 * In the **Value to search for** field, use **Data Selector** to expand **3. For each recommendation**, then **item**, then **node**, then **targetAsset**. Click **Insert** alongside the **awsInstanceId** entry:
-    ![Selecting AWS instance ID](/images/cloudhealth/selecting-awsinstanceid.png)
+    <NarrowImage src="/images/cloudhealth/selecting-awsinstanceid.png" alt="Selecting AWS instance ID" />
 
 Here's what the new step in the workflow graph and the **Configure** tab in its properties pane should now look like:
 
@@ -1134,7 +1136,7 @@ Here's what the rest of the **Configure** tab in this step's properties pane sho
 
 Click the **Test** tab in the properties pane, then under **Step output**, click **Test Step**. The output will be a lengthy JSON representing a Slack request. More importantly, since all entries in the project-owner mapping table currently contain your email address, you should now receive a Slack notification as a direct message in your Slack workspace:
 
-![Slack notification](/images/cloudhealth/slack-notification.png)
+<NarrowImage src="/images/cloudhealth/slack-notification.png" alt="Slack notification" />
 
 According to the configuration that you've just set up, the notification contains three action buttons. If you click any of them now, nothing will happen. To change this, you'll need a step that handles the project owner's response.
 
@@ -1184,7 +1186,7 @@ In the **Project** dropdown, select a project in your Jira Cloud instance that y
 In the **Issue Type** dropdown, select **Task**.
 
 In the **Summary** field, type in "\[Investigate EC2 Rightsizing Opportunity\]". Add a space, and use **Data Selector** to expand **3. For each recommendation**, then **item**, then **node**, then **targetAsset**. Click **Insert** alongside the **awsInstanceId** entry:
-    ![Selecting AWS instance ID](/images/cloudhealth/selecting-awsinstanceid.png)
+    <NarrowImage src="/images/cloudhealth/selecting-awsinstanceid.png" alt="Selecting AWS instance ID" />
 
 In the **Description** field, use **Data Selector** to insert **19. Opportunity description**.
 

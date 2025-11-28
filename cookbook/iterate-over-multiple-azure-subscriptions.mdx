@@ -4,6 +4,8 @@ description: 'How to build a workflow that performs actions across multiple Micr
 icon: 'list'
 ---
 
+import { NarrowImage } from '/snippets/narrow-image.jsx'
+
 You can build workflows that retrieve the list of available Azure subscriptions and iterate over them.
 
 Here's how to proceed.
@@ -98,7 +100,7 @@ az vm list --subscription= --show-details --output json
 
 Set the caret after the `--subscription=` flag. Use **Data Selector** to expand **Loop on Items**, then **item**, and click **Insert** next to the **id** property:
 
-![Selecting a subscription ID](/images/cookbook/azure-data-selector-id.png)
+<NarrowImage src="/images/cookbook/azure-data-selector-id.png" alt="Selecting a subscription ID" widthPercent={60} />
 
 The resulting command in the properties pane will look like this, dynamically inserting the current subscription ID into the command template:
 
