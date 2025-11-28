@@ -6,6 +6,8 @@ icon: 'rectangle-list'
 
 Using [AI assistance](/ai-assistance/overview) in OpenOps requires enabling AI in OpenOps settings and configuring at least one connection to a large language model (LLM) provider.
 
+## Configuring an LLM connection
+
 To enable AI and configure an LLM connection:
 1. In the OpenOps left sidebar, click the **Settings** icon at the bottom:
 ![Settings icon](/images/access-llm-settings-icon.png)
@@ -26,3 +28,23 @@ To enable AI and configure an LLM connection:
 13. Click **Save** to apply your changes in the **AI providers** section.
 
 Configuring an LLM connection enables all [AI assistance features](/ai-assistance/overview) in OpenOps.
+
+## Provider-specific settings
+
+Some providers require additional configuration beyond the API key. This section offers guidance for some of the most common providers in this category.
+
+### Google Vertex AI
+
+When configuring an AI connection where Google Vertex AI serves as the provider, you need to add the following to the **Provider settings** field:
+
+```json
+{"project":"your-google-cloud-project-id","location":"global"}
+```
+
+In this JSON:
+* `your-google-cloud-project-id` is the ID of the Google Cloud project where your API key was created. You can look up the ID in the Google Cloud Console by opening the project selector:
+    ![Google Cloud project ID](/images/access-llm-google-project-id.png)
+* `global` is the scope for all Vertex API keys.
+
+### Azure OpenAI
+
