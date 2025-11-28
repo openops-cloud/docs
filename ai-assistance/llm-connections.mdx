@@ -44,7 +44,4 @@ When configuring an AI connection where Google Vertex AI serves as the provider,
 In this JSON:
 * `your-google-cloud-project-id` is the ID of the Google Cloud project where your API key was created. You can look up the ID in the Google Cloud Console by opening the project selector:
     ![Google Cloud project ID](/images/access-llm-google-project-id.png)
-* `global` is the scope for all Vertex API keys.
-
-### Azure OpenAI
-
+* Use `global` for `location` or, if needed, specify one of the [supported locations](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/learn/locations#google_model_endpoint_locations) for your chosen model.
