@@ -14,7 +14,7 @@ For example, you can create a workflow that flags idle RDS instances for review,
 
 You can automate sending your stakeholders messages with actionable links or buttons and make your workflow stop executing until the receiver clicks one of these links or buttons. Depending on their choice, you can split the subsequent steps of your workflow into conditional branches.
 
-OpenOps offers a dedicated approval request feature for Slack, as well as a more generic approval mechanism that you can use with other communication channels.
+OpenOps offers dedicated approval request features for Slack and Microsoft Teams, as well as a more generic approval mechanism that you can use with other communication channels.
 
 ### On Slack
 
@@ -40,9 +40,13 @@ The upside of **Send Message** is that it enables you to create approval request
 
 However, **Send Message** doesn't wait for a reply from the recipient. Instead, use the **Wait For User Action** action and pass the output of **Send Message** to it. This allows the workflow to capture button clicks in the approval request. Once a button click associated with a decision is captured, you can then use the **Split** action to add workflow steps depending on the decision.
 
+### On Microsoft Teams
+
+TODO
+
 ### Elsewhere
 
-To request approvals through a communication channel other than Slack, use the **Approval** group of actions:
+To request approvals through other communication channels, use the **Approval** group of actions:
 <NarrowImage src="/images/hitl-approval-actions.png" alt="Approval actions" />
 
 In this case, here's how you can create the approval part of your workflow:
