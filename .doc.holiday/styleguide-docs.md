@@ -2,12 +2,24 @@
 
 ## Project Summary
 
-OpenOps Documentation documents OpenOps — a No‑Code FinOps automation platform that helps organizations reduce cloud costs and streamline financial operations. The docs target cloud/FinOps practitioners, DevOps engineers, SREs, platform and finance teams who operate cloud accounts, create automation workflows, and integrate billing/visibility tools. Documentation types in the repo include: product overviews, quickstarts and deployment guides, workflow/tutorial pages, how‑to snippets, integration guides, API reference and tables/analytics pages. Technical complexity ranges from non‑technical user flows (UI walkthroughs, user management) to moderately advanced cloud setup (IAM/CF/VM provisioning) and workflow logic (conditional branching, human‑in‑the‑loop), plus API examples. Writing patterns observed: MDX files with front matter metadata, Table of Contents present in several pages, use of code blocks and examples, and small focused “snippets” pages for common operational tasks. Files are organized by functional areas (getting-started, workflow-management, cloud-access, snippets, reporting-analytics, ai-assistance, integrations).
+OpenOps Documentation documents OpenOps — a No‑Code FinOps automation platform that helps organizations reduce cloud costs and streamline financial operations.
+
+The docs target cloud/FinOps practitioners, DevOps engineers, SREs, platform and finance teams who operate cloud accounts, create automation workflows, and integrate billing/visibility tools.
+
+Documentation types in the repo include: product overviews, quickstarts and deployment guides, workflow/tutorial pages, how‑to snippets, integration guides, API reference and tables/analytics pages.
+
+Technical complexity ranges from non‑technical user flows (UI walkthroughs, user management) to moderately advanced cloud setup (IAM/CF/VM provisioning) and workflow logic (conditional branching, human‑in‑the‑loop), plus API examples.
+
+Writing patterns observed: MDX files with front matter metadata, Table of Contents present in several pages, use of code blocks and examples, and small focused “snippets” pages for common operational tasks.
+
+Files are organized by functional areas (getting-started, workflow-management, cloud-access, snippets, reporting-analytics, ai-assistance, integrations).
 
 ## Context
 
 **Project:** **OpenOps Documentation**
+
 **Description:** OpenOps is a No-Code FinOps automation platform that helps organizations reduce cloud costs and streamline financial operations.
+
 **Publishing System:** Mintlify
 
 ## Writing Rules
