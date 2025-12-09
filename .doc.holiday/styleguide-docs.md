@@ -16,21 +16,27 @@ OpenOps Documentation documents OpenOps — a No‑Code FinOps automation platfo
 - **Be concise** - Use the minimum words necessary
 - **Be reasoned** - For every instruction, explain why the user would want to follow it
 - **Be consistent** - Match existing documentation patterns
+- **Match the level of detail in existing documentation** - Mind the level of detail at which existing functionality is documented, and don’t introduce more detail than there currently is. If existing docs merely mention that action A exists, but a commit in a new release addresses a specific bug in a particular niche use case of this action, do not try to come up with a tutorial for using action A in that use case as it would be several levels of detail deeper than existing docs are at. In this case, you should probably ignore that update altogether; alternatively, if the existing description of action A briefly lists its use cases and the involved use case is missing, you can add it to the list.
 
 ### Tone Guidelines
 
 Target moderately technical users:
+- Voice: professional, concise, neutral, action-oriented.
 - Assume familiarity with FinOps, AWS, Azure, GCP
 - Assume a basic engineering background
 - Use direct and practical language
 - Explain what each piece of functionality does and why
 - Provide examples
 - Avoid marketing language or benefit statements
+- Use active voice and second person where appropriate (e.g., "Click Create," "Run the following command").
+- Use backticks for inline code and variables like `PROJECT_ID` or `apiKey`.
+- When giving example values, mark placeholders clearly: `<YOUR_ACCOUNT_ID>` or `$YOUR_ENV_VAR`.
+- Do not include internal or sensitive information in examples; use fictional safe values.
 
 ### Content Structure Rules
 Content organization guidelines
 
-General principles
+#### General principles
 - One primary purpose per page. Open with a 1–2 sentence summary (what the page is and who it’s for).
 - Follow the "what is it? what is it for? how to use it?" template.
 - Use the front matter description for a short single-sentence summary; repeat as the first paragraph if helpful.
@@ -38,7 +44,7 @@ General principles
 - Do not overuse bulleted lists.
 - Always include prerequisites and expected outcomes for tutorials and procedures.
 
-Page templates by content type
+#### New page templates by content type
 
 Technical Documentation Pages (guides, how-to, configuration):
 - Title (front matter)
@@ -61,15 +67,27 @@ Snippets and Cookbook Pages:
 - Show the one-line summary, the command or code block, and a brief explanation
 - Link to full workflows or guides where applicable
 
-Style and tone
-- Voice: professional, concise, neutral, action-oriented.
-- Audience: assume an IT/DevOps user with basic cloud knowledge.
-- Use active voice and second person where appropriate (e.g., "Click Create," "Run the following command").
-- Use backticks for inline code and variables like `PROJECT_ID` or `apiKey`.
-- When giving example values, mark placeholders clearly: `<YOUR_ACCOUNT_ID>` or `$YOUR_ENV_VAR`.
-- Do not include internal or sensitive information in examples; use fictional safe values.
+#### Updating existing pages
 
-#### Heading Rules
+Most of the time, you will update existing pages by adding new content or revising existing content.
+
+There are two typical scenarios for updating existing pages:
+- Documenting new actions
+- Updating AI documentation
+
+##### Documenting new actions
+
+OpenOps provides an array of actions, grouped into "blocks":
+- A "block" is a collection of related actions, often performed by a specific third-party tool that is integrated with OpenOps. Examples of blocks are "Slack", "MS Teams", "Flexera", "Jira Cloud", "SMTP".
+- An "action" is a specific operation that lives in a block. For example, in the "Slack" block, there are the following actions: "Send message", "Update message", "Request action", "Custom API call", "Wait for user action".
+- When a new block or a new action in an existing block is added to OpenOps, it is not documented in separate pages. Instead, the new action or block is mentioned and quickly summarized in the "Actions" page (/workflow-management/actions.mdx). Blocks may be also mentioned in the "Features and Benefits" page (/introduction/features-and-benefits.mdx), as well as in the "Adding the first action" section of the "Building Workflows" page (/workflow-management/building-workflows.mdx).
+
+##### Updating AI documentation
+
+- If support is added for a new AI (LLM) provider, simply add it to existing lists of supported providers in the "AI assistance" section, don't elaborate further.
+- Whenever support is added for yet another AI model, don't try to document it as this is beyond the level of detail that we currently have in the docs.
+
+### Heading Rules
 ```markdown
 Heading style and hierarchy
 
@@ -183,7 +201,7 @@ Exact front matter template (copy-paste for each new page):
 ---
 title: "<Page Title>"
 description: "<Short one-line summary of the page's purpose>"
-icon: "<icon-name-or-emoji>"
+icon: "<icon-name>"
 ---
 
 Notes and rules for Mintlify:
