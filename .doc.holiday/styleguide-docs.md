@@ -10,8 +10,6 @@ OpenOps Documentation documents OpenOps — a No‑Code FinOps automation platfo
 **Description:** OpenOps is a No-Code FinOps automation platform that helps organizations reduce cloud costs and streamline financial operations.
 **Publishing System:** Mintlify
 
-## Primary Documentation Goals
-
 ## Writing Rules
 
 ### Core Principles
@@ -21,62 +19,13 @@ OpenOps Documentation documents OpenOps — a No‑Code FinOps automation platfo
 
 ### Tone Guidelines
 
-#### Default Tone (Moderately Technical Users)
+Target moderately technical users:
 - Assume familiarity with FinOps, AWS, Azure, GCP
 - Assume a basic engineering background
 - Use direct and practical language
 - Explain what each piece of functionality does and why
 - Provide examples
 - Avoid marketing language or benefit statements
-
-### Publishing System Requirements
-Mintlify publishing requirements and front matter patterns
-
-Required front matter fields (observed across repository):
-- title (string) — human readable page title. Use title case as Mintlify will render this as the page title and TOC item.
-- description (string) — 1‑line summary used for search/SEO and cards
-- icon (string) — short icon identifier used in the table of contents. Choose icons semantically from one of two icon libraries: [Font Awesome](https://fontawesome.com/icons) or [Lucide](https://lucide.dev/icons/). Only choose free icons, avoid premium icons. Every page icon should have an icon that is unique across documentation.
-
-Exact front matter template (copy-paste for each new page):
-
----
-title: "<Page Title>"
-description: "<Short one-line summary of the page's purpose>"
-icon: "<icon-name-or-emoji>"
----
-
-Notes and rules for Mintlify:
-- Use YAML front matter at the very top of each .mdx file. Missing or malformed front matter may prevent Mintlify from correctly indexing the page.
-- Keep title short (ideally < 60 characters) and description under 160 characters.
-
-Code and example conventions (examples observed and recommended):
-- Inline code and commands: wrap in backticks, e.g. `openops-cli sync`
-- Block code examples: specify language for syntax highlighting
-
-Example: shell snippet
-
-```bash
-# Authenticate with OpenOps
-openops login --api-key $OPENOPS_API_KEY
-```
-
-Example: API example (JSON + curl)
-
-```bash
-curl -X POST "https://api.openops.example/v1/workflows" \
-  -H "Authorization: Bearer $API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"name":"pause-unused-resources","trigger":"schedule","actions":[]}'
-```
-
-Examples of good documentation patterns discovered:
-- Focused short pages per concept (e.g., "scheduling.mdx", "passing-data.mdx") that include purpose, prerequisites, step-by-step instructions, sample inputs/outputs, and a troubleshooting note.
-- Snippets folder for quick operational commands and small procedures reused across pages (e.g., "restart-containers.mdx", "tls.mdx").
-- Deployment subsection under getting-started (local, aws-ec2, gcp-vm, azure-vm) grouping pragmatic platform-specific install guides.
-
-Publishing checklist (before marking a page ready):
-1. Front matter present and valid YAML per template.
-2. Links verified (see linking rules below).
 
 ### Content Structure Rules
 Content organization guidelines
@@ -157,6 +106,15 @@ Additional heading rules
 - Use bullets for unordered lists. Use `*` instead of `-` for bullets.
 - Use Oxford comma in series
 
+#### Apostrophes
+- Use straight apostrophes instead of curly apostrophes.
+- Example: "Here's an example:"
+
+#### Dashes
+- Always space out em dashes on both sides.
+- Correct: "Something — not only one, but also two"
+- Incorrect: "Something—not only one, but also two"
+
 ### Code Example Requirements
 
 1. Always include syntax highlighting with language tags
@@ -211,6 +169,55 @@ Accessibility and link text
 
 Summary rules
 - Always prefer absolute doc-root internal links, keep link text descriptive, validate links regularly, and annotate external/billing links.
+
+## Publishing System Requirements
+Mintlify publishing requirements and front matter patterns
+
+Required front matter fields (observed across repository):
+- title (string) — human readable page title. Use title case as Mintlify will render this as the page title and TOC item.
+- description (string) — 1‑line summary used for search/SEO and cards
+- icon (string) — short icon identifier used in the table of contents. Choose icons semantically from one of two icon libraries: [Font Awesome](https://fontawesome.com/icons) or [Lucide](https://lucide.dev/icons/). Only choose free icons, avoid premium icons. Every page icon should have an icon that is unique across documentation.
+
+Exact front matter template (copy-paste for each new page):
+
+---
+title: "<Page Title>"
+description: "<Short one-line summary of the page's purpose>"
+icon: "<icon-name-or-emoji>"
+---
+
+Notes and rules for Mintlify:
+- Use YAML front matter at the very top of each .mdx file. Missing or malformed front matter may prevent Mintlify from correctly indexing the page.
+- Keep title short (ideally < 60 characters) and description under 160 characters.
+
+Code and example conventions (examples observed and recommended):
+- Inline code and commands: wrap in backticks, e.g. `openops-cli sync`
+- Block code examples: specify language for syntax highlighting
+
+Example: shell snippet
+
+```bash
+# Authenticate with OpenOps
+openops login --api-key $OPENOPS_API_KEY
+```
+
+Example: API example (JSON + curl)
+
+```bash
+curl -X POST "https://api.openops.example/v1/workflows" \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"pause-unused-resources","trigger":"schedule","actions":[]}'
+```
+
+Examples of good documentation patterns discovered:
+- Focused short pages per concept (e.g., "scheduling.mdx", "passing-data.mdx") that include purpose, prerequisites, step-by-step instructions, sample inputs/outputs, and a troubleshooting note.
+- Snippets folder for quick operational commands and small procedures reused across pages (e.g., "restart-containers.mdx", "tls.mdx").
+- Deployment subsection under getting-started (local, aws-ec2, gcp-vm, azure-vm) grouping pragmatic platform-specific install guides.
+
+Publishing checklist (before marking a page ready):
+1. Front matter present and valid YAML per template.
+2. Links verified (see linking rules below).
 
 ## Existing Documentation Directory Structure
 Top-level organization and what belongs in each path
