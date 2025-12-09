@@ -244,38 +244,50 @@ Top-level organization and what belongs in each path
 - README.md: Repository and documentation root summary (maintain as canonical repo README).
 - docs.json / LICENSE: repo config and licensing.
 
-getting-started/
-- Quick start, system requirements, user management, updating OpenOps, and a deployment subfolder with platform-specific install instructions. Put introductory and onboarding content here.
-- Files: quick-start-guide.mdx, system-requirements.mdx, user-management.mdx, updating-openops.mdx
-- Subdir: getting-started/deployment/ contains local and cloud VM installation guides (aws-ec2.mdx, gcp-vm.mdx, azure-vm.mdx, local.mdx)
-
-introduction/
-- Overview and features pages; high-level product descriptions and benefits targeted at new users and stakeholders.
-- Files: overview.mdx, features-and-benefits.mdx
-
-workflow-management/
-- Core product flows: building workflows, scheduling, templates, actions, human-in-the-loop, conditional branching, passing data, investigating runs, version history/lifecycle. This is where users learn the platform’s automation model.
-- Files: building-workflows.mdx, scheduling.mdx, workflow-templates.mdx, actions.mdx, human-in-the-loop.mdx, conditional-branching.mdx, passing-data.mdx, investigate-workflow-run.mdx, workflow-version-history-lifecycle.mdx
+ai-assistance/
+- LLM and AI features documentation (overview and connections). Keep guidance for prompts, safety, and privacy here.
+- Files: overview.mdx, llm-connections.mdx
 
 cloud-access/
 - Multi-cloud access patterns and cloud-specific setup instructions (IAM, CF templates).
 - Files: multi-cloud.mdx, aws-cf-role-stack.mdx, access-levels-permissions.mdx
 
+contributing/
+- Developer documentation on how to contribute code to the OpenOps repository. Targeted at a more technical audience than the rest of the docs.
+- Files: authentication.mdx, contributing-an-integration.mdx, creating-a-minimal-block.mdx, development-environment.mdx, index.mdx
+
+cookbook/
+- Short, single-purpose operational recipes.
+- Files: iterate-over-multiple-aws-accounts.mdx, iterate-over-multiple-azure-subscriptions.mdx, iterate-over-multiple-gcp-projects.mdx
+
+getting-started/
+- Quick start, system requirements, user management, updating OpenOps, and a deployment subfolder with platform-specific install instructions. Put introductory and onboarding content here.
+- Files: quick-start-guide.mdx, system-requirements.mdx, user-management.mdx, updating-openops.mdx
+- Subdir: getting-started/deployment/ contains local and cloud VM installation guides (aws-ec2.mdx, gcp-vm.mdx, azure-vm.mdx, local.mdx)
+
 integrations/
-- Integrations with third-party tooling and billing/visibility platforms (e.g., CloudHealth). Use for connector setup and sync instructions.
-- Files: cloudhealth.mdx (and other per‑integration files)
+- Content specific to FinOps tools that OpenOps integrates with, such as CloudHealth, Flexera, Umbrella.
+- Files: cloudhealth.mdx
+
+introduction/
+- Overview and features pages; high-level product descriptions and benefits targeted at new users and stakeholders.
+- Files: overview.mdx, features-and-benefits.mdx
+
+paid/
+- Documentation of features only available in paid plans.
+- Files: organization-template-catalog.mdx
 
 reporting-analytics/
-- Analytics, tables, and data visualization pages. Include sample queries, dashboards or export instructions.
-- Files: tables.mdx, data-visualization.mdx
-
-ai-assistance/
-- LLM and AI features documentation (overview and connections). Keep guidance for prompts, safety, and privacy here.
-- Files: overview.mdx, llm-connections.mdx
+- Documentation of analytics and reporting features, as well as ways to import OpenOps content to external BI tools.
+- Files: tables.mdx, analytics.mdx, connecting-to-external-tools.mdx
 
 snippets/
-- Short, single-purpose operational recipes and one-off commands (restart-containers, tls, auto-install, env-update-credentials, update-link, non-production-disclaimer). Use small, searchable pages that are easy to embed into other docs.
+- Short, single-purpose operational recipes and one-off commands that are embedded in other pages. Use this when a single piece of content can be reused in multiple pages without duplicating it.
 - Files: update-link.mdx, tls.mdx, restart-containers.mdx, non-production-disclaimer.mdx, env-update-credentials.mdx, auto-install.mdx
+
+workflow-management/
+- Core product flows: building workflows, scheduling, templates, actions, human-in-the-loop, conditional branching, passing data, investigating runs, version history/lifecycle. This is where users learn the platform’s automation model.
+- Files: building-workflows.mdx, scheduling.mdx, workflow-templates.mdx, actions.mdx, human-in-the-loop.mdx, conditional-branching.mdx, passing-data.mdx, investigate-workflow-run.mdx, workflow-version-history-lifecycle.mdx
 
 Organizational rules:
 - One concept per file. If content grows, split into a subsection directory (e.g., workflow-management/troubleshooting/).
