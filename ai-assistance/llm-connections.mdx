@@ -6,7 +6,7 @@ icon: 'rectangle-list'
 
 import { NarrowImage } from '/snippets/narrow-image.jsx'
 
-Using [AI assistance](/ai-assistance/overview) in OpenOps requires enabling AI in OpenOps settings and configuring at least one connection to a large language model (LLM) provider.
+Using [AI assistance](/ai-assistance/overview/) in OpenOps requires enabling AI in OpenOps settings and configuring at least one connection to a large language model (LLM) provider.
 
 ## Configuring an LLM connection
 
@@ -27,11 +27,12 @@ To enable AI and configure an LLM connection:
     * See the [Azure OpenAI](#azure-openai) and [Google Vertex AI](#google-vertex-ai) instructions for custom provider settings required by these providers.
     * If you've selected OpenAI, use **Provider settings** for JSON you'd normally pass to the `createOpenAI` function, and **Model settings** for JSON you'd normally pass to the `streamText` function. For more details, see the [OpenAI documentation](https://platform.openai.com/docs/api-reference).
 11. Click **Save** to apply your changes in the **Create AI Connection** view.
-12. (Optional) Back in the **AI providers** section, if you're working with AWS and you want your AI connection to have access to AWS MCP servers, click **AWS Cost** in the **MCP** section, and select an [AWS connection](/cloud-access/access-levels-permissions#aws-connections) to use. This enables access to AWS Cost Explorer MCP Server, AWS Pricing MCP Server, and AWS Billing and Cost Management MCP Server.
+12. (Optional) Back in the **MCP** section of the **OpenOps AI** settings page, select **AWS Cost** to enable use of AWS Cost Explorer MCP Server, AWS Pricing MCP Server, and AWS Billing and Cost Management MCP Server.
+13. (Optional) When **AWS Cost** is enabled, select an [AWS connection](/cloud-access/access-levels-permissions/#aws-connections) in the **Connection** dropdown.
 ![AWS Cost MCP connection](/images/access-llm-mcp.png)
-13. Click **Save** to apply your changes in the **AI providers** section.
+14. Click **Save** to apply your changes in the **MCP** section.
 
-Configuring an LLM connection enables all [AI assistance features](/ai-assistance/overview) in OpenOps.
+Configuring an LLM connection enables all [AI assistance features](/ai-assistance/overview/) in OpenOps.
 
 ## Provider-specific settings
 
