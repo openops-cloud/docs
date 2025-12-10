@@ -20,7 +20,7 @@ For example, in the section of a workflow shown above:
 * **Step 2** has access to data produced by step 1.
 
 There are certain nuances when it comes to accessing data from loops and conditional statements that were executed before:
-1. If there was a conditional statement, such as **Condition** or **Split**, before your current action, then your current action will not have access to the outputs of any actions inside the branches of the conditional statement. If you need the output of actions in these branches to be available after the conditional statement completes, make sure to save it elsewhere, such as in OpenOps’ internal storage using the **Put** action in the **Storage** group. You can then retrieve it from storage using the **Get** action in the same group.
+1. If there was a conditional statement, such as **Condition** or **Split**, before your current action, then your current action will not have access to the outputs of any actions inside the branches of the conditional statement. If you need the output of actions in these branches to be available after the conditional statement completes, make sure to save it elsewhere, such as in OpenOps’ internal storage using the **Put** action in the **Storage** block. You can then retrieve it from storage using the **Get** action in the same block.
 2. This is also true for loops: the output of actions that occur inside a loop is not available outside the loop. If you need any data from the loop after it completes, make sure to save the data to storage while still inside the loop.
 
 ## Selecting data from prior steps
@@ -44,15 +44,15 @@ Also note that although the **Data Selector** appears in every input field, you 
 ## Transforming outputs
 
 Sometimes, the output of a previous step may not be immediately suitable for use in your next steps. In this case, you can use several [actions](/workflow-management/actions/) or combinations of actions to transform the output into a different format:
-* Use actions from the **Text Operations** group to concatenate, split, or otherwise transform text values.
-* Use actions from the **Math Operations** group to perform arithmetic operations, calculate averages, or return minimum and maximum values.
-* Use actions from the **Date Operations** group to format dates, extract individual date units (year, month, day, hour, etc.), or calculate date differences.
+* Use actions from the **Text Operations** block to concatenate, split, or otherwise transform text values.
+* Use actions from the **Math Operations** block to perform arithmetic operations, calculate averages, or return minimum and maximum values.
+* Use actions from the **Date Operations** block to format dates, extract individual date units (year, month, day, hour, etc.), or calculate date differences.
 
 If the output you want to transform is a list, first create a loop using the **Loop on Items** action, then use any of the actions listed above to transform individual list entries inside the loop.
 
-There's also a group of actions called **List Operations** that you can apply to a list without creating a loop:
+There's also a block of actions called **List Operations** that you can apply to a list without creating a loop:
 * **Group By** creates several nested lists, each containing one distinct value of a property that you specify.
 * **Map List Items** does the same as **Group By**, but makes each nested list the value of a separate property.
 * **Extract From List** keeps only one out of many properties in each list item.
 
-Finally, if none of the transformation actions above meet your needs, use the **Custom TypeScript Code** action in the **Code** group to define a bespoke transformation in TypeScript or JavaScript. If you're not an experienced developer, [AI assistance](/ai-assistance/overview/) can help you generate the code.
+Finally, if none of the transformation actions above meet your needs, use the **Custom TypeScript Code** action in the **Code** block to define a bespoke transformation in TypeScript or JavaScript. If you're not an experienced developer, [AI assistance](/ai-assistance/overview/) can help you generate the code.
