@@ -159,8 +159,8 @@ Linking strategy and examples
 
 **Internal links**
 - Use absolute doc-root paths starting with `/` for internal links. This keeps references stable across pages and ensures consistent Mintlify navigation.
-- Always add a trailing slash to internal links when linking to a page. When linking to an anchor, add a trailing slash before the hash character.
-- Format: `[Link text](/section/subsection/page/)`
+- Internal links may or may not have trailing slashes.
+- Format: `[Link text](/section/subsection/page)` or `[Link text](/section/subsection/page/)`
 - Casing of link text:
   - Use title case when the link text corresponds to the title of the target page.
   - Use sentence case in all other cases.
