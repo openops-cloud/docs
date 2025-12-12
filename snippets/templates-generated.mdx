@@ -1,98 +1,102 @@
 OpenOps currently provides the following templates:
 
-- ASE App Service Plan Consolidation
-- GCP Unattached Persistent Disk Cleanup
-- GCP Idle Virtual Machines Cleanup
-- Unattached EBS in Production, Jira ticket
-- Rightsize EventHubs Throughput Units & Cap Auto-Inflate
-- GCP Idle SQL Instance Cleanup
-- GCP Unused Load Balancers Cleanup
-- RDS Extended Support Avoidance
-- AWS Lambda Memory optimization
-- VPC Interface Endpoints Optimization
-- Optimize Manual Throughput in Cosmos DB
-- Unattached Azure Managed Disks
-- Enforce maximum log retention period
-- Enable compression on Cloudfront distributions
-- Application Insights logs sampling check
-- Daily email report of new Azure recommendations
-- Migrate x86 AWS Lambda runtimes to Graviton
-- Unused GCP Static IPs Cleanup
-- Rightsize Azure VMs via CPU & Memory Analysis
-- Identify Azure SQL Resources Without Azure Hybrid Benefit (AHB)
-- Dev GCE instances Outside Business Hours [Main]
-- Dev GCE instances Outside Business Hours [Restart]
-- Azure Idle VMs recommendations with approval
-- Azure Sample workflow
-- EKS Extended Support Avoidance
-- Dev GCE instances Outside Business Hours [Shutdown]
-- Dev EC2 instances outside business hours [Restart]
-- Identify Unused Sql resources
-- AWS Sample workflow
-- Dev EC2 instances outside business hours [Main]
-- Dev EC2 instances outside business hours [Shutdown]
-- Elastic Pool Storage Optimization
-- Identify Windows VMs Without Azure Hybrid Benefit (AHB)
-- Optimize Autoscale Max Throughput in Cosmos SQL DB
-- Identify Firewalls Eligible for Downgrade to Basic
-- Set retention period for log buckets
-- EBS Generation upgrade (gp2 to gp3)
-- S3: Detect non-current file versions
-- EFS: check Infrequent Access usage
-- Identify Unused App Services
-- Enforce Time-to-Live for GCE Disk Snapshots
-- [Dev AKS Clusters] Scale down after business hours
-- Business Unit Labelling Policy on GCE Instances
-- Azure OpenAI Consumption Spikes alerting
-- App Service Plans with Low Utilization
-- Identify Idle Event Hubs Namespaces
-- Low Utilization EC2 recommendations, Jira ticket
-- Scale Dev ASE Plans to single Instance
-- AWS EC2 RI Expiration recommendations, Jira ticket
-- Underutilized EC2 in Prod, CloudFormation update [Main]
-- Stopped EC2 recommendations, Jira ticket
-- Rightsize ASE App Service Plans
-- Detached Azure Public IP Addresses
-- Sample FOCUS data aggregation
-- Google Cloud Sample workflow
-- Archive and delete policy for Blob Storage
-- AWS EC2 RI Purchase recommendations, Jira ticket
-- Enable autoshutdown
-- Unattached Azure Network Interfaces
-- [Dev AKS Clusters] Scale up for business hours
-- Enforce Azure Budget Policies to Prevent Overspend
-- Identify VMs for Reserved Instance Recommendations
-- Cleanup Policies for GCP Artifact Registry Repositories
-- Idle Dev environment RDS instances, GitHub action
-- Configure Log Export to Storage Account
-- Azure Idle VMs - low CPU and Network usage
-- Azure Container Registry (ACR) 7-day retention policy
-- Azure temp VMs older than 14 days
-- Bulk apply EC2 tagging policy
-- Set Time-to-Live for GCP Disk Snapshots
-- Over-provisioned EBS Volumes recommendations, Jira ticket
-- EC2 upgrade to Graviton, Jira ticket
-- DynamoDB Over-Provisioned Tables Detection
-- Storage class and retention policy for logs in S3
-- Detect new or unknown cost types
-- Old generation EC2 migration, Jira ticket
-- Azure Managed Disk Snapshots optimization
-- Build opportunities for untagged EBS snapshots
-- TTL policy for EBS snapshots
-- Start autoshutdown VMs
-- Delete Orphaned RDS Snapshots
-- AWS RDS RI Purchase recommendations (custom logic), Jira ticket
-- AWS EC2 Cost anomalies follow-up and knowledge base [Jira events]
-- Underutilized EC2 in Staging, rightsize action
-- AWS EC2 Cost anomalies follow-up and knowledge base [Main]
-- Automate HTTPS Redirection in CloudFront
-- Underutilized EC2 in Prod, CloudFormation update [Jira events]
-- Idle RDS instances in Staging, Terraform remediation
-- Bulk idle EBS cleanup
-- Elastic IP Idle Address Cleanup
-- Enforce 180 days max retention for CloudWatch logs
-- Unused NAT Gateways, Jira ticket
-- Idle Elastic Load Balancer (ELB), Jira ticket
-- AWS RDS RI Purchase recommendations (Trusted Advisor), Jira ticket
-- Unattached EBS in Staging, delete action
-- VPC Gateway endpoints for Amazon S3 and DynamoDB
+* AWS
+  * Automate HTTPS Redirection in CloudFront
+  * AWS EC2 Cost anomalies follow-up and knowledge base [Jira events]
+  * AWS EC2 Cost anomalies follow-up and knowledge base [Main]
+  * AWS EC2 RI Expiration recommendations, Jira ticket
+  * AWS EC2 RI Purchase recommendations, Jira ticket
+  * AWS Lambda Memory optimization
+  * AWS RDS RI Purchase recommendations (custom logic), Jira ticket
+  * AWS RDS RI Purchase recommendations (Trusted Advisor), Jira ticket
+  * AWS Sample workflow
+  * Build opportunities for untagged EBS snapshots
+  * Bulk apply EC2 tagging policy
+  * Bulk idle EBS cleanup
+  * Delete Orphaned RDS Snapshots
+  * Dev EC2 instances outside business hours [Main]
+  * Dev EC2 instances outside business hours [Restart]
+  * Dev EC2 instances outside business hours [Shutdown]
+  * DynamoDB Over-Provisioned Tables Detection
+  * EBS Generation upgrade (gp2 to gp3)
+  * EC2 upgrade to Graviton, Jira ticket
+  * EFS: check Infrequent Access usage
+  * EKS Extended Support Avoidance
+  * Elastic IP Idle Address Cleanup
+  * Enable compression on Cloudfront distributions
+  * Enforce 180 days max retention for CloudWatch logs
+  * Idle Dev environment RDS instances, GitHub action
+  * Idle Elastic Load Balancer (ELB), Jira ticket
+  * Idle RDS instances in Staging, Terraform remediation
+  * Low Utilization EC2 recommendations, Jira ticket
+  * Migrate x86 AWS Lambda runtimes to Graviton
+  * Old generation EC2 migration, Jira ticket
+  * Over-provisioned EBS Volumes recommendations, Jira ticket
+  * RDS Extended Support Avoidance
+  * S3: Detect non-current file versions
+  * Stopped EC2 recommendations, Jira ticket
+  * Storage class and retention policy for logs in S3
+  * TTL policy for EBS snapshots
+  * Unattached EBS in Production, Jira ticket
+  * Unattached EBS in Staging, delete action
+  * Underutilized EC2 in Prod, CloudFormation update [Jira events]
+  * Underutilized EC2 in Prod, CloudFormation update [Main]
+  * Underutilized EC2 in Staging, rightsize action
+  * Unused NAT Gateways, Jira ticket
+  * VPC Gateway endpoints for Amazon S3 and DynamoDB
+  * VPC Interface Endpoints Optimization
+* Azure
+  * [Dev AKS Clusters] Scale down after business hours
+  * [Dev AKS Clusters] Scale up for business hours
+  * App Service Plans with Low Utilization
+  * Application Insights logs sampling check
+  * Archive and delete policy for Blob Storage
+  * ASE App Service Plan Consolidation
+  * Azure Container Registry (ACR) 7-day retention policy
+  * Azure Idle VMs - low CPU and Network usage
+  * Azure Idle VMs recommendations with approval
+  * Azure Managed Disk Snapshots optimization
+  * Azure OpenAI Consumption Spikes alerting
+  * Azure Sample workflow
+  * Azure temp VMs older than 14 days
+  * Configure Log Export to Storage Account
+  * Daily email report of new Azure recommendations
+  * Detached Azure Public IP Addresses
+  * Elastic Pool Storage Optimization
+  * Enable autoshutdown
+  * Enforce Azure Budget Policies to Prevent Overspend
+  * Enforce maximum log retention period
+  * Identify Azure SQL Resources Without Azure Hybrid Benefit (AHB)
+  * Identify Firewalls Eligible for Downgrade to Basic
+  * Identify Idle Event Hubs Namespaces
+  * Identify Unused App Services
+  * Identify Unused Sql resources
+  * Identify VMs for Reserved Instance Recommendations
+  * Identify Windows VMs Without Azure Hybrid Benefit (AHB)
+  * Optimize Autoscale Max Throughput in Cosmos SQL DB
+  * Optimize Manual Throughput in Cosmos DB
+  * Rightsize ASE App Service Plans
+  * Rightsize Azure VMs via CPU & Memory Analysis
+  * Rightsize EventHubs Throughput Units & Cap Auto-Inflate
+  * Scale Dev ASE Plans to single Instance
+  * Start autoshutdown VMs
+  * Unattached Azure Managed Disks
+  * Unattached Azure Network Interfaces
+* GCP
+  * Business Unit Labelling Policy on GCE Instances
+  * Cleanup Policies for GCP Artifact Registry Repositories
+  * Dev GCE instances Outside Business Hours [Main]
+  * Dev GCE instances Outside Business Hours [Restart]
+  * Dev GCE instances Outside Business Hours [Shutdown]
+  * Enforce Time-to-Live for GCE Disk Snapshots
+  * GCP Idle SQL Instance Cleanup
+  * GCP Idle Virtual Machines Cleanup
+  * GCP Unattached Persistent Disk Cleanup
+  * GCP Unused Load Balancers Cleanup
+  * Google Cloud Sample workflow
+  * Set retention period for log buckets
+  * Set Time-to-Live for GCP Disk Snapshots
+  * Unused GCP Static IPs Cleanup
+* Uncategorized
+  * Detect new or unknown cost types
+  * Sample FOCUS data aggregation
