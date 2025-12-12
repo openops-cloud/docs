@@ -66,24 +66,26 @@ Alternatively, you can follow the manual installation steps:
     wget https://github.com/openops-cloud/openops/releases/download/0.6.10/openops-dc-0.6.10.zip && \
     unzip -o openops-dc-0.6.10.zip && cp -n .env.defaults .env
     ```
-3. Edit the application URL to use the machine’s public IP address:
+3. Update the application URL to use the instance’s external IP address:
     ```shell
-    sed -i 's/http:\/\/localhost/http:\/\/'$(wget -4qO - https://ifconfig.io/ip)'/g' .env
+    EXTERNAL_IP=$(curl -4 -s ifconfig.co)
+    sed -i "s|http://localhost|http://$EXTERNAL_IP|g" .env
     ```
 4. <UpdateCredentials/>
 5. Install Docker using Snap:
     ```shell
     sudo snap install docker
     ```
-6. Pull the images and run the Docker containers (rerun the pull command if you encounter a rate limit):
+6. Pull the images and start the Docker containers:
     ```shell
-    sudo COMPOSE_PARALLEL_LIMIT=4 docker compose pull && sudo docker compose up -d
+    sudo COMPOSE_PARALLEL_LIMIT=4 docker compose pull -q && sudo docker compose up -d
     ```
+    If you encounter a rate limit, rerun the pull command. Note that pulling images may take several minutes.
 
 If you did not update credentials in the `.env` file, the default username is `admin@openops.com` and the password is `please-change-this-password-1`.
 </Expandable>
 
-You can now access the application by navigating to the public IP address of your virtual machine, for example, `http://20.20.20.20`.
+You can now access the OpenOps application by navigating to the public IP address of your VM (e.g., `http://20.20.20.20`).
 
 ## Getting credentials for Azure connections
 
