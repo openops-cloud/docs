@@ -16,7 +16,7 @@ const groupTemplatesByCategory = templates => {
 
         const categories = template.categories?.length
             ? template.categories
-            : ['Uncategorized'];
+            : ['Multi-cloud'];
 
         for (const category of categories) {
             const cat = String(category).trim();
