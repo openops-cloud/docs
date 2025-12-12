@@ -9,9 +9,9 @@ import Disclaimer from '/snippets/non-production-disclaimer.mdx';
 import ExternalDatabases from '/snippets/external-databases.mdx';
 import HostValidation from '/snippets/host-validation.mdx';
 import JoinCommunity from '/snippets/join-community.mdx'
+import ManualInstall from '/snippets/manual-install.mdx';
 import { NarrowImage } from '/snippets/narrow-image.jsx'
 import TLS from '/snippets/tls.mdx';
-import UpdateCredentials from '/snippets/env-update-credentials.mdx';
 import UpdateLink from '/snippets/update-link.mdx';
 
 <Disclaimer/>
@@ -62,39 +62,7 @@ It assumes you have appropriate permissions on an existing AWS account.
 
 <AutoInstall/>
 
-Alternatively, you can follow the manual installation steps:
-
-<Expandable title="Installing OpenOps manually">
-1. Install the `unzip` utility:
-    ```shell
-    sudo apt install unzip
-    ```
-2. Create a new directory and download the OpenOps release files:
-    ```shell
-    mkdir -p openops && cd openops && \
-    wget https://github.com/openops-cloud/openops/releases/download/0.6.10/openops-dc-0.6.10.zip && \
-    unzip -o openops-dc-0.6.10.zip && cp -n .env.defaults .env
-    ```
-3. Update the application URL to use the instance’s external IP address:
-    ```shell
-    EXTERNAL_IP=$(curl -4 -s ifconfig.co)
-    sed -i "s|http://localhost|http://$EXTERNAL_IP|g" .env
-    ```
-4. <UpdateCredentials/>
-5. Install Docker using Snap:
-    ```shell
-    sudo snap install docker
-    ```
-6. Pull the images and start the Docker containers:
-    ```shell
-    sudo COMPOSE_PARALLEL_LIMIT=4 docker compose pull -q && sudo docker compose up -d
-    ```
-    If you encounter a rate limit, rerun the pull command. Note that pulling images may take several minutes.
-
-If you did not update credentials in the `.env` file, the default username is `admin@openops.com` and the password is `please-change-this-password-1`.
-</Expandable>
-
-You can now access the OpenOps application by navigating to the public IP address of your EC2 instance (e.g., `http://20.20.20.20`).
+<ManualInstall target="EC2 instance"/>
 
 <ExternalDatabases/>
 
