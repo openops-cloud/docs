@@ -38,7 +38,7 @@ const prepareMarkdownLines = (categoryMap, caseInsensitive) => {
     stats.categories = sortedCategories.length;
 
     for (const category of sortedCategories) {
-        lines.push(`* ${category}`);
+        lines.push(`* **${category}**`);
         const names = [...new Set(categoryMap.get(category))].sort(caseInsensitive());
         stats.names += names.length;
         names.forEach(name => lines.push(`  * ${name}`));
