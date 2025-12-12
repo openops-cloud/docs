@@ -6,6 +6,7 @@ icon: 'aws'
 
 import AutoInstall from '/snippets/auto-install.mdx'
 import Disclaimer from '/snippets/non-production-disclaimer.mdx';
+import ExternalDatabases from '/snippets/external-databases.mdx';
 import HostValidation from '/snippets/host-validation.mdx';
 import JoinCommunity from '/snippets/join-community.mdx'
 import { NarrowImage } from '/snippets/narrow-image.jsx'
@@ -94,21 +95,7 @@ If you did not update credentials in the `.env` file, the default username is `a
 
 You can now access the OpenOps application by navigating to the public IP address of your EC2 instance (e.g., `http://20.20.20.20`).
 
-## External databases
-
-To use external PostgreSQL or Redis databases, modify the relevant variables in the `.env` file. You can disable the corresponding containers by adding a profile in the `docker-compose.yml` file:
-
-```yaml
-postgres:
-  profiles: ['disabled']
-  image: 'postgres:14.4'
-  container_name: 'postgres'
-```
-
-After making changes, restart the Docker Compose containers:
-```shell
-sudo docker compose down && sudo docker compose up -d
-```
+<ExternalDatabases/>
 
 <TLS target="EC2 instance"/>
 

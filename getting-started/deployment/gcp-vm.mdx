@@ -6,9 +6,9 @@ icon: 'google'
 
 import AutoInstall from '/snippets/auto-install.mdx'
 import Disclaimer from '/snippets/non-production-disclaimer.mdx';
+import ExternalDatabases from '/snippets/external-databases.mdx';
 import HostValidation from '/snippets/host-validation.mdx';
 import JoinCommunity from '/snippets/join-community.mdx'
-import RestartContainers from '/snippets/restart-containers.mdx';
 import TLS from '/snippets/tls.mdx';
 import UpdateCredentials from '/snippets/env-update-credentials.mdx';
 import UpdateLink from '/snippets/update-link.mdx';
@@ -104,19 +104,7 @@ If you did not update credentials in the `.env` file, the default username is `a
 
 You can now access the OpenOps application by navigating to the external IP address of your VM (e.g., `http://<YOUR_EXTERNAL_IP>`).
 
-## External databases
-
-To use external PostgreSQL or Redis databases, modify the relevant variables in the `.env` file. You can disable the corresponding containers by adding a profile in the `docker-compose.yml` file, for example:
-
-```yaml
-services:
-  postgres:
-    profiles: ["db"]
-```
-
-If you remove or disable the `db` profile in `.env` or in Docker Compose, that container won’t start.
-
-<RestartContainers/>
+<ExternalDatabases/>
 
 <TLS target="VM"/>
 
