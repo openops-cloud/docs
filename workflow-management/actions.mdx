@@ -95,8 +95,8 @@ These are integration actions that provide various ways to make and request chan
     * **Azure**: execute Azure CLI commands and make REST API calls.
     * **Google Cloud**: execute Google Cloud CLI commands and make REST API calls.
 * IaC integrations:
-    * **AWS CloudFormation**: update or delete resources in a CloudFormation template.
-    * **Terraform**: update or delete resources in a Terraform template, modify Terraform variables files.
+    * **AWS CloudFormation**: update or delete resources in a CloudFormation template while keeping template parsing and resource selection constrained to the template you provide.
+    * **Terraform**: update or delete resources in a Terraform template, modify Terraform variables files, and rely on guarded template parsing and resource selection to avoid executing arbitrary shell commands.
 * Other integrations:
     * **Snowflake**: add rows to Snowflake tables.
     * **GitHub**: retrieve file content, create pull requests, or trigger GitHub Actions runs.
