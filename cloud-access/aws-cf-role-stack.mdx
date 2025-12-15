@@ -4,6 +4,8 @@ description: 'How to set up the OpenOpssApp on AWS CloudFormation'
 icon: 'aws'
 ---
 
+import JoinCommunity from '/snippets/join-community.mdx'
+
 The OpenOpsApp role stack for [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html) is used to create the `OpenOpsApp` role in your AWS account. This will in turn provide the OpenOps platform with the necessary permissions to connect to your AWS resources.
 
 When creating the stack, you have the option to enable or disable certain permission sets. While the read-only permission set is mandatory, the rest are completely optional. The sets can also be enabled or disabled later by updating the stack.
@@ -24,6 +26,4 @@ When creating the stack, you have the option to enable or disable certain permis
 
 You’re welcome to [download the stack](https://openops.s3.us-east-2.amazonaws.com/OpenOpsAppRoleStack.yml) and modify specific permissions according to your needs. Notice that some AWS components in the OpenOps workflows may not function properly as a result.
 
-## Support
-
-For any questions or issues, please feel free to join our [Slack community](https://slack.openops.com).
+<JoinCommunity />

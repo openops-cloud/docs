@@ -6,10 +6,12 @@ icon: 'google'
 
 import AutoInstall from '/snippets/auto-install.mdx'
 import Disclaimer from '/snippets/non-production-disclaimer.mdx';
+import ExternalDatabases from '/snippets/external-databases.mdx';
 import HostValidation from '/snippets/host-validation.mdx';
-import RestartContainers from '/snippets/restart-containers.mdx';
+import JoinCommunity from '/snippets/join-community.mdx'
+import ManualInstall from '/snippets/manual-install.mdx'
+import NetworkPorts from '/snippets/network-ports.mdx';
 import TLS from '/snippets/tls.mdx';
-import UpdateCredentials from '/snippets/env-update-credentials.mdx';
 import UpdateLink from '/snippets/update-link.mdx';
 
 <Disclaimer/>
@@ -59,63 +61,11 @@ Depending on your project settings, a default firewall rule might already allow 
 
 <AutoInstall/>
 
-Alternatively, you can follow the manual installation steps:
+<ManualInstall target="VM"/>
 
-<Expandable title="Installing OpenOps manually">
-1. Install the `unzip` utility:
-    ```shell
-    sudo apt install unzip
-    ```
-2. In your SSH session, create a new directory and download the release files:
-    ```shell
-    mkdir -p openops && cd openops
-    wget https://github.com/openops-cloud/openops/releases/download/0.6.10/openops-dc-0.6.10.zip
-    unzip -o openops-dc-0.6.10.zip
-    cp -u .env.defaults .env
-    ```
-3. Update the application URL to use the instance’s external IP address:
-    ```shell
-    EXTERNAL_IP=$(curl -4 -s ifconfig.co)
-    sed -i "s|http://localhost|http://$EXTERNAL_IP|g" .env
-    ```
-4. <UpdateCredentials/>
-5. Install Docker (for Ubuntu):
-    ```shell
-    sudo apt-get update
-    sudo apt-get install -y docker.io
-    sudo systemctl enable docker
-    sudo systemctl start docker
-    ```
-6. Install Docker Compose (using `docker compose` plugin):
-    ```shell
-    sudo mkdir -p /usr/local/lib/docker/cli-plugins/
-    sudo curl -SL https://github.com/docker/compose/releases/download/v2.24.6/docker-compose-linux-x86_64 -o /usr/local/lib/docker/cli-plugins/docker-compose
-    sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
-    ```
-7. Pull the images and start the Docker containers:
-    ```shell
-    sudo COMPOSE_PARALLEL_LIMIT=4 docker compose pull -q && sudo docker compose up -d
-    ```
-    If you encounter rate limits, rerun the pull command. Pulling images may take several minutes.
+<NetworkPorts/>
 
-If you did not update credentials in the `.env` file, the default username is `admin@openops.com` and the password is `please-change-this-password-1`.
-</Expandable>
-
-You can now access the OpenOps application by navigating to the external IP address of your VM (e.g., `http://<YOUR_EXTERNAL_IP>`).
-
-## External databases
-
-To use external PostgreSQL or Redis databases, modify the relevant variables in the `.env` file. You can disable the corresponding containers by adding a profile in the `docker-compose.yml` file, for example:
-
-```yaml
-services:
-  postgres:
-    profiles: ["db"]
-```
-
-If you remove or disable the `db` profile in `.env` or in Docker Compose, that container won’t start.
-
-<RestartContainers/>
+<ExternalDatabases/>
 
 <TLS target="VM"/>
 
@@ -123,6 +73,4 @@ If you remove or disable the `db` profile in `.env` or in Docker Compose, that c
 
 <UpdateLink/>
 
-## Support
-
-Feel free to join our [Slack community](https://slack.openops.com) if you have any questions or need help with the installation.
+<JoinCommunity/>
