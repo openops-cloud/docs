@@ -1,0 +1,7 @@
+## Network ports used by OpenOps
+
+By default, OpenOps does not require any inbound ports other than the application port `80`.
+
+The following ports are used by bundled services and, in most cases, should not be exposed:
+* `5432`: The PostgreSQL database used by OpenOps. Expose this port only if you need direct database access, such as for [connecting OpenOps to external analytics tools](/reporting-analytics/connecting-to-external-tools/). Restrict access to a VPN or a trusted IP range.
+* `6379`: OpenOps' internal Redis service. Expose this port only if required for debugging or monitoring purposes. Restrict access to a VPN or a trusted IP range.
