@@ -4,6 +4,9 @@ description: 'How to work with cloud providers in OpenOps'
 icon: 'cloud'
 ---
 
+import AWS from '/snippets/cloud-providers/aws.mdx'
+import Azure from '/snippets/cloud-providers/azure.mdx'
+import GCP from '/snippets/cloud-providers/gcp.mdx'
 import { NarrowImage } from '/snippets/narrow-image.jsx'
 
 OpenOps supports the big three cloud providers: AWS, Azure, and Google Cloud.
@@ -14,6 +17,18 @@ OpenOps supports the big three cloud providers: AWS, Azure, and Google Cloud.
 * The latest available AWS CLI at the time of OpenOps installation.
 * Azure CLI version 2.74.0, with the following extensions preinstalled: *reservation*, *resource-graph*, *costmanagement*, *billing-benefits*, *quotas*, and *ssh*. Dynamic extension installation is allowed, meaning that if you use the Azure CLI action to run a command that is not available in the preinstalled extensions, the action will install the necessary extension automatically.
 * Google Cloud SDK version 516.0.0, with Beta versions of CLI commands enabled.
+
+### AWS actions
+
+<AWS/>
+
+### Azure actions
+
+<Azure/>
+
+### Google Cloud actions
+
+<GCP/>
 
 ## Automating across multiple cloud providers
 
