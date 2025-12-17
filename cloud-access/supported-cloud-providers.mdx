@@ -9,11 +9,13 @@ import Azure from '/snippets/cloud-providers/azure.mdx'
 import GCP from '/snippets/cloud-providers/gcp.mdx'
 import { NarrowImage } from '/snippets/narrow-image.jsx'
 
-OpenOps supports the big three cloud providers: AWS, Azure, and Google Cloud.
+OpenOps supports the big three cloud providers: [AWS](#aws), [Azure](#azure), and [Google Cloud](#google-cloud).
 
 [Actions](/workflow-management/actions/) in each cloud provider's block are implemented using the respective provider's official APIs.
 
-## AWS actions
+You can create workflows [across cloud providers](#automating-across-multiple-cloud-providers) if you're using more than one of them.
+
+## AWS
 
 AWS actions use the latest available AWS CLI at the time of OpenOps installation.
 
@@ -21,7 +23,15 @@ The full list of AWS actions is as follows:
 
 <AWS/>
 
-## Azure actions
+Here's an example of a step in an AWS workflow that retrieves EBS volumes. For each volume, the workflow proceeds to determine its unit cost:
+![A sample AWS workflow](/images/cloud-providers-aws.png)
+
+See also:
+* [AWS templates](/workflow-management/workflow-templates#aws)
+* [Setting up AWS connections](/cloud-access/access-levels-permissions#aws-connections)
+* [Iterating over multiple AWS accounts](/cookbook/iterate-over-multiple-aws-accounts)
+
+## Azure
 
 Azure actions use the Azure CLI version 2.74.0, with the following extensions preinstalled:
 * *reservation*
@@ -37,16 +47,29 @@ The full list of Azure actions is as follows:
 
 <Azure/>
 
-Here's an example of a workflow that fetches Azure Advisor cost recommendations pertaining to a specific resource group:
-![A sample Azure workflow](/images/multi-cloud-azure.png)
+Here's an example of a step in an Azure workflow that fetches Azure Advisor cost recommendations pertaining to a specific resource group:
+![A sample Azure workflow](/images/cloud-providers-azure.png)
 
-## Google Cloud actions
+See also:
+* [Azure templates](/workflow-management/workflow-templates#azure)
+* [Setting up Azure connections](/cloud-access/access-levels-permissions#azure-connections)
+* [Iterating over multiple Azure subscriptions](/cookbook/iterate-over-multiple-azure-subscriptions)
+
+## Google Cloud
 
 Google Cloud actions use the Google Cloud SDK version 516.0.0, with Beta versions of CLI commands enabled.
 
 The full list of Google Cloud actions is as follows:
 
 <GCP/>
+
+Here's an example of a step in a Google Cloud workflow that retrieves Google Cloud recommendations for a specific combination of a project and a recommender. The workflow then proceeds to analyze and act on each recommendation:
+![A sample Google Cloud workflow](/images/cloud-providers-gcp.png)
+
+See also:
+* [Google Cloud templates](/workflow-management/workflow-templates#gcp)
+* [Setting up Google Cloud connections](/cloud-access/access-levels-permissions#google-cloud-connections)
+* [Iterating over multiple Google Cloud projects](/cookbook/iterate-over-multiple-gcp-projects)
 
 ## Automating across multiple cloud providers
 
