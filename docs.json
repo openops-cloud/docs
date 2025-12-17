@@ -58,9 +58,9 @@
       {
         "group": "Cloud Access",
         "pages": [
+          "cloud-access/supported-cloud-providers",
           "cloud-access/access-levels-permissions",
-          "cloud-access/aws-cf-role-stack",
-          "cloud-access/multi-cloud"
+          "cloud-access/aws-cf-role-stack"
         ]
       },
       {
@@ -142,6 +142,10 @@
   {
     "source": "reporting-analytics/data-visualization",
     "destination": "reporting-analytics/analytics"
+  },
+  {
+    "source": "cloud-access/multi-cloud",
+    "destination": "cloud-access/supported-cloud-providers"
   }
 ]
 }
