@@ -28,7 +28,7 @@ const groupTemplatesByCategory = templates => {
 };
 
 const prepareMarkdownLines = (categoryMap, caseInsensitive) => {
-    const lines = ['OpenOps currently provides the following templates:', ''];
+    const lines = ['OpenOps currently provides the following templates.', ''];
 
     const stats = {
         names: 0
@@ -38,10 +38,10 @@ const prepareMarkdownLines = (categoryMap, caseInsensitive) => {
     stats.categories = sortedCategories.length;
 
     for (const category of sortedCategories) {
-        lines.push(`* **${category}**`);
+        lines.push(`### ${category}`);
         const names = [...new Set(categoryMap.get(category))].sort(caseInsensitive());
         stats.names += names.length;
-        names.forEach(name => lines.push(`  * ${name}`));
+        names.forEach(name => lines.push(`* ${name}`));
     }
     return {lines, stats};
 };
