@@ -23,7 +23,7 @@ The full list of AWS actions is as follows:
 
 <AWS/>
 
-Here's an example of a step in an AWS workflow that retrieves EBS volumes. For each volume, the workflow proceeds to determine its unit cost:
+Here's an example of a step in an AWS workflow that retrieves EBS volumes. For each volume, the workflow then proceeds to determine its unit cost:
 ![A sample AWS workflow](/images/cloud-providers-aws.png)
 
 See also:
@@ -33,21 +33,21 @@ See also:
 
 ## Azure
 
-Azure actions use the Azure CLI version 2.74.0, with the following extensions preinstalled:
+Azure actions use Azure CLI version 2.74.0, with the following extensions preinstalled:
 * *reservation*
 * *resource-graph*
 * *costmanagement*
 * *billing-benefits*
-*quotas*
-* *ssh*.
+* *quotas*
+* *ssh*
 
-Dynamic extension installation is allowed, meaning that if you use the Azure CLI action to run a command that is not available in the preinstalled extensions, the action will install the necessary extension automatically.
+Dynamic extension installation is allowed. This means that if you use the Azure CLI action to run a command that is not available in the preinstalled extensions, the action installs the required extension automatically.
 
 The full list of Azure actions is as follows:
 
 <Azure/>
 
-Here's an example of a step in an Azure workflow that fetches Azure Advisor cost recommendations pertaining to a specific resource group:
+Here's an example of a step in an Azure workflow that fetches Azure Advisor cost recommendations for a specific resource group:
 ![A sample Azure workflow](/images/cloud-providers-azure.png)
 
 See also:
@@ -57,7 +57,7 @@ See also:
 
 ## Google Cloud
 
-Google Cloud actions use the Google Cloud SDK version 516.0.0, with Beta versions of CLI commands enabled.
+Google Cloud actions use Google Cloud SDK version 516.0.0, with beta versions of CLI commands enabled.
 
 The full list of Google Cloud actions is as follows:
 
