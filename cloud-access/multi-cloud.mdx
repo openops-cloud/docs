@@ -11,22 +11,40 @@ import { NarrowImage } from '/snippets/narrow-image.jsx'
 
 OpenOps supports the big three cloud providers: AWS, Azure, and Google Cloud.
 
-## Supported cloud provider APIs
+[Actions](/workflow-management/actions/) in each cloud provider's block are implemented using the respective provider's official APIs.
 
-[Actions](/workflow-management/actions/) in each cloud provider's block are implemented using the respective provider's official APIs:
-* The latest available AWS CLI at the time of OpenOps installation.
-* Azure CLI version 2.74.0, with the following extensions preinstalled: *reservation*, *resource-graph*, *costmanagement*, *billing-benefits*, *quotas*, and *ssh*. Dynamic extension installation is allowed, meaning that if you use the Azure CLI action to run a command that is not available in the preinstalled extensions, the action will install the necessary extension automatically.
-* Google Cloud SDK version 516.0.0, with Beta versions of CLI commands enabled.
+## AWS actions
 
-### AWS actions
+AWS actions use the latest available AWS CLI at the time of OpenOps installation.
+
+The full list of AWS actions is as follows:
 
 <AWS/>
 
-### Azure actions
+## Azure actions
+
+Azure actions use the Azure CLI version 2.74.0, with the following extensions preinstalled:
+* *reservation*
+* *resource-graph*
+* *costmanagement*
+* *billing-benefits*
+*quotas*
+* *ssh*.
+
+Dynamic extension installation is allowed, meaning that if you use the Azure CLI action to run a command that is not available in the preinstalled extensions, the action will install the necessary extension automatically.
+
+The full list of Azure actions is as follows:
 
 <Azure/>
 
-### Google Cloud actions
+Here's an example of a workflow that fetches Azure Advisor cost recommendations pertaining to a specific resource group:
+![A sample Azure workflow](/images/multi-cloud-azure.png)
+
+## Google Cloud actions
+
+Google Cloud actions use the Google Cloud SDK version 516.0.0, with Beta versions of CLI commands enabled.
+
+The full list of Google Cloud actions is as follows:
 
 <GCP/>
 
