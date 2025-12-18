@@ -16,7 +16,7 @@ OpenOps doesn't currently provide a UI for creating user accounts; instead, you 
 
 The first API call is to sign in the admin user:
 
-```
+```http
 POST http://your-openops-installation/api/v1/authentication/sign-in
 Content-Type: application/json
 
@@ -26,9 +26,11 @@ Content-Type: application/json
 }
 ```
 
-This call will return a JSON object that contains a property called `token`. Copy the value of this property and use it in the authorization header in the next call. This next call actually creates a new user account. Before making the call, in the body, don't forget to specify actual values for the four properties that are left empty in the sample below:
+This call returns a JSON object that contains a property called `token`. The token is a time-limited JWT that you use to authenticate subsequent API calls.
 
-```
+Copy the value of the `token` property and use it in the authorization header in the next call. This next call actually creates a new user account. Before making the call, in the body, don't forget to specify actual values for the four properties that are left empty in the sample below:
+
+```http
 POST http://your-openops-installation/api/v1/authentication/sign-up
 Authorization: Bearer your-admin-token
 Content-Type: application/json
@@ -44,4 +46,4 @@ Content-Type: application/json
 
 ```
 
-The user account that you create this way will be able to perform all operations in OpenOps except for creating new user accounts. Every time you do that, you'll still need an admin token.
+The user account that you create this way is an editor account. It can perform all operations in OpenOps except for creating new user accounts. Every time you create a new user, you still need an admin token.
