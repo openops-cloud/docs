@@ -124,6 +124,8 @@ For local deployments, you can control authentication token lifetimes using the 
 * `OPS_JWT_TOKEN_LIFETIME_HOURS`
 * `OPS_TABLES_TOKEN_LIFETIME_MINUTES`
 
+These variables are read by the `openops-tables` service in `deploy/docker-compose/docker-compose.yml` and the `tables` service in `compose.yaml` to set `BASEROW_REFRESH_TOKEN_LIFETIME_HOURS` and `BASEROW_ACCESS_TOKEN_LIFETIME_MINUTES`.
+
 After updating any environment variables, restart the containers:
 
 ```shell
