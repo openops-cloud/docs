@@ -117,6 +117,19 @@ You can now access the application by navigating to http://localhost.
 
 <UpdateLink/>
 
+## Authentication-related environment variables
+
+For local deployments, you can control authentication token lifetimes using the following environment variables in the `.env` file:
+
+* `OPS_JWT_TOKEN_LIFETIME_HOURS`
+* `OPS_TABLES_TOKEN_LIFETIME_MINUTES`
+
+After updating any environment variables, restart the containers:
+
+```shell
+sudo docker compose down && docker compose up -d
+```
+
 ## Cloud templates
 
 On localhost, cloud templates may not be able to load when using the Safari browser.
