@@ -4,9 +4,23 @@ description: "An overview of how Cloudability can be integrated with OpenOps."
 icon: 'sprout'
 ---
 
-All actions require a Cloudability connection with your API credentials.
+import { NarrowImage } from '/snippets/narrow-image.jsx'
 
-## Get Recommendations
+OpenOps integrates with [Cloudability](https://www.apptio.com/products/cloudability/) to automate receiving and managing cloud resource usage recommendations.
+
+## Actions
+
+OpenOps provides four [actions](/workflow-management/actions) for interacting with Cloudability:
+
+<NarrowImage src="/images/cloudability-actions.png" alt="Cloudability actions" />
+
+All Cloudability actions are based on the [Cloudability API](https://www.ibm.com/docs/en/cloudability-commercial/cloudability-standard/saas?topic=api-getting-started-cloudability-v3) and require configuring a Cloudability [connection](/cloud-access/access-levels-permissions) with your API key and an API URL.
+
+<NarrowImage src="/images/cloudability-connection.png" alt="Configuring a Cloudability connection" />
+
+The following are the four actions available in the Cloudability block.
+
+### Get Recommendations
 Retrieves cost optimization recommendations from Cloudability with extensive filtering options:
 - **Vendor Type**: AWS, Azure, GCP, or Containers
 - **Recommendation Type**: Dynamic dropdown based on selected vendor
@@ -16,7 +30,7 @@ Retrieves cost optimization recommendations from Cloudability with extensive fil
 - **Limit**: Optional maximum number of recommendations to return
 - **Additional Filters**: Custom filters per [Cloudability's rightsizing API documentation](https://www.ibm.com/docs/en/cloudability-commercial/cloudability-standard/saas?topic=api-rightsizing-end-points)
 
-## Snooze Recommendations
+### Snooze Recommendations
 Temporarily dismisses specific recommendations:
 - **Vendor Type**: AWS, Azure, GCP, or Containers
 - **Recommendation Type**: Dynamic dropdown based on vendor
@@ -24,19 +38,15 @@ Temporarily dismisses specific recommendations:
 - **Resource IDs**: Array of resource IDs to snooze
 - **Snooze Until**: Date in yyyy-MM-dd format, or "never" for indefinite snoozing
 
-*Note: Requires approval before execution*
-
-## Unsnooze Recommendations
+### Unsnooze Recommendations
 Reactivates previously snoozed recommendations:
 - **Vendor Type**: AWS, Azure, GCP, or Containers
 - **Recommendation Type**: Dynamic dropdown based on vendor
 - **Account ID**: The cloud account ID
 - **Resource IDs**: Array of resource IDs to unsnooze
 
-*Note: Requires approval before execution*
-
-## Custom API Call
-Make direct calls to any Cloudability API endpoint:
+### Custom API Call
+Make direct calls to any [Cloudability API](https://www.ibm.com/docs/en/cloudability-commercial/cloudability-standard/saas?topic=api-getting-started-cloudability-v3) endpoint:
 - **URL**: Dynamic endpoint selection
 - **Method**: GET, POST, PATCH, PUT, DELETE, or HEAD
 - **Headers**: Optional (authorization auto-injected)
@@ -44,5 +54,3 @@ Make direct calls to any Cloudability API endpoint:
 - **Body**: Optional JSON payload
 - **Timeout**: Configurable timeout in seconds
 - **No Error on Failure**: Optional failsafe flag
-
-*Note: Requires approval before execution*
