@@ -222,3 +222,39 @@ Make direct calls to any [Cloudability API](https://www.ibm.com/docs/en/cloudabi
 - **Body**: Optional JSON payload
 - **Timeout**: Configurable timeout in seconds
 - **No Error on Failure**: Optional failsafe flag
+
+## Use cases
+
+### Owner mapping
+
+Cloudability recommendations often need to be routed to the appropriate resource owners for review and action. OpenOps workflows can map cloud resources to their owners using tag values and preconfigured lookup tables.
+
+When processing recommendations retrieved via the *Get Recommendations* action, workflows can extract resource tags, query the Tag-owner mapping table in OpenOps, and determine which team member should receive notifications or approval requests. This ensures that rightsizing, idle resource cleanup, or commitment purchase recommendations reach the people who can actually act on them.
+
+For detailed implementation guidance, see the [owner mapping workflow steps](/integrations/cloudhealth#get-owner-by-project) in the CloudHealth integration guide.
+
+### Recommendation tracking using OpenOps tables and states
+
+Rather than acting on every recommendation immediately, you can log Cloudability recommendations to the preconfigured Opportunities table in OpenOps for centralized tracking and status management.
+
+Workflows using the *Get Recommendations* action can create or update table records with details like estimated savings, resource IDs, recommendation types, and current status (Created, Under Review, Dismissed, Snoozed). This approach prevents duplicate notifications, provides audit trails, and enables reporting on realized vs. unrealized savings across your organization.
+
+Learn how to implement opportunity tracking by following the [CloudHealth recommendation logging workflow](/integrations/cloudhealth#look-up-the-opportunity-in-the-openops-table).
+
+### Handling recommendations via Slack
+
+For recommendations requiring human judgment, OpenOps can send interactive Slack messages that allow resource owners to approve, dismiss, or snooze optimization opportunities directly from Slack.
+
+After retrieving recommendations with *Get Recommendations*, workflows can use owner mapping to identify the appropriate Slack user, then send a Slack *Request Action* message with buttons for different responses. Based on the user's selection, the workflow can call *Snooze Recommendations* to temporarily dismiss false positives, update the Opportunities table to track decisions, or proceed with automated remediation actions.
+
+See the [Slack notification with action buttons](/integrations/cloudhealth#send-a-slack-notification-with-action-buttons) section of the CloudHealth guide for implementation details.
+
+### Keeping Jira tickets in sync with OpenOps recommendations
+
+For organizations using Jira to track cloud optimization work, OpenOps can automatically create and update Jira tickets based on Cloudability recommendations.
+
+Workflows can retrieve recommendations via *Get Recommendations*, create corresponding Jira issues with details like estimated savings and resource information, and maintain synchronization between ticket status and recommendation state.
+
+When recommendations are snoozed using *Snooze Recommendations*, workflows can update the related Jira ticket status. When tickets are closed, workflows can call *Unsnooze Recommendations* to reactivate them or remove them from tracking.
+
+For workflow patterns that integrate recommendations with Jira, review the CloudHealth documentation on [Jira ticket creation and synchronization](/integrations/cloudhealth).
