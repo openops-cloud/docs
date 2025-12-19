@@ -30,6 +30,174 @@ Retrieves cost optimization recommendations from Cloudability with extensive fil
 - **Limit**: Optional maximum number of recommendations to return
 - **Additional Filters**: Custom filters per [Cloudability's rightsizing API documentation](https://www.ibm.com/docs/en/cloudability-commercial/cloudability-standard/saas?topic=api-rightsizing-end-points)
 
+Below is a sample output that this step returns when configured to request active AWS EC2 recommendations with a 10-day look-back period:
+
+<Expandable title="Cloudability recommendations">
+```json
+{
+  "meta": {
+    "info": [],
+    "aggregates": [
+      {
+        "cost": 6.1,
+        "basis": "On-Demand",
+        "idleSavings": 0,
+        "optimizedSavings": 4.97,
+        "rightsizeSavings": 1.13
+      }
+    ],
+    "totalCount": 1
+  },
+  "result": [
+    {
+      "os": "Linux",
+      "idle": 23,
+      "name": "LDN-APP03",
+      "cpuMax": 22,
+      "gpuMax": "N/A",
+      "region": "eu-west-2",
+      "service": "ec2-recs",
+      "snoozed": false,
+      "tenancy": "default",
+      "lastSeen": "2025-07-20T23:00:00Z",
+      "nodeType": "t2.small",
+      "provider": "NATIVE",
+      "memoryMax": "N/A",
+      "unitPrice": 0.03,
+      "totalSpend": 6.1,
+      "accountName": "Training Account - AL",
+      "cpuCapacity": 0.2,
+      "gpuCapacity": 0,
+      "localDrives": -1,
+      "tagMappings": [
+        {
+          "tag": "tag2",
+          "tagName": "Department",
+          "vendorTagValue": "shared services"
+        },
+        {
+          "tag": "tag3",
+          "tagName": "Business Unit",
+          "vendorTagValue": "shared services"
+        },
+        {
+          "tag": "tag5",
+          "tagName": "Resource Name",
+          "vendorTagValue": "ldn-app03"
+        },
+        {
+          "tag": "tag12",
+          "tagName": "Department Mispelling",
+          "vendorTagValue": "shared services"
+        },
+        {
+          "tag": "tag21",
+          "tagName": "Scaleup",
+          "vendorTagValue": "shared services"
+        }
+      ],
+      "commentCount": 4,
+      "currencyCode": "USD",
+      "daysInactive": 0,
+      "gpuMemoryMax": "N/A",
+      "hoursRunning": 234.51,
+      "localCapacity": -1,
+      "instanceFamily": "t2",
+      "memoryCapacity": 2,
+      "networkCapacity": 100,
+      "recommendations": [
+        {
+          "risk": 0,
+          "action": "Rightsize",
+          "cpuRisk": 0,
+          "savings": 1.13,
+          "cpuRatio": 2,
+          "diskRisk": 0,
+          "gpuRatio": 0,
+          "nodeType": "t3a.small",
+          "memoryFit": true,
+          "unitPrice": 0.02,
+          "currentGen": true,
+          "inDefaults": true,
+          "memoryRisk": 0,
+          "sameFamily": false,
+          "sameMemory": true,
+          "savingsPct": 18,
+          "cpuCapacity": 0.4,
+          "gpuCapacity": 0,
+          "localDrives": -1,
+          "memoryRatio": 1,
+          "networkRisk": 0,
+          "maxInstances": 1,
+          "minInstances": 1,
+          "networkRatio": 50,
+          "defaultsOrder": 1,
+          "localCapacity": -1,
+          "gpuMemoryRatio": 0,
+          "instanceFamily": "t3a",
+          "memoryCapacity": 2,
+          "networkCapacity": 5000,
+          "preferenceOrder": 1,
+          "diskXPutCapacity": 160,
+          "gpuMemoryCapacity": 0,
+          "previousGenTarget": false,
+          "persistentStorageAdded": false
+        },
+        {
+          "risk": 0,
+          "action": "Rightsize",
+          "cpuRisk": 0,
+          "savings": 0.56,
+          "cpuRatio": 2,
+          "diskRisk": 0,
+          "gpuRatio": 0,
+          "nodeType": "t3.small",
+          "memoryFit": true,
+          "unitPrice": 0.02,
+          "currentGen": true,
+          "inDefaults": true,
+          "memoryRisk": 0,
+          "sameFamily": false,
+          "sameMemory": true,
+          "savingsPct": 9,
+          "cpuCapacity": 0.4,
+          "gpuCapacity": 0,
+          "localDrives": -1,
+          "memoryRatio": 1,
+          "networkRisk": 0,
+          "maxInstances": 1,
+          "minInstances": 1,
+          "networkRatio": 50,
+          "defaultsOrder": 2,
+          "localCapacity": -1,
+          "gpuMemoryRatio": 0,
+          "instanceFamily": "t3",
+          "memoryCapacity": 2,
+          "networkCapacity": 5000,
+          "preferenceOrder": 2,
+          "diskXPutCapacity": 160,
+          "gpuMemoryCapacity": 0,
+          "previousGenTarget": false,
+          "persistentStorageAdded": false
+        }
+      ],
+      "snoozeExpiresOn": "",
+      "vendorAccountId": "366445176032",
+      "availabilityZone": "eu-west-2c",
+      "defaultMemoryFit": true,
+      "maxInstanceCount": 1,
+      "minInstanceCount": 1,
+      "defaultCurrentGen": true,
+      "defaultSameFamily": false,
+      "gpuMemoryCapacity": 0,
+      "resourceIdentifier": "i-0d380eee1c3bc4fed",
+      "defaultCrossArchitecture": false
+    }
+  ]
+}
+```
+</Expandable>
+
 ### Snooze Recommendations
 Temporarily dismisses specific recommendations:
 - **Vendor Type**: AWS, Azure, GCP, or Containers
