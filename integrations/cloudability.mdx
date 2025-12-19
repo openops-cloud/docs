@@ -1,0 +1,48 @@
+---
+title: 'Cloudability'
+description: "An overview of how Cloudability can be integrated with OpenOps."
+icon: 'sprout'
+---
+
+All actions require a Cloudability connection with your API credentials.
+
+## Get Recommendations
+Retrieves cost optimization recommendations from Cloudability with extensive filtering options:
+- **Vendor Type**: AWS, Azure, GCP, or Containers
+- **Recommendation Type**: Dynamic dropdown based on selected vendor
+- **Look-Back Period**: Last 10 or 30 days
+- **Cost Basis**: On-Demand or Effective pricing
+- **Recommendations Status**: Show only active, show all (including snoozed), or show only snoozed
+- **Limit**: Optional maximum number of recommendations to return
+- **Additional Filters**: Custom filters per [Cloudability's rightsizing API documentation](https://www.ibm.com/docs/en/cloudability-commercial/cloudability-standard/saas?topic=api-rightsizing-end-points)
+
+## Snooze Recommendations
+Temporarily dismisses specific recommendations:
+- **Vendor Type**: AWS, Azure, GCP, or Containers
+- **Recommendation Type**: Dynamic dropdown based on vendor
+- **Account ID**: The cloud account ID
+- **Resource IDs**: Array of resource IDs to snooze
+- **Snooze Until**: Date in yyyy-MM-dd format, or "never" for indefinite snoozing
+
+*Note: Requires approval before execution*
+
+## Unsnooze Recommendations
+Reactivates previously snoozed recommendations:
+- **Vendor Type**: AWS, Azure, GCP, or Containers
+- **Recommendation Type**: Dynamic dropdown based on vendor
+- **Account ID**: The cloud account ID
+- **Resource IDs**: Array of resource IDs to unsnooze
+
+*Note: Requires approval before execution*
+
+## Custom API Call
+Make direct calls to any Cloudability API endpoint:
+- **URL**: Dynamic endpoint selection
+- **Method**: GET, POST, PATCH, PUT, DELETE, or HEAD
+- **Headers**: Optional (authorization auto-injected)
+- **Query Parameters**: Optional
+- **Body**: Optional JSON payload
+- **Timeout**: Configurable timeout in seconds
+- **No Error on Failure**: Optional failsafe flag
+
+*Note: Requires approval before execution*
