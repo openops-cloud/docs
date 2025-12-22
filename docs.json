@@ -87,6 +87,7 @@
       {
         "group": "Integrations",
         "pages": [
+          "integrations/cloudability",
           "integrations/cloudhealth"
         ]
       },
