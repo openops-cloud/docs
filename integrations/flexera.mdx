@@ -20,3 +20,19 @@ All Flexera actions are based on the [Flexera One API](https://developer.flexera
 
 The following sections describe the three actions available in the Flexera block.
 
+### Get Active Recommendations
+Retrieves active cost optimization recommendations from Flexera:
+- **Policy Set**: Dynamic dropdown of available policy sets from your Flexera account
+- **Filter by Provider**: Optional filter by cloud provider (AWS, Azure, Google, or Alibaba)
+
+### Get Incident
+Retrieves details of a specific incident from Flexera:
+- **Incident ID**: The unique identifier of the incident to retrieve
+
+### Custom API Call
+Allows making arbitrary calls to any [Flexera One API](https://developer.flexera.com/) endpoint:
+- **URL**: Dynamic endpoint selection
+- **Method**: `GET`, `POST`, `PATCH`, `PUT`, `DELETE`, or `HEAD`
+- **Headers**: Optional (authorization auto-injected)
+- **Query Parameters**: Optional
+- **Body**: Optional JSON payload
