@@ -46,12 +46,12 @@ TODO
 
 ### Elsewhere
 
-To request approvals through other communication channels, use the **Approval** block of actions:
+To request approvals through other communication channels, such as via email, use the **Approval** block of actions:
 <NarrowImage src="/images/hitl-approval-actions.png" alt="Approval actions" />
 
 In this case, here's how you can create the approval part of your workflow:
 1. Add the **Create Approval Links** action from the **Approval** block. This action generates two links: one for approval and the other for disapproval.
-2. Add an action to message a stakeholder the two links. You can use **Send Email** from the **SMTP** block, **Send Email** from the **Microsoft Outlook** block, or one of the actions in the **Microsoft Teams** block.
+2. Add an action to message a stakeholder the two links. For example, you can use **Send Email** from the **SMTP** block or **Send Email** from the **Microsoft Outlook** block.
 3. Add the **Wait For Approval** action from the **Approval** block. Once the stakeholder clicks a link, this action updates the approval status accordingly.
 4. Add the **Condition** action to take steps in case of approval or disapproval.
 
