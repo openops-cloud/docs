@@ -8,13 +8,13 @@ import { NarrowImage } from '/snippets/narrow-image.jsx'
 
 OpenOps provides 120+ actions: operations that you can add as steps to your workflows.
 
-When you select an action in the workflow editor, actions are presented as groups. By default, you see a list of all action groups:
+When you select an action in the workflow editor, actions are grouped into blocks. By default, you see a list of all available blocks:
 <NarrowImage src="/images/workflow-editor-select-action.png" alt="Selecting an action" />
 
 You can also filter them to show actions that belong to a specific category, such as *Collaboration*, *Data Sources*, or *FinOps*:
 <NarrowImage src="/images/workflow-editor-actions-filter.png" alt="Action filters" />
 
-Below is an overview of the action groups currently available in OpenOps. To help you navigate them more easily, they are categorized by intent in the following sections. Some action groups appear in multiple sections if they contain actions with different intents.
+Below is an overview of the action blocks currently available in OpenOps. To help you navigate them more easily, they are categorized by intent in the following sections. Some action blocks appear in multiple sections if they contain actions with different intents.
 
 ## Decide
 
@@ -60,7 +60,7 @@ These actions help you retrieve data from cloud resources, third-party services,
 * **File operations**: create or read files in OpenOps storage.
 * **HTTP**: send HTTP requests to any API or respond to HTTP requests.
 
-Many actions in this group involve writing CLI commands (AWS CLI, Azure CLI, Google Cloud CLI) or SQL queries (AWS Athena, Snowflake, Databricks, BigQuery). The OpenOps workflow editor provides [AI assistance](/ai-assistance/overview/) to generate such commands and queries, making it less overwhelming for occasional and less technical users. AI assistance works [using your own API keys](/ai-assistance/llm-connections/) with an LLM provider of your choice. OpenAI, Anthropic, Perplexity, and a dozen other LLM providers are supported.
+Many actions in this category involve writing CLI commands (AWS CLI, Azure CLI, Google Cloud CLI) or SQL queries (AWS Athena, Snowflake, Databricks, BigQuery). The OpenOps workflow editor provides [AI assistance](/ai-assistance/overview/) to generate such commands and queries, making it less overwhelming for occasional and less technical users. AI assistance works [using your own API keys](/ai-assistance/llm-connections/) with an LLM provider of your choice. OpenAI, Anthropic, Perplexity, and a dozen other LLM providers are supported.
 
 ## Process data
 
@@ -86,7 +86,6 @@ These actions implement [Human-in-the-Loop](/workflow-management/human-in-the-lo
 * **Linear**: create and update issues and comments.
 * **Zendesk**: create or update tickets, perform other Zendesk API calls.
 
-
 ## Make changes to cloud resources
 
 These are integration actions that provide various ways to make and request changes to your cloud resources via cloud provider APIs, infrastructure-as-code (IaC) tools, or pull requests.
@@ -102,6 +101,9 @@ These are integration actions that provide various ways to make and request chan
     * **Snowflake**: add rows to Snowflake tables.
     * **GitHub**: retrieve file content, create pull requests, or trigger GitHub Actions runs.
     * **Archera**: apply commitment plans for cloud providers.
+
+Since many of these actions can make destructive changes in your cloud environment, they are considered high-risk and are marked with a red shield icon in the [workflow editor](/workflow-management/building-workflows/):
+<NarrowImage src="/images/actions-high-risk.png" alt="An action with a high-risk warning icon" widthPercent={50} />
 
 ## Interact with project management tools
 

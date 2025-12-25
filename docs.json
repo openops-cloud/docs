@@ -7,7 +7,7 @@
     "light": "#07C983",
     "dark": "#0D9373"
   },
-  "favicon": "/favicon.png",
+  "favicon": "/images/favicon.png",
   "seo": {
     "metatags": {
       "og:image": "/images/openops-opengraph.svg"
@@ -58,9 +58,9 @@
       {
         "group": "Cloud Access",
         "pages": [
+          "cloud-access/supported-cloud-providers",
           "cloud-access/access-levels-permissions",
-          "cloud-access/aws-cf-role-stack",
-          "cloud-access/multi-cloud"
+          "cloud-access/aws-cf-role-stack"
         ]
       },
       {
@@ -87,6 +87,7 @@
       {
         "group": "Integrations",
         "pages": [
+          "integrations/cloudability",
           "integrations/cloudhealth"
         ]
       },
@@ -111,8 +112,8 @@
     ]
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.png"
+    "light": "/images/logo/light.svg",
+    "dark": "/images/logo/dark.png"
   },
   "navbar": {
     "links": [
@@ -142,6 +143,10 @@
   {
     "source": "reporting-analytics/data-visualization",
     "destination": "reporting-analytics/analytics"
+  },
+  {
+    "source": "cloud-access/multi-cloud",
+    "destination": "cloud-access/supported-cloud-providers"
   }
 ]
 }

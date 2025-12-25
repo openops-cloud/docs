@@ -6,10 +6,13 @@ icon: 'aws'
 
 import AutoInstall from '/snippets/auto-install.mdx'
 import Disclaimer from '/snippets/non-production-disclaimer.mdx';
+import ExternalDatabases from '/snippets/external-databases.mdx';
 import HostValidation from '/snippets/host-validation.mdx';
+import JoinCommunity from '/snippets/join-community.mdx'
+import ManualInstall from '/snippets/manual-install.mdx';
 import { NarrowImage } from '/snippets/narrow-image.jsx'
+import NetworkPorts from '/snippets/network-ports.mdx';
 import TLS from '/snippets/tls.mdx';
-import UpdateCredentials from '/snippets/env-update-credentials.mdx';
 import UpdateLink from '/snippets/update-link.mdx';
 
 <Disclaimer/>
@@ -60,54 +63,11 @@ It assumes you have appropriate permissions on an existing AWS account.
 
 <AutoInstall/>
 
-Alternatively, you can follow the manual installation steps:
+<ManualInstall target="EC2 instance"/>
 
-<Expandable title="Installing OpenOps manually">
-1. Install the `unzip` utility:
-    ```shell
-    sudo apt install unzip
-    ```
-2. In CloudShell, create a new directory and download the release files:
-    ```shell
-    mkdir -p openops && cd openops && \
-    wget https://github.com/openops-cloud/openops/releases/download/0.6.8/openops-dc-0.6.8.zip && \
-    unzip -o openops-dc-0.6.8.zip && cp --update=none .env.defaults .env
-    ```
-3. Update the application URL to use the instance's public IP address:
-    ```shell
-    sed -i 's/http:\/\/localhost/http:\/\/'$(wget -4qO - https://ifconfig.io/ip)'/g' .env
-    ```
-4. <UpdateCredentials/>
-5. Install Docker using Snap:
-    ```shell
-    sudo snap install docker
-    ```
-6. Pull the images and start the Docker containers:
-    ```shell
-    sudo COMPOSE_PARALLEL_LIMIT=4 docker compose pull -q && sudo docker compose up -d
-    ```
-    If you encounter a rate limit, rerun the pull command. Note that pulling images may take several minutes.
+<NetworkPorts/>
 
-If you did not update credentials in the `.env` file, the default username is `admin@openops.com` and the password is `please-change-this-password-1`.
-</Expandable>
-
-You can now access the OpenOps application by navigating to the public IP address of your EC2 instance (e.g., `http://20.20.20.20`).
-
-## External databases
-
-To use external PostgreSQL or Redis databases, modify the relevant variables in the `.env` file. You can disable the corresponding containers by adding a profile in the `docker-compose.yml` file:
-
-```yaml
-postgres:
-  profiles: ['disabled']
-  image: 'postgres:14.4'
-  container_name: 'postgres'
-```
-
-After making changes, restart the Docker Compose containers:
-```shell
-sudo docker compose down && sudo docker compose up -d
-```
+<ExternalDatabases/>
 
 <TLS target="EC2 instance"/>
 
@@ -115,6 +75,4 @@ sudo docker compose down && sudo docker compose up -d
 
 <UpdateLink/>
 
-## Support
-
-Feel free to join our [Slack community](https://slack.openops.com) if you have any questions or need help with the installation.
+<JoinCommunity/>

@@ -34,7 +34,7 @@ As soon as the user clicks one of the buttons, your **Request Action** step rece
 
 #### With "Send Message" and "Wait For User Action"
 
-If you want to build approval requests with more customization options, you can use the **Send Message** action in the **Slack** group instead of **Request Action**.
+If you want to build approval requests with more customization options, you can use the **Send Message** action in the **Slack** block instead of **Request Action**.
 
 The upside of **Send Message** is that it enables you to create approval requests using Slack's rich [Block Kit](https://api.slack.com/block-kit) UI framework.
 
@@ -46,22 +46,22 @@ TODO
 
 ### Elsewhere
 
-To request approvals through other communication channels, use the **Approval** group of actions:
+To request approvals through other communication channels, use the **Approval** block of actions:
 <NarrowImage src="/images/hitl-approval-actions.png" alt="Approval actions" />
 
 In this case, here's how you can create the approval part of your workflow:
-1. Add the **Create Approval Links** action from the **Approval** group. This action generates two links: one for approval and the other for disapproval.
-2. Add an action to message a stakeholder the two links. You can use **Send Email** from the **SMTP** group, **Send Email** from the **Microsoft Outlook** group, or one of the actions in the **Microsoft Teams** group.
-3. Add the **Wait For Approval** action from the **Approval** group. Once the stakeholder clicks a link, this action updates the approval status accordingly.
+1. Add the **Create Approval Links** action from the **Approval** block. This action generates two links: one for approval and the other for disapproval.
+2. Add an action to message a stakeholder the two links. You can use **Send Email** from the **SMTP** block, **Send Email** from the **Microsoft Outlook** block, or one of the actions in the **Microsoft Teams** block.
+3. Add the **Wait For Approval** action from the **Approval** block. Once the stakeholder clicks a link, this action updates the approval status accordingly.
 4. Add the **Condition** action to take steps in case of approval or disapproval.
 
 ## Sending notifications
 
 Besides approvals, you can also send notifications about completed workflows or steps. Some of the actions that enable sending notifications include:
-* Actions in the **Slack** group:
+* Actions in the **Slack** block:
     * **Send Message** to send a direct message or a message to a public Slack channel.
     * **Update Message** to update a message previously sent to a public Slack channel.
 * **Send Channel Message** and **Send Chat Message** under **Microsoft Teams**:
     <NarrowImage src="/images/hitl-teams-actions.png" alt="Microsoft Teams actions" />
-* Actions in the **Jira Cloud** group, such as **Change Issue Status** and **Add Issue Comment**.
+* Actions in the **Jira Cloud** block, such as **Change Issue Status** and **Add Issue Comment**.
 * Actions to send emails under **SMTP** and **Microsoft Outlook**.

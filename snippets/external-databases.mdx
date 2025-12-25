@@ -1,0 +1,15 @@
+import RestartContainers from '/snippets/restart-containers.mdx';
+
+## External databases
+
+To use external PostgreSQL or Redis databases, modify the relevant variables in the `.env` file. You can disable the corresponding containers by adding a profile in the `docker-compose.yml` file:
+
+```yaml
+services:
+  postgres:
+    profiles: ["db"]
+```
+
+If you remove or disable the `db` profile in `.env` or in Docker Compose, that container won't start.
+
+<RestartContainers/>

@@ -6,6 +6,7 @@ icon: 'laptop-code'
 
 import AutoInstall from '/snippets/auto-install.mdx'
 import HostValidation from '/snippets/host-validation.mdx';
+import JoinCommunity from '/snippets/join-community.mdx'
 import UpdateCredentials from '/snippets/env-update-credentials.mdx';
 import UpdateLink from '/snippets/update-link.mdx';
 
@@ -28,8 +29,8 @@ If you can't use the autoinstall script, follow the manual installation steps fo
 2. Open a new terminal window and run the following command to create a folder and download the OpenOps release files:
     ```shell
     mkdir -p openops && cd openops && \
-    curl -OL https://github.com/openops-cloud/openops/releases/download/0.6.8/openops-dc-0.6.8.zip && \
-    unzip openops-dc-0.6.8.zip && cp -n .env.defaults .env
+    curl -OL https://github.com/openops-cloud/openops/releases/download/0.6.12/openops-dc-0.6.12.zip && \
+    unzip openops-dc-0.6.12.zip && cp -n .env.defaults .env
    ```
 3. <UpdateCredentials/>
 4. Pull the images and run `docker compose`:
@@ -53,13 +54,13 @@ You can now access the application by navigating to http://localhost.
     # create and change directory
     mkdir -p openops && cd openops
     # download the release file
-    curl -OL https://github.com/openops-cloud/openops/releases/download/0.6.8/openops-dc-0.6.8.zip
+    curl -OL https://github.com/openops-cloud/openops/releases/download/0.6.12/openops-dc-0.6.12.zip
     # refresh package lists
     sudo apt update
     # install unzip
     sudo apt install unzip
     # decompress release file
-    unzip openops-dc-0.6.8.zip
+    unzip openops-dc-0.6.12.zip
     # copy the defaults to env without overwriting existing files
     cp --update=none .env.defaults .env
     ```
@@ -98,8 +99,8 @@ You can now access the application by navigating to http://localhost.
     ```
 3. Download the OpenOps release files:
     ```powershell
-    Invoke-WebRequest -Uri "https://github.com/openops-cloud/openops/releases/download/0.6.8/openops-dc-0.6.8.zip"
-    Expand-Archive -Path "openops-dc-0.6.8.zip" -DestinationPath .
+    Invoke-WebRequest -Uri "https://github.com/openops-cloud/openops/releases/download/0.6.12/openops-dc-0.6.12.zip"
+    Expand-Archive -Path "openops-dc-0.6.12.zip" -DestinationPath .
     if (-Not (Test-Path ".env")) {
         Copy-Item ".env.defaults" ".env"
     }
@@ -145,7 +146,4 @@ To do this, you need to set two environment variables in the `.env` file under t
 * `OPS_ENABLE_HOST_SESSION=true`: enables sharing of the host session with the platform container.
 * `HOST_AZURE_CONFIG_DIR="~/.azure"`: defines the path to the host machine's Azure configuration folder that will be shared with the platform container.
 
-
-## Support
-
-Feel free to join our [Slack community](https://slack.openops.com) if you have any questions or need help with the installation.
+<JoinCommunity/>
