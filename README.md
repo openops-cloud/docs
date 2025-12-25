@@ -1,4 +1,4 @@
-# **OpenOps (Beta) Documentation**
+# **OpenOps Documentation**
 ![Welcome to OpenOps!](./images/GitHub-Repo-Readme-Splash-Screen.png)
  
 [![Apache License](https://img.shields.io/badge/License-Apache%202.0-blue?logo=apache&style=for-the-badge)](https://www.apache.org/licenses/LICENSE-2.0) 
