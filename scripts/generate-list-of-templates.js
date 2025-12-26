@@ -1,8 +1,8 @@
-const credentials = require('./credentials.json');
 const fs = require('fs/promises');
 const path = require('path');
 
-const API_URL = 'https://app.openops.com/api/v1/cloud-templates?version=9999';
+const AUTH_URL = 'https://app.openops.com/api/v1/authentication/sign-in';
+const TEMPLATES_URL = 'https://app.openops.com/api/v1/flow-templates?version=9999';
 const OUT_RELATIVE = '../snippets/templates-generated.mdx';
 
 const caseInsensitive = () => (a, b) => a.localeCompare(b, undefined, {sensitivity: 'base'});
@@ -53,27 +53,56 @@ const writeMarkdownToFile = async (lines, stats) => {
     console.log(`Wrote ${stats.categories} categories, ${stats.names} template names to ${outPath}`);
 };
 
-const main = async () => {
+const getAuthToken = async () => {
+    let credentialsFile = {};
     try {
-    const res = await fetch(API_URL, {
-      headers: {
-        Accept: 'application/json',
-        Cookie: credentials.cookie
-      }
+        credentialsFile = require('./credentials.json');
+    } catch {
+        console.log('No credentials.json found. Using environment variables instead.');
+    }
+
+    const username = process.env.OPENOPS_USERNAME || credentialsFile.username;
+    const password = process.env.OPENOPS_PASSWORD || credentialsFile.password;
+
+    const auth = await fetch(AUTH_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+                "email": username,
+                "password": password
+            }
+        )
     });
 
-    if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
+    if (!auth.ok) throw new Error(`Unable to authenticate with app.openops.com: error ${auth.status}, ${auth.statusText}`);
 
-    const templates = await res.json();
-    if (!Array.isArray(templates)) throw new Error('Unexpected API response: expected array');
+    return (await auth.json()).token;
+};
 
-    const categoryMap = groupTemplatesByCategory(templates);
-    const {lines, stats} = prepareMarkdownLines(categoryMap, caseInsensitive);
-    await writeMarkdownToFile(lines, stats);
-  } catch (err) {
-    console.error('Error:', err?.message ?? err);
-    process.exitCode = 1;
-  }
+const main = async () => {
+    try {
+        const token = await getAuthToken()
+        const res = await fetch(TEMPLATES_URL, {
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
+
+        const templates = await res.json();
+        if (!Array.isArray(templates)) throw new Error('Unexpected API response: expected array');
+
+        const categoryMap = groupTemplatesByCategory(templates);
+        const {lines, stats} = prepareMarkdownLines(categoryMap, caseInsensitive);
+        await writeMarkdownToFile(lines, stats);
+    } catch (err) {
+        console.error('Error:', err?.message ?? err);
+        process.exitCode = 1;
+    }
 };
 
 main();
