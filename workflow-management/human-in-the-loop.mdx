@@ -54,7 +54,7 @@ When this action fires, the Microsoft Teams user or channel receives a message t
 When the user clicks one of the buttons, your **Request Action** step receives this as the output. You can then create a [conditional branch](/workflow-management/conditional-branching/) with the **Split** action and implement distinct steps depending on which button the user clicked:
 ![Splitting based on a user action](/images/hitl-teams-split.png)
 
-### Elsewhere
+### By email
 
 To request approvals through other communication channels, such as via email, use the **Approval** block of actions:
 <NarrowImage src="/images/hitl-approval-actions.png" alt="Approval actions" />
@@ -64,6 +64,8 @@ In this case, here's how you can create the approval part of your workflow:
 2. Add an action to message a stakeholder the two links. For example, you can use **Send Email** from the **SMTP** block or **Send Email** from the **Microsoft Outlook** block.
 3. Add the **Wait For Approval** action from the **Approval** block. Once the stakeholder clicks a link, this action updates the approval status accordingly.
 4. Add the **Condition** action to take steps in case of approval or disapproval.
+
+TODO sample SMTP setup as a screenshot or a series of screenshots when unblocked (https://dev.internal.openops.com/flows/UGoKU1Q7qg57NX04BSyd4?viewOnly=false)
 
 ## Sending notifications
 
