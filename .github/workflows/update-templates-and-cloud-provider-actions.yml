@@ -1,0 +1,78 @@
+name: Update Templates And Cloud Provider Actions
+
+on:
+  schedule:
+    - cron: '45 15 * * 3'
+  workflow_dispatch:
+
+jobs:
+  update-templates-and-actions:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.2.2
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate templates list
+        run: node scripts/generate-list-of-templates.js
+        env:
+          OPENOPS_USERNAME: ${{ secrets.OPENOPS_USERNAME }}
+          OPENOPS_PASSWORD: ${{ secrets.OPENOPS_PASSWORD }}
+
+      - name: Generate cloud provider actions list
+        run: node scripts/generate-lists-of-cloud-provider-actions.js
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git status --porcelain | grep .; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No changes detected. Exiting successfully."
+          fi
+
+      - name: Stop if no changes
+        if: steps.changes.outputs.changed == 'false'
+        run: exit 0
+
+      - name: Create update branch
+        id: branch
+        run: |
+          TS=$(date -u +"%Y-%m-%d-%H-%M")
+          BRANCH="updated-templates-and-actions-$TS"
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+          git checkout -b "$BRANCH"
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add .
+          git commit -m "Templates and cloud provider actions updated as of $(date -u +'%Y-%m-%d')"
+          git push origin HEAD
+
+      - name: Create pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create \
+            --head "${{ steps.branch.outputs.branch }}" \
+            --base "${{ github.ref_name }}" \
+            --title "Update templates and cloud provider actions" \
+            --body "Automated update of templates and cloud provider actions." \
+            --reviewer gorohoroh
