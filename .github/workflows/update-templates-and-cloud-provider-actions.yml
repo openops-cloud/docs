@@ -42,12 +42,9 @@ jobs:
             echo "No changes detected. Exiting successfully."
           fi
 
-      - name: Stop if no changes
-        if: steps.changes.outputs.changed == 'false'
-        run: exit 0
-
       - name: Create update branch
         id: branch
+        if: steps.changes.outputs.changed == 'true'
         run: |
           TS=$(date -u +"%Y-%m-%d-%H-%M")
           BRANCH="updated-templates-and-actions-$TS"
@@ -55,6 +52,7 @@ jobs:
           git checkout -b "$BRANCH"
 
       - name: Commit and push changes
+        if: steps.changes.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -64,6 +62,7 @@ jobs:
           git push origin HEAD
 
       - name: Create pull request
+        if: steps.changes.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
