@@ -14,7 +14,7 @@ For example, you can create a workflow that flags idle RDS instances for review,
 
 You can automate sending your stakeholders messages with actionable links or buttons and make your workflow stop executing until the receiver clicks one of these links or buttons. Depending on their choice, you can split the subsequent steps of your workflow into conditional branches.
 
-OpenOps offers dedicated approval request features for Slack and Microsoft Teams, as well as a more generic approval mechanism that you can use with other communication channels.
+OpenOps offers dedicated approval request features for Slack and Microsoft Teams, as well as a more generic approval mechanism that you can use with other communication channels such as email.
 
 ### On Slack
 
@@ -42,7 +42,17 @@ However, **Send Message** doesn't wait for a reply from the recipient. Instead, 
 
 ### On Microsoft Teams
 
-TODO
+OpenOps provides the following actions in its Microsoft Teams block:
+<NarrowImage src="/images/hitl-teams-actions.png" alt="Microsoft Teams actions" />
+
+**Request Action** is the action that you can use to request approval. It lets you build a Teams message with action buttons, send it to a chat or a channel, and wait until the recipient clicks a button to convey a decision:
+<NarrowImage src="/images/hitl-teams-request-action-properties.png" alt="Request action via Microsoft Teams" />
+
+When this action fires, the Microsoft Teams user or channel receives a message that you've defined in the action's properties. The message may look like this:
+<NarrowImage src="/images/hitl-teams-message.png" alt="MS Teams message with an action request" />
+
+When the user clicks one of the buttons, your **Request Action** step receives this as the output. You can then create a [conditional branch](/workflow-management/conditional-branching/) with the **Split** action and implement distinct steps depending on which button the user clicked:
+![Splitting based on a user action](/images/hitl-teams-split.png)
 
 ### Elsewhere
 
@@ -61,7 +71,6 @@ Besides approvals, you can also send notifications about completed workflows or 
 * Actions in the **Slack** block:
     * **Send Message** to send a direct message or a message to a public Slack channel.
     * **Update Message** to update a message previously sent to a public Slack channel.
-* **Send Channel Message** and **Send Chat Message** under **Microsoft Teams**:
-    <NarrowImage src="/images/hitl-teams-actions.png" alt="Microsoft Teams actions" />
+* **Send Channel Message** and **Send Chat Message** under **Microsoft Teams**.
 * Actions in the **Jira Cloud** block, such as **Change Issue Status** and **Add Issue Comment**.
 * Actions to send emails under **SMTP** and **Microsoft Outlook**.
