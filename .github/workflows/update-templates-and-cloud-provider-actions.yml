@@ -71,4 +71,4 @@ jobs:
             --base "${{ github.ref_name }}" \
             --title "Update templates and cloud provider actions" \
             --body "Automated update of templates and cloud provider actions." \
-            --reviewer gorohoroh
+            --reviewer marco-comi-openops
