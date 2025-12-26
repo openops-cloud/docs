@@ -1,4 +1,3 @@
-const credentials = require('./credentials.json');
 const fs = require('fs/promises');
 const path = require('path');
 
@@ -28,13 +27,7 @@ const writeMarkdownToFile = async (lines, cloudProvider, number) => {
 const main = async () => {
     try {
         for (const cloudProvider of CLOUD_PROVIDERS) {
-            const res = await fetch(API_BASE_URL + cloudProvider.url, {
-                headers: {
-                    Accept: 'application/json',
-                    Cookie: credentials.cookie
-                }
-            });
-
+            const res = await fetch(API_BASE_URL + cloudProvider.url);
             if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
 
             const block = await res.json();
