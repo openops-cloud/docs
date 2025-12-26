@@ -88,7 +88,8 @@
         "group": "Integrations",
         "pages": [
           "integrations/cloudability",
-          "integrations/cloudhealth"
+          "integrations/cloudhealth",
+          "integrations/flexera"
         ]
       },
       {

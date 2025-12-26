@@ -1,0 +1,335 @@
+---
+title: 'Flexera'
+description: "An overview of how Flexera One can be integrated with OpenOps"
+icon: 'pencil-ruler'
+---
+
+import { NarrowImage } from '/snippets/narrow-image.jsx'
+import WorkflowDesign from '/snippets/integrations/designing-a-workflow.mdx'
+
+OpenOps integrates with [Flexera One](https://www.flexera.com/products/flexera-one) to automate the retrieval and management of cloud resource usage recommendations.
+
+## Actions
+
+OpenOps provides three [actions](/workflow-management/actions) for interacting with Flexera One:
+
+<NarrowImage src="/images/flexera-actions.png" alt="Flexera actions" />
+
+All Flexera actions are based on the [Flexera One API](https://developer.flexera.com/) and require configuring a Flexera One [connection](/cloud-access/access-levels-permissions), where you need to specify your app region, refresh token, organization ID, and project ID.
+
+<NarrowImage src="/images/flexera-connection.png" alt="Configuring a Flexera connection" />
+
+The following sections describe the three actions available in the Flexera block.
+
+### Get Active Recommendations
+Retrieves active cost optimization recommendations from Flexera:
+- **Policy Set**: Dynamic dropdown of available policy sets from your Flexera account
+- **Filter by Provider**: Optional filter by cloud provider (AWS, Azure, Google, or Alibaba)
+
+Below is a sample output returned by this step when it is configured to request active Azure recommendations for the "Unused Volumes" policy set:
+
+<Expandable title="Flexera One recommendations">
+```json
+[
+  {
+    "id": "65ef1f6a2f831bae8d05dfcd-0",
+    "kind": "optima#recommendation",
+    "tags": [
+      "environment=dev",
+      "app=inventoryManagement"
+    ],
+    "type": "Usage Reduction",
+    "region": "westus2",
+    "status": "active",
+    "vendor": "Azure",
+    "details": {
+      "ID": "/subscriptions/f048a88c-9bc9-43cf-a30d-f48c94708866/resourceGroups/wideblueberry/providers/Microsoft.Compute/disks/zealouskiwi",
+      "Tags": "environment=dev, app=inventoryManagement",
+      "State": "Unattached",
+      "Region": "westus2",
+      "Service": "Microsoft.Compute",
+      "Age (Days)": 323,
+      "Created At": "2025-10-10T09:05:17+00:00",
+      "Resource ID": "/subscriptions/f048a88c-9bc9-43cf-a30d-f48c94708866/resourceGroups/wideblueberry/providers/Microsoft.Compute/disks/zealouskiwi",
+      "Resource Name": "zealouskiwi",
+      "Resource Type": "Microsoft.Compute/disks",
+      "Attached VM ID": "/subscriptions/f048a88c-9bc9-43cf-a30d-f48c94708866/resourceGroups/wideblueberry/providers/Microsoft.Compute/virtualMachines/flatpenguin",
+      "Disk Size (GB)": 169,
+      "Recommendation": "Delete unused volume zealouskiwi in Azure Subscription transparentjaguar (f048a88c-9bc9-43cf-a30d-f48c94708866)",
+      "Resource Group": "wideblueberry",
+      "Lookback Period": 30,
+      "Subscription ID": "f048a88c-9bc9-43cf-a30d-f48c94708866",
+      "Savings Currency": "US$",
+      "Subscription Name": "transparentjaguar",
+      "Estimated Monthly Savings": 296.48
+    },
+    "savings": 296.48,
+    "service": "Microsoft.Compute",
+    "accountID": "f048a88c-9bc9-43cf-a30d-f48c94708866",
+    "createdAt": "2025-07-14T15:39:03Z",
+    "policySet": "Unused Volumes",
+    "updatedAt": "2025-07-17T14:47:19.633Z",
+    "incidentID": "65ef1f6a2f831bae8d05dfcd",
+    "resourceID": "/subscriptions/f048a88c-9bc9-43cf-a30d-f48c94708866/resourceGroups/wideblueberry/providers/Microsoft.Compute/disks/zealouskiwi",
+    "accountName": "transparentjaguar",
+    "resourceType": "Microsoft.Compute/disks",
+    "statusReason": "",
+    "resourceGroup": "wideblueberry",
+    "databaseEngine": "",
+    "recommendation": "Azure Unused Volumes [Demo]",
+    "billingCenterID": "unallocated",
+    "billingCenterName": "Unallocated",
+    "quantityToPurchase": 0,
+    "customTagDimensions": {
+      "tag_name": "",
+      "tag_hashtag": "",
+      "tag_k8s_app": "",
+      "tag_project": "",
+      "tag_purpose": "",
+      "tag_cost_centers": "",
+      "tag_product_line": "",
+      "tag_business_unit": "",
+      "tag_oracle_environment": "",
+      "tag_itam_corporate_unit": "",
+      "tag_kubernetes_container": "",
+      "tag_kubernetes_controller": "",
+      "tag_kubernetes_cluster_name": "",
+      "tag_kubernetes_resource_name": "",
+      "tag_kubernetes_resource_type": "",
+      "tag_kubernetes_resource_namespace": ""
+    },
+    "ruleBasedDimensions": {
+      "rbd_tagmaps": "None",
+      "rbd_tshirts": "None",
+      "rbd_ai_tools": "None",
+      "rbd_bill_split": "None",
+      "rbd_cost_owner": "None",
+      "rbd_department": "None",
+      "rbd_production": "None",
+      "rbd_application": "None",
+      "rbd_cost_center": "None",
+      "rbd_environment": "None",
+      "rbd_s3usagetypes": "None",
+      "rbd_business_unit": "None",
+      "rbd_product_owner": "None",
+      "rbd_s3_usage_type": "None",
+      "rbd_chargebackcode": "None",
+      "rbd_it_dept_markup": "None",
+      "rbd_environmenttest": "None",
+      "rbd_sample_rbd_list": "None",
+      "rbd_tagged_untagged": "None",
+      "rbd_hardware_dept_markup": "None",
+      "rbd_commitment_source_eco": "Non-Eco",
+      "rbd_cost_center_normalized": "None",
+      "rbd_committment_allocations": "None"
+    }
+  },
+  {
+    "id": "65ef1f6a2f831bae8d05dfcd-1",
+    "kind": "optima#recommendation",
+    "tags": [
+      "environment=prod",
+      "app=userManagement"
+    ],
+    "type": "Usage Reduction",
+    "region": "australiaeast",
+    "status": "active",
+    "vendor": "Azure",
+    "details": {
+      "ID": "/subscriptions/1aec08f2-c15d-4c32-919c-4bab940f69f3/resourceGroups/glossytitan/providers/Microsoft.Compute/disks/opaquepluto",
+      "Tags": "environment=prod, app=userManagement",
+      "State": "Unattached",
+      "Region": "australiaeast",
+      "Service": "Microsoft.Compute",
+      "Age (Days)": 226,
+      "Created At": "2025-06-05T06:54:21+00:00",
+      "Resource ID": "/subscriptions/1aec08f2-c15d-4c32-919c-4bab940f69f3/resourceGroups/glossytitan/providers/Microsoft.Compute/disks/opaquepluto",
+      "Resource Name": "opaquepluto",
+      "Resource Type": "Microsoft.Compute/disks",
+      "Attached VM ID": "/subscriptions/1aec08f2-c15d-4c32-919c-4bab940f69f3/resourceGroups/glossytitan/providers/Microsoft.Compute/virtualMachines/quickeunomia",
+      "Disk Size (GB)": 486,
+      "Recommendation": "Delete unused volume opaquepluto in Azure Subscription circulareris (1aec08f2-c15d-4c32-919c-4bab940f69f3)",
+      "Resource Group": "glossytitan",
+      "Lookback Period": 30,
+      "Subscription ID": "1aec08f2-c15d-4c32-919c-4bab940f69f3",
+      "Savings Currency": "US$",
+      "Subscription Name": "circulareris",
+      "Estimated Monthly Savings": 141.74
+    },
+    "savings": 141.74,
+    "service": "Microsoft.Compute",
+    "accountID": "1aec08f2-c15d-4c32-919c-4bab940f69f3",
+    "createdAt": "2025-07-14T15:39:03Z",
+    "policySet": "Unused Volumes",
+    "updatedAt": "2025-07-17T14:47:19.633Z",
+    "incidentID": "65ef1f6a2f831bae8d05dfcd",
+    "resourceID": "/subscriptions/1aec08f2-c15d-4c32-919c-4bab940f69f3/resourceGroups/glossytitan/providers/Microsoft.Compute/disks/opaquepluto",
+    "accountName": "circulareris",
+    "resourceType": "Microsoft.Compute/disks",
+    "statusReason": "",
+    "resourceGroup": "glossytitan",
+    "databaseEngine": "",
+    "recommendation": "Azure Unused Volumes [Demo]",
+    "billingCenterID": "unallocated",
+    "billingCenterName": "Unallocated",
+    "quantityToPurchase": 0,
+    "customTagDimensions": {
+      "tag_name": "",
+      "tag_hashtag": "",
+      "tag_k8s_app": "",
+      "tag_project": "",
+      "tag_purpose": "",
+      "tag_cost_centers": "",
+      "tag_product_line": "",
+      "tag_business_unit": "",
+      "tag_oracle_environment": "",
+      "tag_itam_corporate_unit": "",
+      "tag_kubernetes_container": "",
+      "tag_kubernetes_controller": "",
+      "tag_kubernetes_cluster_name": "",
+      "tag_kubernetes_resource_name": "",
+      "tag_kubernetes_resource_type": "",
+      "tag_kubernetes_resource_namespace": ""
+    },
+    "ruleBasedDimensions": {
+      "rbd_tagmaps": "None",
+      "rbd_tshirts": "None",
+      "rbd_ai_tools": "None",
+      "rbd_bill_split": "None",
+      "rbd_cost_owner": "None",
+      "rbd_department": "None",
+      "rbd_production": "None",
+      "rbd_application": "None",
+      "rbd_cost_center": "None",
+      "rbd_environment": "None",
+      "rbd_s3usagetypes": "None",
+      "rbd_business_unit": "None",
+      "rbd_product_owner": "None",
+      "rbd_s3_usage_type": "None",
+      "rbd_chargebackcode": "None",
+      "rbd_it_dept_markup": "None",
+      "rbd_environmenttest": "None",
+      "rbd_sample_rbd_list": "None",
+      "rbd_tagged_untagged": "None",
+      "rbd_hardware_dept_markup": "None",
+      "rbd_commitment_source_eco": "Non-Eco",
+      "rbd_cost_center_normalized": "None",
+      "rbd_committment_allocations": "None"
+    }
+  },
+  {
+    "id": "65ef1f6a2f831bae8d05dfcd-2",
+    "kind": "optima#recommendation",
+    "tags": [
+      "environment=dev",
+      "app=customerSupport",
+      "tier=application"
+    ],
+    "type": "Usage Reduction",
+    "region": "uksouth",
+    "status": "active",
+    "vendor": "Azure",
+    "details": {
+      "ID": "/subscriptions/8752afcb-f9b4-453b-b34c-cb9f3a9a0247/resourceGroups/tinycarrot/providers/Microsoft.Compute/disks/whiteoctopus",
+      "Tags": "environment=dev, app=customerSupport, tier=application",
+      "State": "Unattached",
+      "Region": "uksouth",
+      "Service": "Microsoft.Compute",
+      "Age (Days)": 38,
+      "Created At": "2025-02-28T11:17:17+00:00",
+      "Resource ID": "/subscriptions/8752afcb-f9b4-453b-b34c-cb9f3a9a0247/resourceGroups/tinycarrot/providers/Microsoft.Compute/disks/whiteoctopus",
+      "Resource Name": "whiteoctopus",
+      "Resource Type": "Microsoft.Compute/disks",
+      "Attached VM ID": "/subscriptions/8752afcb-f9b4-453b-b34c-cb9f3a9a0247/resourceGroups/tinycarrot/providers/Microsoft.Compute/virtualMachines/quirkyquaoar",
+      "Disk Size (GB)": 423,
+      "Recommendation": "Delete unused volume whiteoctopus in Azure Subscription wittysedna (8752afcb-f9b4-453b-b34c-cb9f3a9a0247)",
+      "Resource Group": "tinycarrot",
+      "Lookback Period": 30,
+      "Subscription ID": "8752afcb-f9b4-453b-b34c-cb9f3a9a0247",
+      "Savings Currency": "US$",
+      "Subscription Name": "wittysedna",
+      "Estimated Monthly Savings": 168.82
+    },
+    "savings": 168.82,
+    "service": "Microsoft.Compute",
+    "accountID": "8752afcb-f9b4-453b-b34c-cb9f3a9a0247",
+    "createdAt": "2025-07-14T15:39:03Z",
+    "policySet": "Unused Volumes",
+    "updatedAt": "2025-07-17T14:47:19.633Z",
+    "incidentID": "65ef1f6a2f831bae8d05dfcd",
+    "resourceID": "/subscriptions/8752afcb-f9b4-453b-b34c-cb9f3a9a0247/resourceGroups/tinycarrot/providers/Microsoft.Compute/disks/whiteoctopus",
+    "accountName": "wittysedna",
+    "resourceType": "Microsoft.Compute/disks",
+    "statusReason": "",
+    "resourceGroup": "tinycarrot",
+    "databaseEngine": "",
+    "recommendation": "Azure Unused Volumes [Demo]",
+    "billingCenterID": "unallocated",
+    "billingCenterName": "Unallocated",
+    "quantityToPurchase": 0,
+    "customTagDimensions": {
+      "tag_name": "",
+      "tag_hashtag": "",
+      "tag_k8s_app": "",
+      "tag_project": "",
+      "tag_purpose": "",
+      "tag_cost_centers": "",
+      "tag_product_line": "",
+      "tag_business_unit": "",
+      "tag_oracle_environment": "",
+      "tag_itam_corporate_unit": "",
+      "tag_kubernetes_container": "",
+      "tag_kubernetes_controller": "",
+      "tag_kubernetes_cluster_name": "",
+      "tag_kubernetes_resource_name": "",
+      "tag_kubernetes_resource_type": "",
+      "tag_kubernetes_resource_namespace": ""
+    },
+    "ruleBasedDimensions": {
+      "rbd_tagmaps": "None",
+      "rbd_tshirts": "None",
+      "rbd_ai_tools": "None",
+      "rbd_bill_split": "None",
+      "rbd_cost_owner": "None",
+      "rbd_department": "None",
+      "rbd_production": "None",
+      "rbd_application": "None",
+      "rbd_cost_center": "None",
+      "rbd_environment": "None",
+      "rbd_s3usagetypes": "None",
+      "rbd_business_unit": "None",
+      "rbd_product_owner": "None",
+      "rbd_s3_usage_type": "None",
+      "rbd_chargebackcode": "None",
+      "rbd_it_dept_markup": "None",
+      "rbd_environmenttest": "None",
+      "rbd_sample_rbd_list": "None",
+      "rbd_tagged_untagged": "None",
+      "rbd_hardware_dept_markup": "None",
+      "rbd_commitment_source_eco": "Non-Eco",
+      "rbd_cost_center_normalized": "None",
+      "rbd_committment_allocations": "None"
+    }
+  }
+]
+    ```
+</Expandable>
+
+### Get Incident
+Retrieves details of a specific incident from Flexera:
+- **Incident ID**: The unique identifier of the incident to retrieve
+
+### Custom API Call
+Allows making arbitrary calls to any [Flexera One API](https://developer.flexera.com/) endpoint:
+- **URL**: Dynamic endpoint selection
+- **Method**: `GET`, `POST`, `PATCH`, `PUT`, `DELETE`, or `HEAD`
+- **Headers**: Optional (authorization auto-injected)
+- **Query Parameters**: Optional
+- **Body**: Optional JSON payload
+
+<WorkflowDesign
+    productName="Flexera"
+    tagArrayName="tags"
+    recommendationsActionName="Get Active Recommendations"
+    snoozeActionName="Custom API Call"
+/>

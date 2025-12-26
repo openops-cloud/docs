@@ -1,0 +1,29 @@
+## Designing a workflow
+
+A typical {productName} workflow starts by collecting active recommendations using the *{recommendationsActionName}* action, then iterating through them, determining the owner of the affected resource, and deciding whether to request an action from the owner. If the owner approves the action, the workflow can remediate the resource using the actions available for the [cloud platforms OpenOps supports](/cloud-access/supported-cloud-providers).
+
+Below is a description of common patterns that can be implemented in your {productName} workflows.
+
+### Owner mapping
+
+{productName} recommendations often need to be routed to the appropriate resource owners for review and action. OpenOps workflows can help you map cloud resources to their owners using tag values in the <code>{tagArrayName}</code> array returned by the *{recommendationsActionName}* action. Subsequent workflow steps may add owners or departments to the preconfigured [*Tag-owner mapping* table](/reporting-analytics/tables#tag-owner-mapping).
+
+If your {productName} instance returns specific owners, your workflow can add their contact details to the *Tag-owner mapping* table automatically. If it does not, you can populate the table manually once for each business unit to ensure that subsequent workflow runs know which team member should receive notifications or approval requests.
+
+For an example of implementing owner mapping as a separate workflow, see [Creating a workflow to fill the project-owner mapping table](/integrations/cloudhealth#creating-a-workflow-to-fill-the-project-owner-mapping-table) in the CloudHealth integration guide. While the guide covers a different FinOps product, the principles of owner mapping apply to {productName} workflows as well.
+
+### Recommendation tracking using OpenOps tables and states
+
+Rather than acting on each recommendation once and then losing track of its status, your OpenOps workflow can log {productName} recommendations to the preconfigured [*Opportunities* table](/reporting-analytics/tables#opportunities) for centralized tracking and status management.
+
+Workflows using the *{recommendationsActionName}* action can create or update table records with details such as estimated savings, resource IDs, recommendation types, and current status (*Created*, *Under Review*, *Dismissed*, *Snoozed*). This approach prevents duplicate notifications, provides audit trails, and enables reporting on realized vs. unrealized savings across your organization.
+
+Learn how to implement opportunity tracking by following the [CloudHealth recommendation logging workflow](/integrations/cloudhealth#look-up-the-opportunity-in-the-openops-table).
+
+### Handling recommendations via Slack
+
+For recommendations that require human judgment, OpenOps can send interactive Slack messages that allow resource owners to approve, dismiss, or snooze optimization opportunities directly from Slack.
+
+After retrieving recommendations with *{recommendationsActionName}*, workflows can use owner mapping to identify the appropriate Slack user, then send a Slack message with buttons for different responses using *Request Action* in the Slack action block. Based on the user's decision, the workflow can mark the recommendation as rejected, delay the recommendation using the *{snoozeActionName}* action, or proceed with remediation using OpenOps actions for the [cloud provider](/cloud-access/supported-cloud-providers) involved. Decisions can be tracked in the *Opportunities* table.
+
+See [Send a Slack notification with action buttons](/integrations/cloudhealth#send-a-slack-notification-with-action-buttons) in the CloudHealth guide for implementation details.
