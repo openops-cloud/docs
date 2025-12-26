@@ -23,9 +23,6 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install dependencies
-        run: npm ci
-
       - name: Generate templates list
         run: node scripts/generate-list-of-templates.js
         env:
