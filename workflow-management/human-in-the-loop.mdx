@@ -65,7 +65,8 @@ In this case, here's how you can create the approval part of your workflow:
 3. Add the **Wait For Approval** action from the **Approval** block. Once the stakeholder clicks a link, this action updates the approval status accordingly.
 4. Add the **Condition** action to take steps in case of approval or disapproval.
 
-TODO sample SMTP setup as a screenshot or a series of screenshots when unblocked (https://dev.internal.openops.com/flows/UGoKU1Q7qg57NX04BSyd4?viewOnly=false)
+Here's a sample workflow that uses **Create Approval Links**, delivers an email notification using **Send Email** in the **SMTP** block, then proceeds based on the output of the **Wait For Approval** action:
+![Sending approval links via email](/images/hitl-email-approval-links.png)
 
 ## Sending notifications
 
