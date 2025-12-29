@@ -45,28 +45,31 @@ However, **Send Message** doesn't wait for a reply from the recipient. Instead, 
 OpenOps provides the following actions in its Microsoft Teams block:
 <NarrowImage src="/images/hitl-teams-actions.png" alt="Microsoft Teams actions" />
 
-**Request Action** is the action that you can use to request approval. It lets you build a Teams message with action buttons, send it to a chat or a channel, and wait until the recipient clicks a button to convey a decision:
+**Request Action** is the action you can use to request approval. It lets you build a Teams message with action buttons, send it to a chat or a channel, and wait until the recipient clicks a button to convey a decision:
 <NarrowImage src="/images/hitl-teams-request-action-properties.png" alt="Request action via Microsoft Teams" />
 
-When this action fires, the Microsoft Teams user or channel receives a message that you've defined in the action's properties. The message may look like this:
+When this action runs, the Microsoft Teams user or channel receives a message that you've defined in the action's properties. The message may look like this:
 <NarrowImage src="/images/hitl-teams-message.png" alt="MS Teams message with an action request" />
 
-When the user clicks one of the buttons, your **Request Action** step receives this as the output. You can then create a [conditional branch](/workflow-management/conditional-branching/) with the **Split** action and implement distinct steps depending on which button the user clicked:
+When the user clicks one of the buttons, your **Request Action** step receives the selection as its output. You can then create a [conditional branch](/workflow-management/conditional-branching/) with the **Split** action and implement different steps depending on which button the user clicked:
 ![Splitting based on a user action](/images/hitl-teams-split.png)
 
 ### By email
 
-To request approvals through other communication channels, such as via email, use the **Approval** block of actions:
+To request approvals through other communication channels, such as email, use the **Approval** block of actions:
 <NarrowImage src="/images/hitl-approval-actions.png" alt="Approval actions" />
 
-In this case, here's how you can create the approval part of your workflow:
-1. Add the **Create Approval Links** action from the **Approval** block. This action generates two links: one for approval and the other for disapproval.
-2. Add an action to message a stakeholder the two links. For example, you can use **Send Email** from the **SMTP** block or **Send Email** from the **Microsoft Outlook** block.
+In this case, you can create the approval part of your workflow as follows:
+1. Add the **Create Approval Links** action from the **Approval** block. This action generates two links: one for approval and one for disapproval.
+2. Add an action to send the two links to a stakeholder. For example, you can use **Send Email** from the **SMTP** block or **Send Email** from the **Microsoft Outlook** block.
 3. Add the **Wait For Approval** action from the **Approval** block. Once the stakeholder clicks a link, this action updates the approval status accordingly.
-4. Add the **Condition** action to take steps in case of approval or disapproval.
+4. Add the **Condition** action to define steps for approval and disapproval.
 
-Here's a sample workflow that uses **Create Approval Links**, delivers an email notification using **Send Email** in the **SMTP** block, then proceeds based on the output of the **Wait For Approval** action:
+Here's a sample workflow that uses **Create Approval Links**, delivers an email notification using **Send Email** from the **SMTP** block, and then proceeds based on the output of the **Wait For Approval** action:
 ![Sending approval links via email](/images/hitl-email-approval-links.png)
+
+The email with approval links may look like this:
+![Email with approval links](/images/hitl-email.png)
 
 ## Sending notifications
 
