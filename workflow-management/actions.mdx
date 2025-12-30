@@ -120,7 +120,14 @@ These actions allow you to retrieve and update data in issues and boards in proj
 These actions help store and share information collected during workflow runs.
 
 * **OpenOps Tables**: create and update records in [tables](/reporting-analytics/tables/).
-* **SFTP**: create or read files on a remote server via SFTP.
-* **Storage**: store data in and read it from your OpenOps installation's key-value storage. The storage is accessible at run, workflow, and project levels.
 * **Microsoft Outlook**: send, forward, reply to, find, and move emails.
+* **SFTP**: create or read files on a remote server via SFTP.
 * **SMTP**: send emails.
+* **Storage**: store data in and read it from your OpenOps installation's key-value storage. The storage is accessible at the run, workflow, and installation levels.
+    * **Put**: saves or overwrites a string value under a given key.
+    * **Get**: retrieves a string value by key from storage. If the key does not exist, returns an optional default value.
+    * **Append**: appends text to an existing string value. Optionally inserts a separator between values (for example, `\n` for new lines). Fails if the existing value is an array, not a string — in this case, use *Add To List* instead.
+    * **Remove**: deletes a key and its associated value from storage.
+    * **Add To List**: treats the stored value as an array and appends a new item to it. The item value is always stored as text: any non-string input is implicitly converted to a string (for example, objects are JSON-serialized). If the key does not exist, it is created and initialized with an empty array. Can optionally skip insertion if an equal value already exists in the array. Fails if the existing value is a string, not an array — in this case, use *Append* instead.
+    * **Remove from List**: removes a matching item from an array value for the given key. Uses deep equality to find the item. If multiple matching values exist, only the first match is removed. Fails if the stored value is not an array.
+    * **List**: returns all keys and their values (both strings and arrays) in storage for the selected scope. Supports optional regex-based key filtering.
