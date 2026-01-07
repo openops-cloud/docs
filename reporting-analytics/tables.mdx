@@ -17,7 +17,7 @@ OpenOps tables are fully integrated with OpenOps workflow capabilities: there ar
 Tables help you perform multiple tasks, such as:
 * Map **cloud resources to owners** based on tags and business units. This is an essential stage for workflows that include [human-in-the-loop](/workflow-management/human-in-the-loop/) steps. For every resource that provides cost-saving opportunities requiring human intervention, the workflow needs a way to determine who to send an approval request to.
 * Log **opportunities and anomalies** in a central location, with options to approve, dismiss, mark as false positive, or snooze.
-* Compile a list of unused or idle **resources to delete**.
+* Compile a list of unused or idle **resources to delete**, such as Idle EBS volumes.
 * Generate **spend reports** broken down by business unit, owner, or cloud service.
 
 ## Preconfigured tables
@@ -28,7 +28,7 @@ OpenOps comes with multiple [workflow templates](/workflow-management/workflow-t
 
 This means that when you decide to create a workflow based on a template, you don't need to create the tables that your workflow uses: they're already available. If you’re using workflows from templates, make sure not to modify the structure of preconfigured tables to avoid breaking the workflows.
 
-Let's take a look at two tables that come preconfigured and are used in many workflow templates: **Opportunities** and **Tag-owner mapping**.
+Let's take a look at preconfigured tables that are used in many workflow templates, such as **Opportunities**, **Tag-owner mapping**, and **Business units**.
 
 ### Opportunities
 
@@ -45,6 +45,10 @@ Here's a sample of the **Opportunities** table in an active OpenOps installation
 The preconfigured **Tag-owner mapping** table is used in workflow templates to retrieve emails of resource owners based on values of resource tags whose labels are specified in the workflow.
 
 This table has three fields: **Owner tag value**, **Owner email**, and **BU**. The latter connects it to another preconfigured table, **Business units**, which stores more details about each business unit.
+
+### Business units
+
+The preconfigured **Business units** table stores information about business units used in your workflows. By default, this table includes fields such as **BU name**, **BU code**, and **Notes**.
 
 ### Example of usage in a workflow template
 
