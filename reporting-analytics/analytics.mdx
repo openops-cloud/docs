@@ -15,7 +15,7 @@ In addition to OpenOps tables, OpenOps Analytics can connect to and visualize yo
 
 To configure data visualizations, click **Analytics** on the main navigation bar in OpenOps. When the **Analytics** view opens, click **Admin Panel** to proceed to the Analytics admin portal that is separate from the main OpenOps application.
 
-To sign in to the Analytics portal, use `admin` as the username and the password defined with the `OPS_ANALYTICS_ADMIN_PASSWORD` variable in the `.env` file in your OpenOps installation folder. (If you haven’t changed the password, the default is `please-change-this-password-1`.)
+To sign in to the Analytics portal, use `admin` as the username and the password defined with the `OPS_ANALYTICS_ADMIN_PASSWORD` variable in the `.env` file in your OpenOps installation folder. (If you haven't changed the password, the default is `please-change-this-password-1`.)
 
 <Note>
 If you don't have access to the OpenOps installation folder:
@@ -30,6 +30,12 @@ Once you log in, you can see a built-in dashboard called **FinOps**. Modifying t
 Behind every OpenOps table, there is a Postgres database view that can be used to build charts and queries.
 
 When a new table is created in [OpenOps tables](/reporting-analytics/tables/), the system automatically creates a new database view with the naming convention _table name \_ table id \_ userfriendly_. You can use this view to create dashboards in OpenOps, as well as connect it to other BI systems.
+
+## Demo dashboard seeding
+
+OpenOps can seed a demo dashboard named **Homepage** in the analytics portal.
+
+This seeding runs only when the `SHOW_DEMO_HOME_PAGE` flag is set. When the flag is not set, OpenOps skips seeding the demo dashboard.
 
 ## Building new charts
 
