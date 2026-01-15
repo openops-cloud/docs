@@ -11,7 +11,71 @@ You can visualize data that you collect with [OpenOps tables](/reporting-analyti
 
 In addition to OpenOps tables, OpenOps Analytics can connect to and visualize your existing data sources, such as CSV files, Google Sheets, Postgres databases, and more.
 
+## Prerequisites
+
+* OpenOps Analytics must be enabled and reachable from the OpenOps application (for example, via `OPS_ANALYTICS_PUBLIC_URL` and `OPS_ANALYTICS_PRIVATE_URL` in your `.env` file).
+* Your OpenOps user must have permission to access Analytics in your OpenOps instance.
+
 ## Analytics admin portal
+
+To configure data visualizations, click **Analytics** on the main navigation bar in OpenOps. When the **Analytics** view opens, click **Admin Panel** to proceed to the Analytics admin portal that is separate from the main OpenOps application.
+
+To sign in to the Analytics portal, use `admin` as the username and the password defined with the `OPS_ANALYTICS_ADMIN_PASSWORD` variable in the `.env` file in your OpenOps installation folder. (If you haven’t changed the password, the default is `please-change-this-password-1`.)
+
+<Note>
+If you don't have access to the OpenOps installation folder:
+* Contact your OpenOps instance administrator if you're using a self-managed OpenOps instance.
+* [Contact OpenOps support](mailto:support@openops.com) if you're using an OpenOps-hosted instance.
+</Note>
+
+Once you log in, you can see a built-in dashboard called **FinOps**. Modifying this dashboard will affect the **Analytics** tab in OpenOps.
+
+![Built-in dashboards in the analytics portal](/images/analytics-builtin-dashboards.png)
+
+Behind every OpenOps table, there is a Postgres database view that can be used to build charts and queries.
+
+When a new table is created in [OpenOps tables](/reporting-analytics/tables/), the system automatically creates a new database view with the naming convention _table name \_ table id \_ userfriendly_. You can use this view to create dashboards in OpenOps, as well as connect it to other BI systems.
+
+## Building new charts
+
+To configure a new chart based on an OpenOps table to display in the **Analytics** view in OpenOps, do the following:
+
+1. Navigate to **Datasets** and click **+ Dataset**:
+    ![Creating a dataset](/images/analytics-create-dataset.png)
+2. Select `openops_tables_connection` for **Database** and `public` for **Schema**. In the **Table** dropdown, select a Postgres DB view corresponding to the OpenOps table you want to source data from. For example, here is what a view may be named for the *Opportunities* table:
+    <NarrowImage src="/images/analytics-new-dataset.png" alt="New dataset" />
+3. Click **Create dataset and create chart**.
+4. In the **Create a new chart** view, select a chart type, then click **Create new chart**:
+    ![Selecting a chart type](/images/analytics-select-chart-type.png)
+5. Configure your chart. Refer to [this Superset documentation page](https://superset.apache.org/docs/using-superset/creating-your-first-dashboard#creating-charts-in-explore-view) if you need help. To preview the configured chart, click **Create chart** in the right pane.
+    ![Chart preview](/images/analytics-chart-preview.png)
+6. If you make further changes to the chart, click **Update chart** to refresh the preview.
+7. When you're done, click **Save**. In the **Save chart** dialog, select **FinOps** in the **Add to dashboard** dropdown:
+    <NarrowImage src="/images/analytics-save-chart.png" alt="Saving a chart" />
+8. Click **Save**. When you go back to the **Analytics** view in OpenOps, you can see that the chart is now displayed there:
+    ![Chart in OpenOps Analytics](/images/analytics-chart-in-openops.png)
+
+For more information on how to create charts, see the [Superset documentation](https://superset.apache.org/docs/intro/).
+
+## Connecting to external data sources
+
+Here's what you can do to connect OpenOps Analytics to external data sources such as CSV files:
+
+1. In the Analytics admin portal, in the top right corner, click **Settings**, then **Database Connections**.
+    <NarrowImage src="/images/analytics-external-menu.png" alt="Database connections settings" widthPercent={40} />
+2. Click **+ Database** to connect to an external data source, such as your own Postgres instance or Google Sheets.
+3. Once you have created a database connection, if you’d like to upload CSVs to it, click the **Edit** icon for the database connection:
+    ![Editing a database connection](/images/analytics-edit-db-connection.png)
+4. In the popup that displays, go to **Advanced > Security**, scroll down, and enable **Allow file uploads to database**.
+    <NarrowImage src="/images/analytics-database-allow-file-uploads.png" alt="Allowing file uploads" widthPercent={60} />
+5. Click **Finish**.
+
+To upload CSV files into your database, click **+** in the top right corner, then select **Data > Upload CSV to database**:
+<NarrowImage src="/images/analytics-upload-csv-to-db.png" alt="Uploading CSV into a database" widthPercent={65} />
+
+You can now build charts based on the data from your external data source, similar to how you do it with OpenOps tables. When you add charts to the **FinOps** dashboard, they become available in the **Analytics** view in OpenOps.
+
+<JoinCommunity/>
 
 To configure data visualizations, click **Analytics** on the main navigation bar in OpenOps. When the **Analytics** view opens, click **Admin Panel** to proceed to the Analytics admin portal that is separate from the main OpenOps application.
 
