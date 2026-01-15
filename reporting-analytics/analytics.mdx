@@ -31,7 +31,11 @@ Behind every OpenOps table, there is a Postgres database view that can be used t
 
 When a new table is created in [OpenOps tables](/reporting-analytics/tables/), the system automatically creates a new database view with the naming convention _table name \_ table id \_ userfriendly_. You can use this view to create dashboards in OpenOps, as well as connect it to other BI systems.
 
-## Building new charts
+## Running without OpenOps Analytics
+
+OpenOps can run without the Analytics service.
+
+When OpenOps Analytics is not available, the **Analytics** view and admin portal are not available, but other OpenOps features (for example, tables, workflows, and workflow runs) continue to work.
 
 To configure a new chart based on an OpenOps table to display in the **Analytics** view in OpenOps, do the following:
 
