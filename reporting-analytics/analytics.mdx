@@ -18,6 +18,13 @@ In addition to OpenOps tables, OpenOps Analytics can connect to and visualize yo
 
 If Analytics is not deployed for your environment, the OpenOps app can still run, but the **Analytics** view is not available.
 
+## Analytics seeding behavior
+
+OpenOps runs an internal Analytics seeding step during startup.
+
+* If `OPS_ANALYTICS_PRIVATE_URL` is not configured, the seeding step is skipped.
+* If the `SHOW_DEMO_HOME_PAGE` flag is not enabled, seeding the demo **Homepage** dashboard is skipped.
+
 ## Analytics admin portal
 
 To configure data visualizations, click **Analytics** on the main navigation bar in OpenOps. When the **Analytics** view opens, click **Admin Panel** to proceed to the Analytics admin portal that is separate from the main OpenOps application.
