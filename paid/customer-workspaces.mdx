@@ -1,0 +1,106 @@
+---
+title: 'Customer Workspaces'
+description: 'Organize and manage work in separate, isolated environments'
+icon: 'folders'
+---
+
+import { NarrowImage } from '/snippets/narrow-image.jsx'
+
+<Info>
+  **Customer workspaces** is an Enterprise edition feature. See [pricing](https://www.openops.com/pricing/) for details.
+</Info>
+
+Customer workspaces allow you to organize work in separate, isolated environments. Each workspace contains its own workflows, connections, and resources. This enables organizations to separate different projects, clients, or departments while maintaining clear boundaries between them.
+
+![Workspace Management Page](/images/paid/workspace-management-page.png)
+
+In larger organizations, workspaces help teams organize their work by business unit, environment (dev/staging/production), or client. Central teams can create workspaces for different departments, each with its own workflows and data.
+
+For managed service providers (MSPs), customer workspaces are essential for maintaining strict separation between client data and workflows, ensuring each client's work remains isolated and secure.
+
+## Accessing Workspaces
+
+Every user automatically gets a default workspace. You can access workspaces through the **workspace switcher** in the top navigation bar.
+
+![Workspace Switcher](/images/paid/workspace-switcher.png)
+
+You can also navigate to the **Workspaces Management** page to view all workspaces in a table, create new ones, and manage existing workspaces.
+
+## Creating a New Workspace
+
+To create a new workspace:
+
+1. Navigate to the **Workspaces Management** page
+2. Click the **"Add new"** button
+3. Enter a unique workspace name (at least 1 character)
+4. Click **"Confirm"**
+
+
+![Workspace Switcher](/images/paid/new-workspace.png)
+
+You will automatically become the owner and be switched to the new workspace. The system creates a dedicated database and authentication tokens for the workspace.
+
+## Switching Between Workspaces
+
+You can switch workspaces by:
+
+- Clicking the workspace name in the top navigation bar and selecting a workspace from the dropdown
+- Clicking the **"Switch"** button next to a workspace in the Workspaces Management page
+
+The current workspace is marked with a checkmark (✓). The application reloads when switching workspaces to ensure all data and resources are properly loaded for the selected workspace.
+
+## Managing Workspaces
+
+### Workspace Information
+
+The Workspaces Management page displays for each workspace:
+
+- Workspace name
+- Number of active workflows
+- Ownership status (only owners see the action menu)
+
+### Renaming a Workspace
+
+Only workspace owners can rename workspaces:
+
+1. In the Workspaces Management page, click the three-dot menu (⋯) on the workspace row
+2. Select **"Rename"**
+3. Enter a new unique name
+4. Click **"Update"**
+
+### Default Workspace
+
+Every user has a default workspace (typically named "[Your Name]'s Workspace") that is automatically created. Default workspaces appear first in lists and are marked with a users icon in the workspace switcher.
+
+## Workspace Ownership and Members
+
+### Ownership
+
+The user who creates a workspace becomes its owner. Owners can rename the workspace and manage members.
+
+### Member Management
+
+Workspace members can switch to and work within any workspace they have access to. You can manage members and switch workspaces programmatically using a REST client. These operations operate on the workspace you are currently switched to.
+
+### Roles
+
+Workspaces support the following roles: **ADMIN**, **EDITOR**, **OPERATOR**, and **VIEWER**. Role-based permission enforcement is currently being implemented; the primary authorization check is ownership-based.
+
+## Searching Workspaces
+
+Use the search bar in the workspace switcher or the Workspaces Management page to filter workspaces by name. Search is case-insensitive and matches partial names.
+
+![Searching in Workspace Switcher](/images/paid/workspace-switcher-search.png)
+
+## Master Project Workspace
+
+Each organization has one designated **Master Project** workspace that provides access to special organization-wide features. You must switch to the master project workspace to access these features.
+
+### Analytics Access
+
+**OpenOps Analytics** is only accessible when switched to the master project workspace. All users who have access to the master project can view analytics, regardless of their role.
+
+### Private Template Catalog Management
+
+Only organization **admins** in the master project workspace can create, edit, or delete private templates (requires private template editor feature to be enabled).
+
