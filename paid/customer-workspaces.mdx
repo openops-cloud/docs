@@ -68,6 +68,8 @@ Only workspace owners can rename workspaces:
 3. Enter a new unique name
 4. Click **"Update"**
 
+![Renaming workspace ](/images/paid/workspace-management-rename.png)
+
 ### Default Workspace
 
 Every user has a default workspace (typically named "[Your Name]'s Workspace") that is automatically created. Default workspaces appear first in lists and are marked with a users icon in the workspace switcher.
@@ -86,21 +88,28 @@ Workspace members can switch to and work within any workspace they have access t
 
 Workspaces support the following roles: **ADMIN**, **EDITOR**, **OPERATOR**, and **VIEWER**. Role-based permission enforcement is currently being implemented; the primary authorization check is ownership-based.
 
+### Master Project Workspace
+
+Each organization has one designated **Master Project** workspace that provides access to special organization-wide features. You must switch to the master project workspace to access these features.
+
+New users are not assigned to the master project by default. They must be granted access and switch to it manually.
+
+![Master Project Selected](/images/paid/master-project-selected.png)
+
+![Master Project Selection Preview](/images/paid/master-project-selection-preview.png)
+
+![Personal Workspace Selected](/images/paid/personal-workspace-selected.png)
+
+#### Analytics Access
+
+**OpenOps Analytics** is only accessible when switched to the master project workspace. All users who have access to the master project can view analytics, regardless of their role.
+
+#### Private Template Catalog Management
+
+Only organization **admins** in the master project workspace can create, edit, or delete private templates (requires private template editor feature to be enabled).
+
 ## Searching Workspaces
 
 Use the search bar in the workspace switcher or the Workspaces Management page to filter workspaces by name. Search is case-insensitive and matches partial names.
 
 ![Searching in Workspace Switcher](/images/paid/workspace-switcher-search.png)
-
-## Master Project Workspace
-
-Each organization has one designated **Master Project** workspace that provides access to special organization-wide features. You must switch to the master project workspace to access these features.
-
-### Analytics Access
-
-**OpenOps Analytics** is only accessible when switched to the master project workspace. All users who have access to the master project can view analytics, regardless of their role.
-
-### Private Template Catalog Management
-
-Only organization **admins** in the master project workspace can create, edit, or delete private templates (requires private template editor feature to be enabled).
-
