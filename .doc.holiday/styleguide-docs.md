@@ -287,7 +287,7 @@ introduction/
 
 paid/
 - Documentation of features available only in paid plans.
-- Files: organization-template-catalog.mdx
+- Files: organization-template-catalog.mdx, customer-workspaces.mdx
 
 reporting-analytics/
 - Documentation of analytics and reporting features, as well as ways to import OpenOps content into external BI tools.
