@@ -81,6 +81,7 @@
       {
         "group": "Paid Features",
         "pages": [
+          "paid/sso-authentication",
           "paid/organization-template-catalog"
         ]
       },
