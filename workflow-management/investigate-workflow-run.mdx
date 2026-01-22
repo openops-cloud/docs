@@ -34,6 +34,42 @@ In the **Recent Runs** pane that opens on the left, click a run that you want to
 
 This will open the selected run in the **Run Details** pane.
 
+---
+title: 'Investigating Workflow Runs'
+description: 'How to troubleshoot and debug workflow runs'
+icon: 'magnifying-glass'
+---
+
+import { NarrowImage } from '/snippets/narrow-image.jsx'
+import RestartContainers from '/snippets/restart-containers.mdx'
+
+If a workflow didn't execute the way you expected it to, you can investigate what went wrong by viewing the history of workflow runs. You can do this [from the **Runs** view](#finding-a-run-from-the-runs-view) or directly [from the workflow editor](#finding-a-run-from-the-workflow-editor).
+
+## Finding a run from the Runs view
+
+Click **Runs** in the OpenOps main menu.
+
+This opens the list of all runs across all your workflows, with the most recent runs shown first:
+![The list of all workflow runs](/images/runs-default.png)
+
+You can filter the list by workflow name, run status (succeeded, failed, paused, timeout, etc.), type (triggered, manual run, test run), or a date range:
+![Workflow runs with filters applied](/images/runs-filters.png)
+
+When you've found a run you want to investigate, click on it. This will open the workflow editor in a view-only mode.
+
+Alternatively, if a run is taking longer than expected or is stuck in a paused state, you can abort it by clicking the three-dot menu on the right and selecting **Stop Run**:
+![Stopping a run](/images/runs-stop.png)
+
+## Finding a run from the workflow editor
+
+If the workflow you want to investigate is already open in the workflow editor, click **Run logs** in the top menu:
+<NarrowImage src="/images/workflow-editor-run-logs.png" alt="Run logs button" />
+
+In the **Recent Runs** pane that opens on the left, click a run that you want to investigate. Failed runs are marked with the ❌ icon:
+<NarrowImage src="/images/workflow-editor-recent-runs.png" alt="Recent Runs pane" widthPercent={65} />
+
+This will open the selected run in the **Run Details** pane.
+
 ## Retrying a run on the latest version
 
 From the **Runs** list, use the run actions menu (three dots) to retry a run.
@@ -41,7 +77,24 @@ From the **Runs** list, use the run actions menu (three dots) to retry a run.
 * For successful runs, the action is labeled **Rerun on latest version**.
 * For failed or stopped runs, the action is labeled **Retry on latest version**.
 
-When you select this action, OpenOps retries the run using the latest locked version of the workflow.
+When you select this action, OpenOps starts a new run using the latest locked version of the workflow.
+
+## Investigating in the Run Details view
+
+In the **Run Details** pane, each workflow step will display a ✅ or a ❌ to indicate its execution status.
+
+Click on a failed step to see its inputs and outputs. Explore the outputs to view the error message:
+<NarrowImage src="/images/run-details-error.png" alt="Run Details pane with error details" widthPercent={50} />
+
+To update the workflow to address the error, click **Edit** in the top-right corner of the workflow editor. This switches the editor from view-only mode, enabling you to select the problematic step and modify its properties.
+
+## Changing the default timeout
+
+By default, OpenOps times out if a workflow runs for more than 10 minutes. This applies to both scheduled runs and test runs.
+
+If you build long-running workflows, you may want to extend the default timeout. To do this, open the `.env` file in your OpenOps installation directory and add a new environment variable named `OPS_FLOW_TIMEOUT_SECONDS`. Set its value to the desired timeout in seconds — for example, `900` for 15 minutes or `3600` for 1 hour.
+
+<RestartContainers/>
 
 ## Investigating in the Run Details view
 
