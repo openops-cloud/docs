@@ -61,6 +61,12 @@ OpenOps provides over 10 triggers divided into several blocks:
 
 Some triggers are used more often than others. For most of your scenarios, you will probably use one of the triggers in the **Schedule** block, setting your workflows to run at a predetermined interval. For details on schedule triggers, see [Scheduling](/workflow-management/scheduling/).
 
+If you use the **Webhook** trigger, note that it supports both asynchronous and synchronous calls:
+* Use the live URL shown in the trigger properties to start the workflow asynchronously.
+* If the webhook caller expects a response, add `/sync` to the end of the live URL. The request waits for the workflow to complete.
+* If the synchronous request takes more than 30 seconds, it returns `408 Request Timeout`.
+* To return a response body and headers from your workflow, add an **HTTP** step with the **Return Response** action.
+
 After selecting a trigger, click the trigger node again to display a right-hand pane with the properties of the trigger. For example, here are the properties of the *Every day* trigger:
 ![Trigger properties](/images/workflow-editor-trigger-properties.png)
 
