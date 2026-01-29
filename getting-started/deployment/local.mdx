@@ -7,6 +7,7 @@ icon: 'laptop-code'
 import AutoInstall from '/snippets/auto-install.mdx'
 import HostValidation from '/snippets/host-validation.mdx';
 import JoinCommunity from '/snippets/join-community.mdx'
+import RestartContainers from '/snippets/restart-containers.mdx';
 import UpdateCredentials from '/snippets/env-update-credentials.mdx';
 import UpdateLink from '/snippets/update-link.mdx';
 
@@ -138,6 +139,20 @@ sudo docker compose down && docker compose up -d
 ```
 
 <HostValidation/>
+
+## Configuring allowed SMTP ports
+
+By default, OpenOps allows SMTP connections on ports 25, 465, 587, and 2525. Administrators can customize which SMTP ports are available by setting the `OPS_SMTP_ALLOWED_PORTS` environment variable in the `.env` file.
+
+To configure allowed SMTP ports, open the `.env` file in your installation folder and set the `OPS_SMTP_ALLOWED_PORTS` variable to a comma-separated list of port numbers:
+
+```shell
+OPS_SMTP_ALLOWED_PORTS=25,465,587,2525
+```
+
+<Note>Port numbers must be valid TCP ports in the range 1-65535. At least one valid port must be configured. Invalid port numbers will be filtered out.</Note>
+
+<RestartContainers />
 
 ## Using Azure CLI in workflows: running with local credentials
 
