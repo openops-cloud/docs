@@ -12,6 +12,7 @@ import JoinCommunity from '/snippets/join-community.mdx'
 import ManualInstall from '/snippets/manual-install.mdx'
 import NetworkPorts from '/snippets/network-ports.mdx';
 import TLS from '/snippets/tls.mdx';
+import RestartContainers from '/snippets/restart-containers.mdx';
 import UpdateLink from '/snippets/update-link.mdx';
 
 <Disclaimer/>
@@ -83,12 +84,7 @@ OPS_SMTP_ALLOWED_PORTS=25,465,587,2525
 
 <Note>Port numbers must be valid TCP ports in the range 1-65535. At least one valid port must be configured. Invalid port numbers will be filtered out.</Note>
 
-After making any changes to the `.env` file, restart the OpenOps containers:
-
-```shell
-sudo docker compose down
-sudo docker compose up -d
-```
+<RestartContainers />
 
 <UpdateLink/>
 
