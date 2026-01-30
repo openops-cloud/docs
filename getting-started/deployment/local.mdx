@@ -161,4 +161,11 @@ To do this, you need to set two environment variables in the `.env` file under t
 * `OPS_ENABLE_HOST_SESSION=true`: enables sharing of the host session with the platform container.
 * `HOST_AZURE_CONFIG_DIR="~/.azure"`: defines the path to the host machine's Azure configuration folder that will be shared with the platform container.
 
+## Using Google Cloud CLI in workflows: running with local credentials
+
+It is possible to share your local Google Cloud CLI session with the platform for local applications.
+To do this, you need to set two environment variables in the `.env` file under the installation folder:
+* `OPS_ENABLE_HOST_SESSION=true`: enables sharing of the host session with the platform container.
+* `HOST_CLOUDSDK_CONFIG="~/.config/gcloud"`: defines the path to the host machine's Google Cloud configuration folder that will be shared with the platform container.
+
 <JoinCommunity/>
