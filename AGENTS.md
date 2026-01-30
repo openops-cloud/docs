@@ -1,6 +1,6 @@
-# Mintlify documentation agent — guidance
+# Documentation agent instructions
 
-This file guides the Mintlify documentation agent when suggesting or applying changes to this repository. Follow it so suggestions match our tone, audience, style, and structure.
+This file guides the documentation agent when suggesting or applying changes to this repository. Follow it so suggestions match our tone, audience, style, and structure.
 
 ## Audience and product
 
