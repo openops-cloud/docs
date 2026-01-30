@@ -1,0 +1,102 @@
+---
+title: 'Webhook responses'
+description: 'Send HTTP responses back to webhook callers from your workflows'
+icon: 'reply'
+---
+
+import { NarrowImage } from '/snippets/narrow-image.jsx'
+
+When a workflow is triggered by a webhook, you can send a custom HTTP response back to the caller. This enables synchronous communication patterns where the webhook caller waits for and receives a response from your workflow.
+
+## Use cases
+
+Webhook responses are useful when you need to:
+
+- Return processed data to the webhook caller
+- Acknowledge receipt of webhook data with custom status codes
+- Implement synchronous API endpoints using OpenOps workflows
+- Provide immediate feedback to external systems
+
+## How it works
+
+When a workflow is triggered by a webhook, OpenOps can send a response back to the caller before the workflow completes. The response includes:
+
+- HTTP status code
+- Response headers
+- Response body (JSON or raw text)
+
+By default, webhook triggers return a standard acknowledgment response. Use the **Send Webhook Response** action to customize this response.
+
+## Sending a webhook response
+
+To send a custom response to a webhook caller:
+
+1. Add the **HTTP** block's **Send Webhook Response** action to your workflow
+2. Configure the response properties:
+   - **Status**: HTTP status code (default: 200)
+   - **Headers**: Custom HTTP headers as a JSON object
+   - **Body Type**: Choose between JSON or Raw text
+   - **Response**: The response body content
+
+### Example: JSON response
+
+```json
+{
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "success": true,
+    "message": "Data processed successfully",
+    "processedAt": "2026-01-29T10:00:00Z"
+  }
+}
+```
+
+### Example: Raw text response
+
+```text
+Status: 200
+Body Type: Raw
+Response: "Operation completed successfully"
+```
+
+## Response timing
+
+The webhook response is sent as soon as the **Send Webhook Response** action executes in your workflow. The workflow continues to run after sending the response, but the webhook caller receives the response immediately.
+
+<Note>
+If your workflow doesn't include a **Send Webhook Response** action, OpenOps automatically sends a default acknowledgment response when the webhook is received.
+</Note>
+
+## Timeout behavior
+
+By default, webhook callers will timeout after 30 seconds if no response is sent. Ensure your workflow sends a response within this timeframe to avoid timeout errors.
+
+You can configure the webhook timeout using the `OPS_WEBHOOK_TIMEOUT_SECONDS` environment variable in your OpenOps deployment.
+
+## Best practices
+
+- **Send responses early**: Place the **Send Webhook Response** action early in your workflow to avoid timeouts
+- **Use appropriate status codes**: Return meaningful HTTP status codes (200 for success, 400 for bad requests, 500 for errors)
+- **Include error handling**: Use conditional branching to send different responses based on workflow outcomes
+- **Keep responses lightweight**: Avoid sending large payloads in webhook responses
+
+## Limitations
+
+- Only one response can be sent per webhook trigger
+- Responses must be sent within the configured timeout period (default: 30 seconds)
+- The response is sent asynchronously through the OpenOps engine
+
+## Example workflow
+
+Here's a complete example of a workflow that receives webhook data, processes it, and sends a custom response:
+
+1. **Webhook trigger**: Catches incoming webhook
+2. **Data validation**: Validates the incoming data
+3. **Send Webhook Response**: Sends acknowledgment to caller
+4. **Process data**: Continues processing in the background
+5. **Store results**: Saves processed data to a database
+
+This pattern allows you to acknowledge receipt immediately while continuing to process data asynchronously.
