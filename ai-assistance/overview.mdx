@@ -47,6 +47,25 @@ It can also work with Amazon MCP servers, namely AWS Cost Explorer MCP Server, A
 
 When available, the AI assistant includes reasoning in its replies, showing which tools (such as MCP servers) it used, displaying the raw data retrieved from those tools, and outlining next steps in plain language.
 
+#### Selecting the model for a chat
+
+OpenOps lets you pick the language model for each AI chat (for example, the assistant chat sidebar and the **Generate with AI** chat in step settings).
+
+To change the model:
+1. Open the AI chat.
+2. In the composer area, use the model selector to pick a different model.
+
+If the model is not supported by the configured provider, OpenOps rejects the selection.
+
+#### Understanding tool output in replies
+
+AI assistant replies can include tool output. For example, when the assistant uses MCP tools, the reply can show:
+* The tool name.
+* The tool input.
+* The tool output.
+
+Some tool outputs are marked as errors. When a tool output is an error, OpenOps still persists and displays the tool output, but it is flagged as an error.
+
 ### AI Step action
 
 The **AI Step** action lets you run AI prompts in a separate step in your workflow, using outputs of its previous steps as context.
