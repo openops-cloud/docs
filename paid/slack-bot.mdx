@@ -43,6 +43,8 @@ Once connected, you can use the bot from Slack.
 
 ## Using the bot in Slack
 
+![Using the OpenOps bot in Slack](/images/paid/slack-bot-usage.png)
+
 You can interact with the OpenOps bot in two primary ways, plus several other methods for different scenarios.
 
 ### Chat in split view
@@ -55,14 +57,13 @@ To work in Slack and interact with the bot simultaneously, start a chat that ope
 
 **Your first conversation:**
 
+![First conversation in split view](/images/paid/slack-first-conversation.png)
+
 The first time you start a chat in split view:
 
 1. **Environment** – If you have access to more than one environment, the bot asks you to choose one. With a single environment, this step is skipped.
 2. **Project** – Next, you choose a project. Again, this is skipped if you only have one.
 3. **Response** – The bot confirms and then streams its response in real time.
-
-{/* Add screenshot: Split view chat with environment/project selection. Suggested filename: slack-split-view.png */}
-{/* ![Chat in split view](/images/paid/slack-split-view.png) */}
 
 ### Chat from the app's Home tab
 
@@ -73,9 +74,6 @@ You can also start a conversation with the bot from the OpenOps app's Home tab.
 3. A side pane opens with the app's information. Click **Open app**.
 4. Click **New chat** in the top right-hand corner, or click the **Chat tab** to resume a conversation.
 5. To view your chat history, click on the **History tab**.
-
-{/* Add screenshot: Chat from app's Home tab. Suggested filename: slack-app-home-tab.png */}
-{/* ![Chat from app's Home tab](/images/paid/slack-app-home-tab.png) */}
 
 ### Other ways to interact
 
@@ -91,10 +89,9 @@ Example:
 
 @OpenOps Bot What workflows are currently running?
 
-{/* Add screenshot: @mentioning the bot in a channel. Suggested filename: slack-mention-channel.png */}
-{/* ![Mention the bot in a channel](/images/paid/slack-mention-channel.png) */}
-
 #### "Ask OpenOps Agent" shortcut
+
+![Ask OpenOps Agent shortcut](/images/paid/slack-shortcut-ask-agent.png)
 
 You can send an existing thread to the OpenOps agent for analysis:
 
@@ -103,11 +100,10 @@ You can send an existing thread to the OpenOps agent for analysis:
 3. In the modal, enter your question about the conversation.
 4. Click **Ask**.
 
-{/* Add screenshot: "Ask OpenOps Agent" shortcut on a message. Suggested filename: slack-shortcut-ask-agent.png */}
-{/* ![Ask OpenOps Agent shortcut](/images/paid/slack-shortcut-ask-agent.png) */}
-
 
 ## Slash commands
+
+![Slash command example](/images/paid/slack-slash-command.png)
 
 The bot supports slash commands for environment and channel defaults. Responses are **ephemeral** (only you see them).
 
@@ -119,9 +115,6 @@ The bot supports slash commands for environment and channel defaults. Responses 
 | `/openops-clear-default` | Clear the channel default. |
 
 Type the command in the message box in a channel where the bot is installed.
-
-{/* Add screenshot: Slash command in message box. Suggested filename: slack-slash-command.png */}
-{/* ![Slash command example](/images/paid/slack-slash-command.png) */}
 
 ## Channel defaults
 
@@ -144,6 +137,3 @@ New conversations in that channel will use these defaults. Existing threads keep
 ## Stopping bot streaming
 
 While the bot is streaming a reply, a **Stop** button is shown. Click it to stop the response.
-
-{/* Add screenshot: Stop button during streaming. Suggested filename: slack-stop-streaming.png */}
-{/* ![Stop streaming](/images/paid/slack-stop-streaming.png) */}
