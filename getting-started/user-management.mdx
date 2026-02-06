@@ -10,13 +10,29 @@ When you deploy OpenOps for the first time, it creates an admin user account. Th
 
 The admin user account created this way has exactly one distinction: it can be used to create other user accounts.
 
+## Password requirements
+
+When creating a user (including the initial admin user), use a password that:
+
+* Is 8 to 64 characters long
+* Contains at least one lowercase letter
+* Contains at least one uppercase letter
+* Contains at least one number
+* Contains at least one special character
+
+OpenOps accepts alphanumeric characters and the following special characters:
+
+```text
+! @ # $ % ^ & * ( ) _ + - = [ ] { } ; ' : " \ | , . < > / ?
+```
+
 ## Creating new user accounts
 
 OpenOps doesn't currently provide a UI for creating user accounts; instead, you can do it with two API calls.
 
 The first API call is to sign in the admin user:
 
-```
+```http
 POST http://your-openops-installation/api/v1/authentication/sign-in
 Content-Type: application/json
 
@@ -28,7 +44,7 @@ Content-Type: application/json
 
 This call will return a JSON object that contains a property called `token`. Copy the value of this property and use it in the authorization header in the next call. This next call actually creates a new user account. Before making the call, in the body, don't forget to specify actual values for the four properties that are left empty in the sample below:
 
-```
+```http
 POST http://your-openops-installation/api/v1/authentication/sign-up
 Authorization: Bearer your-admin-token
 Content-Type: application/json
