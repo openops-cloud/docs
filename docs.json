@@ -83,7 +83,8 @@
         "group": "Paid Features",
         "pages": [
           "paid/organization-template-catalog",
-          "paid/customer-workspaces"
+          "paid/customer-workspaces",
+          "paid/slack-bot"
         ]
       },
       {
