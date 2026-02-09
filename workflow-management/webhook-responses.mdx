@@ -67,14 +67,22 @@ Response: "Operation completed successfully"
 The webhook response is sent as soon as the **Send Webhook Response** action executes in your workflow. The workflow continues to run after sending the response, but the webhook caller receives the response immediately.
 
 <Note>
-If your workflow doesn't include a **Send Webhook Response** action, OpenOps automatically sends a default acknowledgment response when the webhook is received.
+If your workflow doesn't include a **Send Webhook Response** action, OpenOps automatically sends a default acknowledgment at the end of the workflow execution.
+
+### Default response
+
+```json
+{
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "message": "Request completed."
+  }
+}
+```
 </Note>
-
-## Timeout behavior
-
-By default, webhook callers will timeout after 30 seconds if no response is sent. Ensure your workflow sends a response within this timeframe to avoid timeout errors.
-
-You can configure the webhook timeout using the `OPS_WEBHOOK_TIMEOUT_SECONDS` environment variable in your OpenOps deployment.
 
 ## Best practices
 
@@ -86,7 +94,6 @@ You can configure the webhook timeout using the `OPS_WEBHOOK_TIMEOUT_SECONDS` en
 ## Limitations
 
 - Only one response can be sent per webhook trigger
-- Responses must be sent within the configured timeout period (default: 30 seconds)
 - The response is sent asynchronously through the OpenOps engine
 
 ## Example workflow
