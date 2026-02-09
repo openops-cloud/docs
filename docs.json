@@ -48,6 +48,7 @@
           "workflow-management/import-export",
           "workflow-management/actions",
           "workflow-management/scheduling",
+          "workflow-management/webhook-responses",
           "workflow-management/passing-data",
           "workflow-management/conditional-branching",
           "workflow-management/human-in-the-loop",
