@@ -65,6 +65,9 @@ In this case, you can create the approval part of your workflow as follows:
 3. Add the **Wait For Approval** action from the **Approval** block. Once the stakeholder clicks a link, this action updates the approval status accordingly.
 4. Add the **Condition** action to define steps for approval and disapproval.
 
+> **Note**
+> The **Create Approval Links** action generates links using the instance public URL. The link opens a resume page in the OpenOps UI, which then resumes the workflow with either the approve or disapprove action.
+
 Here's a sample workflow that uses **Create Approval Links**, delivers an email notification using **Send Email** from the **SMTP** block, and then proceeds based on the output of the **Wait For Approval** action:
 ![Sending approval links via email](/images/hitl-email-approval-links.png)
 
