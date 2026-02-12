@@ -14,6 +14,8 @@ OpenOps includes tables, a data storage mechanism based on [Baserow](https://bas
 
 OpenOps tables are fully integrated with OpenOps workflow capabilities: there are [actions](/workflow-management/actions/) that let you create and update records in tables, as well as read data from them.
 
+<Note>If you need workflow outputs to land in your organization's existing data warehouse (Snowflake, AWS Athena, BigQuery), you can configure workflows to [write directly to external databases](/reporting-analytics/connecting-to-external-tools#writing-workflow-outputs-to-external-databases) instead of using OpenOps tables.</Note>
+
 Tables help you perform multiple tasks, such as:
 * Map **cloud resources to owners** based on tags and business units. This is an essential stage for workflows that include [human-in-the-loop](/workflow-management/human-in-the-loop/) steps. For every resource that provides cost-saving opportunities requiring human intervention, the workflow needs a way to determine who to send an approval request to.
 * Log **opportunities and anomalies** in a central location, with options to approve, dismiss, mark as false positive, or snooze.
