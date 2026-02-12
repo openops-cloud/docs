@@ -92,3 +92,135 @@ For Looker SaaS to reach a private PostgreSQL instance, you typically use one of
 
 See also:
 * [Enabling secure database access](https://docs.cloud.google.com/looker/docs/enabling-secure-db-access)
+
+## Writing workflow outputs to external databases
+
+Instead of storing workflow outputs in [OpenOps tables](/reporting-analytics/tables), you can configure workflows to write data directly to external databases. This is useful when you want workflow results to land in your organization's existing data warehouse or analytics platform.
+
+### When to use external databases for workflow outputs
+
+Use external databases when:
+* **Centralized data warehouse**: Your organization uses a centralized data warehouse (Snowflake, AWS Athena, BigQuery) and you want all analytics data in one place.
+* **Existing dashboards**: You have existing dashboards and reports that query a specific database, and you want OpenOps workflow outputs to appear there automatically.
+* **Data governance**: Your organization has strict data governance policies requiring all operational data to reside in a specific database system.
+* **Large-scale data**: You're processing large volumes of data that exceed the practical limits of OpenOps tables.
+* **Integration with ETL pipelines**: You want workflow outputs to feed into existing ETL or data transformation pipelines.
+
+Use OpenOps tables when:
+* **Human-in-the-loop workflows**: You need visual tables for approvals, dismissals, or manual review of opportunities.
+* **Quick prototyping**: You're testing workflows and want immediate visual feedback without setting up external connections.
+* **Self-contained workflows**: Your workflows are standalone and don't need to integrate with external systems.
+* **Linking between tables**: You need relational features like linking records between multiple tables.
+
+### Workflow actions that write to external databases
+
+OpenOps provides several actions for writing data to external databases:
+
+* **Snowflake**: Run queries to insert or update data in Snowflake tables.
+* **AWS Athena**: Execute SQL queries to write data to S3-backed tables via Athena.
+* **Google Cloud BigQuery**: Run SQL queries to insert data into BigQuery datasets.
+* **Databricks**: Execute SQL queries in Databricks workspaces.
+* **Custom HTTP actions**: Use REST APIs to write data to databases that expose HTTP endpoints.
+
+### Configuring workflows to write to Snowflake
+
+To write workflow outputs to Snowflake:
+
+1. In the workflow editor, add a **Snowflake** action to your workflow.
+2. In the action properties, configure the Snowflake connection:
+    * **Account**: Your Snowflake account identifier (e.g., `xy12345.us-east-1`)
+    * **Username**: Snowflake username with write permissions
+    * **Password**: Snowflake password
+    * **Database**: Target database name
+    * **Schema**: Target schema name
+    * **Warehouse**: Snowflake warehouse to use for query execution
+3. In the **Query** field, write an SQL INSERT or UPDATE statement. Use data from previous workflow steps by clicking the field and selecting values from the **Data Selector**:
+    ```sql
+    INSERT INTO cost_opportunities (resource_id, estimated_savings, account, region, opportunity_type, created_at)
+    VALUES ('{{step1.output.resourceId}}', {{step2.output.savings}}, '{{step3.output.account}}', '{{step4.output.region}}', 'idle_resource', CURRENT_TIMESTAMP())
+    ```
+4. Save and test the workflow.
+
+The Snowflake action executes the query and writes data directly to your Snowflake table. You can use this data in existing Snowflake dashboards or downstream analytics processes.
+
+### Configuring workflows to write to AWS Athena
+
+To write workflow outputs to AWS Athena:
+
+1. Ensure you have an S3 bucket configured as the storage location for your Athena table.
+2. In the workflow editor, add an **AWS Athena** action to your workflow.
+3. In the action properties, configure the Athena connection:
+    * **Region**: AWS region where your Athena database resides
+    * **Database**: Athena database name
+    * **Output Location**: S3 path for query results (e.g., `s3://my-bucket/athena-results/`)
+4. In the **Query** field, write an SQL INSERT statement. Use data from previous workflow steps:
+    ```sql
+    INSERT INTO cost_opportunities
+    VALUES ('{{step1.output.resourceId}}', {{step2.output.savings}}, '{{step3.output.account}}', '{{step4.output.region}}', 'idle_resource', current_timestamp)
+    ```
+5. Save and test the workflow.
+
+The Athena action executes the query and writes data to the S3-backed table. External tools that query Athena can immediately access this data.
+
+### Configuring workflows to write to Google Cloud BigQuery
+
+To write workflow outputs to BigQuery:
+
+1. In the workflow editor, add a **Google Cloud** action and select **Run SQL query on BigQuery**.
+2. In the action properties, configure the BigQuery connection:
+    * **Project ID**: Your GCP project ID
+    * **Dataset**: Target BigQuery dataset name
+3. In the **Query** field, write an SQL INSERT statement:
+    ```sql
+    INSERT INTO `my-project.my-dataset.cost_opportunities` (resource_id, estimated_savings, account, region, opportunity_type, created_at)
+    VALUES ('{{step1.output.resourceId}}', {{step2.output.savings}}, '{{step3.output.account}}', '{{step4.output.region}}', 'idle_resource', CURRENT_TIMESTAMP())
+    ```
+4. Save and test the workflow.
+
+The BigQuery action writes data directly to your BigQuery table, making it available for analysis in Looker, Data Studio, or other BigQuery-connected tools.
+
+### Configuring workflows to write to custom databases
+
+For databases not directly supported by OpenOps actions, you can use the **HTTP** action to call REST APIs that write to your database:
+
+1. In the workflow editor, add an **HTTP** action.
+2. Configure the HTTP request:
+    * **Method**: POST or PUT
+    * **URL**: Your database API endpoint
+    * **Headers**: Include authentication headers (API keys, bearer tokens)
+    * **Body**: JSON payload with data from previous workflow steps
+3. Example body:
+    ```json
+    {
+      "resource_id": "{{step1.output.resourceId}}",
+      "estimated_savings": {{step2.output.savings}},
+      "account": "{{step3.output.account}}",
+      "region": "{{step4.output.region}}",
+      "opportunity_type": "idle_resource"
+    }
+    ```
+4. Save and test the workflow.
+
+This approach works with any database that exposes an HTTP API, including PostgreSQL (via PostgREST), MongoDB, or custom database services.
+
+### Example workflow: writing cost opportunities to Snowflake
+
+Here's a complete example of a workflow that identifies idle EC2 instances and writes opportunities to Snowflake:
+
+1. **AWS Compute Optimizer** action: Retrieve EC2 idle instance recommendations.
+2. **Loop on Items** action: Iterate over each recommendation.
+3. **Snowflake** action (inside the loop): Insert each opportunity into Snowflake:
+    ```sql
+    INSERT INTO cost_opportunities (resource_id, estimated_savings_usd, account_id, region, service, opportunity_type, created_at)
+    VALUES (
+      '{{loop.current.resourceArn}}',
+      {{loop.current.estimatedMonthlySavings}},
+      '{{loop.current.accountId}}',
+      '{{loop.current.region}}',
+      'EC2',
+      'idle_instance',
+      CURRENT_TIMESTAMP()
+    )
+    ```
+
+This workflow runs on a schedule and continuously populates your Snowflake table with cost-saving opportunities, which can be visualized in existing Snowflake dashboards.
