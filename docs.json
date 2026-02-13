@@ -82,6 +82,7 @@
       {
         "group": "Paid Features",
         "pages": [
+          "paid/sso-authentication",
           "paid/organization-template-catalog",
           "paid/customer-workspaces",
           "paid/slack-bot"
