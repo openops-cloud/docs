@@ -1,0 +1,32 @@
+---
+title: 'FinOps Benchmarks'
+description: 'Run a FinOps benchmark and understand the benchmark wizard flow'
+icon: 'gauge'
+---
+
+## Overview
+
+OpenOps includes a benchmark flow that is represented in the API as a multi-step wizard.
+
+At the API level, the wizard request can include:
+
+* `currentStep` (optional)
+* `benchmarkConfiguration` (optional)
+
+Wizard steps returned by the API include:
+
+* `currentStep`
+* `title`
+* `description` (optional)
+* `nextStep` (string or `null`)
+* `selectionType` (`single` or `multi-select`)
+* `options` (each option includes `id`, `displayName`, and optional `imageLogoUrl` and `metadata`)
+* `stepIndex`
+* `totalSteps`
+
+When a benchmark run is initiated, the API returns an `orchestratorRunId`.
+
+## Related documentation
+
+* [Workflow templates](./workflow-templates.mdx)
+* [Building workflows](./building-workflows.mdx)

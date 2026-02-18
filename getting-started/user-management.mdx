@@ -26,7 +26,14 @@ Content-Type: application/json
 }
 ```
 
-This call will return a JSON object that contains a property called `token`. Copy the value of this property and use it in the authorization header in the next call. This next call actually creates a new user account. Before making the call, in the body, don't forget to specify actual values for the four properties that are left empty in the sample below:
+This call returns a JSON object that contains a property called `token`.
+
+Use that token in one of the following ways:
+
+- Send it in the `Authorization` header as `Bearer <token>`.
+- Send it as a cookie named `token`.
+
+The next call creates a new user account. Before making the call, in the body, don't forget to specify actual values for the four properties that are left empty in the sample below:
 
 ```
 POST http://your-openops-installation/api/v1/authentication/sign-up
@@ -45,3 +52,9 @@ Content-Type: application/json
 ```
 
 The user account that you create this way will be able to perform all operations in OpenOps except for creating new user accounts. Every time you do that, you'll still need an admin token.
+
+## Viewing the OpenAPI UI
+
+OpenOps serves a Swagger UI at:
+
+- `http://your-openops-installation/api/v1/openapi`
