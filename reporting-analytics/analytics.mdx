@@ -56,6 +56,39 @@ To configure a new chart based on an OpenOps table to display in the **Analytics
 
 For more information on how to create charts, see the [Superset documentation](https://superset.apache.org/docs/intro/).
 
+## Virtual datasets (SQL)
+
+OpenOps Analytics supports creating a dataset using a SQL query (a "virtual dataset").
+
+### Overview
+
+Use a virtual dataset when a single OpenOps table (or view) is not enough and the dataset needs to be defined by a query.
+
+### Prerequisites
+
+* Access to the Analytics admin portal.
+* A database connection that contains the tables or views referenced by the SQL query.
+
+### Create a virtual dataset
+
+1. Navigate to **Datasets**.
+2. Click **+ Dataset**.
+3. Select the target **Database** and **Schema**.
+4. Select **Virtual dataset**.
+5. Enter a SQL query.
+
+   
+   The SQL query must not be empty or only whitespace.
+6. Click **Create dataset**.
+
+### Tips and best practices
+
+* Start by validating the SQL query in the database first, then paste it into the virtual dataset.
+
+### Troubleshooting
+
+* **A virtual dataset fails to create with an empty query**: Enter a non-empty SQL query.
+
 ## Connecting to external data sources
 
 Here's what you can do to connect OpenOps Analytics to external data sources such as CSV files:
