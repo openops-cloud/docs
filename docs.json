@@ -85,7 +85,8 @@
           "paid/sso-authentication",
           "paid/organization-template-catalog",
           "paid/customer-workspaces",
-          "paid/slack-app"
+          "paid/slack-bot",
+          "paid/subagents"
         ]
       },
       {
