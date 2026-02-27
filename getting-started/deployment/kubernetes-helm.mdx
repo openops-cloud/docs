@@ -1,0 +1,279 @@
+---
+title: 'Kubernetes with Helm'
+description: 'Deploy OpenOps on Kubernetes using Helm charts'
+icon: 'dharmachakra'
+---
+
+import UpdateCredentials from '/snippets/env-update-credentials.mdx';
+
+This guide explains how to deploy OpenOps on a Kubernetes cluster using the official Helm chart. The Helm chart provides a complete OpenOps stack with all necessary components.
+
+Before following the instructions, make sure that your Kubernetes cluster meets the [system requirements](/getting-started/system-requirements) for OpenOps.
+
+<Warning>
+The Helm chart is currently a work in progress and may not be production-ready. Use with caution in production environments.
+</Warning>
+
+## Prerequisites
+
+- Kubernetes cluster (version 1.19+)
+- Helm 3.x installed
+- `kubectl` configured to access your cluster
+- At least 8GB of available memory and 4 CPU cores
+- Persistent storage support (for databases and file storage)
+
+## Architecture Overview
+
+The Helm chart deploys the following components:
+
+- **nginx**: Reverse proxy and load balancer (exposed via LoadBalancer)
+- **openops-app**: Main application server
+- **openops-engine**: Task execution engine  
+- **openops-tables**: Data tables service (Baserow)
+- **openops-analytics**: Analytics dashboard (Superset)
+- **postgres**: PostgreSQL database
+- **redis**: Redis cache
+
+## Installation
+
+### Step 1: Clone the Repository
+
+First, clone the OpenOps repository to access the Helm chart:
+
+```bash
+git clone https://github.com/openops-cloud/openops.git
+cd openops
+```
+
+### Step 2: Create Values Override File
+
+Create a custom values file to override the default configuration. Start by copying the example:
+
+```bash
+cp deploy/helm/openops/values.overrides-example.yaml values.overrides.yaml
+```
+
+Edit `values.overrides.yaml` and customize the following required values:
+
+```yaml
+openopsEnv:
+  # Replace with your actual domain or IP
+  OPS_PUBLIC_URL: "http://your-domain.com"
+  
+  # Admin credentials - change these!
+  OPS_OPENOPS_ADMIN_EMAIL: admin@your-domain.com
+  OPS_OPENOPS_ADMIN_PASSWORD: your-secure-password
+  
+  # Security keys - generate new ones!
+  OPS_ENCRYPTION_KEY: your-32-character-encryption-key
+  OPS_JWT_SECRET: your-jwt-secret
+  OPS_POSTGRES_PASSWORD: your-postgres-password
+  OPS_ANALYTICS_ADMIN_PASSWORD: your-analytics-password
+  ANALYTICS_POWERUSER_PASSWORD: your-poweruser-password
+```
+
+<Warning>
+Make sure to generate strong, unique passwords and secrets. Never use the example values in production.
+</Warning>
+
+### Step 3: Install the Helm Chart
+
+Install OpenOps using Helm:
+
+```bash
+helm install openops ./deploy/helm/openops \
+  -n openops \
+  --create-namespace \
+  -f values.overrides.yaml
+```
+
+### Step 4: Wait for Deployment
+
+Monitor the deployment status:
+
+```bash
+kubectl get pods -n openops -w
+```
+
+Wait until all pods are in the `Running` state. This may take several minutes as images are pulled and databases are initialized.
+
+### Step 5: Access the Application
+
+Get the external IP address of the nginx service:
+
+```bash
+kubectl get services/nginx -n openops
+```
+
+If you're using a LoadBalancer service type, wait for the `EXTERNAL-IP` to be assigned. You can then access OpenOps at:
+
+```
+http://<EXTERNAL-IP>
+```
+
+If you're using NodePort or need to access via port-forward:
+
+```bash
+kubectl port-forward service/nginx 8080:80 -n openops
+```
+
+Then access OpenOps at `http://localhost:8080`.
+
+## Configuration
+
+### Storage Configuration
+
+The chart creates PersistentVolumeClaims for:
+- PostgreSQL data (20Gi)
+- Redis data (5Gi) 
+- Tables data (10Gi)
+
+To use a specific storage class, update your values file:
+
+```yaml
+postgres:
+  storage:
+    storageClass: "your-storage-class"
+    size: 50Gi
+
+redis:
+  storage:
+    storageClass: "your-storage-class"
+    size: 10Gi
+
+tables:
+  storage:
+    storageClass: "your-storage-class"
+    size: 20Gi
+```
+
+### Resource Limits
+
+Configure resource limits for better resource management:
+
+```yaml
+app:
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 4Gi
+    requests:
+      cpu: 500m
+      memory: 1Gi
+
+engine:
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 2Gi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+```
+
+### Ingress Configuration
+
+To use an Ingress controller instead of LoadBalancer:
+
+```yaml
+nginx:
+  service:
+    type: ClusterIP
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  hosts:
+    - host: openops.your-domain.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: openops-tls
+      hosts:
+        - openops.your-domain.com
+```
+
+## Upgrading
+
+To upgrade your OpenOps installation:
+
+```bash
+# Update the repository
+git pull origin main
+
+# Upgrade the release
+helm upgrade openops ./deploy/helm/openops \
+  -n openops \
+  -f values.overrides.yaml
+```
+
+## Uninstalling
+
+To completely remove OpenOps:
+
+```bash
+# Delete the Helm release
+helm uninstall openops -n openops
+
+# Delete persistent volumes (optional - this will delete all data)
+kubectl delete pvc -n openops --all
+
+# Delete the namespace
+kubectl delete namespace openops
+```
+
+<Warning>
+Deleting persistent volume claims will permanently delete all your data including workflows, connections, and analytics dashboards.
+</Warning>
+
+## Troubleshooting
+
+### Common Issues
+
+**Pods stuck in Pending state:**
+- Check if your cluster has sufficient resources
+- Verify storage classes are available
+- Check node selectors and taints
+
+**Database connection errors:**
+- Ensure PostgreSQL pod is running and ready
+- Check database credentials in your values file
+- Verify network policies allow communication
+
+**External access issues:**
+- Confirm LoadBalancer service has an external IP
+- Check firewall rules and security groups
+- Verify DNS configuration if using custom domains
+
+### Viewing Logs
+
+Check application logs:
+
+```bash
+# Main application logs
+kubectl logs -f deployment/openops-app -n openops
+
+# Engine logs
+kubectl logs -f deployment/openops-engine -n openops
+
+# Database logs
+kubectl logs -f deployment/postgres -n openops
+```
+
+### Debugging
+
+Access a pod for debugging:
+
+```bash
+kubectl exec -it deployment/openops-app -n openops -- /bin/bash
+```
+
+## Support
+
+For additional help:
+- Join our [Slack community](https://slack.openops.com)
+- Check the [GitHub repository](https://github.com/openops-cloud/openops) for issues
+- Review Kubernetes and Helm documentation for cluster-specific issues

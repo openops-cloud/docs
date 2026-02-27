@@ -31,6 +31,7 @@
             "group": "Deploying OpenOps",
             "pages": [
               "getting-started/deployment/local",
+              "getting-started/deployment/kubernetes-helm",
               "getting-started/deployment/aws-ec2",
               "getting-started/deployment/azure-vm",
               "getting-started/deployment/gcp-vm"
