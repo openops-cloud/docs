@@ -12,6 +12,7 @@ import JoinCommunity from '/snippets/join-community.mdx'
 import ManualInstall from '/snippets/manual-install.mdx'
 import NetworkPorts from '/snippets/network-ports.mdx';
 import TLS from '/snippets/tls.mdx';
+import RestartContainers from '/snippets/restart-containers.mdx';
 import UpdateLink from '/snippets/update-link.mdx';
 
 <Disclaimer/>
@@ -70,6 +71,20 @@ Depending on your project settings, a default firewall rule might already allow 
 <TLS target="VM"/>
 
 <HostValidation/>
+
+## Configuring allowed SMTP ports
+
+By default, OpenOps allows SMTP connections on ports 25, 465, 587, and 2525. Administrators can customize which SMTP ports are available by setting the `OPS_SMTP_ALLOWED_PORTS` environment variable in the `.env` file.
+
+To configure allowed SMTP ports, open the `.env` file in your installation folder and set the `OPS_SMTP_ALLOWED_PORTS` variable to a comma-separated list of port numbers:
+
+```shell
+OPS_SMTP_ALLOWED_PORTS=25,465,587,2525
+```
+
+<Note>Port numbers must be valid TCP ports in the range 1-65535. At least one valid port must be configured. Invalid port numbers will be filtered out.</Note>
+
+<RestartContainers />
 
 <UpdateLink/>
 

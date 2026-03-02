@@ -282,9 +282,9 @@ OpenOps may alter the spelling of your block's display name during scaffolding, 
 
 ### Product logo
 
-OpenOps also generates a stub logo URL at the `static.openops.com` domain, which doesn't exist. To see your product's logo in the OpenOps UI during development, replace the stub logo URL with a URL you control. For example, for YouTrack, the stub URL `https://static.openops.com/blocks/youtrack.png` can be replaced with a [live YouTrack logo URL](https://resources.jetbrains.com/storage/products/company/brand/logos/YouTrack_icon.png).
+OpenOps stores logo assets within the project at `packages/react-ui/public/blocks/`. When contributing an integration, add your product's logo file (PNG or SVG format) directly to this directory and reference it using the path `/blocks/[product-name].png` in your integration code.
 
-When you open a PR to the OpenOps repository, the OpenOps team will upload your product's logo to the OpenOps static server. Once this is done, you'll need to replace your logo URL in the PR with the OpenOps-hosted one.
+For example, if your product is called YouTrack, add `youtrack.png` to `packages/react-ui/public/blocks/` and set the logo URL to `/blocks/youtrack.png` in your integration definition. This ensures your logo is included in the PR and will work immediately without requiring additional steps.
 
 
 ### Categories
