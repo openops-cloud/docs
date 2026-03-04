@@ -16,32 +16,32 @@ OpenOps doesn't currently provide a UI for creating user accounts; instead, you 
 
 The first API call is to sign in the admin user:
 
+```shell
+curl -X POST http://your-openops-installation/api/v1/authentication/sign-in \
+  -H "Content-Type: application/json" \
+  -c cookies.txt \
+  -d '{
+    "email": "your-admin-email",
+    "password": "your-admin-password"
+  }'
 ```
-POST http://your-openops-installation/api/v1/authentication/sign-in
-Content-Type: application/json
 
-{
-  "email": "your-admin-email",
-  "password": "your-admin-password"
-}
-```
+The authentication token is returned as an HTTP-only cookie (not in the response body). Use the `-c` flag to save cookies to a file, then pass them with `-b` in subsequent requests.
 
-This call will return a JSON object that contains a property called `token`. Copy the value of this property and use it in the authorization header in the next call. This next call actually creates a new user account. Before making the call, in the body, don't forget to specify actual values for the four properties that are left empty in the sample below:
+The next call creates a new user account. Specify values for the four empty properties in the body:
 
-```
-POST http://your-openops-installation/api/v1/authentication/sign-up
-Authorization: Bearer your-admin-token
-Content-Type: application/json
-
-{
-  "password": "",
-  "email": "",
-  "firstName": "",
-  "lastName": "",
-  "trackEvents": false,
-  "newsLetter": false
-}
-
+```shell
+curl -X POST http://your-openops-installation/api/v1/authentication/sign-up \
+  -H "Content-Type: application/json" \
+  -b cookies.txt \
+  -d '{
+    "password": "",
+    "email": "",
+    "firstName": "",
+    "lastName": "",
+    "trackEvents": false,
+    "newsLetter": false
+  }'
 ```
 
 The user account that you create this way will be able to perform all operations in OpenOps except for creating new user accounts. Every time you do that, you'll still need an admin token.
