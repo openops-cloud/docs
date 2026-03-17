@@ -8,6 +8,20 @@ icon: 'shield-halved'
 
 OpenOps Enterprise edition includes role-based access control to manage what users can do within workspaces and across the organization. Permissions are assigned through roles at two levels: **workspace roles** and **organization roles**.
 
+## Workspace Roles
+
 Workspace owners or admins can assign a specific role to a user in a particular workspace.
 
-To learn more how to configure RBAC for your environment, contact your OpenOps account manager.
+- **Viewer** — Can view workflows, runs, connections, and templates within the workspace.
+- **Contributor** — Everything a Viewer can do, plus create, edit, delete, and test workflows, manage connections, and manage folders and templates.
+- **Workspace Owner** — Everything a Contributor can do, plus manage workspace members and workspace settings, and publish or delete templates.
+- **Admin** — Organization admins who join a workspace receive the same permissions as Workspace Owners.
+
+## Organization Roles
+
+Organization roles control permissions that apply across the entire organization, outside of any specific workspace.
+
+- **Member** — Can manage integrations and view templates.
+- **Admin** — Everything a Member can do, plus manage users, create workspaces, and assign members to workspaces.
+
+<Tip>Custom roles are available on request. Contact your OpenOps account manager to discuss your requirements.</Tip>
