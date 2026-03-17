@@ -86,7 +86,8 @@
           "paid/organization-template-catalog",
           "paid/customer-workspaces",
           "paid/slack-app",
-          "paid/subagents"
+          "paid/subagents",
+          "paid/role-based-access-control"
         ]
       },
       {
