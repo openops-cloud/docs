@@ -12,7 +12,7 @@ OpenOps provides [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormat
 
 ### OpenOpsApp Role Stack
 
-Creates the `OpenOpsApp` role with permissions to run workflows from the OpenOps template catalog. You can enable or disable certain permission sets (read-only is mandatory, others are optional).
+Creates the `OpenOpsApp` role with permissions to run workflows from the OpenOps template catalog. The stack contains all the read permissions needed to execute all templates in our library; you can still restrict the scope to the permissions needed for the templates you are actually running. Write permissions are optional and only needed if you want to apply remediation actions directly to cloud resources.
 
 **[Create OpenOpsApp stack](https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=OpenOpsApp&templateURL=https://openops.s3.us-east-2.amazonaws.com/OpenOpsAppRoleStack.yml)** | [Download template](https://openops.s3.us-east-2.amazonaws.com/OpenOpsAppRoleStack.yml)
 
