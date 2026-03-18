@@ -6,7 +6,7 @@ icon: 'chart-column'
 
 import JoinCommunity from '/snippets/join-community.mdx'
 
-**Benchmark** helps you run a **guided assessment** across the cloud provider you use with OpenOps. You choose your connection, scope, and which cost and efficiency checks to include. OpenOps automatically creates the workflows, runs them, and collects findings so you can prioritize savings and cleanup in one place.
+**Benchmark** helps you run an **automated cloud assessment** across the provider you use with OpenOps. You choose your connection, scope, and which cost and efficiency checks to include. OpenOps automatically creates the workflows, runs them, and collects findings so you can prioritize savings and cleanup in one place.
 
 
 ## What you get
@@ -18,16 +18,19 @@ import JoinCommunity from '/snippets/join-community.mdx'
 
 1. Click **Run a Benchmark** on the OpenOps home page to start.
 2. Select your **cloud provider**. If you have no connection yet, create one when prompted.
-![alt text](../images/benchmark-wizard-provider.png)
+![Benchmark wizard — select cloud provider](/images/benchmark-wizard-provider.png)
 
 3. Choose the **connection** the benchmark should use.
-![alt text](../images/benchmark-wizard-connection.png)
+![Benchmark wizard — choose connection](/images/benchmark-wizard-connection.png)
+<Note>
+For **AWS**, OpenOps must be able to assume a role that includes the **read-only permissions** defined in the Benchmark CloudFormation stack. Use the link beside this step in the wizard to open the stack details. If that role is missing or incomplete, benchmark workflows can fail. For installation steps and templates, see [AWS CloudFormation role stacks](/cloud-access/aws-cf-role-stack).
+</Note>
 
 4. Select **accounts or subscriptions** and **regions** to include.
-![alt text](../images/benchmark-wizard-regions.png)
+![Benchmark wizard — accounts and regions](/images/benchmark-wizard-regions.png)
 
 5. Choose the **benchmark workflows** that correspond to the cost and efficiency checks you want this run to perform.
-![alt text](../images/benchmark-wizard-workflows.png)
+![Benchmark wizard — select workflows](/images/benchmark-wizard-workflows.png)
 
 6. Click **Run** to execute the benchmark.
 7. When the run completes, open the benchmark report from the link in the wizard.
