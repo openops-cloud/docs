@@ -1,29 +1,44 @@
 ---
-title: 'OpenOpsApp AWS Role Stack'
-description: 'How to set up the OpenOpssApp on AWS CloudFormation'
+title: 'AWS CloudFormation Role Stacks'
+description: 'How to set up AWS roles for OpenOps using CloudFormation'
 icon: 'aws'
 ---
 
 import JoinCommunity from '/snippets/join-community.mdx'
 
-The OpenOpsApp role stack for [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html) is used to create the `OpenOpsApp` role in your AWS account. This will in turn provide the OpenOps platform with the necessary permissions to connect to your AWS resources.
+OpenOps provides [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html) templates to create IAM roles in your AWS account with the necessary permissions to connect to your AWS resources.
 
-When creating the stack, you have the option to enable or disable certain permission sets. While the read-only permission set is mandatory, the rest are completely optional. The sets can also be enabled or disabled later by updating the stack.
+## Available Stacks
 
-## Installation
+### OpenOpsApp Role Stack
 
-1. Navigate to CloudFormation on your AWS account, in the North Virginia (`us-east-1`) region. You can do so [by clicking here](https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1). The stack **must** be created in the `us-east-1` region.
-2. Click **Create stack**, then select **With new resources**:
-    ![Creating a new stack](/images/cloud-cf-roles-create-stack.png)
-3. In the **Amazon S3 URL** field, insert the following URL: `https://openops.s3.us-east-2.amazonaws.com/OpenOpsAppRoleStack.yml`, then click **Next**.
-    ![Specifying a template](/images/cloud-cf-roles-template.png)
-4. Give a name to the stack, such as `OpenOpsApp`. Enter an AWS account ID that you want OpenOps to use. Modify the permission sets if you like, then click **Next**.
-5. Scroll down to the **Capabilities** section, acknowledge the creation of the necessary IAM roles, then click **Next**:
+Creates the `OpenOpsApp` role with permissions to run workflows from the OpenOps template catalog. You can enable or disable certain permission sets (read-only is mandatory, others are optional).
+
+**[Create OpenOpsApp stack](https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=OpenOpsApp&templateURL=https://openops.s3.us-east-2.amazonaws.com/OpenOpsAppRoleStack.yml)** | [Download template](https://openops.s3.us-east-2.amazonaws.com/OpenOpsAppRoleStack.yml)
+
+**Parameters:** AWS account ID, permission sets (optional)
+
+### Benchmark Role Stack
+
+Creates a read-only `OpenOpsBenchmarkRole` specifically for running AWS cost optimization benchmarks. Includes Compute Optimizer permissions, resource read access (EC2, RDS, ELB, DynamoDB, CloudWatch, Cost Explorer, CloudTrail), and Pricing API access.
+
+**[Create Benchmark stack](https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=OpenOpsBenchmark&templateURL=https://openops.s3.us-east-2.amazonaws.com/OpenOpsBenchmarkRoleStack.yml)** | [Download template](https://openops.s3.us-east-2.amazonaws.com/OpenOpsBenchmarkRoleStack.yml) | [View on GitHub](https://github.com/openops-cloud/cloudformation-examples/tree/main/aws-benchmark-permissions)
+
+**Parameters:** TrustedAccountId (required), ExternalId (optional, recommended for security)
+
+## Installation Steps
+
+1. Click the **Create stack** link for your desired stack above.
+2. On the **Specify stack details** page, enter the required parameters, then click **Next**.
+3. On the **Configure stack options** page, click **Next**.
+4. On the **Review and create** page, scroll down to the **Capabilities** section and acknowledge the creation of IAM roles:
     ![Capabilities](/images/cloud-cf-roles-capabilities.png)
-6. In the **Review and create** view, scroll down and click **Submit**. The stack will be created, including the `OpenOpsApp` role and the requested permissions.
+5. Click **Submit**. The stack will be created with the configured permissions.
+
+**Note:** The OpenOpsApp stack **must** be created in the `us-east-1` region.
 
 ## Modification
 
-You’re welcome to [download the stack](https://openops.s3.us-east-2.amazonaws.com/OpenOpsAppRoleStack.yml) and modify specific permissions according to your needs. Notice that some AWS components in the OpenOps workflows may not function properly as a result.
+You’re welcome to download any stack template and modify specific permissions according to your needs. Notice that some AWS components in OpenOps workflows may not function properly as a result.
 
 <JoinCommunity />
