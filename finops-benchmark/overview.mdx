@@ -25,6 +25,9 @@ import JoinCommunity from '/snippets/join-community.mdx'
 <Note>
 For **AWS**, OpenOps must be able to assume a role that includes the **read-only permissions** defined in the Benchmark CloudFormation stack. Use the link beside this step in the wizard to open the stack details. If that role is missing or incomplete, benchmark workflows can fail. For installation steps and templates, see [AWS CloudFormation role stacks](/cloud-access/aws-cf-role-stack).
 </Note>
+<Note>
+For **Azure**, OpenOps must be able to use a service principal with the **OpenOps Azure Benchmark Reader** custom role assigned at the appropriate scope (subscription or management group). This role includes read-only permissions for compute, networking, databases, cost management, and Azure Advisor. If the role is not assigned or lacks required permissions, benchmark workflows can fail. For installation steps and role definitions, see [Azure RBAC custom roles](/cloud-access/azure-rbac).
+</Note>
 
 4. Select **accounts or subscriptions** and **regions** to include.
 ![Benchmark wizard — accounts and regions](/images/benchmark-wizard-regions.png)

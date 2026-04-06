@@ -1,0 +1,224 @@
+---
+title: 'Azure RBAC Custom Roles'
+description: 'How to set up Azure custom roles for OpenOps Benchmark using RBAC'
+icon: 'microsoft'
+---
+
+import JoinCommunity from '/snippets/join-community.mdx'
+
+OpenOps provides Azure custom role definitions to create RBAC roles in your Azure subscriptions with the necessary permissions to run benchmark assessments and collect cost optimization data.
+
+## Available Custom Roles
+
+### OpenOps Azure Benchmark Reader
+
+Creates the `OpenOps Azure Benchmark Reader` custom role with read-only permissions for running Azure cost optimization benchmarks. This role includes:
+
+* **Compute resources**: Virtual machines, managed disks, snapshots, and images
+* **Networking**: Network interfaces and public IP addresses
+* **App Services**: Web apps, App Service Plans, and App Service Environments
+* **Databases**: Azure SQL servers, databases, and elastic pools
+* **Cost and billing**: Cost Management queries, consumption usage details, and billing properties
+* **Monitoring**: Azure Monitor metrics
+* **Optimization**: Azure Advisor recommendations and metadata
+
+**[Download Bicep template](https://github.com/openops-cloud/docs/blob/main/cloud-access/azure/OpenOps%20Azure%20Benchmark%20Reader.role-definition.bicep)** | **[Download JSON template](https://github.com/openops-cloud/docs/blob/main/cloud-access/azure/OpenOps%20Azure%20Benchmark%20Reader.role-definition.json)**
+
+**Parameters:** AssignableScopes (required)
+
+## Installation Steps
+
+Before creating the custom role, you must configure the `AssignableScopes` parameter to specify where this role can be assigned.
+
+### Configure AssignableScopes
+
+Choose the appropriate scope for your deployment:
+
+<AccordionGroup>
+  <Accordion title="Single subscription">
+    **JSON:**
+    ```json
+    "AssignableScopes": [
+      "/subscriptions/11111111-1111-1111-1111-111111111111"
+    ]
+    ```
+    
+    **Bicep parameter:**
+    ```bash
+    --parameters assignableScopes='["/subscriptions/11111111-1111-1111-1111-111111111111"]'
+    ```
+  </Accordion>
+
+  <Accordion title="Multiple subscriptions">
+    Use this when you want the role available in specific subscriptions but not across the entire management group.
+    
+    **JSON:**
+    ```json
+    "AssignableScopes": [
+      "/subscriptions/11111111-1111-1111-1111-111111111111",
+      "/subscriptions/22222222-2222-2222-2222-222222222222",
+      "/subscriptions/33333333-3333-3333-3333-333333333333"
+    ]
+    ```
+    
+    **Bicep parameter:**
+    ```bash
+    --parameters assignableScopes='["/subscriptions/11111111-1111-1111-1111-111111111111","/subscriptions/22222222-2222-2222-2222-222222222222","/subscriptions/33333333-3333-3333-3333-333333333333"]'
+    ```
+  </Accordion>
+
+  <Accordion title="Management group" id="management-group-scope">
+    Use this only if you want the custom role available across the entire management group scope.
+    
+    **JSON:**
+    ```json
+    "AssignableScopes": [
+      "/providers/Microsoft.Management/managementGroups/my-management-group"
+    ]
+    ```
+    
+    **Bicep parameter:**
+    ```bash
+    --parameters assignableScopes='["/providers/Microsoft.Management/managementGroups/my-management-group"]'
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### Option 1: Deploy with Bicep (Recommended)
+
+1. Update the `assignableScopes` parameter in the command below with your subscription ID(s):
+
+```bash
+az deployment sub create \
+  --name openops-azure-benchmark-reader-role \
+  --location westus2 \
+  --template-file "./OpenOps Azure Benchmark Reader.role-definition.bicep" \
+  --parameters assignableScopes='["/subscriptions/<subscription-id>"]'
+```
+
+2. For multiple subscriptions:
+
+```bash
+az deployment sub create \
+  --name openops-azure-benchmark-reader-role \
+  --location westus2 \
+  --template-file "./OpenOps Azure Benchmark Reader.role-definition.bicep" \
+  --parameters assignableScopes='["/subscriptions/sub-1","/subscriptions/sub-2"]'
+```
+
+**Notes:**
+* This is a subscription-scoped deployment. For management group scope, see the [management group configuration](#management-group-scope) above
+
+### Option 2: Deploy with Azure CLI and JSON
+
+1. Edit the `AssignableScopes` field in `OpenOps Azure Benchmark Reader.role-definition.json` with your subscription ID(s).
+
+2. Create the role:
+
+```bash
+az role definition create \
+  --role-definition "./OpenOps Azure Benchmark Reader.role-definition.json"
+```
+
+3. To update an existing role:
+
+```bash
+az role definition update \
+  --role-definition "./OpenOps Azure Benchmark Reader.role-definition.json"
+```
+
+## Assign the Role to a Service Principal
+
+After creating the custom role, assign it to the service principal that OpenOps uses to connect to Azure.
+
+### Assign at subscription scope
+
+```bash
+az role assignment create \
+  --assignee-object-id "<service-principal-object-id>" \
+  --assignee-principal-type ServicePrincipal \
+  --role "OpenOps Azure Benchmark Reader" \
+  --scope "/subscriptions/11111111-1111-1111-1111-111111111111"
+```
+
+### Assign in multiple subscriptions
+
+Run the assignment once per subscription:
+
+```bash
+az role assignment create \
+  --assignee-object-id "<service-principal-object-id>" \
+  --assignee-principal-type ServicePrincipal \
+  --role "OpenOps Azure Benchmark Reader" \
+  --scope "/subscriptions/11111111-1111-1111-1111-111111111111"
+```
+
+```bash
+az role assignment create \
+  --assignee-object-id "<service-principal-object-id>" \
+  --assignee-principal-type ServicePrincipal \
+  --role "OpenOps Azure Benchmark Reader" \
+  --scope "/subscriptions/22222222-2222-2222-2222-222222222222"
+```
+
+### Assign at management group scope
+
+```bash
+az role assignment create \
+  --assignee-object-id "<service-principal-object-id>" \
+  --assignee-principal-type ServicePrincipal \
+  --role "OpenOps Azure Benchmark Reader" \
+  --scope "/providers/Microsoft.Management/managementGroups/my-management-group"
+```
+
+## Verification
+
+Verify the role definition was created:
+
+```bash
+az role definition list \
+  --name "OpenOps Azure Benchmark Reader" \
+  -o json
+```
+
+Check role assignments for your service principal:
+
+```bash
+az role assignment list \
+  --assignee "<service-principal-object-id>" \
+  --all \
+  -o table
+```
+
+## Cost Management Access
+
+For subscription-scope cost queries, the role includes `Microsoft.CostManagement/query/action` for the POST query API.
+
+Azure Cost Management access commonly requires related read permissions in billing and cost surfaces. This role includes:
+
+* `Microsoft.CostManagement/query/action`
+* `Microsoft.CostManagement/*/read`
+* `Microsoft.Consumption/*/read`
+* `Microsoft.Billing/billingPeriods/read`
+* `Microsoft.Billing/billingProperty/read`
+* `Microsoft.Resources/subscriptions/read`
+* `Microsoft.Resources/subscriptions/resourceGroups/read`
+
+<Note>
+If you update the role and still get `RBACAccessDenied`, wait a few minutes and retry. Azure RBAC propagation is not always immediate.
+
+For subscriptions under EA or certain billing setups, cost visibility may also depend on billing-side settings such as view charges access.
+</Note>
+
+## Important Notes
+
+* `AssignableScopes` is required for all Azure custom roles
+* A management group is above subscriptions in the Azure hierarchy
+* If you use multiple subscriptions in `AssignableScopes`, the role is limited to those subscriptions only
+* Role creation requires permission to manage custom roles for every scope listed in `AssignableScopes`
+
+## Modification
+
+You're welcome to download and modify the role definition according to your needs. Note that some OpenOps benchmark workflows may not function properly if required permissions are removed.
+
+<JoinCommunity />

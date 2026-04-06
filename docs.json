@@ -67,7 +67,8 @@
         "pages": [
           "cloud-access/supported-cloud-providers",
           "cloud-access/access-levels-permissions",
-          "cloud-access/aws-cf-role-stack"
+          "cloud-access/aws-cf-role-stack",
+          "cloud-access/azure-rbac"
         ]
       },
       {
