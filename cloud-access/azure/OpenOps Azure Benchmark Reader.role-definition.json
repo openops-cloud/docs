@@ -1,0 +1,35 @@
+{
+  "Name": "OpenOps Azure Benchmark Reader",
+  "IsCustom": true,
+  "Description": "Read-only benchmark, cost, and Azure Advisor recommendation role for OpenOps Azure Benchmark.",
+  "Actions": [
+    "Microsoft.Advisor/metadata/read",
+    "Microsoft.Advisor/recommendations/read",
+    "Microsoft.Billing/billingPeriods/read",
+    "Microsoft.Billing/billingProperty/read",
+    "Microsoft.Compute/disks/read",
+    "Microsoft.Compute/images/read",
+    "Microsoft.Compute/snapshots/read",
+    "Microsoft.Compute/virtualMachines/read",
+    "Microsoft.Consumption/*/read",
+    "Microsoft.CostManagement/*/read",
+    "Microsoft.CostManagement/query/action",
+    "Microsoft.Insights/metrics/read",
+    "Microsoft.Network/networkInterfaces/read",
+    "Microsoft.Network/publicIPAddresses/read",
+    "Microsoft.Resources/subscriptions/read",
+    "Microsoft.Resources/subscriptions/resourceGroups/read",
+    "Microsoft.Sql/servers/databases/read",
+    "Microsoft.Sql/servers/elasticPools/read",
+    "Microsoft.Sql/servers/read",
+    "Microsoft.Web/hostingEnvironments/read",
+    "Microsoft.Web/serverfarms/read",
+    "Microsoft.Web/sites/read"
+  ],
+  "NotActions": [],
+  "DataActions": [],
+  "NotDataActions": [],
+  "AssignableScopes": [
+    "/subscriptions/<subscription-id>"
+  ]
+}
