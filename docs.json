@@ -41,6 +41,12 @@
         ]
       },
       {
+        "group": "FinOps Benchmark",
+        "pages": [
+          "finops-benchmark/overview"
+        ]
+      },
+      {
         "group": "Workflow Management",
         "pages": [
           "workflow-management/workflow-templates",
@@ -61,7 +67,8 @@
         "pages": [
           "cloud-access/supported-cloud-providers",
           "cloud-access/access-levels-permissions",
-          "cloud-access/aws-cf-role-stack"
+          "cloud-access/aws-cf-role-stack",
+          "cloud-access/azure-rbac"
         ]
       },
       {
