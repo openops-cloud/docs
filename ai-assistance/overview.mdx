@@ -32,7 +32,6 @@ AI assistance in OpenOps is available in several forms:
 
 Once enabled, the AI assistant chat becomes available in sidebars in every OpenOps view:
 <NarrowImage src="/images/access-llm-assistant.png" alt="AI assistant" widthPercent={50} />
-
 You can use it to ask a variety of questions about OpenOps, your cloud resources, and FinOps in general, such as:
 * "What can I do in OpenOps and how do I use its [features](/introduction/features-and-benefits/)?"
 * "How do I [create a workflow](/workflow-management/building-workflows/) that does what I want to achieve?"
@@ -48,23 +47,39 @@ It can also work with Amazon MCP servers, namely AWS Cost Explorer MCP Server, A
 
 When available, the AI assistant includes reasoning in its replies, showing which tools (such as MCP servers) it used, displaying the raw data retrieved from those tools, and outlining next steps in plain language.
 
+#### Selecting the model for a chat
+
+OpenOps lets you pick the language model for each AI chat (for example, the assistant chat sidebar and the **Generate with AI** chat in step settings).
+
+To change the model:
+1. Open the AI chat.
+2. In the composer area, use the model selector to pick a different model.
+
+If the model is not supported by the configured provider, OpenOps rejects the selection.
+
+### Understanding tool output in replies
+
+AI assistant replies can include tool output. For example, when the assistant uses MCP tools, the reply can show:
+* The tool name.
+* The tool input.
+* The tool output.
+
+Some tool outputs are marked as errors. When a tool output is an error, OpenOps still persists and displays the tool output, but it is flagged as an error.
+
 ### AI Step action
 
 The **AI Step** action lets you run AI prompts in a separate step in your workflow, using outputs of its previous steps as context.
 
 You add **AI Step** as you would [add any other action](workflow-management/building-workflows#adding-more-actions). You then specify a prompt in the **Prompt** field and any relevant outputs of previous steps in the **Additional input** section:
 <NarrowImage src="/images/access-llm-ask-ai-action.png" alt="AI Step" />
-
 Alternatively, you can combine prompt text and outputs from previous steps in the **Prompt** field.
 
 ### Generating commands and queries
 
 Whenever you work with an [action](/workflow-management/actions) that requires writing a CLI command or SQL query, you'll see the **Generate with AI** command next to the relevant property in the action's properties pane:
 <NarrowImage src="/images/access-llm-generate-with-ai.png" alt="Generate with AI" />
-
 When you click **Generate with AI**, use the AI chat window to describe the outcome you want the command or query to achieve, and your LLM will generate it for you:
-<NarrowImage src="/images/access-llm-chat.png" alt="AI chat window" widthPercent={50} />
-Click **Inject command** in the AI chat window to insert the generated command into the action's **Command** field.
+<NarrowImage src="/images/access-llm-chat.png" alt="AI chat window" widthPercent={50} />Click **Inject command** in the AI chat window to insert the generated command into the action's **Command** field.
 
 ### Generating code steps
 
