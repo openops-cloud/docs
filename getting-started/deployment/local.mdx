@@ -154,6 +154,20 @@ OPS_SMTP_ALLOWED_PORTS=25,465,587,2525
 
 <RestartContainers />
 
+## Configuring the webhook sync timeout (nginx)
+
+OpenOps configures nginx with a separate timeout for webhook calls that run in sync mode.
+
+To set this timeout, add the `OPS_FLOW_TIMEOUT_SECONDS` environment variable to the `.env` file in your installation folder.
+
+```shell
+OPS_FLOW_TIMEOUT_SECONDS=600
+```
+
+This value is also used to set `NGINX_WEBHOOK_SYNC_TIMEOUT` inside the container.
+
+> If `OPS_FLOW_TIMEOUT_SECONDS` is not set, `NGINX_WEBHOOK_SYNC_TIMEOUT` defaults to `600s`.
+
 ## Using Azure CLI in workflows: running with local credentials
 
 It is possible to share your local session with the platform for local applications.

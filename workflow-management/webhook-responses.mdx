@@ -91,6 +91,17 @@ If your workflow doesn't include a **Send Webhook Response** action, OpenOps aut
 - **Include error handling**: Use conditional branching to send different responses based on workflow outcomes
 - **Keep responses lightweight**: Avoid sending large payloads in webhook responses
 
+## Troubleshooting
+
+### Webhook callers time out when waiting for a synchronous response
+
+If the webhook caller waits for a response from the workflow and the request times out at the reverse proxy, increase the Nginx timeouts for the webhook sync endpoint.
+
+1. Set the `NGINX_WEBHOOK_SYNC_TIMEOUT` environment variable.
+2. Deploy/restart the Nginx container so it picks up the new value.
+
+OpenOps applies `NGINX_WEBHOOK_SYNC_TIMEOUT` to the Nginx timeouts for requests that match the `/api/v1/webhooks/<id>/sync` path.
+
 ## Limitations
 
 - Only one response can be sent per webhook trigger
