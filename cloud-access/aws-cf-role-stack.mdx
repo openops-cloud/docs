@@ -22,7 +22,7 @@ Besides the IAM role, the template by default also sets up cost management resou
 
 **[Create OpenOpsApp stack](https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=OpenOpsApp&templateURL=https://openops.s3.us-east-2.amazonaws.com/OpenOpsAppRoleStack.yml)** | [Download template](https://openops.s3.us-east-2.amazonaws.com/OpenOpsAppRoleStack.yml)
 
-**Parameters:** AWS account ID, permission sets (optional)
+**Parameters:** AWS account ID (required), `CostUsageReport` (optional, default `true`), permission sets (optional)
 
 1. Click the **Create OpenOpsApp stack** link above.
 2. On the **Specify stack details** page, enter the required parameters, then click **Next**.
@@ -35,14 +35,16 @@ Besides the IAM role, the template by default also sets up cost management resou
 
 **[View template on GitHub](https://github.com/openops-cloud/cloudformation-examples/tree/main/openops-app-role-aws/terraform)**
 
-**Variables:** AWS account ID (required), external ID (optional), role name (optional, default `OpenOpsApp`), permission toggles (optional)
+**Variables:** `aws_account_id` (required), `external_id` (optional), `role_name` (optional, default `OpenOpsApp`), `cost_usage_report` (optional, default `true`), permission toggles (optional)
 
 ```bash
 git clone https://github.com/openops-cloud/cloudformation-examples.git
 cd cloudformation-examples/openops-app-role-aws/terraform
 terraform init
-terraform apply -var aws_account_id=<OpenOps environment AWS account ID>
+terraform apply -var 'aws_account_id=<account-id>'
 ```
+
+Replace `<account-id>` with the ID of the AWS account where your OpenOps environment is deployed — the account that will assume the role.
 
 The template can also be consumed as a Terraform module, which makes it easy to roll the role out across many AWS accounts. See the template's [README](https://github.com/openops-cloud/cloudformation-examples/tree/main/openops-app-role-aws/terraform#multi-account-rollout) for details.
 
@@ -58,6 +60,6 @@ To install, click the **Create Benchmark stack** link above and follow the same 
 
 ## Modification
 
-You’re welcome to download any of the templates and modify specific permissions according to your needs. Notice that some AWS components in OpenOps workflows may not function properly as a result.
+You're welcome to download any of the templates and modify specific permissions according to your needs. Notice that some AWS components in OpenOps workflows may not function properly as a result.
 
 <JoinCommunity />
