@@ -41,12 +41,6 @@
         ]
       },
       {
-        "group": "FinOps Benchmark",
-        "pages": [
-          "finops-benchmark/overview"
-        ]
-      },
-      {
         "group": "Workflow Management",
         "pages": [
           "workflow-management/workflow-templates",
