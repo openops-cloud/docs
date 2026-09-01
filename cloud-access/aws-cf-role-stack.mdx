@@ -12,7 +12,7 @@ OpenOps provides infrastructure-as-code templates to create IAM roles in your AW
 
 Creates the `OpenOpsApp` role with permissions to run workflows from the OpenOps template catalog. The template contains all the read permissions needed to execute all templates in our library; you can still restrict the scope to the permissions needed for the templates you are actually running. Write permissions are optional and only needed if you want to apply remediation actions directly to cloud resources.
 
-The role can be created with either [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html) or [Terraform](https://developer.hashicorp.com/terraform) — both produce the same role and permissions.
+The role can be created with either [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html) or [Terraform](https://developer.hashicorp.com/terraform) - both produce the same role and permissions.
 
 <Note>
 Besides the IAM role, the template by default also sets up cost management resources: it creates an S3 bucket (`openops-cur-<account-id>`) and a [Cost and Usage Report](https://docs.aws.amazon.com/cur/latest/userguide/what-is-cur.html) definition that continuously exports billing reports to that bucket. This is why the role **must** be created in the `us-east-1` region as CUR is only available there. If you don't want these resources, disable the `CostUsageReport` parameter (CloudFormation) or set `cost_usage_report = false` (Terraform); the template then creates IAM resources only and can be deployed in any region.
@@ -44,7 +44,7 @@ terraform init
 terraform apply -var 'aws_account_id=<account-id>'
 ```
 
-Replace `<account-id>` with the ID of the AWS account where your OpenOps environment is deployed — the account that will assume the role.
+Replace `<account-id>` with the ID of the AWS account where your OpenOps environment is deployed - the account that will assume the role.
 
 The template can also be consumed as a Terraform module, which makes it easy to roll the role out across many AWS accounts. See the template's [README](https://github.com/openops-cloud/cloudformation-examples/tree/main/openops-app-role-aws/terraform#multi-account-rollout) for details.
 
