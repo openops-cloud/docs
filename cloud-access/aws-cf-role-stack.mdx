@@ -15,7 +15,9 @@ Creates the `OpenOpsApp` role with permissions to run workflows from the OpenOps
 The role can be created with either [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html) or [Terraform](https://developer.hashicorp.com/terraform) - both produce the same role and permissions.
 
 <Note>
-Besides the IAM role, the template by default also sets up cost management resources: it creates an S3 bucket (`openops-cur-<account-id>`) and a [Cost and Usage Report](https://docs.aws.amazon.com/cur/latest/userguide/what-is-cur.html) definition that continuously exports billing reports to that bucket. This is why the role **must** be created in the `us-east-1` region as CUR is only available there. If you don't want these resources, disable the `CostUsageReport` parameter (CloudFormation) or set `cost_usage_report = false` (Terraform); the template then creates IAM resources only and can be deployed in any region.
+Besides the IAM role, the template by default also sets up cost management resources: it creates an S3 bucket (`openops-cur-<account-id>`) and a [Cost and Usage Report](https://docs.aws.amazon.com/cur/latest/userguide/what-is-cur.html) definition that continuously exports billing reports to that bucket. 
+
+This is why the role **must** be created in the `us-east-1` region as CUR is only available there. If you don't want these resources, disable the `CostUsageReport` parameter (CloudFormation) or set `cost_usage_report = false` (Terraform); the template then creates IAM resources only and can be deployed in any region.
 </Note>
 
 ### Using CloudFormation
