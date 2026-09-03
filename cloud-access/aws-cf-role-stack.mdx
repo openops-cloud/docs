@@ -35,13 +35,15 @@ This is why the role **must** be created in the `us-east-1` region as CUR is onl
 
 ### Using Terraform
 
-**[View template on GitHub](https://github.com/openops-cloud/cloudformation-examples/tree/main/openops-app-role-aws/terraform)**
+**[Download template](https://openops.s3.us-east-2.amazonaws.com/OpenOpsAppRole.tf)** | [View on GitHub](https://github.com/openops-cloud/cloudformation-examples/tree/main/openops-app-role-aws/terraform)
 
 **Variables:** `aws_account_id` (required), `external_id` (optional), `role_name` (optional, default `OpenOpsApp`), `cost_usage_report` (optional, default `true`), permission toggles (optional)
 
+Download the template into an empty directory and apply it:
+
 ```bash
-git clone https://github.com/openops-cloud/cloudformation-examples.git
-cd cloudformation-examples/openops-app-role-aws/terraform
+mkdir openops-role && cd openops-role
+curl -O https://openops.s3.us-east-2.amazonaws.com/OpenOpsAppRole.tf
 terraform init
 terraform apply -var 'aws_account_id=<account-id>'
 ```
