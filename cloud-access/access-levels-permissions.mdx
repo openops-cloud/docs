@@ -67,7 +67,12 @@ If you want to access multiple accounts together (for example, create a workflow
      * **Assume role external ID**: a shared secret defined in the IAM role's trust policy. Leave this field blank if the role does not require an external ID.
      * **Account alias**: a convenience label used to identify this account in your workflows (e.g., `dev`, `prod`, `billing`).
    * To add many accounts that share the same IAM role name (for example, a role deployed to every account with a CloudFormation StackSet), click **Add multiple accounts** and specify:
-     * **Account IDs**: one account per line as the 12-digit account ID, optionally followed by an alias (e.g., `123456789012 prod-eu`). If you don't provide an alias, the account ID is used.
+     * **Account IDs**: one account per line as the 12-digit account ID, optionally followed by an alias. If you don't provide an alias, the account ID is used. You may use this format:
+       ```text
+       123456789012
+       111122223333 prod
+       444455556666 prod-eu
+       ```
      * **Role name**: the name of the IAM role to assume in each listed account. OpenOps builds every ARN as `arn:aws:iam::<ACCOUNT_ID>:role/<ROLE_NAME>`.
      * **External ID**: the shared secret defined in the roles' trust policies. Leave this field blank if the roles do not require an external ID.
 
