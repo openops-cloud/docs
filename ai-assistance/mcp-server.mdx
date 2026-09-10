@@ -1,0 +1,197 @@
+---
+title: 'MCP Server'
+description: 'How to connect AI agents such as Claude Code, Codex, and Cursor to OpenOps'
+icon: 'plug'
+---
+
+import JoinCommunity from '/snippets/join-community.mdx'
+
+OpenOps provides a Model Context Protocol (MCP) server that lets an AI agent running on your machine work with your OpenOps environment. Once connected, you can ask the agent about your workflows, runs, and connections, and have it act on them for you.
+
+The agent never receives your OpenOps password. Instead, you approve access once in your browser, and you can revoke it at any time.
+
+<Note>
+This page is about connecting external agents to OpenOps. For the AI assistant built into OpenOps, see [AI Assistance](/ai-assistance/overview).
+</Note>
+
+## Prerequisites
+
+* An OpenOps environment with the MCP server enabled.
+* A user account in that OpenOps environment.
+* An AI agent that can connect to remote MCP servers and sign in through your browser, such as Claude Code, Codex, Cursor, Visual Studio Code, or the Claude app.
+
+Throughout this page, the MCP server URL is:
+
+```text
+https://<YOUR_OPENOPS_HOST>/mcp
+```
+
+Replace `<YOUR_OPENOPS_HOST>` with the host you use to open OpenOps in your browser.
+
+## Connecting your agent
+
+There are two ways to add the OpenOps MCP server to an agent: run the agent's `add` command, or add an entry to its configuration file. Both point the agent at the same URL. The first time the agent uses the server, it starts the [authorization flow](#authorizing-access) in your browser.
+
+<AccordionGroup>
+  <Accordion title="Claude Code" defaultOpen>
+
+    Run the following command:
+
+    ```bash
+    claude mcp add --transport http openops https://<YOUR_OPENOPS_HOST>/mcp
+    ```
+
+    Alternatively, add the server to `.mcp.json` in your project, or to `~/.claude.json` for all projects:
+
+    ```json
+    {
+      "mcpServers": {
+        "openops": {
+          "type": "http",
+          "url": "https://<YOUR_OPENOPS_HOST>/mcp"
+        }
+      }
+    }
+    ```
+
+    Claude Code opens the authorization page in your browser the first time it uses the server. If it doesn't, run `/mcp` inside Claude Code and select **openops**, or run `claude mcp login openops` from your terminal. To remove the server later, run `claude mcp remove openops`.
+
+  </Accordion>
+
+  <Accordion title="Codex">
+
+    Run the following commands:
+
+    ```bash
+    codex mcp add openops --url https://<YOUR_OPENOPS_HOST>/mcp
+    codex mcp login openops
+    ```
+
+    Alternatively, add the server to `~/.codex/config.toml`:
+
+    ```toml
+    [mcp_servers.openops]
+    url = "https://<YOUR_OPENOPS_HOST>/mcp"
+    ```
+
+    The Codex CLI, the Codex IDE extension, and the ChatGPT desktop app share this configuration file.
+
+  </Accordion>
+
+  <Accordion title="Cursor">
+
+    Add the server to `~/.cursor/mcp.json` to make it available in all projects, or to `.cursor/mcp.json` inside a project:
+
+    ```json
+    {
+      "mcpServers": {
+        "openops": {
+          "url": "https://<YOUR_OPENOPS_HOST>/mcp"
+        }
+      }
+    }
+    ```
+
+    Cursor opens the authorization page in your browser when it first connects to the server.
+
+  </Accordion>
+
+  <Accordion title="Visual Studio Code">
+
+    Open the Command Palette, run **MCP: Add Server**, choose the HTTP option, and enter the server URL. Alternatively, add the server to `.vscode/mcp.json` in your workspace:
+
+    ```json
+    {
+      "servers": {
+        "openops": {
+          "type": "http",
+          "url": "https://<YOUR_OPENOPS_HOST>/mcp"
+        }
+      }
+    }
+    ```
+
+  </Accordion>
+
+  <Accordion title="Claude">
+
+    In the Claude desktop or web app, go to **Settings → Connectors**, click **Add custom connector**, enter the server URL, and click **Add**. Then click **Connect** next to the OpenOps connector to authorize. To remove it later, open the connector's menu and choose **Remove**.
+
+  </Accordion>
+
+  <Accordion title="Other clients">
+
+    Any client that can connect to a remote MCP server works with the same URL. Add the server the way you add other remote MCP servers in that client, then complete the authorization in your browser.
+
+  </Accordion>
+</AccordionGroup>
+
+## Authorizing access
+
+When your agent connects to the OpenOps MCP server for the first time:
+
+![Authorize access dialog](/images/access-llm-mcp-consent.png)
+
+1. The agent opens OpenOps in your browser. If you're not logged in, log in first.
+2. OpenOps shows the **Authorize access** dialog on the **Connected apps** settings page. The dialog names the application asking for access and lists what it will be able to do:
+    * View your workflows, runs, and connections
+    * Create and change workflows on your behalf
+    * Run workflows and retry runs
+    * Act in any project you have access to
+3. Click **Allow access**. The browser returns control to the agent, which now has access to the OpenOps tools. To deny the request, click **Cancel** or close the dialog.
+
+<Note>
+**Only approve requests you started:** The dialog shows the name of the application asking for access. If you didn't start connecting from that application, click **Cancel**.
+</Note>
+
+Access is renewed automatically while the agent is in use. You're asked to approve again only if you disconnect the agent in [Connected apps](#managing-connected-apps), your account is deactivated, or the agent isn't used for 30 days.
+
+## Using your agent with OpenOps
+
+Once connected, ask your agent about your OpenOps environment in plain language. For example:
+
+* "Which workflows are enabled in my OpenOps environment, and what do they do?"
+* "Show me the failed runs of the EBS gp2 to gp3 migration workflow from this week and explain why they failed."
+* "Retry the run that failed this morning."
+* "Which connections does the Slack notification workflow use?"
+* "Create a workflow that finds unattached Elastic IPs every Monday and posts them to Slack, then test the first step." (Enterprise edition)
+* "Switch to the Production workspace and list its workflows." (Enterprise edition)
+
+### What the agent can do
+
+The tools available to the agent depend on your OpenOps edition. See [pricing](https://www.openops.com/pricing/) for the differences between editions.
+
+| Capability | Community | Enterprise |
+| --- | --- | --- |
+| List and inspect workflows | Yes | Yes |
+| List runs, inspect run details, and retry a run | Yes | Yes |
+| List, inspect, and update connections | Yes | Yes |
+| Create workflows, add, update, and delete steps | No | Yes |
+| Test a step or start a test run of a workflow | No | Yes |
+| Work in more than one workspace | No | Yes |
+
+
+<Note>
+**Workspaces (Enterprise edition):** An authorized agent isn't limited to one workspace. Name the workspace you want to work in, and the agent passes it along with each request. If you don't name one, the agent acts in your default workspace.
+</Note>
+
+## Managing connected apps
+
+![Connected apps](/images/access-llm-mcp-connected-apps.png)
+
+Every agent you authorize appears in OpenOps, where you can review and disconnect it:
+
+1. In the OpenOps left sidebar, click the **Settings** icon at the bottom.
+2. In the **Settings** view, click **Connected apps**. Each entry shows the application name, when it was connected, and when it was last used. If you connect the same agent from two machines, you see two entries.
+3. To revoke access, click **Disconnect** next to an entry and confirm. The agent loses access immediately and has to be authorized again to reconnect. Other connected apps aren't affected.
+
+Removing the server from your agent's configuration doesn't revoke the agent's access in OpenOps. The agent stays listed in **Connected apps** until you disconnect it there. To fully disconnect, do both.
+
+## Troubleshooting
+
+* **The agent reports that the server needs authentication:** Run the agent's login step, such as `/mcp` in Claude Code or `codex mcp login openops`, and check that the server URL ends with `/mcp`.
+* **The browser shows "This authorization request cannot be completed":** The request has expired or has already been used. Connect again from your agent.
+* **Tool calls fail with an authorization error after working before:** The agent was disconnected in **Connected apps**, your user account was deactivated, or the agent hasn't been used for 30 days. Connect again from your agent.
+* **The agent works in the wrong workspace (Enterprise edition):** Name the workspace in your prompt. See the note in [What the agent can do](#what-the-agent-can-do).
+
+<JoinCommunity/>
