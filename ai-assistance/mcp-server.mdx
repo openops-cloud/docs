@@ -16,7 +16,7 @@ This page is about connecting external agents to OpenOps. For the AI assistant b
 
 ## Prerequisites
 
-* An OpenOps environment with the MCP server enabled.
+* An OpenOps environment with the MCP server enabled. If you administer the environment, see [Enabling the MCP server](#enabling-the-mcp-server).
 * A user account in that OpenOps environment.
 * An AI agent that can connect to remote MCP servers and sign in through your browser, such as Claude Code, Codex, Cursor, Visual Studio Code, or the Claude app.
 
@@ -186,6 +186,34 @@ Every agent you authorize appears in OpenOps, where you can review and disconnec
 3. To revoke access, click **Disconnect** next to an entry and confirm. The agent loses access immediately and has to be authorized again to reconnect. Other connected apps aren't affected.
 
 Removing the server from your agent's configuration doesn't revoke the agent's access in OpenOps. The agent stays listed in **Connected apps** until you disconnect it there. To fully disconnect, do both.
+
+## Enabling the MCP server
+
+This section is for OpenOps administrators. In the Docker Compose deployment, the MCP server is disabled by default. Enabling it requires OpenOps 0.6.26 or later.
+
+1. Enable TLS for your installation. Agents sign in through OAuth, which OpenOps serves only over HTTPS; plain `http` is accepted only when `OPS_PUBLIC_URL` is `http://localhost`. See [Enabling TLS](/getting-started/deployment/aws-ec2#enabling-tls) in the deployment guide.
+2. Open the `.env` file in your OpenOps installation directory and set the following variables:
+    ```shell
+    OPS_OAUTH_ENABLED=true
+    OPS_OAUTH_RS_CLIENT_SECRET=<random value of at least 32 characters>
+    COMPOSE_PROFILES=mcp
+    ```
+    Generate the secret with `openssl rand -hex 32`. The MCP container doesn't start while the secret is empty. `COMPOSE_PROFILES=mcp` makes `docker compose up -d` start the MCP container; the line is present but commented out in `.env.defaults`.
+
+    <Note>
+    **Installations created before 0.6.26:** updates keep your existing `.env` file, so it doesn't contain the MCP settings. Copy the "MCP server for external agents" block from `.env.defaults` into `.env` first, then edit the values above.
+    </Note>
+3. Restart the OpenOps containers:
+    ```shell
+    sudo docker compose down
+    sudo docker compose up -d
+    ```
+4. Verify that the server is reachable. The following command returns a JSON document that names your host as the `resource`:
+    ```shell
+    curl https://<YOUR_OPENOPS_HOST>/.well-known/oauth-protected-resource/mcp
+    ```
+
+To disable the MCP server, set `OPS_OAUTH_ENABLED=false`, remove the `COMPOSE_PROFILES=mcp` line, and run `sudo docker compose --profile mcp down` followed by `sudo docker compose up -d`. All connected agents lose access.
 
 ## Troubleshooting
 
