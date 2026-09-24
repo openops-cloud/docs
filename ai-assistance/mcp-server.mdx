@@ -1,10 +1,11 @@
 ---
 title: 'MCP Server'
-description: 'How to connect AI agents such as Claude Code, Codex, and Cursor to OpenOps'
+description: 'How to connect AI agents such as Claude Code and Codex to OpenOps'
 icon: 'plug'
 ---
 
 import JoinCommunity from '/snippets/join-community.mdx'
+import RestartContainers from '/snippets/restart-containers.mdx'
 
 OpenOps provides a Model Context Protocol (MCP) server that lets an AI agent running on your machine work with your OpenOps environment. Once connected, you can ask the agent about your workflows, runs, and connections, and have it act on them for you.
 
@@ -18,7 +19,7 @@ This page is about connecting external agents to OpenOps. For the AI assistant b
 
 * An OpenOps environment with the MCP server enabled. If you administer the environment, see [Enabling the MCP server](#enabling-the-mcp-server).
 * A user account in that OpenOps environment.
-* An AI agent that can connect to remote MCP servers and sign in through your browser, such as Claude Code, Codex, Cursor, Visual Studio Code, or the Claude app.
+* An AI agent that can connect to remote MCP servers and sign in through your browser, such as Claude Code, Codex, or the Claude app.
 
 Throughout this page, the MCP server URL is:
 
@@ -30,7 +31,7 @@ Replace `<YOUR_OPENOPS_HOST>` with the host you use to open OpenOps in your brow
 
 ## Connecting your agent
 
-There are two ways to add the OpenOps MCP server to an agent: run the agent's `add` command, or add an entry to its configuration file. Both point the agent at the same URL. The first time the agent uses the server, it starts the [authorization flow](#authorizing-access) in your browser.
+There are two ways to add the OpenOps MCP server to an agent: run the agent's `add` command, or add an entry to its configuration file. Both point the agent at the same URL. After adding the server, authorize it once from the agent, as described in [Authorizing access](#authorizing-access).
 
 <AccordionGroup>
   <Accordion title="Claude Code" defaultOpen>
@@ -54,7 +55,15 @@ There are two ways to add the OpenOps MCP server to an agent: run the agent's `a
     }
     ```
 
-    Claude Code opens the authorization page in your browser the first time it uses the server. If it doesn't, run `/mcp` inside Claude Code and select **openops**, or run `claude mcp login openops` from your terminal. To remove the server later, run `claude mcp remove openops`.
+    Run `/mcp` inside Claude Code and select **openops**:
+
+    ![The /mcp server list in Claude Code](/images/claude-code-mcp-list.png)
+
+    Select **Authenticate**. Claude Code opens the OpenOps authorization page in your browser, where you grant access to the agent. Alternatively, run `claude mcp login openops` from your terminal.
+
+    ![The openops server details in Claude Code with the Authenticate option](/images/claude-code-mcp-authenticate.png)
+
+    To remove the server later, run `claude mcp remove openops`.
 
   </Accordion>
 
@@ -67,49 +76,14 @@ There are two ways to add the OpenOps MCP server to an agent: run the agent's `a
     codex mcp login openops
     ```
 
-    Alternatively, add the server to `~/.codex/config.toml`:
+    Alternatively, add the server to `~/.codex/config.toml` and then run `codex mcp login openops`:
 
     ```toml
     [mcp_servers.openops]
     url = "https://<YOUR_OPENOPS_HOST>/mcp"
     ```
 
-    The Codex CLI, the Codex IDE extension, and the ChatGPT desktop app share this configuration file.
-
-  </Accordion>
-
-  <Accordion title="Cursor">
-
-    Add the server to `~/.cursor/mcp.json` to make it available in all projects, or to `.cursor/mcp.json` inside a project:
-
-    ```json
-    {
-      "mcpServers": {
-        "openops": {
-          "url": "https://<YOUR_OPENOPS_HOST>/mcp"
-        }
-      }
-    }
-    ```
-
-    Cursor opens the authorization page in your browser when it first connects to the server.
-
-  </Accordion>
-
-  <Accordion title="Visual Studio Code">
-
-    Open the Command Palette, run **MCP: Add Server**, choose the HTTP option, and enter the server URL. Alternatively, add the server to `.vscode/mcp.json` in your workspace:
-
-    ```json
-    {
-      "servers": {
-        "openops": {
-          "type": "http",
-          "url": "https://<YOUR_OPENOPS_HOST>/mcp"
-        }
-      }
-    }
-    ```
+    Codex doesn't start the authorization flow on its own, so the `login` command is required in both cases. The Codex CLI, the Codex IDE extension, and the ChatGPT desktop app share this configuration file.
 
   </Accordion>
 
@@ -121,18 +95,18 @@ There are two ways to add the OpenOps MCP server to an agent: run the agent's `a
 
   <Accordion title="Other clients">
 
-    Any client that can connect to a remote MCP server works with the same URL. Add the server the way you add other remote MCP servers in that client, then complete the authorization in your browser.
+    Any client that can connect to a remote MCP server works with the same URL. Add the server the way you add other remote MCP servers in that client.
 
   </Accordion>
 </AccordionGroup>
 
 ## Authorizing access
 
-When your agent connects to the OpenOps MCP server for the first time:
+When you authorize your agent for the first time:
 
 ![Authorize access dialog](/images/access-llm-mcp-consent.png)
 
-1. The agent opens OpenOps in your browser. If you're not logged in, log in first.
+1. When you start authorization from your agent, it opens OpenOps in your browser. If you're not logged in, log in first.
 2. OpenOps shows the **Authorize access** dialog on the **Connected apps** settings page. The dialog names the application asking for access and lists what it will be able to do:
     * View your workflows, runs, and connections
     * Create and change workflows on your behalf
@@ -170,7 +144,6 @@ The tools available to the agent depend on your OpenOps edition. See [pricing](h
 | Test a step or start a test run of a workflow | No | Yes |
 | Work in more than one workspace | No | Yes |
 
-
 <Note>
 **Workspaces (Enterprise edition):** An authorized agent isn't limited to one workspace. Name the workspace you want to work in, and the agent passes it along with each request. If you don't name one, the agent acts in your default workspace.
 </Note>
@@ -189,31 +162,45 @@ Removing the server from your agent's configuration doesn't revoke the agent's a
 
 ## Enabling the MCP server
 
-This section is for OpenOps administrators. In the Docker Compose deployment, the MCP server is disabled by default. Enabling it requires OpenOps 0.6.26 or later.
+This section is for OpenOps administrators. The MCP server is disabled by default and requires OpenOps 0.7.0 or later. Agents sign in through OAuth, which OpenOps serves only over HTTPS; plain `http` is accepted only when `OPS_PUBLIC_URL` is `http://localhost`.
 
-1. Enable TLS for your installation. Agents sign in through OAuth, which OpenOps serves only over HTTPS; plain `http` is accepted only when `OPS_PUBLIC_URL` is `http://localhost`. See [Enabling TLS](/getting-started/deployment/aws-ec2#enabling-tls) in the deployment guide.
-2. Open the `.env` file in your OpenOps installation directory and set the following variables:
+### Docker Compose
+
+1. Enable TLS for your installation. See [Enabling TLS](/getting-started/deployment/aws-ec2#enabling-tls) in the deployment guide.
+2. Open the `.env` file in your OpenOps installation directory and set the following variables. If your installation was created before 0.7.0, the variables aren't in the file yet, so add them:
     ```shell
     OPS_OAUTH_ENABLED=true
+    OPS_OAUTH_ISSUER_URL=${OPS_PUBLIC_URL}/api
+    OPS_MCP_RESOURCE_URL=${OPS_PUBLIC_URL}/mcp
     OPS_OAUTH_RS_CLIENT_SECRET=<random value of at least 32 characters>
     COMPOSE_PROFILES=mcp
     ```
-    Generate the secret with `openssl rand -hex 32`. The MCP container doesn't start while the secret is empty. `COMPOSE_PROFILES=mcp` makes `docker compose up -d` start the MCP container; the line is present but commented out in `.env.defaults`.
-
-    <Note>
-    **Installations created before 0.6.26:** updates keep your existing `.env` file, so it doesn't contain the MCP settings. Copy the "MCP server for external agents" block from `.env.defaults` into `.env` first, then edit the values above.
-    </Note>
-3. Restart the OpenOps containers:
-    ```shell
-    sudo docker compose down
-    sudo docker compose up -d
-    ```
-4. Verify that the server is reachable. The following command returns a JSON document that names your host as the `resource`:
+    Generate the secret with `openssl rand -hex 32`. The MCP container doesn't start while the secret is empty. `COMPOSE_PROFILES=mcp` makes `docker compose up -d` start the MCP container.
+3. <RestartContainers />
+4. Verify that the server is reachable:
     ```shell
     curl https://<YOUR_OPENOPS_HOST>/.well-known/oauth-protected-resource/mcp
     ```
+    The command returns a JSON document that names your host as the `resource`. A `502 Bad Gateway` response means the MCP container isn't running. Check that `COMPOSE_PROFILES=mcp` is set and the secret isn't empty, then inspect the container with `sudo docker compose logs openops-mcp`.
 
 To disable the MCP server, set `OPS_OAUTH_ENABLED=false`, remove the `COMPOSE_PROFILES=mcp` line, and run `sudo docker compose --profile mcp down` followed by `sudo docker compose up -d`. All connected agents lose access.
+
+### Helm chart
+
+The [OpenOps Helm chart](https://github.com/openops-cloud/helm-chart) version 0.7.0 or later includes the MCP server as an opt-in component. Add the following to your values file, then upgrade the release:
+
+```yaml
+global:
+  publicUrl: "https://<YOUR_OPENOPS_HOST>"
+
+openopsEnvSecrets:
+  OPS_OAUTH_RS_CLIENT_SECRET: "<random value of at least 32 characters>"
+
+mcp:
+  enabled: true
+```
+
+The chart derives the remaining OAuth settings from `publicUrl`. See the MCP section of the chart's README for details, including how to supply the secret from an external secret manager.
 
 ## Troubleshooting
 
