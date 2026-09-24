@@ -162,7 +162,7 @@ Removing the server from your agent's configuration doesn't revoke the agent's a
 
 ## Enabling the MCP server
 
-This section is for OpenOps administrators. The MCP server is disabled by default and requires OpenOps 0.7.0 or later. Agents sign in through OAuth, which OpenOps serves only over HTTPS; plain `http` is accepted only when `OPS_PUBLIC_URL` is `http://localhost`.
+This section is for OpenOps administrators. The MCP server is disabled by default and requires OpenOps [0.7.0](https://github.com/openops-cloud/openops/releases/tag/0.7.0) or later. To upgrade, see [Updating OpenOps](/getting-started/updating-openops). Agents sign in through OAuth, which OpenOps serves only over HTTPS; plain `http` is accepted only when `OPS_PUBLIC_URL` is `http://localhost`.
 
 ### Docker Compose
 
@@ -187,7 +187,7 @@ To disable the MCP server, set `OPS_OAUTH_ENABLED=false`, remove the `COMPOSE_PR
 
 ### Helm chart
 
-The [OpenOps Helm chart](https://github.com/openops-cloud/helm-chart) version 0.7.0 or later includes the MCP server as an opt-in component. Add the following to your values file, then upgrade the release:
+The [OpenOps Helm chart](https://github.com/openops-cloud/helm-chart) version [0.7.0](https://github.com/openops-cloud/helm-chart/releases/tag/0.7.0) or later includes the MCP server as an opt-in component. Add the following to your values file, then upgrade the release:
 
 ```yaml
 global:
