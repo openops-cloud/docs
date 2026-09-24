@@ -187,7 +187,7 @@ To disable the MCP server, set `OPS_OAUTH_ENABLED=false`, remove the `COMPOSE_PR
 
 ### Helm chart
 
-The [OpenOps Helm chart](https://github.com/openops-cloud/helm-chart) version [0.7.0](https://github.com/openops-cloud/helm-chart/releases/tag/0.7.0) or later includes the MCP server as an opt-in component. Add the following to your values file, then upgrade the release:
+The [OpenOps Helm chart](https://github.com/openops-cloud/helm-chart) version [0.7.0](https://github.com/openops-cloud/helm-chart/releases/tag/0.7.0) or later includes the MCP server as an opt-in component. Your release must already serve OpenOps over HTTPS, whether through the chart's ingress TLS settings or a load balancer that terminates TLS. See [TLS/HTTPS configuration](https://github.com/openops-cloud/helm-chart#tlshttps-configuration) in the chart's README. Then add the following to your values file and upgrade the release:
 
 ```yaml
 global:
@@ -200,7 +200,7 @@ mcp:
   enabled: true
 ```
 
-The chart derives the remaining OAuth settings from `publicUrl`. See the MCP section of the chart's README for details, including how to supply the secret from an external secret manager.
+The chart derives the remaining OAuth settings from `publicUrl`. See [MCP server for external agents](https://github.com/openops-cloud/helm-chart#mcp-server-for-external-agents) in the chart's README for details, including how to supply the secret from an external secret manager.
 
 ## Troubleshooting
 
