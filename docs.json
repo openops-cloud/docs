@@ -69,7 +69,8 @@
         "group": "AI Assistance",
         "pages": [
           "ai-assistance/overview",
-          "ai-assistance/llm-connections"
+          "ai-assistance/llm-connections",
+          "ai-assistance/mcp-server"
         ]
       },
       {
