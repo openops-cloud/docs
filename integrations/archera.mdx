@@ -61,18 +61,6 @@ Allows making arbitrary calls to any [Archera API](https://docs.archera.ai/api-r
 
 ## Designing a workflow
 
-A typical Archera workflow runs on a schedule, retrieves the commitment plans that Archera proposes using the *Get Default Commitment Plans* or *Get Recommended Plan* action, and asks a person to choose which plan to purchase before applying it with the *Apply Commitment Plan* action. A second common workflow retrieves existing commitments with the *Get Commitments Inventory* action and notifies owners about commitments that are about to expire.
+A typical Archera workflow runs on a schedule, retrieves the commitment plans that Archera proposes using the *Get Default Commitment Plans* or *Get Recommended Plan* action, and asks a person in Slack or Microsoft Teams which plan to purchase before applying it with the *Apply Commitment Plan* action. The message can include savings figures from the plans themselves or from the *Get Metrics* action, along with a link back to Archera. If nobody responds before the request times out, the workflow can apply the recommended plan automatically. A second common workflow retrieves existing commitments with the *Get Commitments Inventory* action and notifies owners about commitments that are about to expire, with a link to renew them in Archera.
 
-Below is a description of common patterns that can be implemented in your Archera workflows.
-
-### Approving commitment plans
-
-Commitment purchases usually require human approval. After retrieving the proposed plans, your workflow can send a message with buttons for each plan using *Request Action* in the Slack or Microsoft Teams action block. The message can include savings figures from the plans themselves or from the *Get Metrics* action, along with a link back to Archera. Based on the user's choice, the workflow applies the selected plan with *Apply Commitment Plan*, or records that the proposal was snoozed. If nobody responds before the request times out, the workflow can apply the recommended plan automatically.
-
-See [Send a Slack notification with action buttons](/integrations/cloudhealth#send-a-slack-notification-with-action-buttons) in the CloudHealth guide for an example of requesting an action from a user.
-
-### Tracking expiring commitments
-
-Workflows using the *Get Commitments Inventory* action can filter commitments by their end date and notify the relevant team before a commitment expires, with a link to renew it in Archera. Decisions can be logged to the preconfigured [*Opportunities* table](/reporting-analytics/tables#opportunities) so that every proposal and renewal has an audit trail and a current status (*Created*, *Under Review*, *Dismissed*, *Snoozed*).
-
-Learn how to implement opportunity tracking by following the [CloudHealth recommendation logging workflow](/integrations/cloudhealth#look-up-the-opportunity-in-the-openops-table).
+For the patterns behind approval requests and decision tracking, see [Designing Workflows with FinOps Platforms](/cookbook/designing-workflows-with-finops-platforms).

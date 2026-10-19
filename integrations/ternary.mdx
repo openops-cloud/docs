@@ -107,18 +107,6 @@ Allows making arbitrary calls to any [Ternary API](https://docs.ternary.app/refe
 
 ## Designing a workflow
 
-A typical Ternary workflow starts by collecting new anomalies using the *Get Anomalies* action, filtered to active alerts that do not have a case yet, then iterating through them and asking a person to decide whether each anomaly should be dismissed, snoozed, or investigated. Recommendations retrieved with the *Get Usage Recommendations* action can be handled in the same way.
+A typical Ternary workflow starts by collecting new anomalies using the *Get Anomalies* action, filtered to active alerts that do not have a case yet, then asks a person in Slack whether each anomaly should be dismissed, snoozed, or investigated. The message can include the anomaly's cost, service, and account, as well as a link to investigate it in Ternary. If the user chooses to investigate, the workflow retrieves the list of possible assignees with the *Get Users* action, asks who should own the investigation, and creates and assigns a case with the *Create a Case* action. The next run skips the anomaly because it now has a case. Recommendations retrieved with the *Get Usage Recommendations* action can be handled in the same way.
 
-Below is a description of common patterns that can be implemented in your Ternary workflows.
-
-### Handling anomalies via Slack
-
-For each anomaly, your workflow can send a Slack message with buttons using *Request Action* in the Slack action block. The message can include the anomaly's cost, service, and account, as well as a link to investigate it in Ternary. If the user chooses to investigate, the workflow retrieves the list of possible assignees with the *Get Users* action, asks who should own the investigation, and creates and assigns a case with the *Create a Case* action. The next run of the workflow skips the anomaly because it now has a case.
-
-See [Send a Slack notification with action buttons](/integrations/cloudhealth#send-a-slack-notification-with-action-buttons) in the CloudHealth guide for implementation details.
-
-### Tracking decisions using OpenOps tables and states
-
-Rather than acting on each anomaly once and then losing track of its status, your workflow can log anomalies and recommendations to the preconfigured [*Opportunities* table](/reporting-analytics/tables#opportunities) for centralized tracking and status management (*Created*, *Under Review*, *Dismissed*, *Snoozed*). This prevents duplicate notifications, provides audit trails, and enables reporting across your organization.
-
-Learn how to implement opportunity tracking by following the [CloudHealth recommendation logging workflow](/integrations/cloudhealth#look-up-the-opportunity-in-the-openops-table).
+For the patterns behind approval requests and decision tracking, see [Designing Workflows with FinOps Platforms](/cookbook/designing-workflows-with-finops-platforms).

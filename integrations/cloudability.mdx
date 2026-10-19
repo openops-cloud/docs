@@ -5,7 +5,6 @@ icon: 'sprout'
 ---
 
 import { NarrowImage } from '/snippets/narrow-image.jsx'
-import WorkflowDesign from '/snippets/integrations/designing-a-workflow.mdx'
 
 OpenOps integrates with [Cloudability](https://www.apptio.com/products/cloudability/) to automate the retrieval and management of cloud resource usage recommendations.
 
@@ -222,9 +221,8 @@ Allows making arbitrary calls to any [Cloudability API](https://www.ibm.com/docs
 - **Query Parameters**: Optional
 - **Body**: Optional JSON payload
 
-<WorkflowDesign
-    productName="Cloudability"
-    tagArrayName="tagMappings"
-    recommendationsActionName="Get Recommendations"
-    snoozeActionName="Snooze Recommendations"
-/>
+## Designing a workflow
+
+A typical Cloudability workflow starts by collecting active recommendations using the *Get Recommendations* action and iterating through them. For each recommendation, the workflow determines the owner of the affected resource from the `tagMappings` array returned with it, and asks the owner for a decision in Slack. If the owner approves, the workflow remediates the resource using the actions available for the [cloud platforms OpenOps supports](/cloud-access/supported-cloud-providers). If the owner snoozes it, the workflow delays the recommendation with *Snooze Recommendations* and can reactivate it later with *Unsnooze Recommendations*.
+
+For the patterns behind owner mapping, approval requests, and decision tracking, see [Designing Workflows with FinOps Platforms](/cookbook/designing-workflows-with-finops-platforms).

@@ -94,18 +94,6 @@ Allows making arbitrary calls to any [Finout API](https://docs.finout.io/configu
 
 ## Designing a workflow
 
-A typical Finout workflow runs on a schedule, retrieves cost data from a saved view using the *Get View Data* action, iterates through the results, and asks a person to decide how each item should be handled. Finout workflows often focus on cost allocation: finding spend that is not attributed to a team and writing the attribution back to Finout as a virtual tag value.
+A typical Finout workflow focuses on cost allocation. Create a view in Finout that lists the accounts or resources without a team tag, retrieve it on a schedule with *Get View Data*, and retrieve the current virtual tags with *Get Virtual Tag Values* so that the list of teams stays in sync with Finout. For each untagged item, ask the FinOps owner in Slack which team it belongs to, with one button per team in *Request Action* or a Block Kit select element for a long list of teams. Once a team is chosen, *Add Value to Virtual Tag Filter* maps the item to that team, so that it is no longer returned as untagged on the next run, provided the view filters on that virtual tag. Recommendations retrieved with *Get CostGuard Recommendations* can be routed to resource owners and remediated in the same way as recommendations from other platforms.
 
-Below is a description of common patterns that can be implemented in your Finout workflows.
-
-### Allocating untagged spend
-
-Create a view in Finout that lists the accounts or resources without a team tag, grouped by the dimension you want to allocate. Your workflow can retrieve that view with *Get View Data*, retrieve the current virtual tags with *Get Virtual Tag Values* so that the list of teams is always in sync with Finout, and then, for each untagged item, ask the FinOps owner in Slack which team the item belongs to. With *Request Action* in the Slack action block, the message can include the item's cost and a link to the view in Finout, with one button per team. For a long list of teams, use *Send Message* with a Block Kit select element followed by *Wait For User Action* instead, as described in [Human-in-the-loop](/workflow-management/human-in-the-loop). Once the owner selects a team, the workflow calls *Add Value to Virtual Tag Filter* to map the item to that team, so that it is no longer returned as untagged on the next run, provided the view filters on that virtual tag.
-
-See [Send a Slack notification with action buttons](/integrations/cloudhealth#send-a-slack-notification-with-action-buttons) in the CloudHealth guide for an example of requesting an action from a user.
-
-### Handling CostGuard recommendations
-
-Workflows using the *Get CostGuard Recommendations* action can route each recommendation to the owner of the affected resource, request a decision in Slack, and remediate approved recommendations using the actions available for the [cloud platforms OpenOps supports](/cloud-access/supported-cloud-providers). Decisions can be logged to the preconfigured [*Opportunities* table](/reporting-analytics/tables#opportunities) to prevent duplicate notifications and to report on realized savings.
-
-Learn how to implement opportunity tracking by following the [CloudHealth recommendation logging workflow](/integrations/cloudhealth#look-up-the-opportunity-in-the-openops-table).
+For the patterns behind approval requests and decision tracking, see [Designing Workflows with FinOps Platforms](/cookbook/designing-workflows-with-finops-platforms).

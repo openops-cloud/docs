@@ -5,7 +5,6 @@ icon: 'pencil-ruler'
 ---
 
 import { NarrowImage } from '/snippets/narrow-image.jsx'
-import WorkflowDesign from '/snippets/integrations/designing-a-workflow.mdx'
 
 OpenOps integrates with [Flexera One](https://www.flexera.com/products/flexera-one) to automate the retrieval and management of cloud resource usage recommendations.
 
@@ -327,9 +326,8 @@ Allows making arbitrary calls to any [Flexera One API](https://developer.flexera
 - **Query Parameters**: Optional
 - **Body**: Optional JSON payload
 
-<WorkflowDesign
-    productName="Flexera"
-    tagArrayName="tags"
-    recommendationsActionName="Get Active Recommendations"
-    snoozeActionName="Custom API Call"
-/>
+## Designing a workflow
+
+A typical Flexera workflow starts by collecting active recommendations using the *Get Active Recommendations* action and iterating through them. For each recommendation, the workflow determines the owner of the affected resource from the `tags` array returned with it, and asks the owner for a decision in Slack or Microsoft Teams. If the owner approves, the workflow remediates the resource using the actions available for the [cloud platforms OpenOps supports](/cloud-access/supported-cloud-providers). Decisions can be written back to Flexera with the *Custom API Call* action.
+
+For the patterns behind owner mapping, approval requests, and decision tracking, see [Designing Workflows with FinOps Platforms](/cookbook/designing-workflows-with-finops-platforms).

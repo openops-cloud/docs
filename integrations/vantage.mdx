@@ -30,18 +30,6 @@ Allows making arbitrary calls to any [Vantage API](https://docs.vantage.sh/api) 
 
 ## Designing a workflow
 
-A typical Vantage workflow starts by retrieving recommendations or cost alerts from the Vantage API using the *Custom API Call* action, then iterating through them, determining the owner of the affected resource, and deciding whether to request an action from the owner. If the owner approves the action, the workflow can remediate the resource using the actions available for the [cloud platforms OpenOps supports](/cloud-access/supported-cloud-providers). Because the Vantage block exposes the API through *Custom API Call*, any endpoint documented in the [Vantage API reference](https://docs.vantage.sh/api) can be used from a workflow.
+A typical Vantage workflow starts by retrieving recommendations or cost alerts from the Vantage API using the *Custom API Call* action, then asks the owner of the affected resource for a decision in Slack or Microsoft Teams: approve, snooze, archive, or open a ticket. Based on the decision, the workflow remediates the resource using the actions available for the [cloud platforms OpenOps supports](/cloud-access/supported-cloud-providers), creates a ticket, or calls another endpoint from the [Vantage API reference](https://docs.vantage.sh/api) to record the decision. For environments such as development accounts, the approval step can be skipped so that remediation runs automatically.
 
-Below is a description of common patterns that can be implemented in your Vantage workflows.
-
-### Handling recommendations via Slack or Microsoft Teams
-
-For recommendations that require human judgment, OpenOps can send interactive messages that allow resource owners to approve, snooze, or archive optimization opportunities, or open a ticket, directly from Slack or Microsoft Teams. After retrieving recommendations, workflows can send a message with buttons for different responses using *Request Action* in the Slack or Microsoft Teams action block. Based on the user's decision, the workflow can proceed with remediation, create a ticket in your ticketing system, or call another Vantage endpoint with *Custom API Call* to record the decision. For environments such as development accounts, the approval step can be skipped so that remediation runs automatically.
-
-See [Send a Slack notification with action buttons](/integrations/cloudhealth#send-a-slack-notification-with-action-buttons) in the CloudHealth guide for implementation details.
-
-### Recommendation tracking using OpenOps tables and states
-
-Rather than acting on each recommendation once and then losing track of its status, your OpenOps workflow can log Vantage recommendations to the preconfigured [*Opportunities* table](/reporting-analytics/tables#opportunities) for centralized tracking and status management (*Created*, *Under Review*, *Dismissed*, *Snoozed*). This approach prevents duplicate notifications, provides audit trails, and enables reporting on realized vs. unrealized savings across your organization.
-
-Learn how to implement opportunity tracking by following the [CloudHealth recommendation logging workflow](/integrations/cloudhealth#look-up-the-opportunity-in-the-openops-table).
+For the patterns behind owner mapping, approval requests, and decision tracking, see [Designing Workflows with FinOps Platforms](/cookbook/designing-workflows-with-finops-platforms).
