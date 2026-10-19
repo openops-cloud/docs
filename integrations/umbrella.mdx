@@ -26,12 +26,12 @@ Retrieves open recommendations with potential savings for the selected accounts 
 - **Recommendation**: Multi-select of 85 predefined recommendation types across AWS, Azure, and GCP, such as AWS EC2 Rightsizing, AWS EBS Unattached, Azure Virtual Machine Idle, or GCP Disk Unattached
 - **Date filters for open recommendations**: Required creation date range (From and To) for open recommendations, in `yyyy-MM-dd` format
 
-Below is a sample output returned by this step. The step groups recommendations by account, so the top-level key is the name of the selected Umbrella account. The sample shows one of the recommendations returned for an account with no recommendation type filter:
+Below is a sample output returned by this step, with account and resource identifiers replaced by placeholders. The step groups recommendations by account, so the top-level key is the name of the selected Umbrella account. The sample shows one of the recommendations returned for an account with no recommendation type filter:
 
 <Expandable title="Umbrella recommendations">
 ```json
 {
-  "932213950603": [
+  "Production": [
     {
       "recId": 48810034,
       "createdAt": "2026-01-12",
@@ -64,46 +64,31 @@ Below is a sample output returned by this step. The step groups recommendations 
       },
       "age": 280,
       "cloudProvider": "AWS",
-      "accountId": "932213950603",
+      "accountId": "123456789012",
       "typeId": "ebs-unattached",
       "typeName": "EBS Unattached",
-      "linkedAccountId": "932213950603",
-      "linkedAccountName": "Anodot Cost",
-      "resourceId": "vol-0eb96f2f0c633716b",
+      "linkedAccountId": "123456789012",
+      "linkedAccountName": "Production",
+      "resourceId": "vol-0123456789abcdef0",
       "region": "us-east-1",
       "service": "EBS",
       "category": "Unattached",
       "recommendedAction": "terminate",
       "customTags": {
-        "createdBy": "AssumedRole:AROA5SDCIBCFX4UTTZZMC:1739177178430700689"
+        "createdBy": "<IAM_PRINCIPAL>"
       },
       "enrichmentTags": {
         "division": "Technology",
         "company": "Company A",
-        "slash/test": "slash",
         "region": "US",
-        "department": "R&D",
-        "dot.test": "dot"
+        "department": "R&D"
       },
       "businessMappingTags": {
         "Departments": "R&D",
-        "mick 1": "mick 2",
-        "Test Ilan 101 Copy": "US East 1 - Exclude support",
-        "Main Service Groups": "EC2",
-        "test10": "shared",
-        "Projects": "Project2",
-        "Cost Per Customer (Including All Shared Resources)": "Shared Resources",
-        "fin": "123",
-        "Projects1": "project02",
-        "test2": "Group B",
-        "fin Copy": "123",
-        "apitest": "testtheapi",
-        "test tags": "testenrichtag",
         "Teams": "Team2",
+        "Projects": "Project2",
         "Environment": "Split",
-        "test10 Copy": "Per Customer split",
-        "gefentest": "EC2 shared",
-        "Application": "Application A "
+        "Application": "Application A"
       },
       "starred": false,
       "open": true,
@@ -114,8 +99,8 @@ Below is a sample output returned by this step. The step groups recommendations 
         "environment": null,
         "zone_tag": "us-east-1",
         "ebs_type": "gp3",
-        "detached_ebs_id": "vol-0eb96f2f0c633716b",
-        "resource_arn": "arn:aws:ec2:us-east-1:932213950603:volume/vol-0eb96f2f0c633716b",
+        "detached_ebs_id": "vol-0123456789abcdef0",
+        "resource_arn": "arn:aws:ec2:us-east-1:123456789012:volume/vol-0123456789abcdef0",
         "project": null,
         "ebs_size": 5
       }
