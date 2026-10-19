@@ -1,0 +1,45 @@
+---
+title: 'CloudZero'
+description: "An overview of how CloudZero can be integrated with OpenOps"
+icon: 'chart-pie'
+---
+
+import { NarrowImage } from '/snippets/narrow-image.jsx'
+
+OpenOps integrates with [CloudZero](https://www.cloudzero.com/) to automate the exchange of cost data and insights between CloudZero and your workflows.
+
+## Actions
+
+OpenOps provides one [action](/workflow-management/actions) for interacting with CloudZero:
+
+<NarrowImage src="/images/cloudzero-actions.png" alt="CloudZero actions" />
+
+The CloudZero action is based on the [CloudZero API](https://docs.cloudzero.com/reference/introduction) and requires configuring a CloudZero [connection](/cloud-access/access-levels-permissions) with an API key. API keys are created in CloudZero under **Settings** > **API Keys**, and each key is only displayed once after creation.
+
+<NarrowImage src="/images/cloudzero-connection.png" alt="Configuring a CloudZero connection" />
+
+The following section describes the action available in the CloudZero block.
+
+### Custom API Call
+Allows making arbitrary calls to any [CloudZero API](https://docs.cloudzero.com/reference/introduction) endpoint:
+- **URL**: Dynamic endpoint selection
+- **Method**: `GET`, `POST`, `PATCH`, `PUT`, `DELETE`, or `HEAD`
+- **Headers**: Optional (authorization auto-injected)
+- **Query Parameters**: Optional
+- **Body**: Optional JSON payload
+
+## Designing a workflow
+
+A typical CloudZero workflow detects an optimization opportunity using OpenOps actions for the [cloud platforms OpenOps supports](/cloud-access/supported-cloud-providers), and then records the finding in CloudZero so that it appears alongside the rest of your cost data. Because the CloudZero block exposes the API through the *Custom API Call* action, any endpoint documented in the [CloudZero API reference](https://docs.cloudzero.com/reference/introduction) can be used from a workflow.
+
+Below is a description of common patterns that can be implemented in your CloudZero workflows.
+
+### Creating insights from your own detections
+
+Your workflow can run on a schedule, read the list of accounts to inspect from an OpenOps table, and use cloud provider actions to look for resources that match a rule specific to your organization, such as instances configured for high availability in development accounts. For each finding, the workflow can call the [Create Insight](https://docs.cloudzero.com/reference/createinsight) endpoint through *Custom API Call* and then notify the relevant team in Slack with a link back to the new insight in CloudZero.
+
+### Enriching workflows with CloudZero data
+
+Workflows can also read from CloudZero. For example, a workflow can call the CloudZero API to retrieve cost data and use the result to decide which team to notify, or log the result to the preconfigured [*Opportunities* table](/reporting-analytics/tables#opportunities) for tracking and reporting.
+
+See [Creating a workflow to fill the project-owner mapping table](/integrations/cloudhealth#creating-a-workflow-to-fill-the-project-owner-mapping-table) in the CloudHealth guide for an example of using an OpenOps table to drive a workflow.

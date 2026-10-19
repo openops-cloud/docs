@@ -1,0 +1,111 @@
+---
+title: 'Finout'
+description: "An overview of how Finout can be integrated with OpenOps"
+icon: 'tags'
+---
+
+import { NarrowImage } from '/snippets/narrow-image.jsx'
+
+OpenOps integrates with [Finout](https://www.finout.io/) to automate cost allocation with virtual tags and the retrieval of cost data and CostGuard recommendations.
+
+## Actions
+
+OpenOps provides five [actions](/workflow-management/actions) for interacting with Finout:
+
+<NarrowImage src="/images/finout-actions.png" alt="Finout actions" />
+
+All Finout actions are based on the [Finout API](https://docs.finout.io/configuration/finout-api) and require configuring a Finout [connection](/cloud-access/access-levels-permissions) with your Finout client ID and secret key. See [Generate an API token](https://docs.finout.io/configuration/finout-api/generate-an-api-token) in the Finout documentation for how to obtain them.
+
+<NarrowImage src="/images/finout-connection.png" alt="Configuring a Finout connection" />
+
+The following sections describe the five actions available in the Finout block.
+
+### Get View Data
+Retrieves the cost data of a saved Finout view:
+- **View**: Dynamic dropdown of the views available in your Finout account
+
+Below is an example of the output returned by this step for a view grouped by a single dimension, based on the example response in the [Finout API reference](https://docs.finout.io/api/finout-api/finout-api-v1/cost-api-v1). The step returns the view ID and one entry per group, without the *Total* entry:
+
+<Expandable title="Finout view data">
+```json
+{
+  "id": "b17c9716-31dc-4520-adf8-6d9cd7c00776",
+  "data": [
+    {
+      "name": "pci-log-aggregator-service",
+      "dateRange": {
+        "from": 1719792000000,
+        "to": 1719878400000
+      },
+      "data": [
+        {
+          "time": 1719792000000,
+          "cost": 0
+        },
+        {
+          "time": 1719878400000,
+          "cost": 5.058602781953021e-06
+        }
+      ]
+    },
+    {
+      "name": "N/A",
+      "dateRange": {
+        "from": 1719792000000,
+        "to": 1719878400000
+      },
+      "data": [
+        {
+          "time": 1719792000000,
+          "cost": 31755.53133870504
+        },
+        {
+          "time": 1719878400000,
+          "cost": 31044.301095328592
+        }
+      ]
+    }
+  ]
+}
+```
+</Expandable>
+
+### Get Virtual Tag Values
+Retrieves virtual tags together with their possible values:
+- **Virtual Tags**: Dynamic multi-select of virtual tags to retrieve. Leave empty to retrieve all virtual tags
+
+### Add Value to Virtual Tag Filter
+Adds a value to the filter of an existing virtual tag rule, for example to map a cloud account to a team:
+- **Virtual Tag**: Dynamic dropdown of the virtual tags in your Finout account
+- **Tag Filter**: Dynamic dropdown of the values defined for the selected virtual tag
+- **Value to Add**: The value to add to the selected filter
+
+### Get CostGuard Recommendations
+Retrieves the recommendations produced by a CostGuard scan:
+- **Scan**: Dynamic dropdown of the CostGuard scans configured in your Finout account
+
+### Custom API Call
+Allows making arbitrary calls to any [Finout API](https://docs.finout.io/configuration/finout-api) endpoint:
+- **URL**: Dynamic endpoint selection
+- **Method**: `GET`, `POST`, `PATCH`, `PUT`, `DELETE`, or `HEAD`
+- **Headers**: Optional (authorization auto-injected)
+- **Query Parameters**: Optional
+- **Body**: Optional JSON payload
+
+## Designing a workflow
+
+A typical Finout workflow runs on a schedule, retrieves cost data from a saved view using the *Get View Data* action, iterates through the results, and asks a person to decide how each item should be handled. Finout workflows often focus on cost allocation: finding spend that is not attributed to a team and writing the attribution back to Finout as a virtual tag value.
+
+Below is a description of common patterns that can be implemented in your Finout workflows.
+
+### Allocating untagged spend
+
+Create a view in Finout that lists the accounts or resources without a team tag, grouped by the dimension you want to allocate. Your workflow can retrieve that view with *Get View Data*, retrieve the current virtual tags with *Get Virtual Tag Values* so that the list of teams is always in sync with Finout, and then, for each untagged item, send a Slack message to the FinOps owner using *Request Action* in the Slack action block. The message can include the item's cost, a link to the view in Finout, and a dropdown of teams. Once the owner selects a team, the workflow calls *Add Value to Virtual Tag Filter* to map the item to that team, so that it is no longer returned as untagged on the next run, provided the view filters on that virtual tag.
+
+See [Send a Slack notification with action buttons](/integrations/cloudhealth#send-a-slack-notification-with-action-buttons) in the CloudHealth guide for an example of requesting an action from a user.
+
+### Handling CostGuard recommendations
+
+Workflows using the *Get CostGuard Recommendations* action can route each recommendation to the owner of the affected resource, request a decision in Slack, and remediate approved recommendations using the actions available for the [cloud platforms OpenOps supports](/cloud-access/supported-cloud-providers). Decisions can be logged to the preconfigured [*Opportunities* table](/reporting-analytics/tables#opportunities) to prevent duplicate notifications and to report on realized savings.
+
+Learn how to implement opportunity tracking by following the [CloudHealth recommendation logging workflow](/integrations/cloudhealth#look-up-the-opportunity-in-the-openops-table).

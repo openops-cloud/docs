@@ -95,9 +95,16 @@
       {
         "group": "Integrations",
         "pages": [
+          "integrations/archera",
           "integrations/cloudability",
+          "integrations/cloudfix",
           "integrations/cloudhealth",
-          "integrations/flexera"
+          "integrations/cloudzero",
+          "integrations/finout",
+          "integrations/flexera",
+          "integrations/ternary",
+          "integrations/umbrella",
+          "integrations/vantage"
         ]
       },
       {

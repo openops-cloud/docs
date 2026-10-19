@@ -1,0 +1,78 @@
+---
+title: 'Archera'
+description: "An overview of how Archera can be integrated with OpenOps"
+icon: 'file-contract'
+---
+
+import { NarrowImage } from '/snippets/narrow-image.jsx'
+
+OpenOps integrates with [Archera](https://archera.ai/) to automate the review and purchase of cloud commitment plans and the tracking of existing commitments.
+
+## Actions
+
+OpenOps provides seven [actions](/workflow-management/actions) for interacting with Archera:
+
+<NarrowImage src="/images/archera-actions.png" alt="Archera actions" />
+
+All Archera actions are based on the [Archera API](https://docs.archera.ai/api-reference/public-api/public-api-reference) and require configuring an Archera [connection](/cloud-access/access-levels-permissions) with your API token and organization ID. Both are available in the API section of your Archera user settings.
+
+<NarrowImage src="/images/archera-connection.png" alt="Configuring an Archera connection" />
+
+The following sections describe the seven actions available in the Archera block.
+
+### Get Recommended Plan
+Retrieves the commitment plan that Archera currently recommends for a cloud provider:
+- **Provider**: AWS or Azure
+
+### Get Default Commitment Plans
+Retrieves the default commitment plans that Archera generates for a cloud provider:
+- **Provider**: AWS or Azure
+
+### Get Commitment Plan
+Retrieves a specific commitment plan:
+- **Plan ID**: The UUID of the commitment plan to retrieve
+
+### Apply Commitment Plan
+Applies a commitment plan in Archera:
+- **Plan ID**: The UUID of the commitment plan to apply
+
+### Get Commitments Inventory
+Retrieves the inventory of existing commitments for a cloud provider within a date range:
+- **Provider**: AWS, Azure, GCP, Kubernetes, or Unknown
+- **Start Date**: Start of the date range in `yyyy-MM-dd` format
+- **End Date**: End of the date range in `yyyy-MM-dd` format
+- **Search**: Optional search term to filter commitments
+- **Order By**: Optional field to order results by: End Date, Duration (seconds), Start Date, Upfront Cost, Amortized Cost, Recurring Cost, Created At, Updated At, Is Leased, Account ID, Type, Status, Scope, Reservation End, Utilization, or Monthly Savings
+- **Descending Order**: Sort in descending order (enabled by default)
+- **Page**: Page number for pagination (defaults to 1)
+- **Page Size**: Number of items per page, from 1 to 10000 (defaults to 10)
+
+### Get Metrics
+Retrieves savings and utilization metrics for a cloud provider:
+- **Provider**: AWS or Azure
+
+### Custom API Call
+Allows making arbitrary calls to any [Archera API](https://docs.archera.ai/api-reference/public-api/public-api-reference) endpoint:
+- **URL**: Dynamic endpoint selection
+- **Method**: `GET`, `POST`, `PATCH`, `PUT`, `DELETE`, or `HEAD`
+- **Headers**: Optional (authorization auto-injected)
+- **Query Parameters**: Optional
+- **Body**: Optional JSON payload
+
+## Designing a workflow
+
+A typical Archera workflow runs on a schedule, retrieves the commitment plans that Archera proposes using the *Get Default Commitment Plans* or *Get Recommended Plan* action, and asks a person to choose which plan to purchase before applying it with the *Apply Commitment Plan* action. A second common workflow retrieves existing commitments with the *Get Commitments Inventory* action and notifies owners about commitments that are about to expire.
+
+Below is a description of common patterns that can be implemented in your Archera workflows.
+
+### Approving commitment plans
+
+Commitment purchases usually require human approval. After retrieving the proposed plans, your workflow can send a message with buttons for each plan using *Request Action* in the Slack or Microsoft Teams action block. The message can include savings figures from the plans themselves or from the *Get Metrics* action, along with a link back to Archera. Based on the user's choice, the workflow applies the selected plan with *Apply Commitment Plan*, or records that the proposal was snoozed. If nobody responds before the request times out, the workflow can apply the recommended plan automatically.
+
+See [Send a Slack notification with action buttons](/integrations/cloudhealth#send-a-slack-notification-with-action-buttons) in the CloudHealth guide for an example of requesting an action from a user.
+
+### Tracking expiring commitments
+
+Workflows using the *Get Commitments Inventory* action can filter commitments by their end date and notify the relevant team before a commitment expires, with a link to renew it in Archera. Decisions can be logged to the preconfigured [*Opportunities* table](/reporting-analytics/tables#opportunities) so that every proposal and renewal has an audit trail and a current status (*Created*, *Under Review*, *Dismissed*, *Snoozed*).
+
+Learn how to implement opportunity tracking by following the [CloudHealth recommendation logging workflow](/integrations/cloudhealth#look-up-the-opportunity-in-the-openops-table).

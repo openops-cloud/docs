@@ -1,0 +1,73 @@
+---
+title: 'CloudFix'
+description: "An overview of how CloudFix can be integrated with OpenOps"
+icon: 'wrench'
+---
+
+import { NarrowImage } from '/snippets/narrow-image.jsx'
+
+OpenOps integrates with [CloudFix](https://cloudfix.com/) to automate the retrieval and management of AWS cost optimization recommendations and the execution of their fixes.
+
+## Actions
+
+OpenOps provides six [actions](/workflow-management/actions) for interacting with CloudFix:
+
+<NarrowImage src="/images/cloudfix-actions.png" alt="CloudFix actions" />
+
+All CloudFix actions are based on the [CloudFix API](https://cloudfix.kayako.com/article/129569-cloudfix-api-customer-guide) and require configuring a CloudFix [connection](/cloud-access/access-levels-permissions) with the CloudFix API URL and an API token. API tokens are created in CloudFix under **Settings** > **API Tokens** with a Reader, Resource Manager, or Runbook Manager role.
+
+<NarrowImage src="/images/cloudfix-connection.png" alt="Configuring a CloudFix connection" />
+
+The following sections describe the six actions available in the CloudFix block.
+
+### Get Report
+Retrieves the detailed report for a specific recommendation:
+- **Recommendation ID**: The ID of the recommendation to get a report for
+
+### Get Recommendations
+Retrieves recommendations from CloudFix with filtering options:
+- **Status filter**: Optional list of statuses: Suggested, Scheduled, Failed, Completed, Rejected, In Progress, Ready, No Longer Applicable, Resource Deleted, Resource Fixed, or Manually Fixed
+- **Sort by**: Scheduled At (default), Updated At, Annual Savings, or Annual Cost
+- **Sort order**: Descending (default) or Ascending
+- **Include parameters**: Whether to include recommendation parameters in the response
+- **Finder fixer ID**: Optional ID of a finder fixer to filter by
+- **Page number**: Page number for pagination, starting from 1 (defaults to 1)
+- **Page limit**: Maximum number of recommendations per page (defaults to 200)
+
+### Get Recommendations Summary
+Retrieves a summary of recommendations. This action has no parameters.
+
+### Postpone Recommendations
+Postpones recommendations until a specified date:
+- **Recommendation IDs**: Array of recommendation IDs to postpone
+- **Postpone until**: Date and time until which to postpone the recommendations, in ISO format
+- **Reason**: Optional reason for postponing
+
+### Create Change Requests
+Creates change requests from recommendations so that CloudFix can execute the fixes:
+- **Recommendation IDs**: Array of recommendation IDs to create change requests for
+- **Execute on schedule**: Whether to execute the change requests on schedule
+
+### Custom API Call
+Allows making arbitrary calls to any [CloudFix API](https://cloudfix.kayako.com/article/129569-cloudfix-api-customer-guide) endpoint:
+- **URL**: Dynamic endpoint selection
+- **Method**: `GET`, `POST`, `PATCH`, `PUT`, `DELETE`, or `HEAD`
+- **Headers**: Optional (authorization auto-injected)
+- **Query Parameters**: Optional
+- **Body**: Optional JSON payload
+
+## Designing a workflow
+
+A typical CloudFix workflow starts by collecting recommendations using the *Get Recommendations* action, then iterating through them, deciding how each one should be handled, and requesting an action from the owner of the affected resource. Once a recommendation is approved, the *Create Change Requests* action hands it to CloudFix as a change request.
+
+Below is a description of common patterns that can be implemented in your CloudFix workflows.
+
+### Routing recommendations by type
+
+Your workflow can use a *Condition* step to route each recommendation, for example by finder fixer ID: recommendations that need manual work can be turned into Jira issues that include the detailed report from the *Get Report* action, while recommendations that can be applied through a change request are sent to the resource owner for approval.
+
+### Handling recommendations via Slack
+
+For recommendations that require human judgment, OpenOps can send interactive Slack messages that allow resource owners to approve, dismiss, or postpone a fix directly from Slack. After retrieving recommendations with *Get Recommendations*, workflows can send a Slack message with buttons for different responses using *Request Action* in the Slack action block. Based on the user's decision, the workflow can execute the fix using *Create Change Requests*, delay it using *Postpone Recommendations*, or mark it as rejected. Decisions can be tracked in the preconfigured [*Opportunities* table](/reporting-analytics/tables#opportunities).
+
+See [Send a Slack notification with action buttons](/integrations/cloudhealth#send-a-slack-notification-with-action-buttons) in the CloudHealth guide for implementation details.
