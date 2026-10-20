@@ -1,0 +1,35 @@
+---
+title: 'Vantage'
+description: "An overview of how Vantage can be integrated with OpenOps"
+icon: 'chart-line'
+---
+
+import { NarrowImage } from '/snippets/narrow-image.jsx'
+
+OpenOps integrates with [Vantage](https://www.vantage.sh/) to automate workflows based on the cost data, recommendations, and alerts available through the Vantage API.
+
+## Actions
+
+OpenOps provides one [action](/workflow-management/actions) for interacting with Vantage:
+
+<NarrowImage src="/images/vantage-actions.png" alt="Vantage actions" />
+
+The Vantage action is based on the [Vantage API](https://docs.vantage.sh/api) and requires configuring a Vantage [connection](/cloud-access/access-levels-permissions) with a Vantage API key.
+
+<NarrowImage src="/images/vantage-connection.png" alt="Configuring a Vantage connection" />
+
+The following section describes the action available in the Vantage block.
+
+### Custom API Call
+Allows making arbitrary calls to any [Vantage API](https://docs.vantage.sh/api) endpoint:
+- **URL**: Dynamic endpoint selection
+- **Method**: `GET`, `POST`, `PATCH`, `PUT`, `DELETE`, or `HEAD`
+- **Headers**: Optional (authorization auto-injected)
+- **Query Parameters**: Optional
+- **Body**: Optional JSON payload
+
+## Designing a workflow
+
+A typical Vantage workflow starts by retrieving recommendations or cost alerts from the Vantage API using the *Custom API Call* action, then asks the owner of the affected resource for a decision in Slack or Microsoft Teams: approve, snooze, archive, or open a ticket. Based on the decision, the workflow remediates the resource using the actions available for the [cloud platforms OpenOps supports](/cloud-access/supported-cloud-providers), creates a ticket, or calls another endpoint from the [Vantage API reference](https://docs.vantage.sh/api) to record the decision. For environments such as development accounts, the approval step can be skipped so that remediation runs automatically.
+
+For the patterns behind owner mapping, approval requests, and decision tracking, see [Designing Workflows with FinOps Platforms](/cookbook/designing-workflows-with-finops-platforms).

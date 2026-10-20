@@ -1,0 +1,63 @@
+---
+title: 'CloudFix'
+description: "An overview of how CloudFix can be integrated with OpenOps"
+icon: 'wrench'
+---
+
+import { NarrowImage } from '/snippets/narrow-image.jsx'
+
+OpenOps integrates with [CloudFix](https://cloudfix.com/) to automate the retrieval and management of AWS cost optimization recommendations and the execution of their fixes.
+
+## Actions
+
+OpenOps provides six [actions](/workflow-management/actions) for interacting with CloudFix:
+
+<NarrowImage src="/images/cloudfix-actions.png" alt="CloudFix actions" />
+
+All CloudFix actions are based on the [CloudFix API](https://cloudfix.kayako.com/article/129569-cloudfix-api-customer-guide) and require configuring a CloudFix [connection](/cloud-access/access-levels-permissions) with the CloudFix API URL and an API token. API tokens are created in CloudFix under **Settings** > **API Tokens** with a Reader, Resource Manager, or Runbook Manager role.
+
+<NarrowImage src="/images/cloudfix-connection.png" alt="Configuring a CloudFix connection" />
+
+The following sections describe the six actions available in the CloudFix block.
+
+### Get Report
+Retrieves the detailed report for a specific recommendation:
+- **Recommendation ID**: The ID of the recommendation to get a report for
+
+### Get Recommendations
+Retrieves recommendations from CloudFix with filtering options:
+- **Status filter**: Optional list of statuses: Suggested, Scheduled, Failed, Completed, Rejected, In Progress, Ready, No Longer Applicable, Resource Deleted, Resource Fixed, or Manually Fixed
+- **Sort by**: Scheduled At (default), Updated At, Annual Savings, or Annual Cost
+- **Sort order**: Descending (default) or Ascending
+- **Include parameters**: Whether to include recommendation parameters in the response
+- **Finder fixer ID**: Optional ID of a finder fixer to filter by
+- **Page number**: Page number for pagination, starting from 1 (defaults to 1)
+- **Page limit**: Maximum number of recommendations per page (defaults to 200)
+
+### Get Recommendations Summary
+Retrieves a summary of recommendations. This action has no parameters.
+
+### Postpone Recommendations
+Postpones recommendations until a specified date:
+- **Recommendation IDs**: Array of recommendation IDs to postpone
+- **Postpone until**: Date and time until which to postpone the recommendations, in ISO format
+- **Reason**: Optional reason for postponing
+
+### Create Change Requests
+Creates change requests from recommendations so that CloudFix can execute the fixes:
+- **Recommendation IDs**: Array of recommendation IDs to create change requests for
+- **Execute on schedule**: Whether to execute the change requests on schedule
+
+### Custom API Call
+Allows making arbitrary calls to any [CloudFix API](https://cloudfix.kayako.com/article/129569-cloudfix-api-customer-guide) endpoint:
+- **URL**: Dynamic endpoint selection
+- **Method**: `GET`, `POST`, `PATCH`, `PUT`, `DELETE`, or `HEAD`
+- **Headers**: Optional (authorization auto-injected)
+- **Query Parameters**: Optional
+- **Body**: Optional JSON payload
+
+## Designing a workflow
+
+A typical CloudFix workflow starts by collecting recommendations using the *Get Recommendations* action, then routes each one with a *Condition* step, for example by finder fixer ID: recommendations that need manual work become Jira issues that include the detailed report from the *Get Report* action, while the rest go to the resource owner for approval in Slack. Once approved, the *Create Change Requests* action hands the recommendation to CloudFix as a change request, and *Postpone Recommendations* delays the ones the owner snoozes.
+
+For the patterns behind owner mapping, approval requests, and decision tracking, see [Designing Workflows with FinOps Platforms](/cookbook/designing-workflows-with-finops-platforms).

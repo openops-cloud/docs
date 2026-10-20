@@ -1,0 +1,99 @@
+---
+title: 'Finout'
+description: "An overview of how Finout can be integrated with OpenOps"
+icon: 'tags'
+---
+
+import { NarrowImage } from '/snippets/narrow-image.jsx'
+
+OpenOps integrates with [Finout](https://www.finout.io/) to automate cost allocation with virtual tags and the retrieval of cost data and CostGuard recommendations.
+
+## Actions
+
+OpenOps provides five [actions](/workflow-management/actions) for interacting with Finout:
+
+<NarrowImage src="/images/finout-actions.png" alt="Finout actions" />
+
+All Finout actions are based on the [Finout API](https://docs.finout.io/configuration/finout-api) and require configuring a Finout [connection](/cloud-access/access-levels-permissions) with your Finout client ID and secret key. See [Generate an API token](https://docs.finout.io/configuration/finout-api/generate-an-api-token) in the Finout documentation for how to obtain them.
+
+<NarrowImage src="/images/finout-connection.png" alt="Configuring a Finout connection" />
+
+The following sections describe the five actions available in the Finout block.
+
+### Get View Data
+Retrieves the cost data of a saved Finout view:
+- **View**: Dynamic dropdown of the views available in your Finout account
+
+Below is an example of the output returned by this step for a view grouped by a single dimension, based on the example response in the [Finout API reference](https://docs.finout.io/api/finout-api/finout-api-v1/cost-api-v1). The step returns the view ID and one entry per group, without the *Total* entry:
+
+<Expandable title="Finout view data">
+```json
+{
+  "id": "b17c9716-31dc-4520-adf8-6d9cd7c00776",
+  "data": [
+    {
+      "name": "pci-log-aggregator-service",
+      "dateRange": {
+        "from": 1719792000000,
+        "to": 1719878400000
+      },
+      "data": [
+        {
+          "time": 1719792000000,
+          "cost": 0
+        },
+        {
+          "time": 1719878400000,
+          "cost": 5.058602781953021e-06
+        }
+      ]
+    },
+    {
+      "name": "N/A",
+      "dateRange": {
+        "from": 1719792000000,
+        "to": 1719878400000
+      },
+      "data": [
+        {
+          "time": 1719792000000,
+          "cost": 31755.53133870504
+        },
+        {
+          "time": 1719878400000,
+          "cost": 31044.301095328592
+        }
+      ]
+    }
+  ]
+}
+```
+</Expandable>
+
+### Get Virtual Tag Values
+Retrieves virtual tags together with their possible values:
+- **Virtual Tags**: Dynamic multi-select of virtual tags to retrieve. Leave empty to retrieve all virtual tags
+
+### Add Value to Virtual Tag Filter
+Adds a value to the filter of an existing virtual tag rule, for example to map a cloud account to a team:
+- **Virtual Tag**: Dynamic dropdown of the virtual tags in your Finout account
+- **Tag Filter**: Dynamic dropdown of the values defined for the selected virtual tag
+- **Value to Add**: The value to add to the selected filter
+
+### Get CostGuard Recommendations
+Retrieves the recommendations produced by a CostGuard scan:
+- **Scan**: Dynamic dropdown of the CostGuard scans configured in your Finout account
+
+### Custom API Call
+Allows making arbitrary calls to any [Finout API](https://docs.finout.io/configuration/finout-api) endpoint:
+- **URL**: Dynamic endpoint selection
+- **Method**: `GET`, `POST`, `PATCH`, `PUT`, `DELETE`, or `HEAD`
+- **Headers**: Optional (authorization auto-injected)
+- **Query Parameters**: Optional
+- **Body**: Optional JSON payload
+
+## Designing a workflow
+
+A typical Finout workflow focuses on cost allocation. Create a view in Finout that lists the accounts or resources without a team tag, retrieve it on a schedule with *Get View Data*, and retrieve the current virtual tags with *Get Virtual Tag Values* so that the list of teams stays in sync with Finout. For each untagged item, ask the FinOps owner in Slack which team it belongs to, with one button per team in *Request Action* or a Block Kit select element for a long list of teams. Once a team is chosen, *Add Value to Virtual Tag Filter* maps the item to that team, so that it is no longer returned as untagged on the next run, provided the view filters on that virtual tag. Recommendations retrieved with *Get CostGuard Recommendations* can be routed to resource owners and remediated in the same way as recommendations from other platforms.
+
+For the patterns behind approval requests and decision tracking, see [Designing Workflows with FinOps Platforms](/cookbook/designing-workflows-with-finops-platforms).

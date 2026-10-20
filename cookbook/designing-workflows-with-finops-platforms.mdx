@@ -1,0 +1,51 @@
+---
+title: 'Designing Workflows with FinOps Platforms'
+description: 'Common patterns for building OpenOps workflows around recommendations and anomalies from FinOps platforms'
+icon: 'diagram-project'
+---
+
+FinOps platforms such as CloudHealth, Cloudability, Umbrella, or Ternary are good at finding cost optimization opportunities, but acting on them usually involves people: someone has to review a recommendation, approve a change, or decide to snooze it. OpenOps workflows take care of that part.
+
+Most workflows built on a FinOps platform block follow the same shape:
+
+1. Fetch recommendations, anomalies, or plans from the platform on a schedule.
+2. Iterate through them and determine who owns the affected resource.
+3. Ask the owner for a decision in Slack or Microsoft Teams.
+4. Act on the decision: remediate the resource, open a ticket, or snooze the item in the platform.
+5. Record the outcome in an OpenOps table.
+
+Step 1 is covered by each platform's fetch action. This page describes the patterns behind steps 2 to 5. For a complete, step-by-step example, see the [CloudHealth integration guide](/integrations/cloudhealth), which builds two workflows around these patterns. While the guide covers one specific product, the same principles apply to every FinOps platform block, and each page in the Integrations section describes how that platform's actions fit these patterns.
+
+## Owner mapping
+
+Recommendations often need to be routed to the people who own the affected resources. OpenOps workflows can map cloud resources to their owners using the tag values that the platform returns with each recommendation, and the preconfigured [*Tag-owner mapping* table](/reporting-analytics/tables#tag-owner-mapping).
+
+There are two ways to fill the table:
+
+* If the platform returns owner information, such as a team or an email address in a tag, a separate workflow can add owners or departments to the table automatically.
+* If it does not, populate the table manually once for each business unit, so that subsequent workflow runs know which team member should receive notifications or approval requests.
+
+For an example of implementing owner mapping as a separate workflow, see [Creating a workflow to fill the project-owner mapping table](/integrations/cloudhealth#creating-a-workflow-to-fill-the-project-owner-mapping-table) in the CloudHealth guide.
+
+## Tracking recommendations in OpenOps tables
+
+Rather than acting on each recommendation once and then losing track of its status, your workflow can log recommendations to the preconfigured [*Opportunities* table](/reporting-analytics/tables#opportunities) for centralized tracking and status management.
+
+Each record can hold details such as estimated savings, resource IDs, recommendation types, and a current status: *Created*, *Under Review*, *Dismissed*, or *Snoozed*. Before notifying anyone, the workflow looks the recommendation up in the table and skips items that are already being handled. This approach prevents duplicate notifications, provides audit trails, and enables reporting on realized vs. unrealized savings across your organization.
+
+Learn how to implement opportunity tracking by following the [CloudHealth recommendation logging workflow](/integrations/cloudhealth#look-up-the-opportunity-in-the-openops-table).
+
+## Requesting decisions in Slack or Microsoft Teams
+
+For recommendations that require human judgment, OpenOps can send interactive messages that allow resource owners to decide directly from Slack or Microsoft Teams. After using owner mapping to identify the right person, the workflow sends a message with buttons for the available responses using *Request Action* in the Slack or Microsoft Teams action block, and waits for a click.
+
+Typical responses and what the workflow does next:
+
+* **Approve**: remediate the resource using the actions available for the [cloud platforms OpenOps supports](/cloud-access/supported-cloud-providers), or ask the platform to execute the fix where it offers that.
+* **Open a ticket**: create a Jira issue or a ticket in another system with the recommendation details.
+* **Snooze**: delay the recommendation in the platform using its snooze or status action, and set the status to *Snoozed* in the *Opportunities* table.
+* **Dismiss**: mark the recommendation as rejected in the table, and in the platform if it supports that.
+
+For Slack, when buttons are not enough, for example when the owner has to pick a team from a long list, use *Send Message* with a Block Kit select element followed by *Wait For User Action*, as described in [Human-in-the-loop](/workflow-management/human-in-the-loop). The Microsoft Teams block offers *Request Action* with buttons only.
+
+See [Send a Slack notification with action buttons](/integrations/cloudhealth#send-a-slack-notification-with-action-buttons) in the CloudHealth guide for implementation details.

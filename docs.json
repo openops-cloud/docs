@@ -95,9 +95,16 @@
       {
         "group": "Integrations",
         "pages": [
+          "integrations/archera",
           "integrations/cloudability",
+          "integrations/cloudfix",
           "integrations/cloudhealth",
-          "integrations/flexera"
+          "integrations/cloudzero",
+          "integrations/finout",
+          "integrations/flexera",
+          "integrations/ternary",
+          "integrations/umbrella",
+          "integrations/vantage"
         ]
       },
       {
@@ -105,7 +112,8 @@
         "pages": [
           "cookbook/iterate-over-multiple-aws-accounts",
           "cookbook/iterate-over-multiple-gcp-projects",
-          "cookbook/iterate-over-multiple-azure-subscriptions"
+          "cookbook/iterate-over-multiple-azure-subscriptions",
+          "cookbook/designing-workflows-with-finops-platforms"
         ]
       },
       {
