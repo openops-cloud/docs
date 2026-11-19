@@ -16,10 +16,12 @@ The admin user account created this way has exactly one distinction: it can be u
 
 OpenOps doesn't currently provide a UI for creating user accounts; instead, you can do it with two API calls.
 
+In both calls, replace `<YOUR_OPENOPS_URL>` with the address you use to open OpenOps in the browser, including `http://` or `https://`. On HTTPS installations, the sign-in cookie is only sent over HTTPS, so using `http://` makes the second call fail.
+
 The first API call is to sign in the admin user:
 
 ```shell
-curl -X POST http://your-openops-installation/api/v1/authentication/sign-in \
+curl -X POST <YOUR_OPENOPS_URL>/api/v1/authentication/sign-in \
   -H "Content-Type: application/json" \
   -c cookies.txt \
   -d '{
@@ -33,7 +35,7 @@ The authentication token is returned as an HTTP-only cookie (not in the response
 The next call creates a new user account. Specify values for the four empty properties in the body:
 
 ```shell
-curl -X POST http://your-openops-installation/api/v1/authentication/sign-up \
+curl -X POST <YOUR_OPENOPS_URL>/api/v1/authentication/sign-up \
   -H "Content-Type: application/json" \
   -b cookies.txt \
   -d '{
