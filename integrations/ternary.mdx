@@ -1,0 +1,112 @@
+---
+title: 'Ternary'
+description: "An overview of how Ternary can be integrated with OpenOps"
+icon: 'magnifying-glass-chart'
+---
+
+import { NarrowImage } from '/snippets/narrow-image.jsx'
+
+OpenOps integrates with [Ternary](https://ternary.app/) to automate the handling of cost anomalies and usage recommendations, including the creation of cases for the people who need to investigate them.
+
+## Actions
+
+OpenOps provides eight [actions](/workflow-management/actions) for interacting with Ternary:
+
+<NarrowImage src="/images/ternary-actions.png" alt="Ternary actions" />
+
+All Ternary actions are based on the [Ternary API](https://docs.ternary.app/reference/using-the-api) and require configuring a Ternary [connection](/cloud-access/access-levels-permissions) with your API key, tenant ID, and the base URL of your Ternary instance, for example `https://core-api.eu.ternary.app`.
+
+<NarrowImage src="/images/ternary-connection.png" alt="Configuring a Ternary connection" />
+
+The following sections describe the eight actions available in the Ternary block.
+
+### Get Budgets
+Retrieves the budgets defined in your Ternary tenant. This action has no parameters.
+
+### Get Anomalies
+Retrieves cost alerts (anomalies) from Ternary, together with the case linked to each alert, if any:
+- **Status**: One or more of Active (default), Investigating, Resolved, or Unresolved
+- **Case status**: Show all alerts (default), show only alerts without cases, or show only alerts with cases
+
+Below is an example of the output returned by this step with the default filters, based on the example response in the [Ternary API reference](https://docs.ternary.app/reference/getcostalerts). The step returns a list of anomalies; an anomaly that has a case also includes it in a `case` field:
+
+<Expandable title="Ternary anomalies">
+```json
+[
+  {
+    "id": "LCbmauabGXZY1kYCnLvC",
+    "tenantDocID": "nmhTDDchEhwJLe5YKbXn",
+    "alertRuleID": "kDSLzitN7kwGSHAk8SLG",
+    "createdAt": "2024-02-29T06:12:33.098Z",
+    "currencyCode": "USD",
+    "dimensions": [
+      {
+        "key": "projectId",
+        "value": "demo-prod"
+      }
+    ],
+    "eventTime": "2023-06-24T00:00:00.000Z",
+    "eventType": "ANOMALY_DETECTED",
+    "eventValue": 400,
+    "expectedValue": {
+      "lowerBound": 100,
+      "upperBound": 200
+    },
+    "customMeasureConfiguration": {
+      "formula": "${FOCUS_SPEC_FIELD/EffectiveCost} / ${FOCUS_SPEC_FIELD/ConsumedQuantity}",
+      "variableFilters": {
+        "binding1": [
+          {
+            "schema_field_name": "FOCUS_SPEC_FIELD/ServiceName",
+            "operator": "equals",
+            "values": [
+              "Compute"
+            ]
+          }
+        ]
+      }
+    },
+    "measure": "TERNARY_CUSTOM_MEASURE/00000000-0000-0000-0000-000000000000",
+    "status": "ACTIVE"
+  }
+]
+```
+</Expandable>
+
+### Get Usage Recommendations
+Retrieves usage recommendations from Ternary. This action has no parameters.
+
+### Get Data Integrations
+Retrieves the data integrations configured in your Ternary tenant. This action has no parameters.
+
+### Get Cases
+Retrieves the cases in your Ternary tenant. This action has no parameters.
+
+### Create a Case
+Creates a case in Ternary, for example to assign an anomaly to someone for investigation:
+- **Resource ID**: The ID of the Ternary resource the case is about, such as an anomaly
+- **Name**: Case name
+- **Description**: Case description
+- **Type**: `INVESTIGATION`, `OPTIMIZATION`, or `TASK`
+- **Resource type**: `BUDGET`, `COST_ALERT`, `DASHBOARD`, `RAMP_PLAN`, `RECOMMENDATION`, or `REPORT`
+- **Assignee IDs**: Optional dynamic multi-select of Ternary users to assign the case to
+- **Follower IDs**: Optional dynamic multi-select of Ternary users to add as followers
+- **Link case to Jira**: Whether a Jira ticket should be created for this case
+
+### Get Users
+Retrieves the users of your Ternary tenant:
+- **Include settings**: Whether to include the tenant settings in the response
+
+### Custom API Call
+Allows making arbitrary calls to any [Ternary API](https://docs.ternary.app/reference/api) endpoint:
+- **URL**: Dynamic endpoint selection
+- **Method**: `GET`, `POST`, `PATCH`, `PUT`, `DELETE`, or `HEAD`
+- **Headers**: Optional (authorization auto-injected)
+- **Query Parameters**: Optional
+- **Body**: Optional JSON payload
+
+## Designing a workflow
+
+A typical Ternary workflow starts by collecting new anomalies using the *Get Anomalies* action, filtered to active alerts that do not have a case yet, then asks a person in Slack whether each anomaly should be dismissed, snoozed, or investigated. The message can include the anomaly's cost, service, and account, as well as a link to investigate it in Ternary. If the user chooses to investigate, the workflow retrieves the list of possible assignees with the *Get Users* action, asks who should own the investigation, and creates and assigns a case with the *Create a Case* action. The next run skips the anomaly because it now has a case. Recommendations retrieved with the *Get Usage Recommendations* action can be handled in the same way.
+
+For the patterns behind approval requests and decision tracking, see [Designing Workflows with FinOps Platforms](/cookbook/designing-workflows-with-finops-platforms).

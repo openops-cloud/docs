@@ -61,14 +61,16 @@
         "pages": [
           "cloud-access/supported-cloud-providers",
           "cloud-access/access-levels-permissions",
-          "cloud-access/aws-cf-role-stack"
+          "cloud-access/aws-cf-role-stack",
+          "cloud-access/azure-rbac"
         ]
       },
       {
         "group": "AI Assistance",
         "pages": [
           "ai-assistance/overview",
-          "ai-assistance/llm-connections"
+          "ai-assistance/llm-connections",
+          "ai-assistance/mcp-server"
         ]
       },
       {
@@ -85,16 +87,25 @@
           "paid/sso-authentication",
           "paid/organization-template-catalog",
           "paid/customer-workspaces",
+          "paid/user-management",
           "paid/slack-app",
-          "paid/subagents"
+          "paid/subagents",
+          "paid/role-based-access-control"
         ]
       },
       {
         "group": "Integrations",
         "pages": [
+          "integrations/archera",
           "integrations/cloudability",
+          "integrations/cloudfix",
           "integrations/cloudhealth",
-          "integrations/flexera"
+          "integrations/cloudzero",
+          "integrations/finout",
+          "integrations/flexera",
+          "integrations/ternary",
+          "integrations/umbrella",
+          "integrations/vantage"
         ]
       },
       {
@@ -102,7 +113,8 @@
         "pages": [
           "cookbook/iterate-over-multiple-aws-accounts",
           "cookbook/iterate-over-multiple-gcp-projects",
-          "cookbook/iterate-over-multiple-azure-subscriptions"
+          "cookbook/iterate-over-multiple-azure-subscriptions",
+          "cookbook/designing-workflows-with-finops-platforms"
         ]
       },
       {

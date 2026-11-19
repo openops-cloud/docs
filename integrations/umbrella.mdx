@@ -1,0 +1,167 @@
+---
+title: 'Umbrella'
+description: "An overview of how Umbrella (formerly Anodot) can be integrated with OpenOps"
+icon: 'umbrella'
+---
+
+import { NarrowImage } from '/snippets/narrow-image.jsx'
+
+OpenOps integrates with [Umbrella](https://umbrellacost.com/) (formerly Anodot) to automate the retrieval and management of cloud resource usage recommendations.
+
+## Actions
+
+OpenOps provides eight [actions](/workflow-management/actions) for interacting with Umbrella:
+
+<NarrowImage src="/images/umbrella-actions.png" alt="Umbrella actions" />
+
+All Umbrella actions are based on the [Umbrella API](https://docs.umbrellacost.io/reference/umbrella-cost-api-overview) and require configuring an Umbrella [connection](/cloud-access/access-levels-permissions) with your Umbrella username and password. The authentication URL and API URL are prefilled with the default Umbrella endpoints and only need to be changed if your Umbrella instance uses different ones.
+
+<NarrowImage src="/images/umbrella-connection.png" alt="Configuring an Umbrella connection" />
+
+The following sections describe the eight actions available in the Umbrella block.
+
+### Get Recommendations
+Retrieves open recommendations with potential savings for the selected accounts and recommendation types:
+- **Accounts**: Dynamic multi-select of the Umbrella accounts available to your user
+- **Recommendation**: Multi-select of 85 predefined recommendation types across AWS, Azure, and GCP, such as AWS EC2 Rightsizing, AWS EBS Unattached, Azure Virtual Machine Idle, or GCP Disk Unattached
+- **Date filters for open recommendations**: Required creation date range (From and To) for open recommendations, in `yyyy-MM-dd` format
+
+Below is a sample output returned by this step, with account and resource identifiers replaced by placeholders. The step groups recommendations by account, so the top-level key is the name of the selected Umbrella account. The sample shows one of the recommendations returned for an account with no recommendation type filter:
+
+<Expandable title="Umbrella recommendations">
+```json
+{
+  "Production": [
+    {
+      "recId": 48810034,
+      "createdAt": "2026-01-12",
+      "createdAtDateTime": "2026-01-12T00:00:00Z",
+      "calculatedAtDateTime": "2026-10-19T07:25:53Z",
+      "lastProcessingDate": "2026-10-18",
+      "annualSavings": {
+        "unblended": 4.8,
+        "amortized": 0,
+        "netUnblended": 0,
+        "netAmortized": 4.8
+      },
+      "monthlySavings": {
+        "unblended": 0.4,
+        "amortized": 0,
+        "netUnblended": 0,
+        "netAmortized": 0.4
+      },
+      "annualCurrentCost": {
+        "unblended": 4.8,
+        "amortized": null,
+        "netUnblended": null,
+        "netAmortized": 4.8
+      },
+      "monthlyCurrentCost": {
+        "unblended": 0.4,
+        "amortized": null,
+        "netUnblended": null,
+        "netAmortized": 0.4
+      },
+      "age": 280,
+      "cloudProvider": "AWS",
+      "accountId": "123456789012",
+      "typeId": "ebs-unattached",
+      "typeName": "EBS Unattached",
+      "linkedAccountId": "123456789012",
+      "linkedAccountName": "Production",
+      "resourceId": "vol-0123456789abcdef0",
+      "region": "us-east-1",
+      "service": "EBS",
+      "category": "Unattached",
+      "recommendedAction": "terminate",
+      "customTags": {
+        "createdBy": "<IAM_PRINCIPAL>"
+      },
+      "enrichmentTags": {
+        "division": "Technology",
+        "company": "Company A",
+        "region": "US",
+        "department": "R&D"
+      },
+      "businessMappingTags": {
+        "Departments": "R&D",
+        "Teams": "Team2",
+        "Projects": "Project2",
+        "Environment": "Split",
+        "Application": "Application A"
+      },
+      "starred": false,
+      "open": true,
+      "viewed": false,
+      "recData": {
+        "ebs_iops": 3000,
+        "ebs_name": null,
+        "environment": null,
+        "zone_tag": "us-east-1",
+        "ebs_type": "gp3",
+        "detached_ebs_id": "vol-0123456789abcdef0",
+        "resource_arn": "arn:aws:ec2:us-east-1:123456789012:volume/vol-0123456789abcdef0",
+        "project": null,
+        "ebs_size": 5
+      }
+    }
+  ]
+}
+```
+</Expandable>
+
+### Get Recommendations (custom settings)
+Retrieves recommendations with the full set of filters supported by the Umbrella API:
+- **Accounts**: Dynamic multi-select of the Umbrella accounts available to your user
+- **Status**: `potential_savings`, `actual_savings`, `potential_and_actual_savings`, `excluded`, `user_actions`, or `custom`
+- **Custom status properties**: Shown only when Status is `custom`: Is Open, Done, and Excluded conditions, combined with a logical AND
+- **Date filters for open recommendations**: Required creation date range (From and To) for open recommendations, in `yyyy-MM-dd` format
+- **Date filters for closed and done recommendations**: Shown for every status except `potential_savings`: last update and creation date ranges with an AND or OR operator
+- **Filter by custom tags**, **Filter by virtual tags**, and **Filter by enrichment tags**: Optional tag filters with equal and like conditions
+- **Filter by type id**, **Filter by service**, **Filter by region**, **Filter by linked account id**, **Filter by instance type**, and **Filter by resource id**: Optional list filters with an exclusion condition
+- **Filter by annual savings**: Optional minimum annual savings
+- **Category id**: Optional one or more categories: Right Sizing, Commitments, Terminate, Unattached, Generation Upgrade, or Other
+
+### Update User Status
+Sets the user status of a recommendation:
+- **Account ID**: The Umbrella account the recommendation belongs to
+- **Recommendation ID**: The ID of the recommendation
+- **Status**: Done, Undone, Include, Exclude, Star, Unstar, or Label
+- **Action Parameters**: Additional parameters depending on the status. For Exclude: a required **Comment** and an optional **Until Date**. For Label: **Add Labels** and **Delete Labels** as comma-separated lists
+
+### Add Comment
+Adds a comment to a recommendation:
+- **Account ID**: The Umbrella account the recommendation belongs to
+- **Recommendation ID**: The ID of the recommendation
+- **Comment text**: The comment to add
+
+### Update Comment
+Updates an existing comment of a recommendation:
+- **Account ID**: The Umbrella account the recommendation belongs to
+- **Recommendation ID**: The ID of the recommendation
+- **Comment ID**: The ID of the comment to update
+- **Comment text**: The new comment text
+
+### Delete Comment
+Deletes a comment from a recommendation:
+- **Account ID**: The Umbrella account the recommendation belongs to
+- **Recommendation ID**: The ID of the recommendation
+- **Comment ID**: The ID of the comment to delete
+
+### Get User Accounts
+Retrieves the Umbrella accounts associated with the authenticated user. This action has no parameters.
+
+### Custom Umbrella API Action
+Allows making arbitrary calls to any [Umbrella API](https://docs.umbrellacost.io/reference/umbrella-cost-api-overview) endpoint:
+- **Account**: Dynamic dropdown of the Umbrella account to run the call against
+- **URL**: Dynamic endpoint selection
+- **Method**: `GET`, `POST`, `PATCH`, `PUT`, `DELETE`, or `HEAD`
+- **Headers**: Optional (authorization auto-injected)
+- **Query Parameters**: Optional
+- **Body**: Optional JSON payload
+
+## Designing a workflow
+
+A typical Umbrella workflow starts by collecting active recommendations using the *Get Recommendations* action and iterating through them. For each recommendation, the workflow determines the owner of the affected resource from the `customTags` and `enrichmentTags` objects returned with it, and asks the owner for a decision in Slack. If the owner approves, the workflow remediates the resource using the actions available for the [cloud platforms OpenOps supports](/cloud-access/supported-cloud-providers) and marks the recommendation as done with *Update User Status*. If the owner snoozes it, the workflow excludes the recommendation until a given date using *Update User Status* with the Exclude status, and can record the reason with *Add Comment*.
+
+For the patterns behind owner mapping, approval requests, and decision tracking, see [Designing Workflows with FinOps Platforms](/cookbook/designing-workflows-with-finops-platforms).
