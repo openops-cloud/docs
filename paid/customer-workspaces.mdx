@@ -18,7 +18,7 @@ For managed service providers (MSPs), customer workspaces are essential for main
 
 ## Accessing Workspaces
 
-Every user automatically gets a default workspace. You can access workspaces through the **workspace switcher** in the top navigation bar.
+Every user has a default workspace that opens when they sign in. You can access workspaces through the **workspace switcher** in the top navigation bar.
 
 ![Workspace Switcher](/images/paid/workspace-switcher.png)
 
@@ -55,11 +55,12 @@ The Workspaces Management page displays for each workspace:
 
 - Workspace name
 - Number of active workflows
-- Ownership status (only owners see the action menu)
+- Number of users
+- The action menu (⋯), shown only if you are a Workspace owner or Admin in that workspace
 
 ### Renaming a Workspace
 
-Only workspace owners can rename workspaces:
+Only Workspace owners and Admins can rename workspaces:
 
 1. In the Workspaces Management page, click the three-dot menu (⋯) on the workspace row
 2. Select **"Rename"**
@@ -68,29 +69,85 @@ Only workspace owners can rename workspaces:
 
 ![Renaming workspace ](/images/paid/workspace-management-rename.png)
 
+### Deleting a Workspace
+
+Only Workspace owners and Admins can delete workspaces. Deleting a workspace permanently removes its workflows, connections, and tables, and can't be undone.
+
+1. Switch to a different workspace. You can't delete the workspace you are currently in.
+2. In the Workspaces Management page, click the three-dot menu (⋯) on the workspace row
+3. Select **"Delete"**
+4. Click **"Delete"** to confirm
+
+OpenOps refuses to delete a workspace and shows the reason in the dialog if:
+
+- The workspace has published workflows. Unpublish them first.
+- It is the organization's [master project workspace](#master-project-workspace).
+- It is the default workspace of any of its members.
+- It is the only workspace of any of its members.
+
 ### Default Workspace
 
-Every user has a default workspace (initially named "[Your Name]'s Workspace") that is automatically created. Default workspaces appear first in lists and are marked with a users icon in the workspace switcher.
+Every user has a default workspace. By default, this is the organization's [master project workspace](#master-project-workspace). If your environment is configured to create personal workspaces, each new user gets their own workspace instead (initially named "[Your Name]'s Workspace"). Default workspaces appear first in lists and are marked with a users icon in the workspace switcher.
 
-## Workspace Ownership and Members
+## Managing Workspace Members
 
-### Ownership
+Each workspace has a members page that lists who has access to it and their workspace role. To open it, click the number in the **Users** column, or click the three-dot menu (⋯) on the workspace row and select **"Manage members"**.
 
-The user who creates a workspace becomes its owner. Owners can rename the workspace and manage members.
+![Workspace members page](/images/paid/workspace-members-page.png)
 
-### Member Management
+Every member can view the member list. Only Workspace owners and Admins can add, change, or remove members.
 
-Workspace members can switch to and work within any workspace they have access to. You can manage members and switch workspaces programmatically using the REST API.
+### Workspace Roles
 
-### Roles
+- **Workspace owner** — Full access, including managing members and renaming or deleting the workspace
+- **Contributor** — Can create and edit workflows, runs, and connections
+- **Viewer** — Can view workspace content but can't make changes
+- **Admin** — Organization admins automatically have the Admin role, with the same permissions as Workspace owners, in every workspace they belong to. You can't assign or change this role on the members page; it follows the user's [organization role](/paid/user-management#organization-roles).
 
-Workspaces support the following roles: **ADMIN**, **EDITOR**, **OPERATOR**, and **VIEWER**. Role-based permission enforcement is currently being implemented; the primary authorization check is ownership-based.
+For the full list of permissions, see [Role-Based Access Control](/paid/role-based-access-control).
+
+### Adding Members
+
+You can add users who already belong to your organization. To add a new person to your organization, see [Adding users to the organization](/paid/user-management#adding-users-to-the-organization).
+
+1. On the members page, click **"Add member"**
+2. Search for users by name or email and select one or more of them. Users who are already members are greyed out.
+3. Select the role to give them
+4. Click **"Add"**
+
+![Add member dialog](/images/paid/workspace-add-member.png)
+
+### Changing a Member's Role
+
+1. On the members page, click the three-dot menu (⋯) on the member's row
+2. Select **"Change role"**
+3. Select **Workspace owner**, **Contributor**, or **Viewer**
+4. Click **"Save"**
+
+![Change workspace role dialog](/images/paid/workspace-member-change-role.png)
+
+The new role takes effect the next time the member signs in or switches workspace.
+
+### Removing Members
+
+1. On the members page, click the three-dot menu (⋯) on the member's row
+2. Select **"Remove"**
+3. Click **"Remove"** to confirm
+
+### Rules for Managing Members
+
+To keep every workspace manageable, OpenOps enforces these rules:
+
+- You can't change your own role or remove yourself from a workspace.
+- The user who created a workspace must stay its Workspace owner. They can't be demoted or removed.
+- A workspace must keep at least one Workspace owner or Admin. Assign another Workspace owner before you demote or remove the last one.
+- You can't remove a member from their default workspace or from their only workspace.
 
 ### Master Project Workspace
 
 Each organization has one designated **Master Project** workspace that provides access to special organization-wide features. You must switch to the master project workspace to access these features.
 
-New users are not assigned to the master project by default. They must be granted access and switch to it manually.
+By default, new users are added to the master project workspace as Contributors, and it becomes their default workspace. If your environment is configured to create personal workspaces, new users start in their own workspace instead, and a Workspace owner or Admin must [add them](#adding-members) to the master project workspace.
 
 #### Analytics Access
 
