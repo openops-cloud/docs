@@ -32,6 +32,8 @@ When this action fires, the Slack user receives a message that you've defined in
 As soon as the user clicks one of the buttons, your **Request Action** step receives this as the output. You can then create a [conditional branch](/workflow-management/conditional-branching/) with the **Split** action and implement distinct steps depending on which button the user clicked:
 ![Splitting based on a user action](/images/cloudhealth/slack-split-added.png)
 
+If you need more than a button click from the recipient, such as a reason or a comment, add a [follow-up form](#collecting-details-with-a-follow-up-form) to a button.
+
 #### With "Send Message" and "Wait For User Action"
 
 If you want to build approval requests with more customization options, you can use the **Send Message** action in the **Slack** block instead of **Request Action**.
@@ -53,6 +55,67 @@ When this action runs, the Microsoft Teams user or channel receives a message th
 
 When the user clicks one of the buttons, your **Request Action** step receives the selection as its output. You can then create a [conditional branch](/workflow-management/conditional-branching/) with the **Split** action and implement different steps depending on which button the user clicked:
 ![Splitting based on a user action](/images/hitl-teams-split.png)
+
+As with Slack, you can add a [follow-up form](#collecting-details-with-a-follow-up-form) to a button to collect more details from the recipient.
+
+### Collecting details with a follow-up form
+
+Sometimes a button click isn't enough: you may want the recipient to give a reason for their decision or provide a missing detail, such as the email of the right owner. For this, any button in the **Request Action** action for Slack or Microsoft Teams can open a form in the recipient's browser. The workflow continues only after the recipient submits the form.
+
+To add a form to a button, describe the form as JSON in the button's **Follow-up form** property:
+<NarrowImage src="/images/hitl-follow-up-form-properties.png" alt="Follow-up form property of an action button" widthPercent={50} />
+
+Here's the full JSON from the example above:
+
+```json
+{
+  "title": "Why are you dismissing this?",
+  "fields": [
+    {
+      "name": "reason",
+      "label": "Reason",
+      "type": "select",
+      "options": ["Still in use", "Scheduled for decommissioning", "Other"]
+    },
+    {
+      "name": "comment",
+      "label": "Comment",
+      "type": "textarea",
+      "required": false,
+      "hint": "Add any details that help us follow up"
+    }
+  ]
+}
+```
+
+The form JSON supports the following properties:
+
+| Property    | Required | Description                                                                         |
+|-------------|----------|-------------------------------------------------------------------------------------|
+| `fields`    | Yes      | The list of fields to show, in order. A form can have up to 10 fields.              |
+| `title`     | No       | The heading of the form.                                                            |
+| `subtitle`  | No       | A line of text under the heading.                                                   |
+| `skipLabel` | No       | Adds a second button with this text that lets the recipient submit an empty form.   |
+
+Each field supports the following properties:
+
+| Property   | Required          | Description                                                                                                         |
+|------------|-------------------|---------------------------------------------------------------------------------------------------------------------|
+| `name`     | Yes               | The name under which the answer is returned to the workflow. Use letters, digits, and underscores, starting with a letter. |
+| `label`    | Yes               | The text shown above the field.                                                                                     |
+| `type`     | Yes               | One of `text`, `email`, `number`, `select` (a dropdown), or `textarea` (multi-line text).                           |
+| `options`  | For `select` only | The list of values to choose from.                                                                                  |
+| `required` | No                | Fields are required by default. Set to `false` to make a field optional.                                            |
+| `hint`     | No                | Help text shown under the field.                                                                                    |
+
+When the recipient clicks the button, the form opens in their browser:
+<NarrowImage src="/images/hitl-follow-up-form.png" alt="Follow-up form opened from an action button" />
+
+After the recipient submits the form, the answers are available in the output of the **Request Action** step under `parameters`, one entry per field name. In the example above, these are `parameters.reason` and `parameters.comment`. You can use them in subsequent steps like any other step output.
+
+<Note>
+The form is passed to the browser in the button's link, and Slack limits the length of a link to 3,000 characters. If a form is too large for a Slack button, the step fails without sending the message. In this case, shorten the form, for example by reducing the list of options.
+</Note>
 
 ### By email
 
